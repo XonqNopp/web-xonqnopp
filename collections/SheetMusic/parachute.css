@@ -1,0 +1,93 @@
+table {
+	border: solid 1px;
+}
+
+@media screen {
+	tr:hover {
+		background-color: #bbbbbb;
+	}
+
+	tr.more {
+		display: none;
+	}
+}
+
+th {
+	background-color: #cccccc;
+}
+
+th, td {
+	border: solid 1px;
+}
+
+th.cattitle {
+	font-size: 0.7em;
+}
+
+div.cattitle {
+	/*transform: rotate(-90deg);*/
+}
+
+td.capital {
+	font-weight: 700;
+	font-size: 1.3em;
+	background-color: #dddddd;
+}
+
+td.title {
+	white-space: nowrap;
+}
+
+td.author {
+	white-space: nowrap;
+}
+
+td.opus {
+	white-space: nowrap;
+	text-decoration: italic;
+}
+
+td.year {
+	white-space: nowrap;
+	text-decoration: italic;
+	text-align: right;
+}
+
+td.pages {
+	text-align: right;
+}
+
+td.SATB {
+	font-size: 0.8em;
+}
+
+td.catfalse {
+	background-color: #aaaaaa;
+}
+
+td.cattrue {
+	font-weight: 700;
+	font-size: 0.7em;
+	text-align: center;
+}
+
+
+@media print {
+	div.lhead,
+	div.chead,
+	div.rhead {
+		display: none;
+	}
+
+	td.edit {
+		display: none;
+	}
+
+	div.timestamp {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+		font-size: 0.8em;
+	}
+}

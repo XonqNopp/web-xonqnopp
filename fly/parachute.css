@@ -1,0 +1,298 @@
+body {
+	background-color : #e0f0ff;
+}
+
+h1 {
+	text-align: center;
+}
+
+img {
+	max-width: 100%:
+}
+
+div.geoadmin img {
+	max-width: 100%;
+	max-height: 13em;
+}
+
+div.wide {
+	text-align: center;
+}
+
+div.column {
+	vertical-align: middle;
+}
+
+div.column img {
+	max-width: 100%;
+}
+
+div.left {
+	text-align: left;
+}
+
+div.links {
+	padding: 0.5em 0.2em;
+}
+
+div.links div {
+	padding: 0.5em;
+}
+
+img.height {
+	max-width: 100%;
+}
+
+
+
+
+
+p.pl {
+	font-size: 0.7em;
+	line-height: 0.7em;
+}
+
+table, tr, td, th {
+	border: solid 1px;
+}
+
+tr.even {
+	background-color: #dddddd;
+}
+
+tr.odd:hover, tr.even:hover {
+	background-color: #bbbbbb;
+}
+
+td, th {
+	padding: 0.5em;
+	white-space: nowrap;
+}
+
+th {
+	background-color: #cccccc;
+}
+
+td.num, th.num {
+	text-align: right;
+}
+
+tfoot th {
+	border-top: solid 2px;
+	border-bottom: solid 2px;
+}
+
+tfoot td {
+	border-top: none;
+	border-bottom: none;
+	border-left: none;
+}
+
+th.start_ad, td.start_ad {
+	border-right: none;
+}
+
+th.stop_time, td.stop_time {
+	border-right: none;
+}
+
+th.aircraft, td.aircraft {
+	border-right: none;
+}
+
+th.SP_SEP, td.SP_SEP {
+	border-right: none;
+}
+
+th.SP_MEP, td.SP_MEP {
+	border-right: none;
+}
+
+th.MP, td.MP {
+	border-right: none;
+}
+
+th.landings_day, td.landings_day {
+	border-right: none;
+}
+
+th.night, td.night {
+	border-right: none;
+}
+
+th.PIC, td.PIC {
+	border-right: none;
+}
+
+th.copi, td.copi {
+	border-right: none;
+}
+
+th.dual, td.dual {
+	border-right: none;
+}
+
+td.fullnote {
+	text-align: left;
+	border: solid 2px;
+	color: #ffffff;
+	border-color: #777777;
+	background-color: #777777;
+}
+
+#deleted {
+	color: #990000;
+	background-color: lightyellow;
+}
+
+.right input {
+	text-align: right;
+}
+
+div.PAX {
+	padding: 1em;
+}
+
+span.doodle {
+	padding: 0.2em 0.33em;
+}
+
+/*ul.doodle*/
+li {
+	margin: 0.42em 0;
+}
+
+span.yes {
+	background-color: #d1f3d1;
+}
+
+span.ifneedbe {
+	background-color: #ffeda1;
+}
+
+span.no {
+	background-color: #ffccca;
+}
+
+span.doodle img {
+	vertical-align: middle;
+}
+
+p.subnote {
+	border: dotted 3px #009900;
+	background-color: #ffee00;
+	padding: 0.7em;
+}
+
+span.small {
+	font-size: 0.7em;
+}
+
+div.NavIntro {
+	margin-left: 5%;
+	margin-bottom: 2%;
+}
+
+td.unavailable {
+	background-color: #555555;
+}
+
+th.TC,
+td.TC {
+	background-color: #888888;
+}
+
+th.wind,
+td.wind {
+	background-color: #aaaaaa;
+}
+
+td.distance,
+td.altitude,
+td.EET,
+td.speed {
+	text-align: right;
+}
+
+td.newWP,
+td.heading {
+	text-align: center;
+}
+
+td.sum {
+	font-weight: 700;
+	border-top: double;
+	vertical-align: top;
+	padding-top: 0;
+}
+
+tr.WP99 td,
+tr.WP199 td,
+tr.WP999 td {
+	border-bottom: double;
+}
+
+tr.WP101 td,
+tr.WP901 td {
+	border-top: double;
+}
+
+li.optional {
+	list-style-type: circle;
+}
+
+table.noborder,
+td.phantom {
+	border: none;
+}
+
+td.mass,
+td.arm,
+td.moment {
+	text-align: right;
+}
+
+td.GCend {
+	background-color: #999999;
+	font-weight: 700;
+}
+
+td.GCtitle {
+	font-weight: 700;
+}
+
+td.GCmin {
+	border-bottom: none;
+}
+
+td.GCmid {
+	border-bottom: none;
+	border-top: none;
+}
+
+td.GCmax {
+	border-top: none;
+}
+
+div.FuelCons,
+div.FuelUnit,
+div.DryMass,
+div.DryMassUnit,
+div.DryMoment,
+div.DryMomentUnit,
+div.PowerManifold,
+div.PowerManifoldUnit,
+div.windTC,
+div.windSpeed {
+	display: inline-block;
+}
+
+input[type=number] {
+	text-align: right;
+}
+
+td.nav-alternate-title {
+	background-color: #ddd;
+	text-align: center;
+	font-weight: 700;
+}

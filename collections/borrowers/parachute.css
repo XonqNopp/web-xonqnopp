@@ -1,0 +1,39 @@
+div.borrower_display_table {
+	margin-left : 2cm;
+}
+
+table.borrower_display {
+	/*width : 100%;*/
+	margin : auto;
+	text-align : center;
+}
+
+tr.borrower_display {
+	padding : 3mm 0mm;
+}
+
+tr.borrower_display_header {
+}
+
+th {
+	padding : 3mm;
+	border-style : solid;
+	border-width : 2px;
+	border-radius : 20px;
+	-moz-border-radius : 20px;
+}
+
+td {
+	padding : 2mm 3mm;
+}
+
+td.borrower_display {
+}
+
+div.borrower_name {
+	padding : 2mm 0mm;
+}
+
+div.borrower_button {
+	padding : 2mm 7mm;
+}

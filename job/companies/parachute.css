@@ -1,0 +1,99 @@
+div.AllCompanies {
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+a.edit {
+	font-size: 0.6em;
+	vertical-align: middle;
+}
+
+div.comco img {
+	vertical-align: middle;
+}
+
+div.way img {
+	width: 2em;
+}
+
+div.media img {
+	width: 2.5em;
+}
+
+div.kind img {
+	width: 3em;
+}
+
+div.who {
+	font-weight: 700;
+}
+
+div.csstab64_cell {
+	vertical-align: top;
+}
+
+div.cellrank8,
+div.cellrank7,
+div.cellrank6,
+div.cellrank5,
+div.cellrank4,
+div.cellrank3,
+div.cellrank2,
+div.cellrank1 {
+	border-top: dotted 1px;
+}
+
+div.cellrank0 {
+	border-top: dashed 2px;
+}
+
+span.co9 {font-size: 1.5em;}
+span.co8 {font-size: 1.4em;}
+span.co7 {font-size: 1.3em;}
+span.co6 {font-size: 1.2em;}
+span.co5 {font-size: 1.1em;}
+span.co4 {font-size: 1.0em;}
+span.co3 {font-size: 0.9em;}
+span.co2 {font-size: 0.8em;}
+span.co1 {font-size: 0.7em;}
+span.co0 {font-size: 0.6em;}
+
+span.count {
+	font-size: 0.75em;
+}
+
+div.company_name {
+	font-weight: 700;
+}
+
+
+@media only screen
+and (max-width:64em) {
+
+div.comco div.content {
+	border-bottom: dashed 1px;
+}
+
+}
+
+@media only screen
+and (min-width:64em) {
+
+div.comco div.csstab64_cell {
+	border-bottom: dashed 1px;
+}
+
+div.who {
+	min-width: 30%;
+	text-align: center;
+}
+
+div.content {
+	min-width: 40%;
+}
+
+div.csstab64_cell {
+	padding: 0.3em 0.2em;
+}
+
+}

@@ -1,0 +1,23 @@
+## Setting the index page
+DirectoryIndex index.php
+
+## No one should look in the content of the directory
+Options -Indexes
+
+## Redirect on error
+ErrorDocument 404 /index.php
+
+## Preventing this file to be read
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+
+## rewrite language
+Options +FollowSymLinks
+RewriteEngine on
+RewriteRule ^(francais|english)$ http://fly.xonqnopp.ch/?language=$1 [R=301,L]
+RewriteRule ^regles$ http://fly.xonqnopp.ch/?language=francais&instructions [R=301,L]
+RewriteRule ^rules$ http://fly.xonqnopp.ch/?language=english&instructions [R=301,L]
+

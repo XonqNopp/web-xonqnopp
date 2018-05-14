@@ -1,0 +1,192 @@
+h3.dvd_display {
+	margin-left : 40mm;
+}
+
+div.dvd_display_table_serie, div.dvd_display_table {
+	text-align: center;
+	/*margin-left: 2cm;*/
+}
+
+div.csstab64_cell {
+	vertical-align: top;
+}
+
+a.dvd_display_author {
+	font-style: italic;
+}
+
+.EditBorrow {
+	font-size: 8pt;
+	margin-right: 2mm;
+	min-width: 55px;
+}
+
+.author_link {
+	font-style: italic;
+}
+
+.flushleft {
+	text-align: left;
+}
+
+.halfwidth {
+	width: 42%;
+}
+
+.MainBook {
+	max-width: 80%;
+}
+
+.csstab_cell div {
+	vertical-align: middle;
+}
+
+.csstab_cell {
+	padding: 2px 0;
+}
+
+
+
+
+div.dvd_display_people {
+	text-align : left;
+}
+
+div.dvd_display_director {
+	/*display : inline-block;*/
+	padding : 2mm 8mm;
+}
+
+div.dvd_display_actors {
+	display : inline-block;
+	padding : 2mm 8mm;
+}
+
+div.dvd_display_lang {
+	text-align : left;
+}
+
+div.dvd_display_languages {
+	display : inline-block;
+	padding : 2mm 8mm;
+}
+
+div.dvd_display_subtitles {
+	display : inline-block;
+	padding : 2mm 8mm;
+}
+
+div.dvd_display_duration {
+	font-size : 10pt;
+	margin-left : 1cm;
+	padding : 1mm 0mm;
+}
+
+div.dvd_display_category {
+	font-size : 10pt;
+	font-style : italic;
+	padding : 2mm 0mm;
+}
+
+div.dvd_display_burnt {
+	font-size : 10pt;
+	font-weight : 700;
+	padding : 2mm 0mm;
+}
+
+div.dvd_display_format {
+	font-size : 10pt;
+}
+
+div.dvd_display_summary {
+	text-align : justify;
+	text-indent : 7mm;
+}
+
+
+
+
+table.dvd_serie_table {
+	margin-left: 2cm;
+}
+
+td.dvd_serie_table_edit, td.dvd_serie_borrow {
+	font-size: 8pt;
+}
+
+td.dvd_serie_table_author {
+	font-style: italic;
+}
+
+
+
+
+
+div.dvd_new_title {
+	padding: 2mm 0mm;
+	display : inline-block;
+}
+
+div.dvd_new_imdb {
+	display : inline-block;
+	margin-left : 2cm;
+}
+
+div.dvd_new_director {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_actors {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_languages {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_subtitles {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_duration {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_serie {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_number {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_burnt {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_format {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_category {
+	padding: 2mm 0mm;
+}
+
+div.dvd_new_summary {
+	padding: 2mm 0mm;
+}
+
+
+
+@media only screen
+and (min-width:64em) {
+
+div.dvd_display_table_cell {
+	width: 49%;
+}
+
+div.main {
+	margin-left : 23mm;
+}
+
+}

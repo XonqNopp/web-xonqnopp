@@ -1,0 +1,43 @@
+@media only screen
+and (min-width:64em) {
+
+div.wide {
+	padding: 1%;
+	width: 97%;
+}
+
+div.column {
+	display: inline-block;
+	width: 24%;
+}
+
+div.quarter {
+	width: 29%;
+}
+
+div.third {
+	width: 30%;
+}
+
+img.width {
+	max-width: 250px;
+}
+
+img.height {
+	max-height: 100px;
+}
+
+img.fullwidth {
+	max-width: 100%;
+}
+
+div.half img {
+	height: 50px;
+}
+
+div.PAXpara {
+	width: 85%;
+	margin: auto;
+}
+
+}

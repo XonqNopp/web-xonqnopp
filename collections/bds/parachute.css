@@ -1,0 +1,141 @@
+div.bd_display_table {
+	margin-left: 2cm;
+}
+
+div.csstab64_cell {
+	text-align: center;
+	vertical-align: top;
+}
+
+table {
+	width : 100%;
+}
+
+td.bd_display_table {
+	padding : 3mm 4mm;
+	text-align : center;
+}
+
+div.wide {
+	width: 100%;
+}
+
+div.bd_cell {
+	padding: 2mm;
+}
+
+
+div.bd_new_isbn {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_serie {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_tome {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_title {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_author {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_publisher {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_date {
+	padding: 7pt 1cm;
+}
+
+div.bd_new_valbut {
+	padding: 7pt 1cm;
+}
+
+
+div.bd_search_main {
+	margin-left : 150px;
+	margin-right : 80px;
+}
+
+table.bd_search {
+	margin : auto;
+}
+
+td.bd_search_legend {
+	padding : 2mm 3mm;
+	text-align : left;
+	cursor : default;
+}
+
+td.bd_search_buts {
+	padding : 5mm 0;
+}
+
+table.bd_search_table {
+	width : 100%;
+}
+
+td.bd_search_table {
+	width : 45%;
+}
+
+td.bd_search_edit, td.bd_search_borrow {
+	font-size : 8pt;
+}
+
+div.button_link input {
+	background-color : transparent;
+	text-decoration : none;
+	border : none;
+	color : #0000ff;
+	cursor : pointer;
+}
+
+
+table.bd_serie_table {
+	margin-left: 2cm;
+}
+
+td.bd_serie_edit, td.bd_serie_borrow {
+	font-size: 8pt;
+}
+
+td.bd_serie_borrow {
+	text-align : center;
+}
+
+
+.csstab_cell {
+	vertical-align: middle;
+	width: 22%;
+	padding: 2px 1px;
+}
+
+.bd_serie_count {
+	font-size: 8pt;
+	padding: 1px 0;
+}
+
+.twenty {
+	width: 123px;
+}
+
+.ten {
+	width: 25px;
+	text-align: right;
+	padding: 0 5px;
+}
+
+div.bd_serie_insert_main {
+	margin-left: 9mm;
+}
+
+div.bd_serie_insert_main div {
+	padding: 2mm;
+}
