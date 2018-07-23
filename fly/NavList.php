@@ -79,7 +79,7 @@ if($GI) {
 	$body .= "<div class=\"lhead\">\n";
 	$body .= "<a href=\"NavDetails.php?id=0\" title=\"refresh tempate\">refresh template</a><br />\n";
 	$body .= "<a href=\"nav/navTemplate.tex\" title=\"template\">template</a><br />\n";
-	$body .= "<a href=\"nav/navTemplate.pdf\" target=\"_blank\">PDF</a>\n";
+	$body .= "<a href=\"pdf/navTemplate.pdf\" target=\"_blank\">PDF</a>\n";
 	$body .= "</div>\n";
 	$body .= "<div class=\"chead\">\n";
 	$body .= "</div>\n";
