@@ -8,10 +8,10 @@ $rootPath = "..";
 $funcpath = "$rootPath/functions";
 require("NavDefaults.php");
 
-$DocVersion = 48;
+$DocVersion = 49;
 
 /*
- * WARNING: default variation is hardcoded in definition of LaTeX head.
+ * WARNING: default variation is hardcoded in function declaration of LaTeX head.
  */
 $page = new PhPage($rootPath);
 $page->initDB();
@@ -27,6 +27,7 @@ $GI = $page->UserIsAdmin();
 //
 	/// Init vars
 	$maxRow = 17;
+	$ReserveTime = 45;  // [min]
 	//
 		/// Plane
 		$PlaneType = "";
@@ -35,6 +36,7 @@ $GI = $page->UserIsAdmin();
 		$ClimbSpeed = 0;
 		$FuelCons = 0;
 		$FuelUnit = "";
+		$UnusableFuel = 0;
 		$DryMass = 0;
 		$DryMassUnit = "";
 		$DryMoment = 0;
@@ -595,7 +597,7 @@ $GI = $page->UserIsAdmin();
 		}
 	//
 		/// LaTeX fuel
-		function LaTeXfuel($page, $TheoricTripTime = 0, $TheoricTripFuel = 0, $TheoricAlternateTime = 0, $TheoricAlternateFuel = 0, $RealTripTime = 0, $RealTripFuel = 0, $RealAlternateTime = 0, $RealAlternateFuel = 0, $ReserveFuel = 0, $TheoricMinimumFuel = 0, $RealMinimumFuel = 0, $TheoricExtra = 0, $RealExtra = 0, $TheoricFuel = 0, $RealFuel = 0) {
+		function LaTeXfuel($page, $TheoricTripTime = 0, $TheoricTripFuel = 0, $TheoricAlternateTime = 0, $TheoricAlternateFuel = 0, $RealTripTime = 0, $RealTripFuel = 0, $RealAlternateTime = 0, $RealAlternateFuel = 0, $ReserveFuel = 0, $TheoricMinimumFuel = 0, $RealMinimumFuel = 0, $TheoricExtra = 0, $RealExtra = 0, $TheoricFuel = 0, $RealFuel = 0, $UnusableFuel=0) {
 			$latexfuel = "";
 				//// compute more numbers
 				$TheoricTripHours        =                 $page->minutes2HoursInt($TheoricTripTime);
@@ -660,7 +662,16 @@ $GI = $page->UserIsAdmin();
 				if($RealTripFuel > 0 && $ReserveFuel > 0) {
 					$latexfuel .= " $ReserveFuel ";
 				}
-				$latexfuel .= "\\\\\\hline\\hline\n";
+				$latexfuel .= "\\\\\\hline\n";
+			//
+				// unusable
+				$latexfuel .= "Unusable\n";
+				$latexfuel .= "& \\multicolumn{2}{c}{\\DarkGray}\n";
+				$latexfuel .= "& $UnusableFuel\n";
+				$latexfuel .= "& \\multicolumn{2}{c}{\\DarkGray}\n";
+				$latexfuel .= "& $UnusableFuel";
+				$latexfuel .= "\\\\\\hline\n";
+			$latexfuel .= "\\hline\n";
 			//
 				//// minimum
 				$latexfuel .= "Minimum fuel:&\\multicolumn{2}{c}{\\DarkGray}&";
@@ -701,7 +712,7 @@ $GI = $page->UserIsAdmin();
 		}
 	//
 		/// LaTeX GC
-		function LaTeXGC($DryMassUnit = "~~", $ArmUnit = "~~", $DryMomentUnit = "~~", $DryMass = 0, $DryMoment = 0, $FrontMass = 0, $FrontArm = 0, $FrontMoment = 0, $RearMass = 0, $RearArm = 0, $RearMoment = 0, $LuggageMass = 0, $LuggageArm = 0, $LuggageMoment = 0, $minGC = 0, $maxGC = 0, $ZeroMass = 0, $ZeroGC = 0, $ZeroMoment = 0, $FuelMass = 0, $FuelArm = 0, $FuelMoment = 0, $ToffMass = 0, $ToffGC = 0, $ToffMoment = 0, $MTOW = 0) {
+		function LaTeXGC($DryMassUnit = "~~", $ArmUnit = "~~", $DryMomentUnit = "~~", $DryMass = 0, $DryMoment = 0, $FrontMass = 0, $FrontArm = 0, $FrontMoment = 0, $RearMass = 0, $RearArm = 0, $RearMoment = 0, $LuggageMass = 0, $LuggageArm = 0, $LuggageMoment = 0, $minGC = 0, $maxGC = 0, $ZeroMass = 0, $ZeroGC = 0, $ZeroMoment = 0, $FuelMass = 0, $FuelArm = 0, $FuelMoment = 0, $ToffMass = 0, $ToffGC = 0, $ToffMoment = 0, $MTOW = 0, $UnusableFuelMass=0, $UnusableFuelMoment=0) {
 			$latexGC = "";
 			$redCell  = "\\RedCell";
 			$grayCell = "\\Gray";
@@ -726,7 +737,7 @@ $GI = $page->UserIsAdmin();
 				$latexGC .= "&";
 				$latexGC .= ($FrontArm > 0) ? " $FrontArm " : "";
 				$latexGC .= "&";
-				$latexGC .= ($FrontMoment > 0) ? " " . round($FrontMoment) . " " : "";
+				$latexGC .= ($FrontMoment > 0) ? " " . round($FrontMoment, 3) . " " : "";
 				$latexGC .= "\\\\\\hline\n";
 			//
 			if($RearArm > 0 || $FrontArm == 0) {
@@ -736,7 +747,7 @@ $GI = $page->UserIsAdmin();
 				$latexGC .= "&";
 				$latexGC .= ($RearArm > 0) ? " $RearArm " : "";
 				$latexGC .= "&";
-				$latexGC .= ($RearMoment > 0) ? " " . round($RearMoment) . " " : "";
+				$latexGC .= ($RearMoment > 0) ? " " . round($RearMoment, 3) . " " : "";
 				$latexGC .= "\\\\\\hline\n";
 			}
 			//
@@ -746,8 +757,16 @@ $GI = $page->UserIsAdmin();
 				$latexGC .= "&";
 				$latexGC .= ($LuggageArm > 0) ? " $LuggageArm " : "";
 				$latexGC .= "&";
-				$latexGC .= ($LuggageMoment > 0) ? " " . round($LuggageMoment) . " " : "";
-				$latexGC .= "\\\\\\hhline{====}\n";
+				$latexGC .= ($LuggageMoment > 0) ? " " . round($LuggageMoment, 3) . " " : "";
+				$latexGC .= "\\\\\\hline\n";
+			//
+				// unusable fuel
+				$latexGC .= "Unusable fuel";
+				$latexGC .= "& $UnusableFuelMass";
+				$latexGC .= "& $FuelArm";
+				$latexGC .= "& " . round($UnusableFuelMoment, 3);
+				$latexGC .= "\\\\\\hline\n";
+			$latexGC .= "\\hline\n";
 			//
 				//// 0-fuel
 				$gcMinStyle = ($minGC > 0 && $minGC > $ZeroGC) ? $redCell : $grayCell;
@@ -781,7 +800,7 @@ $GI = $page->UserIsAdmin();
 				$latexGC .= "&";
 				$latexGC .= ($FuelArm > 0) ? " $FuelArm " : "";
 				$latexGC .= "&";
-				$latexGC .= ($FuelMoment > 0) ? " " . round($FuelMoment) . " " : "";
+				$latexGC .= ($FuelMoment > 0) ? " " . round($FuelMoment, 3) . " " : "";
 				$latexGC .= "\\\\\\hhline{====}\n";
 			//
 				//// T-off
@@ -895,7 +914,7 @@ $GI = $page->UserIsAdmin();
 	//// plane details
 	if($plane > 0) {
 		$theplane = $page->DB_SelectId("aircrafts", $plane);
-		$theplane->bind_result($plane, $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC);
+		$theplane->bind_result($plane, $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $UnusableFuel, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC);
 		$theplane->fetch();
 		$theplane->close();
 		$FrontArm = round($FrontArm, 3);
@@ -1364,15 +1383,17 @@ $latexcontent .= LaTeXfinish1($WPnum, $rows, $maxRow);
 		$TheoricAlternateFuel = FuelTime($TheoricAlternateTime, $FuelCons);
 		$RealTripFuel         = FuelTime($RealTripTime,         $FuelCons);
 		$RealAlternateFuel    = FuelTime($RealAlternateTime,    $FuelCons);
-		$ReserveFuel = FuelTime(45, $FuelCons);
-		$TheoricMinimumFuel = $TheoricTripFuel + $TheoricAlternateFuel + $ReserveFuel;
-		$RealMinimumFuel    = $RealTripFuel    + $RealAlternateFuel    + $ReserveFuel;
+		$ReserveFuel          = FuelTime($ReserveTime,          $FuelCons);
+		$TheoricMinimumFuel = $TheoricTripFuel + $TheoricAlternateFuel + $ReserveFuel + $UnusableFuel;
+		$RealMinimumFuel    = $RealTripFuel    + $RealAlternateFuel    + $ReserveFuel + $UnusableFuel;
 		$TheoricExtra = ceil($TheoricMinimumFuel * 0.05);
 		$RealExtra   = ceil($RealMinimumFuel    * 0.05);
 		$TheoricFuel = $TheoricMinimumFuel + $TheoricExtra;
 		$RealFuel    = $RealMinimumFuel    + $RealExtra;
 		$FinalFuel = $TheoricFuel;
-		if($RealMinimumFuel > $ReserveFuel) {$FinalFuel = $RealFuel;}
+		if($RealMinimumFuel > $ReserveFuel + $UnusableFuel) {
+			$FinalFuel = $RealFuel;
+		}
 		if($FuelUnit == "USG") {
 			$FinalFuel *= 3.8;
 		} elseif($FuelUnit == "ImpG") {
@@ -1469,6 +1490,23 @@ $latexcontent .= LaTeXfinish1($WPnum, $rows, $maxRow);
 			$body .= "</td>\n";
 			$body .= "</tr>\n";
 		//
+			//// unusable
+			$body .= "<tr>\n";
+			$body .= "<td>Unusable:</td>\n";
+			$body .= "<td class=\"unavailable\"></td>\n";
+			$body .= "<td>";
+			if($UnusableFuel > 0) {
+				$body .= $UnusableFuel;
+			}
+			$body .= "</td>\n";
+			$body .= "<td class=\"unavailable\"></td>\n";
+			$body .= "<td>";
+			if($RealTripTime > 0 && $UnusableFuel > 0) {
+				$body .= $UnusableFuel;
+			}
+			$body .= "</td>\n";
+			$body .= "</tr>\n";
+		//
 			//// minimum
 			$body .= "<tr>\n";
 			$body .= "<td>Minimum fuel:</td>\n";
@@ -1524,13 +1562,15 @@ $latexcontent .= LaTeXfinish1($WPnum, $rows, $maxRow);
 		$body .= "</div>\n";
 	//
 		//// LaTeX
-		$latexfuel = LaTeXfuel($page, $TheoricTripTime, $TheoricTripFuel, $TheoricAlternateTime, $TheoricAlternateFuel, $RealTripTime, $RealTripFuel, $RealAlternateTime, $RealAlternateFuel, $ReserveFuel, $TheoricMinimumFuel, $RealMinimumFuel, $TheoricExtra, $RealExtra, $TheoricFuel, $RealFuel);
+		$latexfuel = LaTeXfuel($page, $TheoricTripTime, $TheoricTripFuel, $TheoricAlternateTime, $TheoricAlternateFuel, $RealTripTime, $RealTripFuel, $RealAlternateTime, $RealAlternateFuel, $ReserveFuel, $TheoricMinimumFuel, $RealMinimumFuel, $TheoricExtra, $RealExtra, $TheoricFuel, $RealFuel, $UnusableFuel);
 	//
 	//
 //
 	//// GC MTOW
 		//// compute
-		$FuelMass = round($FinalFuel * 0.72);
+		$l2kg = 0.72;
+		$UnusableFuelMass = round($UnusableFuel * $l2kg);
+		$FuelMass = round($FinalFuel * $l2kg) - $UnusableFuelMass;
 		if($DryMassUnit == "lbs") {
 			$FrontMass   = round($FrontMass * 2.2);
 			$RearMass    = round($RearMass * 2.2);
@@ -1540,9 +1580,10 @@ $latexcontent .= LaTeXfinish1($WPnum, $rows, $maxRow);
 		$FrontMoment   = round($FrontMass   * $FrontArm, 3);
 		$RearMoment    = round($RearMass    * $RearArm, 3);
 		$LuggageMoment = round($LuggageMass * $LuggageArm, 3);
+		$UnusableFuelMoment = round($UnusableFuelMass * $FuelArm, 3);
 		$FuelMoment    = round($FuelMass    * $FuelArm, 3);
-		$ZeroMass = $DryMass + $FrontMass + $RearMass + $LuggageMass;
-		$ZeroMoment = round($DryMoment + $FrontMoment + $RearMoment + $LuggageMoment, 3);
+		$ZeroMass = $DryMass + $FrontMass + $RearMass + $LuggageMass + $UnusableFuelMass;
+		$ZeroMoment = round($DryMoment + $FrontMoment + $RearMoment + $LuggageMoment + $UnusableFuelMoment, 3);
 		$ZeroGC = 0;
 		if($ZeroMass > 0) {
 			$ZeroGC = round(1.0 * $ZeroMoment / $ZeroMass, 3);
@@ -1630,6 +1671,20 @@ $latexcontent .= LaTeXfinish1($WPnum, $rows, $maxRow);
 			$body .= "</td>\n";
 			$body .= "</tr>\n";
 		//
+			//// unusable fuel
+			$body .= "<tr>\n";
+			$body .= "<td>Unusable fuel</td>\n";
+			$body .= "<td class=\"mass\">";
+			$body .= ($UnusableFuelMass > 0) ? $UnusableFuelMass : "";
+			$body .= "</td>\n";
+			$body .= "<td class=\"arm\">";
+			$body .= ($FuelArm > 0) ? $FuelArm : "";
+			$body .= "</td>\n";
+			$body .= "<td class=\"moment\">";
+			$body .= ($UnusableFuelMoment > 0) ? $UnusableFuelMoment : "";
+			$body .= "</td>\n";
+			$body .= "</tr>\n";
+		//
 		$redBG = ' style="background-color: red;"';
 		//
 			//// 0-fuel
@@ -1713,7 +1768,7 @@ $latexcontent .= LaTeXfinish1($WPnum, $rows, $maxRow);
 		$body .= "</div>\n";
 	//
 		//// LaTeX
-		$latexGC = LaTeXGC($DryMassUnit, $ArmUnit, $DryMomentUnit, $DryMass, $DryMoment, $FrontMass, $FrontArm, $FrontMoment, $RearMass, $RearArm, $RearMoment, $LuggageMass, $LuggageArm, $LuggageMoment, $minGC, $maxGC, $ZeroMass, $ZeroGC, $ZeroMoment, $FuelMass, $FuelArm, $FuelMoment, $ToffMass, $ToffGC, $ToffMoment, $MTOW);
+		$latexGC = LaTeXGC($DryMassUnit, $ArmUnit, $DryMomentUnit, $DryMass, $DryMoment, $FrontMass, $FrontArm, $FrontMoment, $RearMass, $RearArm, $RearMoment, $LuggageMass, $LuggageArm, $LuggageMoment, $minGC, $maxGC, $ZeroMass, $ZeroGC, $ZeroMoment, $FuelMass, $FuelArm, $FuelMoment, $ToffMass, $ToffGC, $ToffMoment, $MTOW, $UnusableFuelMass, $UnusableFuelMoment);
 	//
 	//
 //
