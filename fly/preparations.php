@@ -5,7 +5,7 @@ function commonPreparations($userIsAdmin, $miscInit, $skybriefingLogin="") {
 	$homebriefing = "";
 	$skybriefing = "";
 	$aipCH = "<li><a target=\"_blank\" href=\"http://www.delta-fox-fox.ch/vfr/\">AIP CH</a></li>\n";
-	$vfrGuide = "<li><a target=\"_blank\" href=\"http://www.skyguide.ch/fileadmin/user_upload/publications/AIM/VFR-Guide.pdf\">VFR Guide CH</a></li>\n";
+	$vfrGuide = "<li><a target=\"_blank\" href=\"https://www.skybriefing.com/portal/fr/vfr-guide\">VFR Guide CH</a></li>\n";
 	$aipF = "<li><a target=\"_blank\" href=\"https://www.sia.aviation-civile.gouv.fr/html/frameset_aip_fr.htm\">AIP France</a></li>\n";
 	$aipOe = "<li><a target=\"_blank\" href=\"http://eaip.austrocontrol.at/lo/141114/ad_2.htm\">&Ouml;sterreich AIP</a></li>\n";
 	$aipEU = "<li><a target=\"_blank\" href=\"https://www.eurocontrol.int/articles/ais-online\" title=\"&euro; AIP\">&euro; AIP</a></li>\n";
