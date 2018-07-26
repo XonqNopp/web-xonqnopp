@@ -17,7 +17,8 @@ This is my personal website
 
 * [fly/nav] add unusable fuel
 * [fly/nav] add fuelStep (default=1,katana=5l)
-* [fly/nav] add luggage rear1+rear2
+* [fly/nav] add luggage rear1+rear2 + max luggage
+* [fly/nav] if no moment for field, do not prompt in nav
 * [fly/nav] add my weight somewhere
 * [fly] store who has a gift and who has already paid?
 * [fly/logbook] add entries in DB for SEP(L/S)
