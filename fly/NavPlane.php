@@ -24,6 +24,7 @@ $PlanningSpeed = 0;
 $ClimbSpeed = 0;
 $FuelCons = 0;
 $FuelUnit = "USG";
+$UnusableFuel = 0;
 $DryMass = 0;
 $DryMassUnit = "lbs";
 $DryMoment = 0;
@@ -56,6 +57,7 @@ if(isset($_POST["erase"])) {
 		$ClimbSpeed = $_POST["ClimbSpeed"];
 		$FuelCons = $_POST["FuelCons"];
 		$FuelUnit = $_POST["FuelUnit"];
+		$UnusableFuel = $_POST["UnusableFuel"];
 		$DryMass = $_POST["DryMass"];
 		$DryMassUnit = $_POST["DryMassUnit"];
 		$DryMoment = $_POST["DryMoment"];
@@ -77,6 +79,7 @@ if(isset($_POST["erase"])) {
 	$ClimbSpeed = $_POST["ClimbSpeed"];
 	$FuelCons = $_POST["FuelCons"];
 	$FuelUnit = $_POST["FuelUnit"];
+	$UnusableFuel = $_POST["UnusableFuel"];
 	$DryMass = $_POST["DryMass"];
 	$DryMassUnit = $_POST["DryMassUnit"];
 	$DryMoment = $_POST["DryMoment"];
@@ -94,16 +97,16 @@ if(isset($_POST["erase"])) {
 		//// update
 		$id = $_POST["id"];
 		$query = "UPDATE `{$page->ddb->DBname}`.`aircrafts` SET ";
-		$query .= "`PlaneType` = ?, `PlaneID` = ?, `PlanningSpeed` = ?, `ClimbSpeed` = ?, `FuelCons` = ?, `FuelUnit` = ?, `DryMass` = ?, `DryMassUnit` = ?, `DryMoment` = ?, `DryMomentUnit` = ?, `DryTimestamp` = ?, `ArmUnit` = ?, `FrontArm` = ?, `RearArm` = ?, `LuggageArm` = ?, `FuelArm` = ?, `MTOW` = ?, `minGC` = ?, `maxGC` = ?";
+		$query .= "`PlaneType` = ?, `PlaneID` = ?, `PlanningSpeed` = ?, `ClimbSpeed` = ?, `FuelCons` = ?, `FuelUnit` = ?, `UnusableFuel` = ?, `DryMass` = ?, `DryMassUnit` = ?, `DryMoment` = ?, `DryMomentUnit` = ?, `DryTimestamp` = ?, `ArmUnit` = ?, `FrontArm` = ?, `RearArm` = ?, `LuggageArm` = ?, `FuelArm` = ?, `MTOW` = ?, `minGC` = ?, `maxGC` = ?";
 		$query .= " WHERE `aircrafts`.`id` = ? LIMIT 1;";
 		$sql = $page->DB_QueryPrepare($query);
-		$sql->bind_param("ssiiisisisssddddiddi", $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC, $id);
+		$sql->bind_param("ssiiisiisisssddddiddi", $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $UnusableFuel, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC, $id);
 		$page->DB_ExecuteManage($sql);
 	} else {
 		//// insert
-		$query = "INSERT INTO `{$page->ddb->DBname}`.`aircrafts` (`PlaneType`, `PlaneID`, `PlanningSpeed`, `ClimbSpeed`, `FuelCons`, `FuelUnit`, `DryMass`, `DryMassUnit`, `DryMoment`, `DryMomentUnit`, `DryTimestamp`, `ArmUnit`, `FrontArm`, `RearArm`, `LuggageArm`, `FuelArm`, `MTOW`, `minGC`, `maxGC`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$query = "INSERT INTO `{$page->ddb->DBname}`.`aircrafts` (`PlaneType`, `PlaneID`, `PlanningSpeed`, `ClimbSpeed`, `FuelCons`, `FuelUnit`, `UnusableFuel`, `DryMass`, `DryMassUnit`, `DryMoment`, `DryMomentUnit`, `DryTimestamp`, `ArmUnit`, `FrontArm`, `RearArm`, `LuggageArm`, `FuelArm`, `MTOW`, `minGC`, `maxGC`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$sql = $page->DB_QueryPrepare($query);
-		$sql->bind_param("ssiiisisisssddddidd", $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC);
+		$sql->bind_param("ssiiisiisisssddddidd", $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $UnusableFuel, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC);
 		$page->DB_ExecuteManage($sql);
 		$id = $sql->insert_id;
 	}
@@ -113,7 +116,7 @@ if(isset($_POST["erase"])) {
 	//// get data for display
 	$id = $_GET["id"];
 	$sql = $page->DB_SelectId("aircrafts", $id);
-	$sql->bind_result($id, $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC);
+	$sql->bind_result($id, $PlaneType, $PlaneID, $PlanningSpeed, $ClimbSpeed, $FuelCons, $FuelUnit, $UnusableFuel, $DryMass, $DryMassUnit, $DryMoment, $DryMomentUnit, $DryTimestamp, $ArmUnit, $FrontArm, $RearArm, $LuggageArm, $FuelArm, $MTOW, $minGC, $maxGC);
 	$sql->fetch();
 	$sql->close();
 	$PlaneType = $page->SQL2field($PlaneType);
@@ -210,6 +213,16 @@ $page->HotBooty();
 			//
 			$body .= "</div>\n";
 			//
+		//
+			// Unusable fuel
+				$args = new stdClass();
+				$args->type = "number";
+				$args->title = "Unusable fuel";
+				$args->name = "UnusableFuel";
+				$args->value = $UnusableFuel;
+				$args->min = 0;
+				$args->required = true;
+				$body .= $page->FormField($args);
 		//
 			//// MTOW
 			$args = new stdClass();
