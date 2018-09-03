@@ -1,0 +1,60 @@
+body {
+	text-align: justify;
+}
+
+h2 {
+	counter-increment: h2;
+	counter-reset: h3;
+}
+
+h2:before {
+	content: counter(h2) ". ";
+}
+
+h3 {
+	counter-increment: h3;
+	counter-reset: h4;
+}
+
+h3:before {
+	content: counter(h2) "." counter(h3) ". ";
+}
+
+h4 {
+	counter-increment: h4;
+}
+
+h4:before {
+	content: counter(h2) "." counter(h3) "." counter(h4) ". ";
+}
+
+div.framed {
+	border: solid 2px;
+	padding: 0.5em;
+	margin: 0.5em;
+}
+
+td.fullLine {
+	text-align: center;
+	background-color: #999;
+}
+
+td.cineLeft {
+	text-align: right;
+}
+
+td.cineCenter {
+	text-align: center;
+	font-weight: 700;
+}
+
+td.cineRight {
+	text-align: left;
+}
+
+div.tablebottom th,
+div.tablebottom td {
+	border-bottom: solid 1px;
+	padding: 0.3em;
+}
+

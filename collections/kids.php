@@ -18,6 +18,7 @@ $body = "";
 
 //// GoHome
 $gohome = new stdClass();
+$gohome->rootpage = "..";
 $body .= $page->GoHome($gohome);
 //// Set title and hot booty
 $body .= $page->SetTitle("Activit&eacute;s avec les enfants");// before HotBooty
