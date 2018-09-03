@@ -140,6 +140,9 @@ $body .= "<div>\n";
 		$body .= "<a href=\"wheniwasyoung.php\" title=\"When I was young...\">before...</a>\n";
 		$body .= "</li>\n";
 	/DISABLED */
+	//
+		// kids
+		$body .= "<li><a href=\"kids.php\" title=\"Things for kids\">Things for kids</a></li>\n";
 	$body .= "</ul>\n";
 $body .= "</div>\n";
 
