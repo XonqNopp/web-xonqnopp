@@ -137,6 +137,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "<div class=\"csstab64_cell fly\">\n";
 	$body .= "<a href=\"fly/index.php\" title=\"$fly\">\n";
 	$body .= "<img src=\"pictures/hornet.png\" alt=\"$fly\" title=\"$fly\" />\n";
+	$body .= "<br/>Fly\n";
 	$body .= "</a>\n";
 	$body .= "</div>\n";
 //
@@ -144,6 +145,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "<div class=\"csstab64_cell coll\">\n";
 	$body .= "<a href=\"collections/index.php\" title=\"$collections\">\n";
 	$body .= "<img src=\"pictures/jenga.png\" alt=\"$collections\" title=\"$collections\" />\n";
+	$body .= "<br/>Collections\n";
 	$body .= "</a>\n";
 	$body .= "</div>\n";
 //
@@ -151,6 +153,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "<div class=\"csstab64_cell job\">\n";
 	$body .= "<a href=\"job/index.php\" title=\"job\">\n";
 	$body .= "<img src=\"pictures/leprechaun.png\" alt=\"job\" title=\"job\" />\n";
+	$body .= "<br/>Job\n";
 	$body .= "</a>\n";
 	$body .= "</div>\n";
 //
@@ -158,7 +161,7 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 	// External links
-	$body .= "<div class=\"others\"><a href=\"links.php\" title=\"$links\">$links</a></div>\n";
+	$body .= "<div><a href=\"links.php\" title=\"$links\">$links</a></div>\n";
 
 // Login/Logout
 $logPage = "login";
