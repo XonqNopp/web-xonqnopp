@@ -23,7 +23,6 @@ $aref = "http://www.aerodrome-ecuvillens.ch/index.php?page=meteo_webcam.htm";
 $gmaps = "http://maps.google.ch/?f=d&amp;daddr=aerodrome+ecuvillens";
 $HourlyRate = 150;
 $IBAN = "<tt>CH38&nbsp;0027&nbsp;2272&nbsp;3046&nbsp;8440&nbsp;R</tt>";
-$IBANstr = "(IBAN: $IBAN)";
 $albumURL = "https://en.wikipedia.org/wiki/User:Xonqnopp/Photos/Flights";
 $xnGmail = "<tt>xonqnopp.airlines</tt>&nbsp;__A-t__&nbsp;<tt>gmail.com</tt>";
 
@@ -60,7 +59,12 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<a target=\"_blank\" href=\"$gmaps\" title=\"Ecuvillens\">Ecuvillens</a> (PAS Gruy&egrave;re/Epagny!)\n";
 		$contents .= "ou Sion.\n";
 		$contents .= "<li>M&eacute;t&eacute;o est d&eacute;t&eacute;rminante donc d&eacute;cision de partir le jour m&ecirc;me.</li>\n";
-		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h par personne $IBANstr</li>\n";
+		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h par personne:</li>\n";
+		$contents .= "<ul>\n";
+		$contents .= "<li>Twint</li>\n";
+		$contents .= "<li>IBAN $IBAN</li>\n";
+		$contents .= "<li>si n&eacute;cessaire cash mais je pr&eacute;f&egrave;re pas</li>\n";
+		$contents .= "</ul>\n";
 		$contents .= "<li>Contact: $xnGmail</li>\n";
 		$contents .= "</ul>\n";
 		$contents .= "<h4>A propos de la m&eacute;t&eacute;o</h4>\n";
@@ -169,7 +173,12 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<a target=\"_blank\" href=\"$gmaps\" title=\"Ecuvillens\">Ecuvillens</a> (NOT Gruy&egrave;re/Epagny!)\n";
 		$contents .= "or Sion.\n";
 		$contents .= "<li>Weather is most important decision factor thus decision is taken only at the departure time.</li>\n";
-		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h per person $IBANstr</li>\n";
+		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h per person</li>\n";
+		$contents .= "<ul>\n";
+		$contents .= "<li>Twint</li>\n";
+		$contents .= "<li>IBAN $IBAN</li>\n";
+		$contents .= "<li>if necessary cash possible but I'd rather not</li>\n";
+		$contents .= "</ul>\n";
 		$contents .= "<li>Contact: $xnGmail</li>\n";
 		$contents .= "</ul>\n";
 		// FIXME I WAS HERE
