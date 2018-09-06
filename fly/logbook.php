@@ -672,8 +672,8 @@ $today = $today->date;
 	$body .= "<p><b>Total flight hours:</b> " . displaySQLtime($page, $total_item) . "</p>\n";
 	$body .= "<p><b>PIC flight hours:</b> " .   displaySQLtime($page, $pic_item) . "</p>\n";
 	$body .= "<p><b>12 months preceeding $DueYear-$DueMonth-$DueDay:</b> ";
-	$body .= displaySQLtime($page, $revalid_item) . " (of which " . displaySQLtime($page, $revalidPIC_item) . " PIC)";
-	$body .= " with " . ($revalid_item->sLD + $revalid_item->sLN) . " landings (of which " . ($revalidPIC_item->sLD + $revalidPIC_item->sLN) . " PIC)";
+	$body .= displaySQLtime($page, $revalid_item) . " (" . displaySQLtime($page, $revalidPIC_item) . " PIC)";
+	$body .= " with " . ($revalid_item->sLD + $revalid_item->sLN) . " landings (" . ($revalidPIC_item->sLD + $revalidPIC_item->sLN) . " PIC)";
 	$body .= "</p>\n";
 	if($UserIsAdmin) {
 		$body .= "<div><b>Family's flight hours:</b>";
