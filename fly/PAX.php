@@ -8,7 +8,6 @@
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
-require("doodle.php");
 $page = new PhPage($rootPath);
 //$page->LogLevelUp(6);
 
@@ -39,14 +38,7 @@ $body .= "</div>\n";
 $page_title = "Welcome to XonqNopp Airlines!";
 
 if($page->CheckSessionLang($page->GetFrench())) {
-	//// french
-		//// some definitions
-		$sayyes = "oui";
-		$yes = "<img alt=\"$sayyes\" title=\"$sayyes\" src=\"../pictures/tick_pok.png\" />";
-		$ifneedbe = "<img alt=\"($sayyes)\" title=\"($sayyes)\" src=\"../pictures/tick_pi.png\" />";
-		$dy = "<span class=\"doodle yes\">$sayyes&nbsp;$yes</span>";
-		$di = "<span class=\"doodle ifneedbe\">($sayyes)&nbsp;$ifneedbe</span>";
-	//
+	// french
 		// infos
 		$contents .= "<h2>Informations</h2>\n";
 		$contents .= "<div>\n";
@@ -81,41 +73,12 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<p>Si tu as une id&eacute;e pr&eacute;cise du vol que tu veux faire, contacte-moi.\n";
 		$contents .= "On pourra alors discuter du temps n&eacute;cessaire et des dates de disponibilit&eacute;\n";
 		$contents .= "de l'avion et de moi-m&ecirc;me.\n";
-		$contents .= "Sinon tu peux m'appeler ou m'envoyer un SMS/whatsapp/mail ou t'inscrire directement sur le\n";
-		$contents .= RenderDoodle();
-		$contents .= ".</p>\n";
+		$contents .= "Sinon tu peux m'appeler ou m'envoyer un SMS/whatsapp/mail.</p>\n";
 
 		$contents .= "<p>Si tu le souhaites, je peux aussi te mettre dans ma liste whatsapp\n";
 		$contents .= "(pas un groupe o&ugrave; tout le monde voit les num&eacute;ros des autres)\n";
 		$contents .= "pour t'avertir quand j'ai des nouvelles dates et des places libres.\n";
 		$contents .= "</p>\n";
-
-		$contents .= "<h4>Doodle</h4>\n";
-		$contents .= "<p>Sur le " . RenderDoodle() . ", merci de faire une ligne par personne.\n";
-		$contents .= "Le nombre de places disponibles est indiqu&eacute; en haut de la colonne\n";
-		$contents .= "avec l'horaire et le lieu de d&eacute;part.\n";
-		$contents .= "Voici comment fonctionne le doodle:</p>\n";
-		$contents .= "<ul class=\"doodle\">\n";
-			$contents .= "<li>\n";
-			$contents .= "Tu peux t'inscrire pour un vol en cochant un $dy\n";
-			$contents .= "Comme il est possible que la m&eacute;t&eacute;o nous contraigne\n";
-			$contents .= "&agrave; annuler le vol, ce serait bien de cocher un $di\n";
-			$contents .= "pour avoir une date de r&eacute;serve.\n";
-			$contents .= "Si ton premier choix devait &ecirc;tre annul&eacute;, je transformerais\n";
-			$contents .= "alors ton $di en $dy\n";
-			$contents .= "</li>\n";
-		//
-			$contents .= "<li>\n";
-			$contents .= "Tu peux cocher un $dy sous des\n";
-			$contents .= "$di, mais ces derniers auraient la\n";
-			$contents .= "priorit&eacute; sur toi si leurs premi&egrave;res dates sont\n";
-			$contents .= "annul&eacute;es.\n";
-			$contents .= "</li>\n";
-		$contents .= "</ul>\n";
-		$contents .= "<p>Je te confirme de toute façon si c'est OK ou pas.</p>\n";
-		$contents .= "<p>Si aucune date n'est possible pour toi, contacte-moi pour fixer un autre jour.</p>\n";
-		$contents .= "<p>Si tu as des questions, n'h&eacute;site pas &agrave; me contacter ;-)</p>\n";
-		$contents .= "<p>" . RenderDoodle("Voici le doodle.") . "</p>\n";
 	//
 		// instructions
 		$contents .= "<h2 id=\"instructions\">Instructions pour le vol</h2>\n";
@@ -153,14 +116,7 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "</ul>\n";
 	//
 } else {
-	//// english
-		//// some definitions
-		$sayyes = "yes";
-		$yes = "<img alt=\"$sayyes\" title=\"$sayyes\" src=\"../pictures/tick_pok.png\" />";
-		$ifneedbe = "<img alt=\"($sayyes)\" title=\"($sayyes)\" src=\"../pictures/tick_pi.png\" />";
-		$dy = "<span class=\"doodle yes\">$sayyes&nbsp;$yes</span>";
-		$di = "<span class=\"doodle ifneedbe\">($sayyes)&nbsp;$ifneedbe</span>";
-	//
+	// english
 		// infos
 		$contents .= "<h2>Informations</h2>\n";
 		$contents .= "<div>\n";
@@ -196,38 +152,11 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<p>If you have a clear idea of what kind of flight you want to make, contact me.\n";
 		$contents .= "We can then discuss it and I can explain how much time we need and check the\n";
 		$contents .= "availability of the plane and of myself.\n";
-		$contents .= "Otherwise you can call me or send me an SMS/whatsapp/mail or subscribe directly to the\n";
-		$contents .= RenderDoodle();
-		$contents .= ".</p>\n";
+		$contents .= "Otherwise you can call me or send me an SMS/whatsapp/mail.</p>\n";
 
 		$contents .= "<p>If you want I can add you to my whatsapp list\n";
 		$contents .= "(not a group where everyone sees all the numbers of the others)\n";
 		$contents .= "to tell you when I have new dates and free places.</p>\n";
-
-		$contents .= "<h4>Doodle</h4>\n";
-
-		$contents .= "<p>On the " . RenderDoodle() . ", please make a line per person.\n";
-		$contents .= "The number of available seats is indicated at the top of each column together\n";
-		$contents .= "with the schedule and the place of departure.\n";
-		$contents .= "Here is how my doodle works:</p>\n";
-		$contents .= "<ul class=\"doodle\">\n";
-			$contents .= "<li>\n";
-			$contents .= "You can subscribe for a flight by ticking a $dy\n";
-			$contents .= "As the weather may make us cancel the flight, you should also tick a\n";
-			$contents .= "$di to have a reserve date.\n";
-			$contents .= "If your first choice becomes cancelled, I would then change your\n";
-			$contents .= "$di into a $dy\n";
-			$contents .= "</li>\n";
-		//
-			$contents .= "<li>\n";
-			$contents .= "You can tick a $dy under some $di,\n";
-			$contents .= "but the latter would have priority upon you would their first choices be cancelled.\n";
-			$contents .= "</li>\n";
-		$contents .= "</ul>\n";
-		$contents .= "<p>I will confirm you anyway if it is OK or not.</p>\n";
-		$contents .= "<p>If no proposed date suits you, please contact me to plan another day.</p>\n";
-		$contents .= "<p>If you have any question, do not hesitate to contact me ;-)</p>\n";
-		$contents .= "<p>" . RenderDoodle("Here is the doodle.") . "</p>\n";
 	//
 		// Instructions
 		$contents .= "<h2 id=\"instructions\">Instructions for the flight</h2>\n";

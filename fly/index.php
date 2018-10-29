@@ -8,7 +8,6 @@
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
-require("doodle.php");
 $page = new PhPage($rootPath);
 //$page->LogLevelUp(6);
 $page->initDB();
@@ -29,11 +28,8 @@ $page->HotBooty();
 
 	$body .= "<div class=\"wide left\">\n";
 		$body .= "<ul>\n";
-		$body .= "<li>\n";
 		// PAX
-		$body .= "<a href=\"PAX.php?language=francais\" title=\"Information for passengers\">Informations pour mes passagers</a>\n";
-		$body .= "&nbsp;(" . RenderDoodle() . ")\n";
-		$body .= "</li>\n";
+		$body .= "<li><a href=\"PAX.php?language=francais\" title=\"Information for passengers\">Informations pour mes passagers</a></li>\n";
 		// logbook
 		$body .= "<li><a href=\"logbook.php\">my flight logbook</a></li>\n";
 		// nav
