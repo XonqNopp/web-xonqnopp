@@ -56,7 +56,7 @@ aux Editions Solar.</p>
 </ol></div>
 <p>Le cerveau se sp&eacute;cialise par la fr&eacute;quence des exp&eacute;riences v&eacute;cues, pas par la
 qualit&eacute;.</p>
-<p>Un enfant <b>n'est pas</b> un petit adulte. ";
+<p>Un enfant <b>n'est pas</b> un petit adulte.
 Voici un tableau qui explique les capacit&eacute;s de l'enfant par rapport &agrave; son &acirc;ge (p.18-19):</p>
 
 <div class="tablebottom"><table>

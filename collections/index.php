@@ -18,7 +18,7 @@ $body = "";
 $args = new stdClass();
 $args->page = "..";
 $body .= $page->GoHome($args);
-$body .= "<h2>Collections</h2>\n";
+$body .= "<h1>Collections</h1>\n";
 $body .= "<div>\n";
 	$body .= "<ul>\n";
 	/* DISABLED
@@ -107,12 +107,7 @@ $body .= "<div>\n";
 			$body .= "&nbsp;<span class=\"leb\">($missing_count)</span>\n";
 		}
 		$body .= "</li>\n";
-	$body .= "</ul>\n";
-$body .= "</div>\n";
-
-$body .= "<h2>Miscellaneous</h2>\n";
-$body .= "<div>\n";
-	$body .= "<ul>\n";
+	//
 		// Quotations
 		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `quotations`");
 		$fetch_count = $getcount->fetch_object();

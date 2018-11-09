@@ -24,6 +24,7 @@ $HourlyRate = 150;
 $IBAN = "<tt>CH38&nbsp;0027&nbsp;2272&nbsp;3046&nbsp;8440&nbsp;R</tt>";
 $albumURL = "https://en.wikipedia.org/wiki/User:Xonqnopp/Photos/Flights";
 $xnGmail = "<tt>xonqnopp.airlines</tt>&nbsp;__A-t__&nbsp;<tt>gmail.com</tt>";
+$ig = "instagram <tt>@xonqnopp</tt>";
 
 $body = "";
 $contents = "";
@@ -43,7 +44,7 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<h2>Informations</h2>\n";
 		$contents .= "<div>\n";
 		$contents .= "<ul>\n";
-		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">Mes photos</a></li>\n";
+		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">Mes photos</a> et sur $ig</li>\n";
 		$contents .= "<li>Id&eacute;e cadeau ;-)</li>\n";
 		$contents .= "<li>Promenade habituelle 1h-1h30; possible atterrir ailleurs pour manger/boire un verre mais me contacter directement.</li>\n";
 		$contents .= "<li>Compter vol+1h pour pr&eacute;paration sans stress.</li>\n";
@@ -121,7 +122,7 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<h2>Informations</h2>\n";
 		$contents .= "<div>\n";
 		$contents .= "<ul>\n";
-		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">My pictures</a></li>\n";
+		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">My pictures</a> and on $ig</li>\n";
 		$contents .= "<li>Gift idea ;-)</li>\n";
 		$contents .= "<li>Usual tour 1h-1h30; possible to land somewhere else to eat/drink something but contact me.</li>\n";
 		$contents .= "<li>Plan flight+1h to be ready without time constraints.</li>\n";
