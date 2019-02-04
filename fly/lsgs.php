@@ -48,7 +48,11 @@ $body .= "<div class=\"wide links\">\n";
 		$body .= "131.475MHz<br />\n";
 		$body .= "<a href=\"tel:+41273290600\">+41&nbsp;27&nbsp;329&nbsp;06&nbsp;00</a></li>\n";
 
-		$body .= "<li><a target=\"_blank\" href=\"http://fgo.ch\">LSTA Raron</a></li>\n";
+		$body .= "<li>\n";
+		$body .= "<a target=\"_blank\" href=\"http://fgo.ch\">LSTA Raron</a>\n";
+		$body .= "&nbsp;\n";
+		$body .= "<a target=\"_blank\" href=\"https://fgo.ch/clubdesk/www?p=1000002\">PPR</a>\n";
+		$body .= "</li>\n";
 		$body .= "</ul>\n";
 		$body .= "</div>\n";
 	//
