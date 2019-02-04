@@ -132,7 +132,7 @@ if($check_fetch->howmany > 0) {
 					}
 					$body .= " href=\"../$dbtable/$ink.php?id=$GETid\"";
 					$body .= " title=\"$fulltitle\">";
-					$body .= "$title";
+					$body .= "$fulltitle";
 					$body .= " (" . $tables[$dbtable] . ")";
 					$body .= "</a>";
 					$body .= "\n";
