@@ -37,13 +37,16 @@ $page->HotBooty();
 		$body .= "<li><a href=\"NavList.php\">my navigations</a>&nbsp;($navcount)</li>\n";
 		// PDF
 		$body .= "<li><a href=\"pdf\">my PDF/checklists</a></li>\n";
+		$body .= "<li><a href=\"computer.php\">computer</a></li>\n";
 		$body .= "</ul>\n";
+	//
 		// Preparation
 		$body .= "Flight preparations:\n";
 		$body .= "<ul>\n";
 		$body .= "<li><a href=\"lsge.php\" title=\"LSGE\">LSGE</a></li>\n";
 		$body .= "<li><a href=\"lsgs.php\" title=\"LSGS\">LSGS</a></li>\n";
 		$body .= "</ul>\n";
+	//
 		// misc
 		$body .= "Misc:\n";
 		$body .= "<ul>\n";
