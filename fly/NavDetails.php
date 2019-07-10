@@ -907,6 +907,7 @@ $GI = $page->UserIsAdmin();
 		$body .= "<a href=\"NavNew.php?id=$navid\" title=\"edit $htmlName\">edit</a>\n";
 		$body .= "<br /><a href=\"NavNew.php\" title=\"new\">new</a>\n";
 		$body .= "<br /><a href=\"NavDetails.php?dup=$navid\" title=\"duplicate\">duplicate</a>\n";
+		$body .= "<br /><a href=\"NavDelete.php?id=$navid\" title=\"delete all WP\">delete all WP</a>\n";
 	}
 	$body .= "</div>\n";
 	$body .= "</div>\n";
