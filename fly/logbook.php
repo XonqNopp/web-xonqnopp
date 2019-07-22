@@ -100,7 +100,7 @@ $formsize = 3;
 $AD_list = array("LSGE", "LSGS", "note");
 $type_list = array();
 $ID_list = array();
-$PIC_list = array("Induni", "Berger", "Berchtold");
+$PIC_list = array($page->miscInit->lastName, "Berger", "Berchtold");
 $defaults = array();
 $defaults["type"] = "";
 $defaults["ID"] = "";
@@ -125,7 +125,7 @@ if($DueYear % 2 == 1) {
 	$SQL_SP_SEP = 0;
 	$SQL_SP_MEP = 0;
 	$SQL_MP = 0;
-	$FORM_PIC = "Induni";
+	$FORM_PIC = $page->miscInit->lastName;
 	$FORM_landings_day = 1;
 	$FORM_landings_night = 0;
 	$FORM_night_time = 0;
@@ -700,7 +700,7 @@ $queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP
 	$total_item = $total_db->fetch_object();
 	$total_db->close();
 
-	$pic_db = $page->DB_QueryManage("$queryTimeLandings WHERE `PIC` = 'Induni'");
+	$pic_db = $page->DB_QueryManage("$queryTimeLandings WHERE `PIC` = '" . $page->miscInit->lastName . "'");
 	$pic_item = $pic_db->fetch_object();
 	$pic_db->close();
 
@@ -724,7 +724,7 @@ $queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP
 	$revalid_item = $revalid_db->fetch_object();
 	$revalid_db->close();
 
-	$revalidPIC_db = $page->DB_QueryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay' AND `PIC` = 'Induni'");
+	$revalidPIC_db = $page->DB_QueryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay' AND `PIC` = '" . $page->miscInit->lastName . "'");
 	$revalidPIC_item = $revalidPIC_db->fetch_object();
 	$revalidPIC_db->close();
 //
