@@ -1,10 +1,10 @@
 <?php
-/*** Created: Thu 2014-05-08 10:26:07 CEST
+/* Created: Thu 2014-05-08 10:26:07 CEST
  * Previous major version in revision 416
- ***
- *** TODO:
- ***
- ***/
+ *
+ * TODO:
+ *
+ */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
@@ -14,6 +14,7 @@ $page->js_Form();
 //$page->initHTML();
 //$page->LogLevelUp(6);
 
+
 function displaySQLtime($page, $item) {
 	return $page->minutesDisplay(
 		$item->sSEP
@@ -21,6 +22,73 @@ function displaySQLtime($page, $item) {
 		+ $item->sMP
 		);
 }
+
+
+function familyTime($page, $who) {
+	/*
+	 * Get total flight time of a family member.
+	 *
+	 * Args:
+	 *     * *page*
+	 *     * *who* (str): matching hashtag in DB
+	 *
+	 * Returns:
+	 *     DB object
+	 */
+	$dbQuery = $page->DB_QueryManage("SELECT SUM(SP_SEP) AS `sSEP`,SUM(SP_MEP) AS `sMEP`,SUM(MP) AS `sMP`,`notes` FROM `PilotLogbook` WHERE `notes` LIKE '%#$who%'");
+	$dbObj = $dbQuery->fetch_object();
+	$dbQuery->close();
+
+	return $dbObj;
+}
+
+
+function familyVisited($page, $who) {
+	/*
+	 * Get visited airfield of family member.
+	 *
+	 * Args:
+	 *     * *page*
+	 *     * *who* (str): matching hashtag in DB
+	 *
+	 * Returns:
+	 *     array of visited fields
+	 */
+	$visited = array();
+
+	$dbQuery = $page->DB_QueryManage("SELECT DISTINCT `start_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `start_ad` <> 'note' and `notes` LIKE '%#$who%' UNION SELECT DISTINCT `stop_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' AND `notes` LIKE '%#$who%' ORDER BY `airfield`");
+
+	while($dbObj = $dbQuery->fetch_object()) {
+		$visited[] = $dbObj->airfield;
+	}
+
+	$dbQuery->close();
+
+	return $visited;
+}
+
+
+function familyVisitedSingle($airfield, $familyArray, $display) {
+	/*
+	 * Make text for visited table with family member.
+	 *
+	 * Args:
+	 *     * *airfield* (str)
+	 *     * *familyArray* (array)
+	 *     * *display* (str): the text to display
+	 *
+	 * Returns:
+	 *     string for single member
+	 */
+	$text = "";
+
+	if(in_array($airfield, $familyArray[$display])) {
+		$text .= " $display";
+	}
+
+	return $text;
+}
+
 
 $page->CSS_ppJump();
 
@@ -625,65 +693,101 @@ $body .= "<p class=\"pl\">Licence number CH.FCL.47359&nbsp;-&nbsp;Initially issu
 $body .= "<p class=\"pl\">Medical number CH-REF-17156</p>\n";
 $body .= "</div>\n";
 //
-$total_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook`");
-$pic_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `PIC` = 'Induni'");
+$queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(night_time) AS `sNight`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook`";
 
-$AL_db = $page->DB_QueryManage("SELECT SUM(SP_SEP) AS `sSEP`,SUM(SP_MEP) AS `sMEP`,SUM(MP) AS `sMP`,`notes` FROM `PilotLogbook` WHERE `notes` LIKE '%#AnneLaure%'");
-$Zoe_db = $page->DB_QueryManage("SELECT SUM(SP_SEP) AS `sSEP`,SUM(SP_MEP) AS `sMEP`,SUM(MP) AS `sMP`,`notes` FROM `PilotLogbook` WHERE `notes` LIKE '%#Zoe%'");
-$Ludo_db = $page->DB_QueryManage("SELECT SUM(SP_SEP) AS `sSEP`,SUM(SP_MEP) AS `sMEP`,SUM(MP) AS `sMP`,`notes` FROM `PilotLogbook` WHERE `notes` LIKE '%#Ludovic%'");
+	// Time (total, last year+month) and familiy time
+	$total_db = $page->DB_QueryManage($queryTimeLandings);
+	$total_item = $total_db->fetch_object();
+	$total_db->close();
 
-$year_db  = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE DATEDIFF(CURDATE(),date) <= 365");
-$three_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE DATEDIFF(CURDATE(),date) <= 90");
-$night_db = $page->DB_QueryManage("SELECT `date`, SUM(night_time) AS `sNight`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE DATEDIFF(CURDATE(),date) <= 90");
+	$pic_db = $page->DB_QueryManage("$queryTimeLandings WHERE `PIC` = 'Induni'");
+	$pic_item = $pic_db->fetch_object();
+	$pic_db->close();
 
-// revalidation
-$DueYearMinusOne = $DueYear - 1;
-$DueMonthMinusOne = sprintf("%02d", $DueMonth + 1);
-$DueMonth         = sprintf("%02d", $DueMonth);
-$DueDayMinusOne = "01";
-$revalid_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay'");
-$revalidPIC_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay' AND `PIC` = 'Induni'");
-$total_item = $total_db->fetch_object();
-$total_db->close();
-$pic_item = $pic_db->fetch_object();
-$pic_db->close();
-$AL_item = $AL_db->fetch_object();
-$AL_db->close();
-$Zoe_item = $Zoe_db->fetch_object();
-$Zoe_db->close();
-$Ludo_item = $Ludo_db->fetch_object();
-$Ludo_db->close();
-$year_item = $year_db->fetch_object();
-$year_db->close();
-$three_item = $three_db->fetch_object();
-$three_db->close();
-$night_item = $night_db->fetch_object();
-$night_db->close();
-$revalid_item = $revalid_db->fetch_object();
-$revalid_db->close();
-$revalidPIC_item = $revalidPIC_db->fetch_object();
-$revalidPIC_db->close();
-$sLN = $night_item->sLN + 0;
+	$year_db  = $page->DB_QueryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 365");
+	$year_item = $year_db->fetch_object();
+	$year_db->close();
+
+	$three_db = $page->DB_QueryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 90");
+	$three_item = $three_db->fetch_object();
+	$three_db->close();
+
+	$sLN = $three_item->sLN + 0;
+//
+	// revalidation
+	$DueYearMinusOne = $DueYear - 1;
+	$DueMonthMinusOne = sprintf("%02d", $DueMonth + 1);
+	$DueMonth         = sprintf("%02d", $DueMonth);
+	$DueDayMinusOne = "01";
+
+	$revalid_db = $page->DB_QueryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay'");
+	$revalid_item = $revalid_db->fetch_object();
+	$revalid_db->close();
+
+	$revalidPIC_db = $page->DB_QueryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay' AND `PIC` = 'Induni'");
+	$revalidPIC_item = $revalidPIC_db->fetch_object();
+	$revalidPIC_db->close();
+//
+	// Family
+	$AL_item = familyTime($page, "AnneLaure");
+	$Zoe_item = familyTime($page, "Zoe");
+	$Ludo_item = familyTime($page, "Ludovic");
+
 $today = $page->GetNow();
 $today = $today->date;
 //
-	//// Table summary for flight hours+landings
+	// Table summary of visited fields (displayed later)
+	$visited = "";
+		// DB
+		$visited_db = $page->DB_QueryManage("SELECT DISTINCT `start_ad` AS `airfield` FROM `PilotLogbook` WHERE `start_ad` <> 'note' UNION SELECT DISTINCT `stop_ad` AS `airfield` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' ORDER BY `airfield`");
+
+		$visitedFamily = array();
+		$visitedFamily["AL"] = familyVisited($page, "AnneLaure");
+		$visitedFamily["Z"] = familyVisited($page, "Zoe");
+		$visitedFamily["Lu"] = familyVisited($page, "Ludovic");
+	//
+		// table
+		$visited .= "<h3>Visited fields</h3>\n";
+		$visited .= "<div>\n";
+		$visited .= "<select>\n";
+
+		while($visited_obj = $visited_db->fetch_object()) {
+			$airfield = $visited_obj->airfield;
+
+			$visited .= "<option>$airfield";
+
+			if($UserIsAdmin) {
+				$visitedFamilySingle = "";
+				$visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "AL");
+				$visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "Z");
+				$visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "Lu");
+
+				if($visitedFamilySingle != "") {
+					$visited .= " -$visitedFamilySingle";
+				}
+
+			}
+
+			$visited .= "</option>\n";
+		}
+		$visited_db->close();
+
+		$visited .= "</select>\n";
+		$visited .= "</div>\n";
+//
+	// Table summary for flight hours+landings
 	$body .= "<h2>Summary of my flight hours as of today $today</h2>\n";
-	$body .= "<p><b>Total flight hours:</b> " . displaySQLtime($page, $total_item) . "</p>\n";
-	$body .= "<p><b>PIC flight hours:</b> " .   displaySQLtime($page, $pic_item) . "</p>\n";
+
+	$body .= "<p><b>Total flight hours:</b>";
+	$body .= displaySQLtime($page, $total_item);
+	$body .= " (" . displaySQLtime($page, $pic_item) . " PIC)";
+	$body .= "</p>\n";
+
 	$body .= "<p><b>12 months preceeding $DueYear-$DueMonth-$DueDay:</b> ";
 	$body .= displaySQLtime($page, $revalid_item) . " (" . displaySQLtime($page, $revalidPIC_item) . " PIC)";
 	$body .= " with " . ($revalid_item->sLD + $revalid_item->sLN) . " landings (" . ($revalidPIC_item->sLD + $revalidPIC_item->sLN) . " PIC)";
 	$body .= "</p>\n";
-	if($UserIsAdmin) {
-		$body .= "<div><b>Family's flight hours:</b>";
-		$body .= "<ul>\n";
-		$body .= "<li>Anne-Laure: " . displaySQLtime($page, $AL_item) . "</li>\n";
-		$body .= "<li>Zo&eacute;: " . displaySQLtime($page, $Zoe_item) . "</li>\n";
-		$body .= "<li>Ludovic: " . displaySQLtime($page, $Ludo_item) . "</li>\n";
-		$body .= "</ul>\n";
-		$body .= "</div>\n";
-	}
+	$body .= "<div>\n";
 	$body .= "<table>\n";
 		//// Head
 		$body .= "<tr>\n";
@@ -712,8 +816,8 @@ $today = $today->date;
 		$body .= "<td class=\"num\">" . $page->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP) . "</td>\n";
 		$body .= "<td class=\"num\">" . ($year_item->sLD + $year_item->sLN) . "</td>\n";
 		$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP) . "</td>\n";
-		$body .= "<td class=\"num\">" . ($three_item->sLD + $three_item->sLN) . "</td>\n";
-		$body .= "<td class=\"num\">" . $page->minutesDisplay($night_item->sNight) . "</td>\n";
+		$body .= "<td class=\"num\">" . ($three_item->sLD + $sLN) . "</td>\n";
+		$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sNight) . "</td>\n";
 		$body .= "<td class=\"num\">$sLN</td>\n";
 		$body .= "</tr>\n";
 	//
@@ -723,19 +827,16 @@ $today = $today->date;
 		$plane = $plane_item->aircraft;
 		if($plane != "none" && $plane != "") {
 			$onetwo++;
-			$total_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `aircraft` = '$plane'");
-			$year_db  = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 365");
-			$three_db = $page->DB_QueryManage("SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 90");
-			$night_db = $page->DB_QueryManage("SELECT `date`, SUM(night_time) AS `sNight`, SUM(landings_night) AS `sLN` FROM `PilotLogbook` WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 90");
+			$total_db = $page->DB_QueryManage("$queryTimeLandings WHERE `aircraft` = '$plane'");
+			$year_db  = $page->DB_QueryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 365");
+			$three_db = $page->DB_QueryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 90");
 			$total_item = $total_db->fetch_object();
 			$total_db->close();
 			$year_item = $year_db->fetch_object();
 			$year_db->close();
 			$three_item = $three_db->fetch_object();
 			$three_db->close();
-			$night_item = $night_db->fetch_object();
-			$night_db->close();
-			$sLN = $night_item->sLN + 0;
+			$sLN = $three_item->sLN + 0;
 			$body .= "<tr class=\"";
 			if($onetwo % 2) {
 				$body .= "odd";
@@ -749,14 +850,27 @@ $today = $today->date;
 			$body .= "<td class=\"num\">" . $page->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP) . "</td>\n";
 			$body .= "<td class=\"num\">" . ($year_item->sLD + $year_item->sLN) . "</td>\n";
 			$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP) . "</td>\n";
-			$body .= "<td class=\"num\">" . ($three_item->sLD + $three_item->sLN) . "</td>\n";
-			$body .= "<td class=\"num\">" . $page->minutesDisplay($night_item->sNight) . "</td>\n";
+			$body .= "<td class=\"num\">" . ($three_item->sLD + $sLN) . "</td>\n";
+			$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sNight) . "</td>\n";
 			$body .= "<td class=\"num\">$sLN</td>\n";
 			$body .= "</tr>\n";
 		}
 	}
 	$airplanes_db->close();
 	$body .= "</table>\n";
+
+	if($UserIsAdmin) {
+		$body .= "<h3>Family's flight hours:</h3>";
+		$body .= "<div>\n";
+		$body .= "<ul>\n";
+		$body .= "<li>Anne-Laure: " . displaySQLtime($page, $AL_item) . "</li>\n";
+		$body .= "<li>Zo&eacute;: " . displaySQLtime($page, $Zoe_item) . "</li>\n";
+		$body .= "<li>Ludovic: " . displaySQLtime($page, $Ludo_item) . "</li>\n";
+		$body .= "</ul>\n";
+		$body .= $visited;
+		$body .= "</div>\n";
+	}
+
 	$body .= "</div>\n";
 //
 $body .= "</div>\n";
@@ -766,7 +880,7 @@ $body .= "<div class=\"table\">\n";
 $body .= "<h2>Logbook</h2>\n";
 $body .= "<p>Sorted in antechronological order: most recent comes first.</p>\n";
 if($UserIsAdmin) {
-	$body .= "<p style=\"font-size: 0.7em;\">To insert a note, just give start and stop airfield the string 'note'.</p>\n";
+	$body .= "<p style=\"font-size: 0.7em;\">To insert a note, just give start and stop airfield the string 'note'. WARNING: start and stop time must be the same, landings must be zero.</p>\n";
 }
 $body .= "<table>\n";
 $body .= $tab;
