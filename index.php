@@ -31,7 +31,7 @@ $page->initDB();
 				/*** update lastwarning ***/
 				$newwarning = $page->DB_QueryManage("UPDATE `" . $page->ddb->DBname . "`.`testament` SET `lastwarning` = CURDATE() WHERE `testament`.`id` = 1 LIMIT 1;");
 				/*** send mail to warn ***/
-				$to = "gael.induni@gmail.com";
+				$to = $page->miscInit->myEmail;
 				$subject = "[xonqnopp] warning";
 				$message = "testament reset: $diffdue";
 				$headers = "From: XonqNopp <info@xonqnopp.chxn>\n";
