@@ -47,12 +47,13 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">Mes photos</a> et sur $ig</li>\n";
 		$contents .= "<li>Id&eacute;e cadeau ;-)</li>\n";
 		$contents .= "<li>Promenade habituelle 1h-1h30; possible atterrir ailleurs pour manger/boire un verre mais me contacter directement.</li>\n";
+		$contents .= "<li>Enfants de moins de 12 ans comptent comme un demi passager si on peut en attacher 2 ensembles sur le m&ecirc;me si&egrave;ge.</li>\n";
 		$contents .= "<li>Compter vol+1h pour pr&eacute;paration sans stress.</li>\n";
 		$contents .= "<li>D&eacute;part:\n";
 		$contents .= "<a target=\"_blank\" href=\"$gmaps\" title=\"Ecuvillens\">Ecuvillens</a> (PAS Gruy&egrave;re/Epagny!)\n";
 		$contents .= "ou Sion.\n";
 		$contents .= "<li>M&eacute;t&eacute;o est d&eacute;t&eacute;rminante donc d&eacute;cision de partir le jour m&ecirc;me.</li>\n";
-		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h par personne:</li>\n";
+		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h par personne (&agrave; r&eacute;gler apr&egrave;s le vol):</li>\n";
 		$contents .= "<ul>\n";
 		$contents .= "<li>Twint</li>\n";
 		$contents .= "<li>IBAN $IBAN</li>\n";
@@ -60,14 +61,15 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "</ul>\n";
 		$contents .= "<li>Contact: $xnGmail</li>\n";
 		$contents .= "</ul>\n";
-		$contents .= "<h4>A propos de la m&eacute;t&eacute;o</h4>\n";
-		$contents .= "<p>C'est la m&eacute;t&eacute;o qui d&eacute;cidera si on peut partir ou pas.\n";
-		$contents .= "Je te conseille donc de t'inscrire &agrave; 2 dates pour avoir une de r&eacute;serve.\n";
-		$contents .= "La d&eacute;cision de partir ou pas ne peut &ecirc;tre s&ucirc;re qu'au dernier moment.\n";
-		$contents .= "Je te tiendrai au courant dans les jours avant sur la tendance.\n";
-		$contents .= "Il est possible qu'en vol on remarque que ce qu'on voulait faire n'est pas\n";
-		$contents .= "possible et qu'on aille ailleurs ou qu'on rentre apr&egrave;s 10 minutes.</p>\n";
 		$contents .= "</div>\n";
+
+			$contents .= "<h4>A propos de la m&eacute;t&eacute;o</h4>\n";
+			$contents .= "<div><p>C'est la m&eacute;t&eacute;o qui d&eacute;cidera si on peut partir ou pas.\n";
+			$contents .= "Je te conseille donc de t'inscrire &agrave; 2 dates pour avoir une de r&eacute;serve.\n";
+			$contents .= "La d&eacute;cision de partir ou pas ne peut &ecirc;tre s&ucirc;re qu'au dernier moment.\n";
+			$contents .= "Je te tiendrai au courant dans les jours avant sur la tendance.\n";
+			$contents .= "Il est possible qu'en vol on remarque que ce qu'on voulait faire n'est pas\n";
+			$contents .= "possible et qu'on aille ailleurs ou qu'on rentre apr&egrave;s 10 minutes.</p></div>\n";
 	//
 		// inscription
 		$contents .= "<h2>Inscription</h2>\n";
@@ -125,12 +127,13 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">My pictures</a> and on $ig</li>\n";
 		$contents .= "<li>Gift idea ;-)</li>\n";
 		$contents .= "<li>Usual tour 1h-1h30; possible to land somewhere else to eat/drink something but contact me.</li>\n";
+		$contents .= "<li>Children below 12 years old account as a half passenger if we can use the same seat belt for both.</li>\n";
 		$contents .= "<li>Plan flight+1h to be ready without time constraints.</li>\n";
 		$contents .= "<li>Departure:\n";
 		$contents .= "<a target=\"_blank\" href=\"$gmaps\" title=\"Ecuvillens\">Ecuvillens</a> (NOT Gruy&egrave;re/Epagny!)\n";
 		$contents .= "or Sion.\n";
 		$contents .= "<li>Weather is most important decision factor thus decision is taken only at the departure time.</li>\n";
-		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h per person</li>\n";
+		$contents .= "<li>CHF&nbsp;$HourlyRate.-/h per person (please pay after the flight)</li>\n";
 		$contents .= "<ul>\n";
 		$contents .= "<li>Twint</li>\n";
 		$contents .= "<li>IBAN $IBAN</li>\n";
@@ -138,15 +141,15 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "</ul>\n";
 		$contents .= "<li>Contact: $xnGmail</li>\n";
 		$contents .= "</ul>\n";
-		// FIXME I WAS HERE
-		$contents .= "<h4>About the weather</h4>\n";
-		$contents .= "<p>The weather is the most important decision factor for our flight.\n";
-		$contents .= "I advise you to subscribe to 2 dates to have a backup in case we need to cancel the first one.\n";
-		$contents .= "I can tell you GO or NO GO for sure only at the moment to start our flight.\n";
-		$contents .= "I'll tell you in the days before how is the trend.\n";
-		$contents .= "It is possible that in flight we notice we won't be able to go where we planned\n";
-		$contents .= "and we go somewhere else or even we must get back after 10 minutes.</p>\n";
 		$contents .= "</div>\n";
+
+			$contents .= "<h4>About the weather</h4>\n";
+			$contents .= "<div><p>The weather is the most important decision factor for our flight.\n";
+			$contents .= "I advise you to subscribe to 2 dates to have a backup in case we need to cancel the first one.\n";
+			$contents .= "I can tell you GO or NO GO for sure only at the moment to start our flight.\n";
+			$contents .= "I'll tell you in the days before how is the trend.\n";
+			$contents .= "It is possible that in flight we notice we won't be able to go where we planned\n";
+			$contents .= "and we go somewhere else or even we must get back after 10 minutes.</p></div>\n";
 	//
 		// Subscription
 		$contents .= "<h2>Subscription</h2>\n";
