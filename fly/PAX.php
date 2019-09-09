@@ -24,7 +24,7 @@ $HourlyRate = 150;
 $IBAN = "<tt>CH38&nbsp;0027&nbsp;2272&nbsp;3046&nbsp;8440&nbsp;R</tt>";
 $albumURL = "https://en.wikipedia.org/wiki/User:Xonqnopp/Photos/Flights";
 $xnGmail = "<tt>xonqnopp.airlines</tt>&nbsp;__A-t__&nbsp;<tt>gmail.com</tt>";
-$ig = "instagram <tt>@xonqnopp</tt>";
+$ig = "instagram <a href=\"https://www.instagram.com/xonqnopp/\"><tt>@xonqnopp</tt></a>";
 
 $body = "";
 $contents = "";
