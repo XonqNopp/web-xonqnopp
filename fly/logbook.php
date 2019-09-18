@@ -109,9 +109,6 @@ $defaults["AD"] = "";
 $DueDay = "30";
 $DueMonth = 9;
 $DueYear = $page->GetNow()->year;
-if($DueYear % 2 == 1) {
-	$DueYear += 1;
-}
 
 	// setting default values
 	$FORM_date = "";
@@ -778,12 +775,22 @@ $today = $today->date;
 	// Table summary for flight hours+landings
 	$body .= "<h2>Summary of my flight hours as of today $today</h2>\n";
 
-	$body .= "<p><b>Total flight hours:</b>";
+	$body .= "<p><b>Total flight hours:</b> ";
 	$body .= displaySQLtime($page, $total_item);
 	$body .= " (" . displaySQLtime($page, $pic_item) . " PIC)";
 	$body .= "</p>\n";
 
-	$body .= "<p><b>12 months preceeding $DueYear-$DueMonth-$DueDay:</b> ";
+	$body .= "<p>";
+	if($DueYear % 2 == 0) {
+		// MUST revalidate every even year
+		$body .= "<b>";
+	}
+	$body .= "12 months preceeding $DueYear-$DueMonth-$DueDay:";
+	if($DueYear % 2 == 0) {
+		// MUST revalidate every even year
+		$body .= "</b>";
+	}
+	$body .= " ";
 	$body .= displaySQLtime($page, $revalid_item) . " (" . displaySQLtime($page, $revalidPIC_item) . " PIC)";
 	$body .= " with " . ($revalid_item->sLD + $revalid_item->sLN) . " landings (" . ($revalidPIC_item->sLD + $revalidPIC_item->sLN) . " PIC)";
 	$body .= "</p>\n";
