@@ -48,9 +48,13 @@ $body .= "<div class=\"wide links\">\n";
 		$body .= "131.475MHz<br />\n";
 		$body .= "<a href=\"tel:+41273290600\">+41&nbsp;27&nbsp;329&nbsp;06&nbsp;00</a></li>\n";
 
+		$body .= "<li>Sion ATIS:<br />\n";
+		$body .= "130.630MHz<br />\n";
+		$body .= "<a href=\"tel:+41224174080\">+41&nbsp;22&nbsp;417&nbsp;40&nbsp;80</a></li>\n";
+
 		$body .= "<li>\n";
 		$body .= "<a target=\"_blank\" href=\"http://fgo.ch\">LSTA Raron</a>\n";
-		$body .= "&nbsp;\n";
+		$body .= "&nbsp;-&nbsp;\n";
 		$body .= "<a target=\"_blank\" href=\"https://fgo.ch/clubdesk/www?p=1000002\">PPR</a>\n";
 		$body .= "</li>\n";
 		$body .= "</ul>\n";
