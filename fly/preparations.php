@@ -4,8 +4,7 @@ function commonPreparations($userIsAdmin, $miscInit, $skybriefingLogin="") {
 	$dabs = "<li><a target=\"_blank\" href=\"https://www.skybriefing.com/portal/dabs\">DABS</a></li>\n";
 	$homebriefing = "";
 	$skybriefing = "";
-	$aipCH = "<li><a target=\"_blank\" href=\"http://www.delta-fox-fox.ch/vfr/\">AIP CH</a></li>\n";
-	$vfrGuide = "<li><a target=\"_blank\" href=\"https://www.skybriefing.com/portal/fr/vfr-guide\">VFR Guide CH</a></li>\n";
+	$eVfrManual = "<li><a target=\"_blank\" href=\"https://www.skybriefing.com/portal/fr/evfr-manual-gen\">eVFR manual</a></li>\n";
 	$aipF = "<li><a target=\"_blank\" href=\"https://www.sia.aviation-civile.gouv.fr/html/frameset_aip_fr.htm\">AIP France</a></li>\n";
 	$aipOe = "<li><a target=\"_blank\" href=\"http://eaip.austrocontrol.at/lo/141114/ad_2.htm\">&Ouml;sterreich AIP</a></li>\n";
 	$aipEU = "<li><a target=\"_blank\" href=\"https://www.eurocontrol.int/articles/ais-online\" title=\"&euro; AIP\">&euro; AIP</a></li>\n";
@@ -23,6 +22,7 @@ function commonPreparations($userIsAdmin, $miscInit, $skybriefingLogin="") {
 	$skybriefing .= "</li>\n";
 
 	$skyvector = "<li><a target=\"_blank\" href=\"http://skyvector.com/\">SkyVector planning</a></li>\n";
+	$navplan = "<li><a target=\"_blank\" href=\"http://navplan.ch\">navplan.ch</a></li>\n";
 	$ourAirports = "<li><a target=\"_blank\" href=\"http://ourairports.com/\">OurAirports</a></li>\n";
 	$noaa = "<li><a target=\"_blank\" href=\"http://weather.noaa.gov/pub/fax/PGDE14.PNG\">NOAA.gov</a></li>\n";
 	$wetterklima = "<li><a target=\"_blank\" href=\"http://www.wetterklima.de/flug/swc.htm\">more weather links</a></li>\n";
@@ -54,17 +54,17 @@ function commonPreparations($userIsAdmin, $miscInit, $skybriefingLogin="") {
 	$column  = "<ul>\n";
 	$column .= $metar;
 	$column .= $dabs;
-	$column .= $homebriefing;
-	$column .= $skybriefing;
 	$column .= $mapCH;
-	$column .= $aipCH;
-	$column .= $vfrGuide;
+	$column .= $skybriefing;
+	$column .= $homebriefing;
+	$column .= $eVfrManual;
+	$column .= $navplan;
+	$column .= $skyvector;
 	$column .= $aipF;
 	$column .= $aipOe;
 	$column .= $aipEU;
 	$column .= $chartsEU;
 	$column .= $ourAirports;
-	$column .= $skyvector;
 	$column .= $noaa;
 	$column .= $wetterklima;
 	$column .= "</ul>\n";
