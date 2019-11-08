@@ -5,7 +5,7 @@
 require("functions/classPage.php");
 $page = new PhPage();
 //$page->check_www();
-$page->LogLevelUp(6);
+//$page->LogLevelUp(6);
 $args = new stdClass();
 $args->redirect = "";
 $page->LoginCookie($args);
