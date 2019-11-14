@@ -32,15 +32,27 @@ $body .= "<div class=\"wide links\">\n";
 		// Infos
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
+
 		$body .= "<li><a target=\"_blank\" href=\"http://www.resnet.ch/LSGE/index.asp\">LSGE resair</a></li>\n";
+
+		$body .= "<li><a target=\"_blank\" href=\"http://lsge-flights.azurewebsites.net/LSGE_Login.aspx\">LSGE avis</a>";
+		if($page->UserIsAdmin()) {
+			$body .= ": Guest - " . $page->miscIni->lsgeAvis;
+		}
+		$body .= "</li>\n";
+
 		$body .= "<li><a target=\"_blank\" href=\"http://gvme.ch/\">GVME</a></li>\n";
+
 		if($page->UserIsAdmin()) {
 			$body .= "<li>Code cl&eacute;: " . $page->miscInit->lsgeKey . "</li>\n";
 		}
+
 		$body .= "<li>Bern ATIS:<br />\n";
 		$body .= "125.130MHz<br />\n";
 		$body .= "<a href=\"tel:+41224174076\">+41&nbsp;22&nbsp;417&nbsp;40&nbsp;76</a></li>\n";
+
 		$body .= "<li><a target=\"_blank\" href=\"http://www.fribourg-voltige.ch/Activlites.htm\">Fribourg voltige</a></li>\n";
+
 		$body .= "</ul>\n";
 		$body .= "</div>\n";
 	//
