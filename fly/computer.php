@@ -24,6 +24,33 @@ $body .= $page->SetTitle("Flight computer");// before HotBooty
 $page->HotBooty();
 
 
+function pressureAltitude($altitude, $qnh) {
+	if($altitude === NULL) {
+		return "";
+	}
+
+	$qne = 1013;  // [hPa]
+	$factor = 28;  // [ft/hPa]
+
+	return ceil($altitude + ($qne - $qnh) * $factor);
+}
+
+
+function densityAltitude($pressureAltitude, $oat) {
+	if($oat === NULL) {
+		return "";
+	}
+
+	$referenceT = 15;  // sea level
+	$gradient = -2;  // [K/1000ft]
+	$factor = 120;  // [ft/K]
+
+	$Tisa = $referenceT + $gradient * ($pressureAltitude / 1000.0);
+	$delta = $oat - $Tisa;
+	return ceil($pressureAltitude + $factor * $delta);
+}
+
+
 function altimeterISA($altitude, $temperature) {
 	if($altitude == NULL || $temperature == NULL) {
 		return NULL;
@@ -76,12 +103,22 @@ function windInfluence($heading, $speed, $windHeading, $windSpeed) {
 }
 
 
+$alt = NULL;
+$qnh = NULL;
+$oat = NULL;
+
 $MC = NULL;
 $speed = NULL;
 $altitude = NULL;
 $temperature = NULL;
 $windHeading = NULL;
 $windSpeed = NULL;
+
+if(isset($_POST["alt"])) {
+	$alt = $_POST["alt"];
+	$qnh = $_POST["qnh"];
+	$oat = $_POST["oat"];
+}
 
 if(isset($_POST["MC"])) {
 	$MC = $_POST["MC"][0];
@@ -97,6 +134,73 @@ $table = "";
 $body .= "<div style=\"text-align: center; margin: 1em;\">\n";
 $body .= $page->FormTag();
 
+	// Density altitude
+	$body .= "<div>\n";
+		// altitude
+		$args = new stdClass();
+		$args->type = "number";
+		$args->title = "Altitude";
+		$args->name = "alt";
+		$args->value = $alt;
+		$args->min = -2000;
+		$args->max = 60000;
+		$args->posttitle = "ft&nbsp;";
+		//$args->div = false;
+		$args->size = 2;
+		$args->autofocus = true;
+		$body .= $page->FormField($args);
+	//
+		// qnh
+		$args = new stdClass();
+		$args->type = "number";
+		$args->title = "QNH";
+		$args->name = "qnh";
+		$args->value = $qnh;
+		$args->min = 900;
+		$args->max = 1100;
+		$args->posttitle = "hPa&nbsp;";
+		//$args->div = false;
+		$body .= $page->FormField($args);
+	//
+		// -> pressure altitude
+		$pa = pressureAltitude($alt, $qnh);
+		$args = new stdClass();
+		$args->type = "text";
+		$args->title = "Pressure altitude";
+		$args->name = "pa";
+		$args->value = $pa;
+		$args->posttitle = "ft&nbsp;";
+		//$args->div = false;
+		$args->readonly = true;
+		$body .= $page->FormField($args);
+	//
+		// oat
+		$args = new stdClass();
+		$args->type = "number";
+		$args->title = "Temperature";
+		$args->name = "oat";
+		$args->value = $oat;
+		$args->min = -50;
+		$args->max = 100;
+		$args->posttitle = "degC&nbsp;";
+		//$args->div = false;
+		$body .= $page->FormField($args);
+	//
+		// -> density altitude
+		$args = new stdClass();
+		$args->type = "text";
+		$args->title = "Density altitude";
+		$args->name = "DA";
+		$args->value = densityAltitude($pa, $oat);
+		$args->posttitle = "ft&nbsp;";
+		//$args->div = false;
+		$args->readonly = true;
+		$body .= $page->FormField($args);
+
+	$body .= "</div>\n";
+
+$body .= "<div>&nbsp;</div>\n";
+
 	// MC
 	$args = new stdClass();
 	$args->type = "number";
@@ -106,7 +210,6 @@ $body .= $page->FormTag();
 	$args->min = 0;
 	$args->max = 359;
 	$args->posttitle = "deg";
-	$args->autofocus = true;
 	$body .= $page->FormField($args);
 //
 	// speed
