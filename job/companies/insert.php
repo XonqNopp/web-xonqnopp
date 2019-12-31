@@ -118,14 +118,18 @@ if(isset($_POST["erase"])) {
 	$page_title = "Edit $name";
 	$name = $page->SQL2field($name);
 	$location = $page->SQL2field($location);
+
 	if($car_time === NULL) {
 		$car_time = "";
 	}
+
 	if($train_time === NULL) {
 		$train_time = "";
 	}
-	$car_time += 0;
-	$train_time += 0;
+
+	$car_time = (int)$car_time;
+	$train_time = (int)$train_time;
+
 	$fields = fields(explode(",", $fields));
 	$physicist = physicist(explode(",", $physicist));
 	$contact = $page->SQL2field($contact);

@@ -23,13 +23,17 @@ $query->store_result();
 if($query->num_rows == 0) {
 	$body .= "Sorry, no result...";
 	$page_title = "No result";
+
 } else {
 	$query->bind_result($id, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
 	$query->fetch();
+
 	$languages = explode(",", $languages);
 	$subtitles = explode(",", $subtitles);
-	$duration += 0;
-	$number += 0;
+
+	$duration = (int)$duration;
+	$number = (int)$number;
+
 	if($category == "tvserie") {
 		$args = new stdClass();
 		$args->page = "serie_display";

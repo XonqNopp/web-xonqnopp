@@ -132,8 +132,8 @@ if($chrono) {
 		$timestamp = $item->timestamp;
 		$year  = substr($timestamp, 0, 4);
 		$month = substr($timestamp, 5, 2);
-		$new = "$year$month";
-		$new += 0;
+		$new = (int)"$year$month";
+
 		if($new < $last) {
 			$last = $new;
 			$body .= "<div class=\"csstab64_row\">\n";
