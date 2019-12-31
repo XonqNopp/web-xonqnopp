@@ -183,16 +183,13 @@ if($UserIsAdmin) {
 			$page->FatalError("If this message is displayed, you are trying to introduce malicious content to this website");
 			break;
 		}
+
 		$FORM_PIC = $page->field2SQL($_POST["PIC"]);
-		$FORM_landings_day = $page->field2SQL($_POST["landings_day"]);
-		$FORM_landings_day += 0;
-		$FORM_landings_night = $page->field2SQL($_POST["landings_night"]);
-		$FORM_landings_night += 0;
-		$FORM_night_time = $page->field2SQL($_POST["night_time"]);
-		$FORM_night_time += 0;
-		$FORM_IFR_time = $page->field2SQL($_POST["IFR_time"]);
-		$FORM_IFR_time += 0;
-		if($FORM_night_time > $delta || $FORM_IRF_time > $delta) {
+		$FORM_landings_day = (int)$page->field2SQL($_POST["landings_day"]);
+		$FORM_landings_night = (int)$page->field2SQL($_POST["landings_night"]);
+		$FORM_night_time = (int)$page->field2SQL($_POST["night_time"]);
+		$FORM_IFR_time = (int)$page->field2SQL($_POST["IFR_time"]);
+		if($FORM_night_time > $delta || $FORM_IFR_time > $delta) {
 			$page->ln_3(3, "Night and IFR conditions cannot exceed global time, setting max");
 			if($FORM_night_time > $delta) {
 				$FORM_night_time = $delta;

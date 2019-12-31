@@ -33,10 +33,13 @@ function fetch_ISBN(PhPage $page, $type, $isbn) {
 		}
 		$infos->title = $title;
 		$infos->serie = $serie;
-		$tome += 0;
+
+		$tome = (int)$tome;
+
 		if($tome > 0) {
 			$infos->tome = $tome;
 		}
+
 		$infos->publisher = $data->publisher_name;
 	}
 	return $infos;
