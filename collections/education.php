@@ -42,7 +42,7 @@ $body .= "<!-- H3 Communication -->\n";
 $body .= "<h3>Communication</h3>\n";
 $body .= "<div><ol>\n";
     $body .= "<li>On communique <b>toujours</b>! 7% verbal, 38% para-verbal, 55% non-verbal.</li>\n";
-    $body .= "<li>Chaque personne a <b>sa propre</b> vision du monde.<br/>\n";
+    $body .= "<li>Chaque personne a <b>sa propre</b> vision du monde:<br/>\n";
     $body .= "soi - humeur - croyances - valeurs - &eacute;ducation - culture - ... - monde</li>\n";
     $body .= "<li>Chaque comportement a une intention positive</li>\n";
 $body .= "</ol></div>\n";
@@ -148,7 +148,7 @@ $body .= "<div class=\"tablebottom\"><table>\n";
 
     $body .= "<tr>\n";
         $body .= "<td>4 ans</td>\n";
-        $body .= "<td>il parle sans filtre: elle est grosse dame, le monsieur sent mauvais</td>\n";
+        $body .= "<td>il parle sans filtre: elle est grosse la dame, le monsieur sent mauvais</td>\n";
 	$body .= "<td>&agrave; cet &acirc;ge, les pens&eacute;es se font a haute voix, l'enfant ne peut pas encore penser en silence\n";
         $body .= "dans sa t&ecirc;te</td>\n";
 	$body .= "<td>l'adulte qui est souvent mal &agrave; l'aise gronde l'enfant. Il n'y a pas grand chose &agrave; faire cependant,\n";
@@ -202,7 +202,7 @@ $body .= "<div><ul>\n";
     $body .= "<li>&ecirc;tre  l'&eacute;coute des &eacute;motions (les siennes avant celles des autres), savoir les exprimer</li>\n";
 
     $body .= "<li>beaucoup d'amour:\n";
-    $body .= "\"c'est lorsqu'ils semblent le m&eacute;riter le moins que nos enfants ont le plus besoin d'amour et d'attention.\"\n";
+    $body .= "<i>c'est lorsqu'ils semblent le m&eacute;riter le moins que nos enfants ont le plus besoin d'amour et d'attention.</i>\n";
     $body .= "(Aletha Solter)\n";
     $body .= "<div class=\"framed\">\n";
         $body .= "C&acirc;lins, bisous etc. sont du carburant, pas une r&eacute;compense!</li>\n";
@@ -268,8 +268,10 @@ $body .= "<p>&Eacute;motions exprim&eacute;es, elles se d&eacute;gonflent, cela 
 $body .= "de pouvoir r&eacute;fl&eacute;chir et chercher des solutions.</p>\n";
 
 $body .= "<div class=\"framed\">\n";
+
 $body .= "<!-- H5 Astuce sophrologique -->\n";
 $body .= "<h5>Astuce sophrologie pour g&eacute;rer les &eacute;motions</h5>\n";
+
 $body .= "<p>Aider l'enfant &agrave; faire le lien entre sensations physiques et &eacute;motions.</p>\n";
 $body .= "<div><ul>\n";
     $body .= "<li>o&ugrave; ressens-tu [<i>&eacute;motion</i>] dans ton corps?</li>\n";
@@ -279,7 +281,7 @@ $body .= "</ul></div>\n";
 $body .= "<p>Quand &eacute;motion commence &agrave; se d&eacute;gonfler, aider l'enfant &agrave; chasser l'inconfort physique (pas\n";
 $body .= "l'&eacute;motion!)</p>\n";
 $body .= "<p>Exercice: sur une longue inspiration, observer les &eacute;motions et les tensions\n";
-$body .= "g&eacute;n&eacute;r&eacute;es&eacute;;\n";
+$body .= "g&eacute;n&eacute;r&eacute;es;\n";
 $body .= "sur une expiration tonique (souffler), lib&eacute;rer les tensions.</p>\n";
 $body .= "<p>Cela permet &agrave; l'enfant de prendre conscience de son &eacute;motion &agrave; la fois verbalement (elle a\n";
 $body .= "&eacute;t&eacute; nomm&eacute;e) et corporellement (il la situe dans son corps).</p>\n";
@@ -407,7 +409,7 @@ $body .= "<div><ul>\n";
         $body .= "(interdiction de mettre des personnes, plut&ocirc;t des attitudes, des ressentis...)</li>\n";
         $body .= "<li>sur une longue inspiration, on prend les valises, on l&egrave;ve les &eacute;paules</li>\n";
         $body .= "<li>on bloque la respiration, on baisse et rel&egrave;ve les &eacute;paules de 3 &agrave; 5 fois</li>\n";
-        $body .= "<li>sur une exppiration tonique par la bouche, on jette les valises par terre</li>\n";
+        $body .= "<li>sur une expiration tonique par la bouche, on jette les valises par terre</li>\n";
     $body .= "</ul>\n";
     $body .= "<li>respirations synchronis&eacute;es (sophrologie): on prend une grande inspiration,\n";
     $body .= "on bloque et on contracte le plus de muscles possibles (visage, &eacute;paules, dos, torse, bras, poings, bas du\n";
@@ -525,7 +527,7 @@ $body .= "<div><ul>\n";
     $body .= "l'&eacute;coute de ce qui se passe en lui.\n";
     $body .= "On peut l'aider en lui posant des questions:\n";
     $body .= "<ul>\n";
-        $body .= "<li>est-ce qu'il y a des endroits calmes/agit&eacute;s dans ton corps?</li>\n";
+        $body .= "<li>Est-ce qu'il y a des endroits calmes/agit&eacute;s dans ton corps?</li>\n";
         $body .= "<li>Quelles parties de ton corps bougent quand tu respires?</li>\n";
         $body .= "<li>Ressens-tu une &eacute;motion particuli&egrave;re?</li>\n";
     $body .= "</ul>\n";
@@ -554,12 +556,20 @@ $body .= "r&eacute;par&eacute;e/am&eacute;lior&eacute;e.</p>\n";
 
 $body .= "<p>Il faut prendre le temps d'apprendre. Lorsqu'on veut mettre en place quelque chose de nouveau, cela ne va pas venir\n";
 $body .= "instantan&eacute;ment.\n";
+
+$consciemment = "consciemment";
+$competent = "comp&eacute;tent";
+$in = "<b>in</b>";
+$pas = "<b>pas</b>";
+$que = "QUE";
+// pas+que = Paques
+
 $body .= "L'apprentissage se passe en 4 &eacute;tapes:</p>\n";
 $body .= "<div><ol>\n";
-    $body .= "<li><b>In</b>consciemment <b>in</b>comp&eacute;tent: je ne sais <b>pas</b> QUE je ne sais <b>pas</b></li>\n";
-    $body .= "<li>         Consciemment <b>in</b>comp&eacute;tent: je sais               QUE je ne sais <b>pas</b></li>\n";
-    $body .= "<li>         Consciemment          comp&eacute;tent: je sais               QUE je sais</li>\n";
-    $body .= "<li><b>In</b>consciemment          comp&eacute;tent: je ne sais <b>pas</b> QUE je sais</li>\n";
+    $body .= "<li>$in$consciemment $in$competent: je ne sais $pas $que je ne sais $pas</li>\n";
+    $body .= "<li>   $consciemment $in$competent: je sais         $que je ne sais $pas</li>\n";
+    $body .= "<li>   $consciemment    $competent: je sais         $que je sais</li>\n";
+    $body .= "<li>$in$consciemment    $competent: je ne sais $pas $que je sais</li>\n";
 $body .= "</ol></div>\n";
 
 $body .= "<p><i>Il n'y a pas de bonne fa&ccedil;on de faire quelque chose qui ne fonctionne pas</i> (Sandrine Donzel).\n";
@@ -684,7 +694,7 @@ $body .= "<p>L'adulte &eacute;vite les peurs et les col&egrave;res avec des r&eg
 $body .= "<p>C'est important de discuter en couple, voire en famille, pour exprimer ce qui est acceptable ou pas.\n";
 $body .= "On peut utiliser l'image du feu tricolore:</p>\n";
 $body .= "<div><ul>\n";
-    $body .= "<li><b>ROUGE:</b> inacceptable et non-n&eacute;gotiable.\n";
+    $body .= "<li><b>ROUGE:</b> inacceptable et non-n&eacute;gociable.\n";
     $body .= "Cela concerne g&eacute;n&eacute;ralement la s&eacute;curit&eacute;, le respect, l'hygi&egrave;ne,\n";
     $body .= "parfois aussi les valeurs et les conventions sociales.\n";
     $body .= "Ces r&egrave;gles sont ind&eacute;pendantes du contexte et de l'&eacute;tat &eacute;motionel du parent.\n";
@@ -696,12 +706,12 @@ $body .= "<div><ul>\n";
     $body .= "<b>C</b>ons&eacute;quences.\n";
     $body .= "</li>\n";
 
-    $body .= "<li><b>ORANGE:</b> exceptionnelement tol&eacute;r&eacute;s.\n";
+    $body .= "<li><b>ORANGE:</b> exceptionnelement tol&eacute;r&eacute;.\n";
     $body .= "Ces r&egrave;gles sont &agrave; clarifier ensemble.\n";
     $body .= "A chaque exception, il faut pr&eacute;ciser &agrave; l'enfant que la d&eacute;rogation est exceptionnelle.\n";
     $body .= "</li>\n";
 
-    $body .= "<li><b>VERT:</b> souhaitables et encourag&eacute;s.\n";
+    $body .= "<li><b>VERT:</b> souhaitable et encourag&eacute;.\n";
     $body .= "Les r&egrave;gles de vie des valeurs &agrave; transmettre, les comportements attendus\n";
     $body .= "(d&eacute;j&agrave; acquis ou pas encore).\n";
     $body .= "</li>\n";
@@ -722,7 +732,7 @@ $body .= "Elle a une vis&eacute;e r&eacute;paratrice sur la base d'une r&egrave;
 
 
 $body .= "<div class=\"framed\">\n";
-$body .= "<p>Les violences &eacute;ducatives ordinaires (VEO) sont dangereuses car elles transmettent les messages suivants\n";
+$body .= "<p>Les violences &eacute;ducatives ordinaires sont dangereuses car elles transmettent les messages suivants\n";
 $body .= "tr&egrave;s puissants:</p>\n";
 $body .= "<div><ul>\n";
     $body .= "<li>j'ai le droit d'utiliser la violence quand je ne suis pas satisfait</li>\n";
@@ -762,7 +772,7 @@ $body .= "<div><ol>\n";
     $body .= "<li>Je d&eacute;cris les cons&eacute;quences</li>\n";
 $body .= "</ol></div>\n";
 
-$body .= "<p>Il faut pr&eacute;venir pluto que rugir: l'enfant a une vision du monde diff&eacute;rente de l'adulte.\n";
+$body .= "<p>Il faut pr&eacute;venir plut&ocirc;t que rugir: l'enfant a une vision du monde diff&eacute;rente de l'adulte.\n";
 $body .= "Il ne se rend pas compte de ce qu'on attend de lui.\n";
 $body .= "Il faut lui exprimer clairement nos attentes, cela l'aidera &agrave; comprendre et &agrave; s'y conformer.\n";
 $body .= "Il faut donc d&eacute;crire la situation avant qu'elle ne devienne un probl&egrave;me pour moi.</p>\n";
@@ -782,8 +792,8 @@ $body .= "<div><ul>\n";
     $body .= "Pour cela, on peut utiliser le i-message en insistant sur les faits et sur mon ressenti.\n";
     $body .= "On peut aussi le complimenter efficacement, mais pour cela il faut veiller &agrave; rester descriptif sur ce que je\n";
     $body .= "souhaite valoriser dans le comportement.\n";
-    $body .= "Cela permet &agrave; l'enfant de rejouer l'&eacute;v&egrave;neent dans sa t&ecirc;te,\n";
-    $body .= "pour qu&agrave;il puisse comprendre et int&eacute;grer,\n";
+    $body .= "Cela permet &agrave; l'enfant de rejouer l'&eacute;v&egrave;nement dans sa t&ecirc;te,\n";
+    $body .= "pour qu'il puisse comprendre et int&eacute;grer,\n";
     $body .= "puis s'accorder &agrave; lui-m&ecirc;me le compliment.</li>\n";
 $body .= "</ul></div>\n";
 
