@@ -1,5 +1,5 @@
 <?php
-function commonPreparations($userIsAdmin, $miscInit, $skybriefingLogin="") {
+function commonPreparations($userIsAdmin, $miscInit) {
 	$metar = "<li><a target=\"_blank\" href=\"http://www.meteosuisse.admin.ch/home/service-et-publications/conseil-et-service/previsions-aeronautiques-meteorologie-aeronautique/metar-taf.html\" title=\"METAR CH\">METAR CH</a></li>\n";
 	$dabs = "<li><a target=\"_blank\" href=\"https://www.skybriefing.com/portal/dabs\">DABS</a></li>\n";
 	$homebriefing = "";
@@ -16,8 +16,8 @@ function commonPreparations($userIsAdmin, $miscInit, $skybriefingLogin="") {
 
 	$skybriefing = "<li>";
 	$skybriefing .= "<a target=\"_blank\" href=\"https://www.skybriefing.com/portal/\">SkyBriefing</a>";
-	if($userIsAdmin && $skybriefingLogin != "") {
-		$skybriefing .= "<br />$skybriefingLogin";
+	if($userIsAdmin) {
+		$skybriefing .= "<br /><tt>Pilotes@sion.ch</tt><br /><tt>1950Sion</tt>";
 	}
 	$skybriefing .= "</li>\n";
 

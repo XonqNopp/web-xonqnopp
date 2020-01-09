@@ -11,6 +11,7 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->LogLevelUp(6);
 $page->initDB();
+require("preparations.php");
 
 $args = new stdClass();
 $args->redirect = "";
@@ -26,7 +27,9 @@ $body .= $page->GoHome($args);
 $body .= $page->SetTitle("Fly!");
 $page->HotBooty();
 
-	$body .= "<div class=\"wide left\">\n";
+$body .= "<div class=\"csstab64_table left\">\n";
+$body .= "<div class=\"csstab64_row\">\n";
+	$body .= "<div class=\"csstab64_cell\">\n";
 		$body .= "<ul>\n";
 		// PAX
 		$body .= "<li><a href=\"PAX.php?language=francais\" title=\"Information for passengers\">Informations pour mes passagers</a></li>\n";
@@ -59,6 +62,13 @@ $page->HotBooty();
 	// Closing div
 	$body .= "</div>\n";
 //
+	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
+	$body .= "</div>\n";
+
+$body .= "</div>\n";
+$body .= "</div>\n";
+
 $page->show($body);
 unset($page);
 ?>

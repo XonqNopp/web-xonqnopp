@@ -15,8 +15,6 @@ $page->CSS_ppJump();
 $body = "";
 
 
-$skybriefingLogin = "<tt>Pilotes@sion.ch</tt><br /><tt>1950Sion</tt>";
-
 
 //// GoHome
 $gohome = new stdClass();
@@ -25,10 +23,11 @@ $body .= $page->GoHome($gohome);
 $body .= $page->SetTitle("LSGS: Sion");// before HotBooty
 $page->HotBooty();
 
-$body .= "<div class=\"wide links\">\n";
+$body .= "<div class=\"csstab64_table links\">\n";
+$body .= "<div class=\"csstab64_row\">\n";
 
 	// Infos & webcam
-	$body .= "<div class=\"column third\">\n";
+	$body .= "<div class=\"csstab64_cell\">\n";
 		// Infos
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
@@ -75,16 +74,17 @@ $body .= "<div class=\"wide links\">\n";
 	$body .= "</div>\n";
 //
 	// Weather station
-	$body .= "<div class=\"column third\">\n";
+	$body .= "<div class=\"csstab64_cell\">\n";
 		// weather station
 		$body .= "<div><img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=IVALAISS15&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" /></div>\n";
 	$body .= "</div>\n";
 //
 	// Common
-	$body .= "<div class=\"column third left\">\n";
-	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit, $skybriefingLogin);
+	$body .= "<div class=\"csstab64_cell left\">\n";
+	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
 	$body .= "</div>\n";
 
+$body .= "</div>\n";
 $body .= "</div>\n";
 
 	//// gibloux webcam
