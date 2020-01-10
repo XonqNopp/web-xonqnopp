@@ -11,6 +11,7 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->LogLevelUp(6);
 $page->initDB();
+require("preparations.php");
 
 $args = new stdClass();
 $args->redirect = "";
@@ -26,7 +27,9 @@ $body .= $page->GoHome($args);
 $body .= $page->SetTitle("Fly!");
 $page->HotBooty();
 
-	$body .= "<div class=\"wide left\">\n";
+$body .= "<div class=\"csstab64_table left\">\n";
+$body .= "<div class=\"csstab64_row\">\n";
+	$body .= "<div class=\"csstab64_cell\">\n";
 		$body .= "<ul>\n";
 		// PAX
 		$body .= "<li><a href=\"PAX.php?language=francais\" title=\"Information for passengers\">Informations pour mes passagers</a></li>\n";
@@ -50,8 +53,14 @@ $page->HotBooty();
 		// misc
 		$body .= "Misc:\n";
 		$body .= "<ul>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.sust.admin.ch/fr/index.html\">SESE&nbsp;-&nbsp;SUST&nbsp;-&nbsp;STSB</a></li>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.bazl.admin.ch/index.html?lang=fr\">OFAC&nbsp;-&nbsp;BAZL&nbsp;-&nbsp;FOCA</a></li>\n";
+		$body .= "<li><a target=\"_blank\" href=\"http://www.sust.admin.ch/fr/index.html\">SESE/SUST</a></li>\n";
+
+		$body .= "<li>\n";
+		$body .= "<a target=\"_blank\" href=\"http://www.bazl.admin.ch/index.html?lang=fr\">OFAC/BAZL</a>\n";
+		$body .= "&nbsp;-&nbsp;\n";
+		$body .= "<a target=\"_blank\" href=\"https://www.bazl.admin.ch/bazl/fr/home/experts/formation-et-licences/pilotes/formulaires.html\">Formulaires AESA, avions a moteur, 60.521 SEP TMG revalidation EASA</a>\n";
+		$body .= "</li>\n";
+
 		$body .= "<li><a target=\"_blank\" href=\"http://seaplanes.ch/\">seaplanes.ch</a></li>\n";
 		$body .= "<li><a target=\"_blank\" href=\"http://www.flightradar24.com/\">FlightRadar24</a></li>\n";
 		$body .= "<li><a target=\"_blank\" href=\"http://planefinder.net/\">PlaneFinder</a></li>\n";
@@ -59,6 +68,13 @@ $page->HotBooty();
 	// Closing div
 	$body .= "</div>\n";
 //
+	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
+	$body .= "</div>\n";
+
+$body .= "</div>\n";
+$body .= "</div>\n";
+
 $page->show($body);
 unset($page);
 ?>
