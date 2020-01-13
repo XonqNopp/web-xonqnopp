@@ -27,7 +27,7 @@ $body .= "<div class=\"csstab64_table links\">\n";
 $body .= "<div class=\"csstab64_row\">\n";
 
 	// Infos & webcam
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= "<div class=\"csstab64_cell third\">\n";
 		// Infos
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
@@ -74,13 +74,13 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "</div>\n";
 //
 	// Weather station
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= "<div class=\"csstab64_cell third\">\n";
 		// weather station
 		$body .= "<div><img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=IVALAISS15&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" /></div>\n";
 	$body .= "</div>\n";
 //
 	// Common
-	$body .= "<div class=\"csstab64_cell left\">\n";
+	$body .= "<div class=\"csstab64_cell third left\">\n";
 	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
 	$body .= "</div>\n";
 

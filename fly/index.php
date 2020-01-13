@@ -29,7 +29,7 @@ $page->HotBooty();
 
 $body .= "<div class=\"csstab64_table left\">\n";
 $body .= "<div class=\"csstab64_row\">\n";
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= "<div class=\"csstab64_cell half\">\n";
 		$body .= "<ul>\n";
 		// PAX
 		$body .= "<li><a href=\"PAX.php?language=francais\" title=\"Information for passengers\">Informations pour mes passagers</a></li>\n";
@@ -68,7 +68,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 	// Closing div
 	$body .= "</div>\n";
 //
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= "<div class=\"csstab64_cell half\">\n";
 	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
 	$body .= "</div>\n";
 

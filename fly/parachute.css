@@ -19,11 +19,7 @@ div.wide {
 	text-align: center;
 }
 
-div.column {
-	vertical-align: middle;
-}
-
-div.column img {
+div.csstab64_table img {
 	max-width: 100%;
 }
 
