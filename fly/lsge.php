@@ -38,7 +38,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 
 		$body .= "<li><a target=\"_blank\" href=\"http://lsge-flights.azurewebsites.net/LSGE_Login.aspx\">LSGE avis</a>";
 		if($page->UserIsAdmin()) {
-			$body .= ": Guest - " . $page->miscIni->lsgeAvis;
+			$body .= ": Guest - " . $page->miscInit->lsgeAvis;
 		}
 		$body .= "</li>\n";
 
