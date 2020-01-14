@@ -68,9 +68,11 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "</div>\n";
 //
 	// Weather station
+	$station = "IFREIBUR2";
 	$body .= "<div class=\"csstab64_cell third\">\n";
-		// LSGE weather station
-		$body .= "<div><img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=IFREIBUR2&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" /></div>\n";
+	$body .= "<a target=\"_blank\" href=\"https://www.wunderground.com/dashboard/pws/$station\">\n";
+	$body .= "<img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=$station&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" />\n";
+	$body .= "</a>\n";
 	$body .= "</div>\n";
 //
 	// Common
@@ -81,14 +83,14 @@ $body .= "<div class=\"csstab64_row\">\n";
 $body .= "</div>\n";
 $body .= "</div>\n";
 
-	// gibloux webcam
+	// webcam
 	$body .= "<div class=\"wide\">\n";
 
-	$body .= "<a target=\"_blank\" href=\"https://montgibloux.roundshot.com/\" title=\"WebCam Gibloux\">\n";
-	$body .= "WebCam Gibloux 4000ft<br />\n";
-	$body .= "La Berra 5600ft 6NM<br />\n";
-	$body .= "Bulle 3NM<br />\n";
-	$body .= "Mol&eacute;son 6600ft 8NM\n";
+	$body .= "<a target=\"_blank\" href=\"https://montgibloux.roundshot.com/\">\n";
+	$body .= "WebCam Gibloux 4000ft\n";
+	$body .= "- La Berra 5600ft 6NM\n";
+	$body .= "- Bulle 3NM\n";
+	$body .= "- Mol&eacute;son 6600ft 8NM\n";
 	$body .= "</a>\n";
 
 	$body .= "</div>\n";
