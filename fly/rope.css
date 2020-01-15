@@ -6,11 +6,6 @@ div.wide {
 	width: 97%;
 }
 
-div.column {
-	display: inline-block;
-	width: 24%;
-}
-
 div.quarter {
 	width: 29%;
 }
@@ -20,7 +15,7 @@ div.third {
 }
 
 img.width {
-	max-width: 250px;
+	max-width: 500px;
 }
 
 img.height {
