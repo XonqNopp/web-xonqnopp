@@ -72,4 +72,3 @@ function commonPreparations($userIsAdmin, $miscInit) {
 	return $column;
 }
 ?>
-
