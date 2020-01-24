@@ -27,14 +27,25 @@ $body .= $page->GoHome($args);
 $body .= $page->SetTitle("Fly!");
 $page->HotBooty();
 
+$body .= "<div class=\"csstab64_table left\" style=\"margin-bottom: 2em;\">\n";
+$body .= "<div class=\"csstab64_row\">\n";
+	// PAX
+	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
+	$body .= "<a href=\"PAX.php?language=francais\">Informations pour mes passagers</a>\n";
+	$body .= "</div>\n";
+
+	// logbook
+	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
+	$body .= "<a href=\"logbook.php\">My flight logbook</a>\n";
+	$body .= "</div>\n";
+$body .= "</div>\n";
+$body .= "</div>\n";
+
+
 $body .= "<div class=\"csstab64_table left\">\n";
 $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "<div class=\"csstab64_cell half\">\n";
 		$body .= "<ul>\n";
-		// PAX
-		$body .= "<li><a href=\"PAX.php?language=francais\" title=\"Information for passengers\">Informations pour mes passagers</a></li>\n";
-		// logbook
-		$body .= "<li><a href=\"logbook.php\">my flight logbook</a></li>\n";
 		// nav
 		$navcount = $page->DB_GetCount("NavList");
 		$body .= "<li><a href=\"NavList.php\">my navigations</a>&nbsp;($navcount)</li>\n";
