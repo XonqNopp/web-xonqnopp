@@ -27,7 +27,7 @@ $body .= $page->GoHome($args);
 $body .= $page->SetTitle("Fly!");
 $page->HotBooty();
 
-$body .= "<div class=\"csstab64_table\">\n";
+$body .= "<div class=\"csstab64_table\" style=\"margin-bottom: 2em;\">\n";
 $body .= "<div class=\"csstab64_row\">\n";
 	// PAX
 	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
