@@ -66,6 +66,7 @@ $page->initDB();
 		$mines = "Sites &eacute;crits";
 		$nopp = "Nidji souffle mandingue";
 		$randhead = "Une citation au hasard parmi les ";
+		$recettes = "Recettes";
 		$collections = "Mes collections";
 		$testament = "Mon testament...";
 	} else {
@@ -74,6 +75,7 @@ $page->initDB();
 		$mines = "Written websites";
 		$nopp = "Nidji souffle mandingue";
 		$randhead = "A random quotation among the ";
+		$recettes = "Recipes (french only)";
 		$collections = "My collections";
 		$testament = "My testament...";
 	}
@@ -138,6 +140,14 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "<a href=\"fly/index.php\" title=\"$fly\">\n";
 	$body .= "<img src=\"pictures/hornet.png\" alt=\"$fly\" title=\"$fly\" />\n";
 	$body .= "<br/>Fly\n";
+	$body .= "</a>\n";
+	$body .= "</div>\n";
+//
+	/*** Recettes ***/
+	$body .= "<div class=\"csstab64_cell coll\">\n";
+	$body .= "<a href=\"recettes/index.html\" title=\"$recettes\">\n";
+	$body .= "<img src=\"pictures/asterix.png\" alt=\"$recettes\" title=\"$recettes\" />\n";
+	$body .= "<br/>$recettes\n";
 	$body .= "</a>\n";
 	$body .= "</div>\n";
 //
