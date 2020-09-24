@@ -815,14 +815,14 @@ $today = $today->date;
 		//// All plane types
 		$body .= "<tr class=\"odd\">\n";
 		$body .= "<td><b>All types</b></td>\n";
-		$body .= "<td class=\"num\">" . $page->minutesDisplay($total_item->sSEP + $total_item->sMEP + $total_item->sMP) . "</td>\n";
-		$body .= "<td class=\"num\">" . ($total_item->sLD + $total_item->sLN) . "</td>\n";
-		$body .= "<td class=\"num\">" . $page->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP) . "</td>\n";
-		$body .= "<td class=\"num\">" . ($year_item->sLD + $year_item->sLN) . "</td>\n";
-		$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP) . "</td>\n";
-		$body .= "<td class=\"num\">" . ($three_item->sLD + $sLN) . "</td>\n";
-		$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sNight) . "</td>\n";
-		$body .= "<td class=\"num\">$sLN</td>\n";
+		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($total_item->sSEP + $total_item->sMEP + $total_item->sMP) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>" . ($total_item->sLD + $total_item->sLN) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>" . ($year_item->sLD + $year_item->sLN) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>" . ($three_item->sLD + $sLN) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($three_item->sNight) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>$sLN</b></td>\n";
 		$body .= "</tr>\n";
 	//
 	$airplanes_db = $page->DB_QueryManage("SELECT DISTINCT `aircraft` FROM `PilotLogbook` ORDER BY `aircraft` ASC");
