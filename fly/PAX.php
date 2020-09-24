@@ -45,9 +45,8 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<div>\n";
 		$contents .= "<ul>\n";
 		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">Mes photos</a> et sur $ig</li>\n";
-		$contents .= "<li>Id&eacute;e cadeau ;-)</li>\n";
-		$contents .= "<li>Promenade habituelle 1h-1h30; possible atterrir ailleurs pour manger/boire un verre mais me contacter directement.</li>\n";
-		$contents .= "<li>Enfants de moins de 12 ans comptent comme un demi passager si on peut en attacher 2 ensembles sur le m&ecirc;me si&egrave;ge.</li>\n";
+		$contents .= "<li>Promenade habituelle 1h-1h30; on peut atterrir ailleurs pour manger/boire un verre mais contacte-moi directement.</li>\n";
+		//$contents .= "<li>Enfants de moins de 12 ans comptent comme un demi passager si on peut en attacher 2 ensembles sur le m&ecirc;me si&egrave;ge.</li>\n";
 		$contents .= "<li>Compter vol+1h pour pr&eacute;paration sans stress.</li>\n";
 		$contents .= "<li>D&eacute;part:\n";
 		$contents .= "<a target=\"_blank\" href=\"$gmaps\" title=\"Ecuvillens\">Ecuvillens</a> (PAS Gruy&egrave;re/Epagny!)\n";
@@ -125,9 +124,8 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<div>\n";
 		$contents .= "<ul>\n";
 		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">My pictures</a> and on $ig</li>\n";
-		$contents .= "<li>Gift idea ;-)</li>\n";
 		$contents .= "<li>Usual tour 1h-1h30; possible to land somewhere else to eat/drink something but contact me.</li>\n";
-		$contents .= "<li>Children below 12 years old account as a half passenger if we can use the same seat belt for both.</li>\n";
+		//$contents .= "<li>Children below 12 years old account as a half passenger if we can use the same seat belt for both.</li>\n";
 		$contents .= "<li>Plan flight+1h to be ready without time constraints.</li>\n";
 		$contents .= "<li>Departure:\n";
 		$contents .= "<a target=\"_blank\" href=\"$gmaps\" title=\"Ecuvillens\">Ecuvillens</a> (NOT Gruy&egrave;re/Epagny!)\n";
