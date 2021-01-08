@@ -18,15 +18,13 @@ $body = "";
 $rf = "Registre Foncier";
 
 function getTitle($title, $level = 2) {
-	$ascii = str_replace("");
+	$ascii = $title;
 	$string = "";
 	$string .= "<!-- H$level $title -->\n";
-	$string .= "<a href=\"#$ascii\">";
 	$string .= "<h$level id=\"$ascii\">";
-	$string .= "$title";
-	$string .= "<span class=\"titleAnchor\">&nbsp;#</span>";
+	$string .= "$title&nbsp;";
+	$string .= "<a class=\"titleAnchor\" href=\"#$ascii\">#</a>";
 	$string .= "</h$level>";
-	$string .= "</a>";
 	$string .= "\n";
 	return $string;
 }
