@@ -21,6 +21,7 @@ $body = "";
 
 function getTitle($title, $level=2) {
 	$ascii = $title;
+	$ascii = str_replace(" ", "", $ascii);
 	$string = "";
 	$string .= "<!-- H$level $title -->\n";
 	$string .= "<h$level id=\"$ascii\">";

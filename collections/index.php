@@ -136,9 +136,17 @@ $body .= "<div>\n";
 		$body .= "</li>\n";
 	/DISABLED */
 	//
-		// MISC
-		$body .= "<li><a href=\"education.php\">positive education</a></li>\n";
-		$body .= "<li><a href=\"hypotheque.php\">calcul d'hypoth&egrave;que</a></li>\n";
+		$body .= "<li>R&eacute;sum&eacute; (french-only):\n";
+		$body .= "<ul>\n";
+			$body .= "<li><a href=\"education.php\">&eacute;ducation positive</a></li>\n";
+
+			$body .= "<li><a href=\"maison.php\">acheter une maison</a> avec mon <a href=\"hypotheque.php";
+			if($UserIsAdmin) {
+				$body .= "?revenu=75000&cash=95000&lpp=120000";  // 2020-11-01
+			}
+			$body .= "\">calculateur d'hypoth&egrave;que</a></li>\n";
+		$body .= "</ul>\n";
+		$body .= "</li>\n";
 	$body .= "</ul>\n";
 $body .= "</div>\n";
 
