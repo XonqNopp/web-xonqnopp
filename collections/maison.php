@@ -77,7 +77,7 @@ $body .= "</div>\n";
 
 	// Intro
 	$body .= getTitle("Introduction");
-	$body .= getTitle("TODO intro???");
+	$body .= "<p>(Rien de notable, mais gard&eacute;e seulement pour la coh&eacute;rence de la num&eacute;rotation des chapitres.)</p>\n";
 //
 	// Financement
 	$body .= getTitle("Financement");
