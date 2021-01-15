@@ -21,6 +21,7 @@ $body = "";
 	$entr = "entrepreneur";
 	$arcent = "$arch/$entr";
 	$pret = "pr&ecirc;t";
+	$credit = "cr&eacute;dit";
 	$hyp = "hypoth&egrave;que";
 	$hyps = "hypoth&egrave;ques";
 	$interets = "int&eacute;r&ecirc;ts";
@@ -32,6 +33,8 @@ $body = "";
 	$engeneral = "en g&eacute;n&eacute;ral";
 	$generalement = "g&eacute;n&eacute;ralement";
 	$meme = "m&ecirc;me";
+	$indemnites = "indemnit&eacute;s";
+	$marche = "march&eacute;";
 
 function getTitle($title, $level=2) {
 	$ascii = $title;
@@ -209,8 +212,8 @@ $body .= "</div>\n";
 
 		$body .= "<ul>\n";
 
-		$body .= "<li><b>Taux fixe:</b> s&eacute;curit&eacute; mais pas bon march&eacute;.\n";
-		$body .= "L'$hyp est bloqu&eacute;e $meme si les taux du march&eacute; varient: attention &agrave; anticiper le budget avec le nouveau taux pour le renouvellement.\n";
+		$body .= "<li><b>Taux fixe:</b> s&eacute;curit&eacute; mais pas bon $marche.\n";
+		$body .= "L'$hyp est bloqu&eacute;e $meme si les taux du $marche varient: attention &agrave; anticiper le budget avec le nouveau taux pour le renouvellement.\n";
 		$body .= "Si on veut changer l'$hyp avant son &eacute;ch&eacute;ance, de fortes p&eacute;nalit&eacute;s sont &agrave; payer.</li>\n";
 
 		$body .= "<li><b>Taux variable:</b>pas de dur&eacute;e, les 2 parties peuvent r&eacute;silier en tout temps avec 3-6 mois de pr&eacute;avis.\n";
@@ -220,7 +223,29 @@ $body .= "</div>\n";
 
 		$body .= "<li><b>Libor:</b>London InterBank Offered Rate.\n";
 		$body .= "Le taux est fix&eacute; chaque jour ouvrable &agrave; 11h (Londres).\n";
+		$body .= "Taux fixe 1-2 mois ($generalement 3 ou 6) TODO.\n";
+		$body .= "On peut faire un contrat de 2 &agrave; 5 ans.\n";
+		$body .= "Les banques ajoutent une marge de 0.65-1.30% selon le revenu et le $credit, marges figurant sur le contrat.\n";
+		$body .= "Si le Libor devient n&eacute;gatif, les banques ne descendent pas en-dessous de (0 + marges).\n";
+		$body .= "Cette formule s'adresse &agrave; un public averti qui suit l'&eacute;volution du $marche.\n";
+		$body .= "Les sp&eacute;cialistes conseillent de mettre 2/3 de l-$hyp en taux fixe et le solde en Libor.\n";
+		$body .= "Il est ensuite conseill&eacute; d'&eacute;pargner (5% - taux actuel) pour parer les effets d'une forte hausse.</li>\n";
+
+		$body .= lili("<b>Libor Cap/Strike:</b> avec plafond mais plus cher. Pas rentable pour moins de 5 ans.");
+
+		$body .= "<li><b>Variantes de Libor Cap:</b>\n";
+		$body .= "<ul>\n";
+		$body .= lili("BCV Benefit (6 mois)");
+		$body .= lili("UBS Libor Cap Warrants");
+		$body .= lili("Cr&eacute;dit Suisse Flex: max + min");
+		$body .= "</ul>\n";
 		$body .= "</li>\n";
+
+		$body .= "<li><b>Taux liss&eacute; (p.ex. UBS Portfolio):</b>\n";
+		$body .= "le $credit est divis&eacute; en plusieurs tranches, chaque tranche (p.ex. 3 mois) a son taux.\n";
+		$body .= "Quand une tranche est &eacute;chue, elle est automatiquement renouvel&eacute;e avec le taux courant.\n";
+		$body .= "L'$hyp est donc en d&eacute;calage avec le $marche.\n";
+		$body .= "Il faut souvent payer des $indemnites d'entr&eacute; et/ou de sortie.</li>\n";
 
 		$body .= "</ul>\n";
 
