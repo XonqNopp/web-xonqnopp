@@ -14,6 +14,10 @@ $page->CSS_ppJump();
 // init body
 $body = "";
 
+function todo() {
+	return "<p><b>TODO</b></p>\n";
+}
+
 	// Shortcuts
 	$rf = "Registre Foncier";
 	$proprio = "propri&eacute;taire";
@@ -228,7 +232,7 @@ $body .= "</div>\n";
 		$body .= "Les banques ajoutent une marge de 0.65-1.30% selon le revenu et le $credit, marges figurant sur le contrat.\n";
 		$body .= "Si le Libor devient n&eacute;gatif, les banques ne descendent pas en-dessous de (0 + marges).\n";
 		$body .= "Cette formule s'adresse &agrave; un public averti qui suit l'&eacute;volution du $marche.\n";
-		$body .= "Les sp&eacute;cialistes conseillent de mettre 2/3 de l-$hyp en taux fixe et le solde en Libor.\n";
+		$body .= "Les sp&eacute;cialistes conseillent de mettre 2/3 de l'$hyp en taux fixe et le solde en Libor.\n";
 		$body .= "Il est ensuite conseill&eacute; d'&eacute;pargner (5% - taux actuel) pour parer les effets d'une forte hausse.</li>\n";
 
 		$body .= lili("<b>Libor Cap/Strike:</b> avec plafond mais plus cher. Pas rentable pour moins de 5 ans.");
@@ -245,8 +249,41 @@ $body .= "</div>\n";
 		$body .= "le $credit est divis&eacute; en plusieurs tranches, chaque tranche (p.ex. 3 mois) a son taux.\n";
 		$body .= "Quand une tranche est &eacute;chue, elle est automatiquement renouvel&eacute;e avec le taux courant.\n";
 		$body .= "L'$hyp est donc en d&eacute;calage avec le $marche.\n";
+		$body .= todo();
 		$body .= "Il faut souvent payer des $indemnites d'entr&eacute; et/ou de sortie.</li>\n";
 
+		$body .= "<li>Rabais/bonus: plusieurs possibilit&eacute;s:\n";
+
+		$body .= "<ul>\n";
+		$body .= lili("start/USB FirstHome: rabais sur les taux pour une partie du cr&eacute;dit si c'est le premier logement.");
+		$body .= lili("Eco/Minergie");
+		$body .= lili("Famille");
+		$body .= "</ul>\n";
+
+		$body .= "</li>\n";
+
+		$body .= "<li><b>Assurances:</b> g&eacute;n&eacute;ralement apr&egrave;s 12 mois de ch&ocirc;mage ou incapacit&eacute; de travail\n";
+		$body .= todo();
+		$body .= "pour int&eacute;r&ecirc;ts mensuels, amortissement suspendu.\n";
+		$body .= "Pas d'examen de sant&eacute;, mais &ecirc;tre &acirc;g&eacute; au maximum de 54 ans.\n";
+		$body .= "Possible assurance d&eacute;c&egrave;s risque pur.\n</li>\n";
+		$body .= todo();
+
+		$body .= "<li><b>Forward:</b> si $hyp longue arrive &agrave; terme, possible 'r&eacute;server' les taux 3/6/12 mois avant.\n";
+		$body .= "Plus on fait avant, plus c'est cher.</li>\n";
+
+		$body .= "</ul>\n";
+
+		$body .= "</div>\n";
+
+	//
+		// Amortissement
+		$body .= getTitle("Amortissement", 3);
+		$body .= "<div>\n";
+		$body .= "<p>La dette doit &ecirc;tre au maximum au 2/3 de la valeur apr&egrave;s 15 ans.\n";
+		$body .= "On peut amortir de 2 fa&ccedil;ons:</p>\n";
+
+		$body .= "<ul>\n";
 		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
