@@ -284,6 +284,20 @@ $body .= "</div>\n";
 		$body .= "On peut amortir de 2 fa&ccedil;ons:</p>\n";
 
 		$body .= "<ul>\n";
+
+		$body .= "<li><b>Direct:</b> chaque payement diminue la dette (donc les charges).\n";
+		$body .= "Id&eacute;al quand on est proche de la retraite ou avec une $hyp &agrave; taux &eacute;lev&eacute;.\n";
+		$body .= "Mais les $interets diminuent, donc les $impots augmentent.</li>\n";
+
+		$body .= "<li><b>Indirect:</b> la dette est rembours&eacute;e en fin de contrat.\n";
+		$body .= "Les payements sont une forme de police d'amortissement (3a).\n";
+		$body .= "Cela a plusieurs avantages financiers:\n";
+
+		$body .= "<ul>\n";
+		$body .= "</ul>\n";
+
+		$body .= "</li>\n";
+
 		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
