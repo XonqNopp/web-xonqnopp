@@ -136,8 +136,9 @@ $body .= "<div>\n";
 		$body .= "</li>\n";
 	/DISABLED */
 	//
-		// education
+		// MISC
 		$body .= "<li><a href=\"education.php\">positive education</a></li>\n";
+		$body .= "<li><a href=\"hypotheque.php\">calcul d'hypoth&egrave;que</a></li>\n";
 	$body .= "</ul>\n";
 $body .= "</div>\n";
 
