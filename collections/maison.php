@@ -437,7 +437,19 @@ $body .= "</div>\n";
 		$body .= lili("chacun son espace/sa chambre?");
 		$body .= "</ul>\n";
 
+		$body .= "<p><b>Habitat:</b></p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("quelle forme? (voir suite)");
+		$body .= lili("jardin/terrasse, balcon?");
+		$body .= lili("moderne, ancien, rustique, design, ecolo?");
+		$body .= lili("pi&egrave;ces: spacieuses, faciles &agrave; transformer plus tard, plain-pied?");
+		$body .= lili("aussi pour la retraite (mobilit&eacute; r&eacute;duite)?");
+		$body .= "</ul>\n";
+
 		$body .= "</div>\n";
+	//
+		// Formes d'habitat
+		$body .= getTitle("Formes d'habitat");
 
 
 echo $body;
