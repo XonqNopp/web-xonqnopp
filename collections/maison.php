@@ -28,6 +28,7 @@ function todo() {
 	$credit = "cr&eacute;dit";
 	$hyp = "hypoth&egrave;que";
 	$hyps = "hypoth&egrave;ques";
+	$hypotecaire = "hypot&eacute;caire";
 	$interets = "int&eacute;r&ecirc;ts";
 	$impot = "imp&ocirc;t";
 	$impots = "imp&ocirc;ts";
@@ -39,8 +40,11 @@ function todo() {
 	$meme = "m&ecirc;me";
 	$indemnites = "indemnit&eacute;s";
 	$marche = "march&eacute;";
+	$deductions = "d&eacute;ductions";
+	$deductionsF = "$deductions fiscales";
+	$etre = "&ecirc;tre";  // TODO
 
-function getTitle($title, $level=2) {
+function getTitle($title, $level=3) {
 	$ascii = $title;
 	$string = "";
 	$string .= "<!-- H$level $title -->\n";
@@ -99,12 +103,12 @@ $body .= "</div>\n";
 
 
 	// Intro
-	$body .= getTitle("Introduction");
+	$body .= getTitle("Introduction", 2);
 
 	$body .= "<p>(Rien de notable, mais gard&eacute;e seulement pour la coh&eacute;rence de la num&eacute;rotation des chapitres.)</p>\n";
 //
 	// Financement
-	$body .= getTitle("Financement");
+	$body .= getTitle("Financement", 2);
 	$body .= "<div>\n";
 
 	$body .= "<p>Futur $proprio doit obtenir un $pret hypoth&eacute;caire en mettant sa maison en gage.\n";
@@ -152,10 +156,10 @@ $body .= "</div>\n";
 	$body .= "</div>\n";
 //
 	// Recherche du financement
-	$body .= getTitle("Recherche du financement");
+	$body .= getTitle("Recherche du financement", 2);
 
 		// 2e pilier
-		$body .= getTitle($p2, 3);
+		$body .= getTitle($p2);
 		$body .= "<div>\n";
 
 		$body .= "<ul>\n";
@@ -174,11 +178,11 @@ $body .= "</div>\n";
 		$body .= "</div>\n";
 	//
 		// 3e pilier
-		$body .= getTitle($p3, 3);
+		$body .= getTitle($p3);
 		$body .= "<p>&Agrave; peu pr&egrave;s idem. Nantiseement peut permettre d'augmenter l'$hyp au-del&agrave; des 80%.</p>\n";
 	//
 		// Emprunter
-		$body .= getTitle("Emprunter", 3);
+		$body .= getTitle("Emprunter");
 		$body .= "<div>\n";
 
 		$body .= "<ul>\n";
@@ -205,7 +209,7 @@ $body .= "</div>\n";
 		$body .= "</div>\n";
 	//
 		// Types d'hyp
-		$body .= getTitle("Types d'$hyp", 3);
+		$body .= getTitle("Types d'$hyp");
 		$body .= "<div>\n";
 
 		$body .= "<p>$generalement une $hyp se fait en 2 parties, appel&eacute;es rang.\n";
@@ -278,7 +282,7 @@ $body .= "</div>\n";
 
 	//
 		// Amortissement
-		$body .= getTitle("Amortissement", 3);
+		$body .= getTitle("Amortissement");
 		$body .= "<div>\n";
 		$body .= "<p>La dette doit &ecirc;tre au maximum au 2/3 de la valeur apr&egrave;s 15 ans.\n";
 		$body .= "On peut amortir de 2 fa&ccedil;ons:</p>\n";
@@ -294,17 +298,97 @@ $body .= "</div>\n";
 		$body .= "Cela a plusieurs avantages financiers:\n";
 
 		$body .= "<ul>\n";
+		$body .= lili("$deductionsF des $interets sur le revenu");
+		$body .= lili("$deductionsF de la dette sur la fortune");
+		$body .= lili("$deductionsF des primes d'amortissements sur le revenu");
+		$body .= lili("charges initiales plus basses");
+		$body .= lili("couvert en cas de d&eacute;c&egrave;s");
+		$body .= lili("exon&eacute;ration des primes en cas d'incapacit&eacute; de travail");
 		$body .= "</ul>\n";
 
+		$body .= "Un 3a bancaire est plus avantageux fiscalement, mais un 3a assurance vie est plus s&eacute;curitaire (surtout du point de vue de la banque).\n";
 		$body .= "</li>\n";
 
 		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
+	//
+		// Strategie hyp
+		$body .= getTitle("Strat&eacute;gie hypot&eacute;caire");
+		$body .= "<p>Il faut bien regarder les taux et les variantes, mais parfois les avantages fiscaux sont plus int&eacute;ressants que les taux.</p>\n";
+	//
+		// Negocier hyp
+		$body .= getTitle("N&eacute;gocier l'$hyp");
+
+			// Tour horizon
+			$body .= getTitle("Tour d'horizon", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Avant de commencer, il faut pr&eacute;parer un dossier complet et bien pr&eacute;sent&eacute;.\n";
+			$body .= "Id&eacute;alement un classeur avec des s&eacute;parations &eacute;tiquet&eacute;es.</p>\n";
+
+			$body .= todo();  // TODO p41 dossier complet  (VZ comparatif???)
+
+			$body .= "<p>Demander des offres (voir d'abord les sites web) &agrave;:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("une grande banque: UBS, Credit Suisse...");
+			$body .= lili("une banque de proximit&eacute;: Raiffeisen...");
+			$body .= lili("la banque cantonale du canton et d'un canton voisin");
+			$body .= lili("une compagnie d'assurance: Swisslife...");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Demander diff&eacute;rentes variantes, donner un d&eacute;lai pour la r&eacute;ception et indiquer contact tel+email.</p>\n";  // TODO delai reception???
+
+			$body .= "</div>\n";
+		//
+			// Concurrence
+			$body .= getTitle("Faire jouer la concurrence", 4);
+			$body .= "<p>Etablir une liste comparative d&eacute;taill&eacute;e (anonyme ou pas) de toutes les offres et l'envoyer &agrave; tous en demandant mieux.</p>\n";
+		//
+			// Entretien
+			$body .= getTitle("Entretien personnel", 4);
+			$body .= "<div>\n";
+			$body .= "<p>Avec les 2e offres, en choisir 3-5 et prendre RDV pour un entretien personnel.</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("Pr&eacute;parer une liste de questions");
+			$body .= lili("Mentionner la possibilit&eacute; de migrer les comptes courant, &eacute;pargnes, 3a");
+			$body .= lili("Demander une confirmation &eacute;crite de la derni&egrave;re proposition avec toutes les conditions");
+			$body .= "</ul>\n";
+			$body .= "</div>\n";
+		//
+			// Courtier
+			$body .= getTitle("Courtier en $hyp", 4);
+			$body .= "<p>Pour &eacute;viter ces &eacute;tapes, on peut faire appel &agrave; un courtier.\n";
+			$body .= "Il est familier des produits et du march&eacute; et va chercher les meilleures offres.\n";
+			$body .= "Il accompagne aussi &agrave; la banque pour les n&eacute;gociations finales (et obtient de meilleures conditions car aux yeux de la banque il repr&eacute;sente un certain volume d'affaires).\n";
+			$body .= "Il est normalament gratuit sauf en cas d'annulation, mais &agrave; v&eacute;rifier avant de s'engager.</p>\n";
+		//
+			// Vocabulaire
+			$body .= getTitle("Vocabulaire", 4);
+			$body .= "<p>Quand la banque accorde le $pret, le notaire cr&eacute;e une <b>c&eacute;dule $hypotecaire</b> exig&eacute;e comme garantie par la banque.\n";
+			$body .= "C'est le titre qui est &eacute;mis par le $RF et remis au notaire qui le transmet &agrave; la banque en &eacute;change du $pret.\n";
+			$body .= "Quand la c&eacute;dule est lib&eacute;r&eacute;e par la banque, elle peut $etre r&eacute;utilis&eacute;e (travaux, autre bien).</p>\n";
+	//
+		$body .= getTitle("Renouveler l'$hyp");
+		$body .= "<div>\n";
+		$body .= "<p>Quand arrive l'&eacute;ch&eacute;ance et qu'il faut renouveler l'$hyp, il s'agit de:</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("Etudier l'amortissement");
+		$body .= "<li>Demander une nouvelle estimation du bien: certains travaux donnent une plus-value qui permettrait d'obtenir de meilleurs taux.\n";
+		$body .= "Attention, selon l'&eacute;volution du march&eacute;, le bien peut aussi perdre de la valeur; ne pas informer la banque si l'estimation est d&eacute;favorable</li>";
+		$body .= lili("Faire jouer la concurrence: mentionner le meilleur taux du voisin pour essayer d'avoir un geste");
+		$body .= lili("Choisir un long taux fixe seulement si on est certain de ne pas d&eacute;m&eacute;nager ni amortir");
+		$body .= "<li>R&eacute;fl&eacute;chir au renouvellement assez t&ocirc;t.\n";
+		$body .= "Si la situation est diff&eacute;rente (par ex. baisse de revenu), le renouvellement peut &ecirc;tre refus&eacute;.\n";
+		$body .= "Selon la situation, il est pr&eacute;f&eacute;rable de demander conseil &agrave; un expert au pr&eacute;alable.</li>";
+		$body .= "</ul>\n";
+		$body .= "</div>\n";
+	//
+		// Credit construction
+		$body .= getTitle("Cr&eacute;dit de construction");
 
 
 echo $body;
-
-//// Finish
 unset($page);
 ?>
+
