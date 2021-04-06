@@ -19,30 +19,30 @@ function todo() {
 }
 
 	// Shortcuts
-	$rf = "Registre Foncier";
-	$proprio = "propri&eacute;taire";
-	$arch = "architecte";
-	$entr = "entrepreneur";
 	$arcent = "$arch/$entr";
-	$pret = "pr&ecirc;t";
+	$arch = "architecte";
 	$credit = "cr&eacute;dit";
+	$deductions = "d&eacute;ductions";
+	$deductionsF = "$deductions fiscales";
+	$engeneral = "en g&eacute;n&eacute;ral";
+	$entr = "entrepreneur";
+	$etre = "&ecirc;tre";  // TODO
+	$generalement = "g&eacute;n&eacute;ralement";
 	$hyp = "hypoth&egrave;que";
 	$hyps = "hypoth&egrave;ques";
 	$hypotecaire = "hypot&eacute;caire";
-	$interets = "int&eacute;r&ecirc;ts";
 	$impot = "imp&ocirc;t";
 	$impots = "imp&ocirc;ts";
+	$indemnites = "indemnit&eacute;s";
+	$interets = "int&eacute;r&ecirc;ts";
 	$kchf = "'000 CHF";
+	$marche = "march&eacute;";  // TODO
+	$meme = "m&ecirc;me";
 	$p2 = "2e pilier";
 	$p3 = "3e pilier";
-	$engeneral = "en g&eacute;n&eacute;ral";
-	$generalement = "g&eacute;n&eacute;ralement";
-	$meme = "m&ecirc;me";
-	$indemnites = "indemnit&eacute;s";
-	$marche = "march&eacute;";
-	$deductions = "d&eacute;ductions";
-	$deductionsF = "$deductions fiscales";
-	$etre = "&ecirc;tre";  // TODO
+	$pret = "pr&ecirc;t";
+	$proprio = "propri&eacute;taire";
+	$RF = "Registre Foncier";
 
 function getTitle($title, $level=3) {
 	$ascii = $title;
@@ -85,7 +85,7 @@ $body .= "aux Editions Tout compte fait (2015).</p>\n";
 if($page->UserIsAdmin()) {
 	// Personal stuff
 	$body .= "<div><ul>\n";
-	$body .= "<li>Localisation: pas VD ni NE; FR ou BE</li>\n";
+	$body .= "<li>Localisation: pas VD ni NE; FR ou BE</li>\n";  // TODO
 	$body .= "<li>Offres $hyp: SwissLife, Raiffeisen Belfaux+Fribourg, Credit Suisse Sonova, UBS, HypothekenZentrum VZ</li>\n";
 	$body .= "</ul></div>\n";
 }
@@ -97,6 +97,8 @@ $body .= lilink("http://fri.ch");
 $body .= lilink("http://vermoegenszentrum.ch");
 $body .= lilink("http://homegate.ch");
 $body .= lili(getLink("http://toutcomptefait.ch") . " -> calcul -> logement");
+$body .= lilink("http://hausinfo.ch");
+$body .= lilink("http://ubs.com");
 //$body .= lilink("http://");
 $body .= "</ul>\n";
 $body .= "</div>\n";
@@ -279,7 +281,6 @@ $body .= "</div>\n";
 		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
-
 	//
 		// Amortissement
 		$body .= getTitle("Amortissement");
@@ -369,6 +370,7 @@ $body .= "</div>\n";
 			$body .= "C'est le titre qui est &eacute;mis par le $RF et remis au notaire qui le transmet &agrave; la banque en &eacute;change du $pret.\n";
 			$body .= "Quand la c&eacute;dule est lib&eacute;r&eacute;e par la banque, elle peut $etre r&eacute;utilis&eacute;e (travaux, autre bien).</p>\n";
 	//
+		// Renouveler
 		$body .= getTitle("Renouveler l'$hyp");
 		$body .= "<div>\n";
 		$body .= "<p>Quand arrive l'&eacute;ch&eacute;ance et qu'il faut renouveler l'$hyp, il s'agit de:</p>\n";
@@ -386,6 +388,56 @@ $body .= "</div>\n";
 	//
 		// Credit construction
 		$body .= getTitle("Cr&eacute;dit de construction");
+
+		$body .= "<p>Un $credit de construction ne s'obtient qu'aupr&egrave;s d'une banque, les assurances et les caisses de pension ne l'accordent pas.\n";
+		$body .= "Il s'agit d'une sorte de compte courant.\n";
+		$body .= "On y verse les fonds propres et le compte peut aller en n&eacute;gatif jusqu'&agrave; la limite de l'$hyp.\n";
+		$body .= "Le taux est variable entre 0.50 et 2.75%.\n";
+		$body .= "Les $interets sont factur&eacute;s chaque 3 mois en fonction de l'&eacute;tat du compte, $generalement directement d&eacute;bit&eacute;s du $credit.\n";
+		$body .= "Une comission trimestrielle de 0.25% est pr&eacute;lev&eacute;e pour le paiement des facture (au taux moyen du trimestre, au taux max... Ca d&eacute;pend de la banque).</p>\n";
+
+		$body .= "<p>Quand la construction est finie, on transforme le $credit en $hyp: c'est la consolidation.\n";
+		$body .= "Il est possible de consolider dans une autre banque, mais cela demande beaucoup de temps et engendre beaucoup de frais.\n";
+		$body .= "De plus, une banque qui accorde un $credit de construction accepte l'$hyp qui suivra.\n";
+		$body .= "Il est conseill&eacute; de consolider au fur et &agrave; mesure (les taux peuvent augmenter pendant le chantier).\n";
+		$body .= "Si l'on rencontre des impr&eacute;vus pendant le chantier qui engendrent un d&eacute;passement du montant, contacter la banque avant de signer le contrat pour les travaux impr&eacute;vus!\n";
+		$body .= "Quand le compte du $credit est ouvert, attendre que le chantier commence avant de commencer &agrave; verser des fonds propres, les $interets sont r&eacute;mun&eacute;r&eacute;s au max 0.125%.</p>\n";
+//
+	// Acheter quoi?
+	$body .= getTitle("Acheter quoi?", 2);
+
+		// Logement ideal
+		$body .= getTitle("Logement id&eacute;al");
+		$body .= "<div>\n";
+
+		$body .= "<p>Commencer par &eacute;tablir une liste des besoins et des envies.\n";
+		$body .= "Noter ce que l'on aime et ce que l'on n'aime pas dans le logement actuel.\n";
+		$body .= "Etre attentif &agrave; la vie quotidienne: lever, coucher, repas, travail, loisir, soir, week-end...</p>\n";
+
+		$body .= "<p><b>Lieu:</b> choix influenc&eacute; par la valeur du terrain et par la vie quotidienne</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("ville, campagne, banlieue, montagne?");
+		$Body .= lili("voiture, transports publics?");
+		$body .= lili("temps de trajet maximum pour aller au travail?");
+		$body .= lili("infrastructures: cr&egrave;che, &eacute;cole, sport, culture, commerces, m&eacute;decin, poste, banque?");
+		$body .= lili("surface du terrain d&eacute;sir&eacute;e: jardin, jeux, garage?");
+		$body .= lili("voisinage: &acirc;ge, niveau social, avec/sans enfants?");
+		$body .= lili("environnement: Soleil, climat, nature, routes, agricole, r&eacute;sidentiel?");
+		$body .= lili("pollution sonore");
+		$body .= lili($impots);
+		$body .= "</ul>\n";
+
+		$body .= "<p><b>Espace:</b> (voir aussi " . getLink("http://hausinfo.ch") . " et " . getLink("http://ubs.com") . "</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("combien d'habitants &agrave; court et long terme? Des animaux?");
+		$body .= lili("travail &agrave; domicile dans une pi&egrave;ce s&eacute;par&eacute;e (th&eacute;rapeute)?");
+		$body .= lili("hobby n&eacute;cessitant un espace sp&eacute;cial int-/ext&eacute;rieur (bricolage, musique...)?");
+		$body .= lili("divorc&eacute; accueillant p&eacute;riodiquement des enfants?");
+		$body .= lili("chambre d'amis?");
+		$body .= lili("chacun son espace/sa chambre?");
+		$body .= "</ul>\n";
+
+		$body .= "</div>\n";
 
 
 echo $body;
