@@ -585,42 +585,58 @@ $body .= "</div>\n";
 	//
 		// Neuf/occasion
 		$body .= getTitle("Neuf ou occasion");
-		$body .= "<div>\n";
-		$body .= "<p>On peut acheter un bien existant, mais suivant l'ann&eacute;e de construction il faut se m&eacute;fier de certains mat&eacute;riaux de construction:</p>\n";
-		$body .= "<ul>\n";
 
-		$body .= "<li><b>Amiante:</b> interdite depuis 1994, les b&acirc;timents plus vieux en contiennent certainement\n";
-		$body .= "<ul>\n";
-		$body .= lili("<b>faiblement agglom&eacute;r&eacute;:</b> risque permanent (choc, vibrations)");
-		$body .= lili("<b>fortement agglom&eacute;r&eacute;:</b> risque si travaux (cass&eacute;, perc&eacute;...)");
-		$body .= "</ul>\n";
+			// Occasion
+			$body .= getTitle("Occasion", 4);
 
-		$body .= "Un assainissement co&ucirc;te environ 250/m2 " . getLink("http://amiante-info.ch");
-		$body .= "</li>\n";
+			$body .= "<div>\n";
+			$body .= "<p>On peut acheter un bien existant, mais suivant l'ann&eacute;e de construction il faut se m&eacute;fier de certains mat&eacute;riaux de construction:</p>\n";
+			$body .= "<ul>\n";
 
-		$body .= "<lili><b>PolyChloroBiph&eacute;nyles (PCB):</b> dans les mastics de joints de dilatation, le rev&ecirc;tement des sols.\n";
-		$body .= "Pose probl&egrave;me seulement en cas de travaux, n&eacute;cessite un assainissement pr&eacute;alable (cf. OFSP)</li>\n";
+			$body .= "<li><b>Amiante:</b> interdite depuis 1994, les b&acirc;timents plus vieux en contiennent certainement\n";
+			$body .= "<ul>\n";
+			$body .= lili("<b>faiblement agglom&eacute;r&eacute;:</b> risque permanent (choc, vibrations)");
+			$body .= lili("<b>fortement agglom&eacute;r&eacute;:</b> risque si travaux (cass&eacute;, perc&eacute;...)");
+			$body .= "</ul>\n";
 
-		$body .= lili("peintures au plomb");
-		$body .= lili("radon " . getLink("http://ch-radon.ch"));
+			$body .= "Un assainissement co&ucirc;te environ 250/m2 " . getLink("http://amiante-info.ch");
+			$body .= "</li>\n";
 
-		$body .= "</ul>\n";
+			$body .= "<lili><b>PolyChloroBiph&eacute;nyles (PCB):</b> dans les mastics de joints de dilatation, le rev&ecirc;tement des sols.\n";
+			$body .= "Pose probl&egrave;me seulement en cas de travaux, n&eacute;cessite un assainissement pr&eacute;alable (cf. OFSP)</li>\n";
 
-		$body .= "<p>Avantages et inconv&eacute;nients d'acheter d'occasion:</p>\n";
-		$body .= "<ul>\n";
+			$body .= lili("peintures au plomb");
+			$body .= lili("radon " . getLink("http://ch-radon.ch"));
 
-		$body .= liliPlus("on peut visiter (&eacute;tat, &eacute;quipements, dimensions, situations, voisinage...)");
-		$body .= liliPlus("il est disponible rapidement");
+			$body .= "</ul>\n";
 
-		$body .= liliMinus("pas toujours possible de faire les transformations pour la maison de ses r&ecirc;ves (et c'est cher!)");
-		$body .= liliMinus("&eacute;quipements (&eacute;lectricit&eacute;, sanitaire, chauffage, isolation) souvent anciens voire obsol&egrave;tes, entra&icirc;nant des charges &eacute;lev&eacute;es et des travaux &agrave; court terme");
-		$body .= liliMinus("constructions anciennes ne sont pas top pour isolation thermique et phonique");
-		$body .= liliMinus("si des r&eacute;novations sont indispensables, cela peut engendrer des mauvaises surprises au moment des travaux (&eacute;lectricit&eacute;, charpente, fen&ecirc;tres, canalisations) et entra&icirc;ner des co&ucirc;ts &eacute;lev&eacute;s");
-		$body .= liliMinus("il est possible de d&eacute;couvrir que le terrain ait subi une pollution ou renferme des d&eacute;ch&ecirc;ts anciens");
+			$body .= "<p>Avantages et inconv&eacute;nients d'acheter d'occasion:</p>\n";
+			$body .= "<ul>\n";
 
-		$body .= "</ul>\n";
+			$body .= liliPlus("on peut visiter (&eacute;tat, &eacute;quipements, dimensions, situations, voisinage...)");
+			$body .= liliPlus("il est disponible rapidement");
 
-		$body .= "</div>\n";
+			$body .= liliMinus("pas toujours possible de faire les transformations pour la maison de ses r&ecirc;ves (et c'est cher!)");
+			$body .= liliMinus("&eacute;quipements (&eacute;lectricit&eacute;, sanitaire, chauffage, isolation) souvent anciens voire obsol&egrave;tes, entra&icirc;nant des charges &eacute;lev&eacute;es et des travaux &agrave; court terme");
+			$body .= liliMinus("constructions anciennes ne sont pas top pour isolation thermique et phonique");
+			$body .= liliMinus("si des r&eacute;novations sont indispensables, cela peut engendrer des mauvaises surprises au moment des travaux (&eacute;lectricit&eacute;, charpente, fen&ecirc;tres, canalisations) et entra&icirc;ner des co&ucirc;ts &eacute;lev&eacute;s");
+			$body .= liliMinus("il est possible de d&eacute;couvrir que le terrain ait subi une pollution ou renferme des d&eacute;ch&ecirc;ts anciens");
+
+			$body .= "</ul>\n";
+
+			$body .= "<p>Pour un bien de plus de 10 ans, il est recommand&eacute; de faire une expertise.\n";
+			$body .= "Si le contrat stipule \"en l'&eacute;tat\", il n'est pas possible de r&eacute;clamer pour des d&eacute;fauts cach&eacute;s apr&egrave;s l'achat.\n";
+			$body .= "Une expertise co&ucirc;te environ 2000.- et comprend l'&eacute;tat des murs, la statique du b&acirc;timent, le toit, les charpentes, les fa&ccedil;ades,\n";
+			$body .= "l'isolation, le chauffage, l'&eacute;lectricit&eacute;, les sanitaires, les conduites, les canalisations, l'amiante etc.</p>\n";
+
+			$body .= "<p>Des transformations importantes n&eacute;cessitent un permis de construire, y compris changement d'affectation de pi&egrave;ce, abattage de mur, ajout de fen&ecirc;tre...\n";
+			$body .= "Il faut contacter le service des constructions communal (et parfois aussi le cantonal).\n";
+			$body .= "Cela implique des taxes, des plans &agrave; faire par un professionel et de l'attente (mise &agrave; l'enqu&ecirc;te).\n";
+			$body .= "Si des travaux sont faits sans permis, le $proprio risque une amende et de devoir tout remettre en &eacute;tat.\n";
+			$body .= "Si on ach&egrave;te un bien avec des transformations sans permis, le nouveau $proprio encourt les m&ecirc;mes sanctions.\n";
+			$body .= "Avant d'acheter, il faut donc bien demander les plans et les permis des travaux effectu&eacute;s.</p>\n";
+
+			$body .= "</div>\n";
 
 
 echo $body;
