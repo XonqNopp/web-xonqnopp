@@ -59,13 +59,13 @@ a.titleAnchor:hover {
 	visibility: visible;
 }
 
-li.plus:before {
+li.plus::marker {
 	content: "+";
-	font-weight: 700;
+	font-weight: 900;
 }
 
-li.minus:before {
+li.minus::marker {
 	content: "-";
-	font-weight: 700;
+	font-weight: 900;
 }
 

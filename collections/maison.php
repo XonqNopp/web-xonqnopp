@@ -35,6 +35,7 @@ function todo() {
 	$echeance = "&eacute;ch&eacute;ance";
 	$electricite = "&eacute;lectricit&eacute;";
 	$eleve = "&eacute;lev&eacute;";
+	$energie = "&eacute;nergie";
 	$engeneral = "en g&eacute;n&eacute;ral";
 	$entr = "entrepreneur";
 	$equipements = "&eacute;quipements";
@@ -45,11 +46,13 @@ function todo() {
 	$generalement = "g&eacute;n&eacute;ralement";
 	$hyp = "hypoth&egrave;que";
 	$hypotecaire = "hypot&eacute;caire";
+	$ideal = "id&eacute;al";
 	$impot = "imp&ocirc;t";
 	$indemnites = "indemnit&eacute;s";
 	$interets = "int&eacute;r&ecirc;ts";
 	$kchf = "'000 CHF";
-	$marche = "march&eacute;";  // TODO
+	$marche = "march&eacute;";
+	$materiau = "mat&eacute;riau";
 	$meme = "m&ecirc;me";
 	$mobiliteReduite = "mobilit&eacute; r&eacute;duite";
 	$negocier = "n&eacute;gocier";
@@ -65,7 +68,8 @@ function todo() {
 
 function getTitle($title, $level=3) {
 	$ascii = $title;
-	$ascii = str_replace(" ", "", $ascii);
+	$ascii = preg_replace('/ &;:\'?!()\//', '', $title);
+
 	$string = "";
 	$string .= "<!-- H$level $title -->\n";
 	$string .= "<h$level id=\"$ascii\">";
@@ -129,6 +133,15 @@ $body .= lilink("http://hausinfo.ch");
 $body .= lilink("http://ubs.com");
 $body .= lilink("http://amiante-info.ch");
 $body .= lilink("http://ch-radon.ch");
+$body .= lilink("http://focore.ch");
+$body .= lilink("http://pac.ch");
+$body .= lilink("http://baubio.ch");
+$body .= lilink("http://eco-energie.ch");
+$body .= lilink("http://gaz-naturel.ch");
+$body .= lilink("http://cecb.ch");
+$body .= lilink("http://swissolar.ch");
+$body .= lilink("http://minergie.ch");
+$body .= lilink("http://leprogrammebatiments.ch");
 //$body .= lilink("http://");
 $body .= "</ul>\n";
 $body .= "</div>\n";
@@ -437,7 +450,7 @@ $body .= "</div>\n";
 	$body .= getTitle("Acheter quoi?", 2);
 
 		// Logement ideal
-		$body .= getTitle("Logement id&eacute;al");
+		$body .= getTitle("Logement $ideal");
 		$body .= "<div>\n";
 
 		$body .= "<p>Commencer par &eacute;tablir une liste des besoins et des envies.\n";
@@ -513,7 +526,7 @@ $body .= "</div>\n";
 			$body .= "</div>\n";
 		//
 			// Bungalow
-			$body .= getTitle("Bungalow (maison sur 1 $etage", 4);
+			$body .= getTitle("Bungalow (maison sur 1 $etage)", 4);
 			$body .= "<p>Comme pour une maison individuelle mais avec plus de terrain et plus cher.</p>\n";
 		//
 			// Individuelle en lotissement
@@ -609,7 +622,7 @@ $body .= "</div>\n";
 			$body .= getTitle("Occasion", 4);
 
 			$body .= "<div>\n";
-			$body .= "<p>On peut acheter un bien existant, mais suivant l'ann&eacute;e de construction il faut se m&eacute;fier de certains mat&eacute;riaux de construction:</p>\n";
+			$body .= "<p>On peut acheter un bien existant, mais suivant l'ann&eacute;e de construction il faut se m&eacute;fier de certains {$materiau}x de construction:</p>\n";
 			$body .= "<ul>\n";
 
 			$body .= "<li><b>Amiante:</b> interdite depuis 1994, les b&acirc;timents plus vieux en contiennent certainement\n";
@@ -674,6 +687,102 @@ $body .= "</div>\n";
 		//
 			// Neuf
 			$body .= getTitle("Neuf", 4);
+			$body .= "<div>\n";
+			$body .= "<p>Avantages et inconv&eacute;nients d'acheter \"sur plans\":</p>\n";
+			$body .= "<ul>\n";
+
+			$body .= liliPlus("on peut choisir beaucoup de choses");
+			$body .= liliPlus("le prix est fixe et juste (&eacute;tudi&eacute; par la banque pour la construction)");
+
+			$body .= liliMinus("on ne peut pas visiter");
+			$body .= liliMinus("on doit verser un accompte et signer le contrat. Si l'entreprise fait faillite, l'accompte est perdu, $aa moins d'exiger une garantie ou de faire le versement sur un compte bloqu&eacute;");  // TODO signer le contrat???
+			$body .= liliMinus("s'il n'y a pas assez d'acheteurs, la construction est annul&eacute;e");
+			$body .= liliMinus("certains choix font vite monter les co&ucirc;ts");
+
+			$body .= "</ul>\n";
+
+			$body .= "<p>Le chantier ne commence que quand 60-80% est vendu\n";
+			$body .= "On peut aussi comparer l'offre avec d'autres promoteurs et faire jouer la concurrence.\n";
+			$body .= "Pour se faire une id&eacute;e du promoteur/constructeur, on peut visiter leurs constructions existantes et demander aux habitants leurs exp&eacute;riences avec eux (qualit&eacute;, d&eacute;lai, disponibilit&eacute;, communication).\n";
+			$body .= "Il est aussi bien de se renseigner sur la solvabilit&eacute; du promoteur/constructeur aux poursuites et sur " . getLink("http://focore.ch") . ".</p>\n";
+
+			$body .= "</div>\n";
+	//
+		// Mobilite reduite
+		$body .= getTitle("Mobilit&eacute; r&eacute;duite");
+		$body .= "<div>\n";
+		$body .= "<p>Sachant qu'on peut chacun $etre $aa $mobiliteReduite $aa un moment de sa vie, il est bon d'anticiper:</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("acc&eacute;s partout en fauteuil roulant (garage, buanderie, cave, galetas...), {$ideal}ement un seul niveau, sinon ascenceur $aa disposition");
+		$body .= lili("quartier avec commerces, m&eacute;decin, transport publics, restaurant");
+		$body .= lili("douche, si baignoire pr&eacute;voir des poign&eacute;es");
+		$body .= lili("si possible des stores $plutot que des volets");
+		$body .= lili("moquette (antid&eacute;rapante) dans les escaliers");
+		$body .= lili("lampes claires, interrupteurs pr&egrave;s des portes et du lit");
+		$body .= "</ul>\n";
+		$body .= "</div>\n";
+	//
+		// Minimum exigible
+		$body .= getTitle("Minimum exigible");
+		$body .= "<div>\n";
+		$body .= "<ul>\n";
+		$body .= lili("un $batiment neuf devrait $etre minergie");
+		$body .= lili("20-25% de surface en plus qu'un locatif: 100m2 pour 3p, 125 pour 4, 150 pour 5)");
+		$body .= lili("grand salon, grande cuisine ouverte (30m2), 2 salles de bains, 14m2 par chambre quasi carr&eacute;e");
+		$body .= lili("terrasse/balcon au moins 1.5m de large");
+		$body .= lili("escaliers lumineux et chauff&eacute;s, toutes les {$piece}s accessibles avec l'ascenceur");
+		$body .= "</ul>\n";
+
+		$body .= todo();  // TODO equipement pour neuf p61
+
+		$body .= "</div>\n";
+	//
+		// Pompes a chaleur
+		$body .= getTitle("Pompes $aa chaleur");
+		$body .= "<div>\n";
+		$body .= "<p>Il en existe plusieurs sortes:</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("<b>air/eau:</b> 30$kchf (40$kchf avec solaire) $ideal pour le chauffage au sol, facile $aa installer, mais utilise un gros ventilateur bruyant pour soi et le voisinage.");
+		$body .= lili("<b>eau/eau:</b> 50$kchf et besoin d'un plan d'eau ou une nappe phr&eacute;atique ainsi que des autorisations!!");
+		$body .= lili("<b>sol/eau:</b> 45$kchf seulement si le terrain souterrain est OK, avec une autorisation cantonale, une mise $aa l'enqu&ecirc;te. Pour l'installation il faut une foresue de 20 tonnes qui doit pouvoir acc&eacute;der, le forage $coute 75.-/m et il faut creuser au moins 180m.");
+		$body .= "</ul>\n";
+		$body .= "</div>\n";
+	//
+		// Ecologie
+		$body .= getTitle("Ecologie");
+		$body .= "<div>\n";
+
+		$body .= "<p>Pour construire &eacute;cologique, il faut penser $aa bien plus que ce que l'on croit: transports, {$materiau}x, $energie...</p>\n";
+
+		$body .= "<p><b>Mat&eacute;riaux:</b> on peut utiliser du bois ou un autre $materiau indig&egrave;ne (pour diminuer l'$energie grise) le plus naturel possible, fixation avec des vis.\n";
+		$body .= "Il existe aussi des {$materiau}x &eacute;cobiologiques (Natureplus, FSC).</p>\n";
+
+		$body .= "<p><b>Energie:</b> on peut obtenir une &eacute;tiquette &eacute;nerg&eacute;tique (CECB) pour une maison, fournie avec des conseils pour environ 1$kchf pour une villa individuelle.\n";
+		$body .= "Le chauffage est la plus grand source de consommation d'$nergie.\n";
+		$body .= "Le mieux est la pompe $aa chaleur, ou les granul&eacute;s de bois, mais ces installations {$coute}nt cher $aa l'achat.\n";
+		$body .= "Les co&ucirc;ts de consommation donnent le mazout le plus cher, puis le gaz naturel, et bien en dessous la pompe $aa chaleur.\n";
+		$body .= "Les co&ucirc;ts d'entretien sont plus chers pour les granul&eacute;s que pour une pompe $aa chaleur, qui est plus cher que les autres moyens.</p>\n";
+
+		$body .= "<p><b>Solaire:</b> 4m2 de panneaux thermiques chauffe 2/3 de l'eau pour l'ann&eacute;e (chaudi&egrave;re &eacute;teinte l'&eacute;t&eacute;).\n";
+		$body .= "Cela $coute 15$kchf, dure 20 ans et est install&eacute; en 2 jours.\n";
+		$body .= "Le photovolta&iuml;que pour une villa individuelle n'est pas rentable $aa ce jour (2015).</p>\n";
+
+		$body .= "<p><b>Minergie:</b> 5-10% plus cher mais ca les vaut!!\n";
+		$body .= "C'est un standard reconnu par les autorit&eacute;s et les banques.\n";
+		$body .= "Il est possible d'obtenir des subventions, $aa demander avant le d&eacute;but des travaux (OFEN).\n";
+		$body .= "Tous les architectes/ing&eacute;nieurs ne sont pas encore familiers, voir sur " . getLink("http://minergie.ch") . " une liste de gens de r&eacute;f&eacute;rence.</p>\n";
+
+		$body .= "<p><b>Isolation:</b> ne pas &eacute;conomiser!! Toit 30cm, vitres triples (0.7 U max), murs 24cm.</p>\n";  // TODO 0.7U???
+
+		$body .= "<p><b>Programme {$batiment}s:</b> subventions pour r&eacute;novations " . getLink("http://leprogrammebatiments.ch") . ".\n";
+		$body .= "Il encourage l'isolation dans les {$batiment}s datant d'avant 2000.\n";
+		$body .= "Il faut faire la demande des subventions avant le d&eacute;but des travaux.</p>\n";
+
+		$body .= "</div>\n";
+//
+	// Recherche
+	$body .= getTitle("Recherche de l'objet", 2);
+
 
 
 echo $body;
