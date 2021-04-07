@@ -61,13 +61,13 @@ a.titleAnchor:hover {
 
 li.plus::marker {
 	content: "+ ";
-	font-size: 2em;
 	font-weight: 900;
+	margin-right: 1em;
 }
 
 li.minus::marker {
 	content: "- ";
-	font-size: 2em;
 	font-weight: 900;
+	margin-right: 1em;
 }
 
