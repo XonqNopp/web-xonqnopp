@@ -60,12 +60,14 @@ a.titleAnchor:hover {
 }
 
 li.plus::marker {
-	content: "+";
+	content: "+ ";
+	font-size: 2em;
 	font-weight: 900;
 }
 
 li.minus::marker {
-	content: "-";
+	content: "- ";
+	font-size: 2em;
 	font-weight: 900;
 }
 
