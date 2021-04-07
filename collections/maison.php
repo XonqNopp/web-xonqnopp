@@ -46,6 +46,7 @@ function todo() {
 
 function getTitle($title, $level=3) {
 	$ascii = $title;
+	$ascii = str_replace(" ", "", $ascii);
 	$string = "";
 	$string .= "<!-- H$level $title -->\n";
 	$string .= "<h$level id=\"$ascii\">";
@@ -60,12 +61,20 @@ function getLink($url) {
 	return "<a target=\"_blank\" href=\"$url\">$url</a>";
 }
 
-function lili($content) {
-	return "<li>$content</li>\n";
+function lili($content, $class="") {
+	return "<li class=\"$class\">$content</li>\n";
 }
 
 function lilink($url) {
 	return lili(getLink($url));
+}
+
+function liliPlus($content) {
+	return lili($content, "plus");
+}
+
+function liliMinus($content) {
+	return lili($content, "minus");
 }
 
 
@@ -99,6 +108,8 @@ $body .= lilink("http://homegate.ch");
 $body .= lili(getLink("http://toutcomptefait.ch") . " -> calcul -> logement");
 $body .= lilink("http://hausinfo.ch");
 $body .= lilink("http://ubs.com");
+$body .= lilink("http://amiante-info.ch");
+$body .= lilink("http://ch-radon.ch");
 //$body .= lilink("http://");
 $body .= "</ul>\n";
 $body .= "</div>\n";
@@ -417,7 +428,7 @@ $body .= "</div>\n";
 		$body .= "<p><b>Lieu:</b> choix influenc&eacute; par la valeur du terrain et par la vie quotidienne</p>\n";
 		$body .= "<ul>\n";
 		$body .= lili("ville, campagne, banlieue, montagne?");
-		$Body .= lili("voiture, transports publics?");
+		$body .= lili("voiture, transports publics?");
 		$body .= lili("temps de trajet maximum pour aller au travail?");
 		$body .= lili("infrastructures: cr&egrave;che, &eacute;cole, sport, culture, commerces, m&eacute;decin, poste, banque?");
 		$body .= lili("surface du terrain d&eacute;sir&eacute;e: jardin, jeux, garage?");
@@ -450,6 +461,166 @@ $body .= "</div>\n";
 	//
 		// Formes d'habitat
 		$body .= getTitle("Formes d'habitat");
+
+		$body .= "<p>Il faut consid&eacute;rer plusieurs aspects pour choisir la forme d'habitat qui nous convienne.\n";
+		$body .= "Si l'on regarde le c&ocirc;t&eacute; &eacute;cologique, on peut compter le nombres de faces (murs et toit) &agrave; b&acirc;tir, isoler, faire les finitions, puis chauffer.</p>\n";
+
+		$body .= "<div>\n";
+		$body .= "<table>\n";
+		$body .= "<tr><th>Habitat</th><th>Nombres de faces</th></tr>\n";
+		$body .= "<tr><td>6 villas individuelles</td><td>30</td></tr>\n";
+		$body .= "<tr><td>6 villas mitoyennes</td><td>24</td></tr>\n";
+		$body .= "<tr><td>6 villas contigu&euml;es</td><td>20</td></tr>\n";
+		$body .= "<tr><td>immeuble de 6 appartements</td><td>19</td></tr>\n";
+		$body .= "</table>\n";
+		$body .= "</div>\n";
+
+			// Individuelle
+			$body .= getTitle("Maison individuelle", 4);
+			$body .= "<div>\n";
+			$body .= "<ul>\n";
+
+			$body .= liliPlus("libert&eacute;");
+			$body .= liliPlus("priv&eacute; (pas de d&eacute;rangements par les murs/escaliers)");
+			$body .= liliPlus("ensoleillement");
+			$body .= liliPlus("transformations/travaux");
+
+			$body .= liliMinus("co&ucirc;teux (construction, achat, charges, entretien)");
+			$body .= liliMinus("grand terrain (jardin)");
+			$body .= liliMinus("cambriolages");
+			$body .= liliMinus("escaliers");
+
+			$body .= "</ul>\n";
+			$body .= "</div>\n";
+		//
+			// Bungalow
+			$body .= getTitle("Bungalow (maison sur 1 &eacute;tage", 4);
+			$body .= "<p>Comme pour une maison individuelle mais avec plus de terrain et plus cher.</p>\n";
+		//
+			// Individuelle en lotissement
+			$body .= getTitle("Maison individuelle en lotissement", 4);
+			$body .= "<div>\n";
+			$body .= "<ul>\n";
+
+			$body .= liliPlus("5-10% moins cher qu'individuelle");
+			$body .= liliPlus("partage des frais d'&eacute;quipements des terrains (eau, &eacute;lectricit&eacute;)");
+			$body .= liliPlus("chantier commun");
+			$body .= liliPlus("locaux/&eacute;quipements communs (place de jeux, garages, chauffage)");
+			$body .= liliPlus("pas de bruits par les murs");
+
+			$body .= liliMinus("frais d'entretien");
+
+			$body .= "</ul>\n";
+			$body .= "</div>\n";
+		//
+			// Mitoyenne
+			$body .= getTitle("Maison mitoyenne/jumelle", 4);
+			$body .= "<div>\n";
+			$body .= "<ul>\n";
+
+			$body .= liliPlus("20-25% moins cher qu'individuelle");
+			$body .= liliPlus("partage des charges (chauffage, garage)");
+			$body .= liliPlus("moins de chauffage");
+			$body .= liliPlus("facile &agrave; revendre");
+
+			$body .= liliMinus("surface de sol r&eacute;duite (donc escaliers)");
+			$body .= liliMinus("bruits dans les murs");
+
+			$body .= "</ul>\n";
+			$body .= "</div>\n";
+		//
+			// En terrasses
+			$body .= getTitle("Maison en terrasses", 4);
+			$body .= "<div>\n";
+			$body .= "<ul>\n";
+
+			$body .= liliPlus("grande terrasse sur le toit");
+			$body .= liliPlus("charges communes");
+			$body .= liliPlus("souvent 1 seul &eacute;tage");
+
+			$body .= liliMinus("construction 15-25% plus cher qu'individuelle");
+			$body .= liliMinus("attention isolation phonique sols/plafonds (surtout si terrasse/garage sur le toit)");
+			$body .= liliMinus("acc&egrave;s souvent par escaliers ext&eacute;rieurs (hiver, mobilit&eacute; r&eacute;duite)");
+
+			$body .= "</ul>\n";
+			$body .= "</div>\n";
+		//
+			// PPE
+			$body .= getTitle("Appartement en PPE", 4);
+			$body .= "<div>\n";
+			$body .= "<ul>\n";
+
+			$body .= liliPlus("jusqu'&agrave; 50% moins cher qu'indiviuelle");
+			$body .= liliPlus("optimisation du terrain");
+			$body .= liliPlus("moins de chauffage");
+			$body .= liliPlus("ascenceur");
+			$body .= liliPlus("charges et entretiens sont communs");
+			$body .= liliPlus("il y a toujours quelqu'un de pr&eacute;sent quand on part en vacances");
+			$body .= liliPlus("pas de t&acirc;che d'entretien chauffage/immeuble");
+			$body .= liliPlus("appartement $generalement sur un niveau");
+			$body .= liliPlus("d&egrave;s le 2e &eacute;tage, s&eacute;curit&eacute; pour les cambriolages (seulement par la porte)");
+
+			$body .= liliMinus("r&egrave;glement");
+			$body .= liliMinus("bruits des voisins");
+			$body .= liliMinus("entr&eacute;e et escaliers communs");
+			$body .= liliMinus("peu de locaux annexes");
+
+			$body .= "</ul>\n";
+
+			$body .= "<p>Quand on veut choisir un appartement &agrave; acheter, il faut chercher mieux qu'un appartement locatif:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("situation calme et ensoleill&eacute;e");
+			$body .= lili("pi&egrave;ces lumineuses");
+			$body .= lili("agencement pratique et faciles d'entretien");
+			$body .= lili("grandes surfaces");
+			$body .= lili("salon avec balcon/terrasse");
+			$body .= lili("cuisine et salles de bains modernes et pratiques");
+			$body .= lili("suffisamment de rangements (armoires encastr&eacute;es, cagibi)");
+			$body .= lili("mode de construction de qualit&eacute;");
+			$body .= lili("isolation phonique sup&eacute;rieure - attention: locatif transform&eacute; en PPE souvent pas bon, le prix n'est pas gage de confort");
+			$body .= lili("immeuble joli");
+			$body .= "</ul>\n";
+
+			$body .= "</div>\n";
+	//
+		// Neuf/occasion
+		$body .= getTitle("Neuf ou occasion");
+		$body .= "<div>\n";
+		$body .= "<p>On peut acheter un bien existant, mais suivant l'ann&eacute;e de construction il faut se m&eacute;fier de certains mat&eacute;riaux de construction:</p>\n";
+		$body .= "<ul>\n";
+
+		$body .= "<li><b>Amiante:</b> interdite depuis 1994, les b&acirc;timents plus vieux en contiennent certainement\n";
+		$body .= "<ul>\n";
+		$body .= lili("<b>faiblement agglom&eacute;r&eacute;:</b> risque permanent (choc, vibrations)");
+		$body .= lili("<b>fortement agglom&eacute;r&eacute;:</b> risque si travaux (cass&eacute;, perc&eacute;...)");
+		$body .= "</ul>\n";
+
+		$body .= "Un assainissement co&ucirc;te environ 250/m2 " . getLink("http://amiante-info.ch");
+		$body .= "</li>\n";
+
+		$body .= "<lili><b>PolyChloroBiph&eacute;nyles (PCB):</b> dans les mastics de joints de dilatation, le rev&ecirc;tement des sols.\n";
+		$body .= "Pose probl&egrave;me seulement en cas de travaux, n&eacute;cessite un assainissement pr&eacute;alable (cf. OFSP)</li>\n";
+
+		$body .= lili("peintures au plomb");
+		$body .= lili("radon " . getLink("http://ch-radon.ch"));
+
+		$body .= "</ul>\n";
+
+		$body .= "<p>Avantages et inconv&eacute;nients d'acheter d'occasion:</p>\n";
+		$body .= "<ul>\n";
+
+		$body .= liliPlus("on peut visiter (&eacute;tat, &eacute;quipements, dimensions, situations, voisinage...)");
+		$body .= liliPlus("il est disponible rapidement");
+
+		$body .= liliMinus("pas toujours possible de faire les transformations pour la maison de ses r&ecirc;ves (et c'est cher!)");
+		$body .= liliMinus("&eacute;quipements (&eacute;lectricit&eacute;, sanitaire, chauffage, isolation) souvent anciens voire obsol&egrave;tes, entra&icirc;nant des charges &eacute;lev&eacute;es et des travaux &agrave; court terme");
+		$body .= liliMinus("constructions anciennes ne sont pas top pour isolation thermique et phonique");
+		$body .= liliMinus("si des r&eacute;novations sont indispensables, cela peut engendrer des mauvaises surprises au moment des travaux (&eacute;lectricit&eacute;, charpente, fen&ecirc;tres, canalisations) et entra&icirc;ner des co&ucirc;ts &eacute;lev&eacute;s");
+		$body .= liliMinus("il est possible de d&eacute;couvrir que le terrain ait subi une pollution ou renferme des d&eacute;ch&ecirc;ts anciens");
+
+		$body .= "</ul>\n";
+
+		$body .= "</div>\n";
 
 
 echo $body;
