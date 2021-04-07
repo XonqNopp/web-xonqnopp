@@ -59,15 +59,23 @@ a.titleAnchor:hover {
 	visibility: visible;
 }
 
+
+li.plus, li.minus {
+	text-indent: 0.2em;
+}
+
+
+li.plus::marker, li.minus::marker {
+	font-weight: 900;
+	font-size: 125%;
+}
+
+
 li.plus::marker {
 	content: "+";
-	font-weight: 900;
-	padding-right: 1em;
 }
 
 li.minus::marker {
 	content: "-";
-	font-weight: 900;
-	padding-right: 1em;
 }
 
