@@ -31,6 +31,7 @@ function todo() {
 	$deductions = "d&eacute;ductions";
 	$deductionsF = "$deductions fiscales";
 	$defauts = "d&eacute;fauts";
+	$detaille = "d&eacute;taill&eacute";
 	$different = "diff&eacute;rent";
 	$echeance = "&eacute;ch&eacute;ance";
 	$electricite = "&eacute;lectricit&eacute;";
@@ -64,6 +65,7 @@ function todo() {
 	$prevoyance = "pr&eacute;voyance";
 	$probleme = "probl&egrave;me";
 	$proprio = "propri&eacute;taire";
+	$renovations = "r&eacute;novations";
 	$RF = "Registre Foncier";
 
 function getTitle($title, $level=3) {
@@ -276,7 +278,7 @@ $body .= "</div>\n";
 
 		$body .= "<li><b>Libor:</b>London InterBank Offered Rate.\n";
 		$body .= "Le taux est fix&eacute; chaque jour ouvrable $aa 11h (Londres).\n";
-		$body .= "Taux fixe 1-2 mois ($generalement 3 ou 6) TODO.\n";
+		$body .= "Taux fixe entre 1 et 12 mois ($generalement 3 ou 6).\n";
 		$body .= "On peut faire un contrat de 2 $aa 5 ans.\n";
 		$body .= "Les banques ajoutent une marge de 0.65-1.30% selon le revenu et le $credit, marges figurant sur le contrat.\n";
 		$body .= "Si le Libor devient n&eacute;gatif, les banques ne descendent pas en-dessous de (0 + marges).\n";
@@ -298,7 +300,6 @@ $body .= "</div>\n";
 		$body .= "le $credit est divis&eacute; en plusieurs tranches, chaque tranche (p.ex. 3 mois) a son taux.\n";
 		$body .= "Quand une tranche est &eacute;chue, elle est automatiquement renouvel&eacute;e avec le taux courant.\n";
 		$body .= "L'$hyp est donc en d&eacute;calage avec le $marche.\n";
-		$body .= todo();
 		$body .= "Il faut souvent payer des $indemnites d'entr&eacute;e et/ou de sortie.</li>\n";
 
 		$body .= "<li>Rabais/bonus: plusieurs possibilit&eacute;s:\n";
@@ -311,12 +312,10 @@ $body .= "</div>\n";
 
 		$body .= "</li>\n";
 
-		$body .= "<li><b>Assurances:</b> $generalement $apres 12 mois de ch&ocirc;mage ou incapacit&eacute; de travail\n";
-		$body .= todo();
-		$body .= "pour $interets mensuels, amortissement suspendu.\n";
+		$body .= "<li><b>Assurances:</b> $generalement pour 12 mois contre la perte de salaire induite par l'incapacit&eacute; de travail et le ch&ocirc;mage\n";
+		$body .= "pour $interets mensuels (jusqu'$aa 2500.-), amortissement suspendu.\n";
 		$body .= "Pas d'examen de sant&eacute;, mais $etre &acirc;g&eacute; au maximum de 54 ans.\n";
-		$body .= "Possible assurance $deces risque pur.\n</li>\n";
-		$body .= todo();
+		$body .= "Possible assurance vie risque pur.</li>\n";
 
 		$body .= "<li><b>Forward:</b> si $hyp longue arrive $aa terme, possible 'r&eacute;server' les taux 3/6/12 mois avant.\n";
 		$body .= "Plus on fait avant, plus c'est cher.</li>\n";
@@ -364,14 +363,86 @@ $body .= "</div>\n";
 		// Negocier hyp
 		$body .= getTitle("N&eacute;gocier l'$hyp");
 
+			// Documents
+			$body .= getTitle("Documents $aa r&eacute;unir", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Informations personnelles:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("formulaire de demande de $credit $hypotecaire");
+			$body .= lili("derni&egrave;re d&eacute;claration fiscale");
+			$body .= lili("copie des contrats de leasing et/ou de pr&ecirc;ts personnels");
+			$body .= lili("convention de divorce");
+			$body .= lili("certificats de salaire et fiches de paye");
+			$body .= lili("extrait du registre des poursuites sur 3 ans (datant de 3 mois au maximum)");
+			$body .= lili("{$piece}s d'identi&eacute;, livret de famille");
+			$body .= lili("certificat de $prevoyance ($p2)");
+			$body .= lili("liste de tous les fonds propres");
+			$body .= lili("d&eacute;claration stipulant que vous habiterez vous-m&ecirc;me le logement (si utilisation 2e et/ou $p3)");
+			$body .= lili("extrait du $RF pour d'autres biens vous appartenant");
+			$body .= lili("justificatif des avoirs du $p3");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Informations sur le bien existant:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("extrait du $RF ou copie du projet de contrat d'acquisition");
+			$body .= lili("plan de situation ou plan du cadastre");
+			$body .= lili("polices d'assurances de l'immeuble");
+			$body .= lili("plans {$detaille}s de construction 1:100 ou 1:50 (si $aa disposition)");
+			$body .= lili("plaquette de vente, photos");
+			$body .= lili("$etat locatif");
+			$body .= lili("descriptif de la construction: ann&eacute;e, volume SIA ou assurance incendie");
+			$body .= lili("description des $renovations/transformations");
+			$body .= lili("devis et contrats d'entreprises g&eacute;n&eacute;rales");
+			$body .= lili("contrat de vente authentique (maison, terrain)");
+			$body .= lili("photos actuelles du bien");
+			$body .= lili("permis de construre (si disponible)");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Informations sur objet sur plan:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("catalogue du promoteur");
+			$body .= lili("plans {$detaille}s de l'objet 1:100 ou 1:50");
+			$body .= lili("descriptif de la construction");
+			$body .= lili("projet de contrat d'entreprise g&eacute;n&eacute;rale");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Informations sur la PPE:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("surfaces habitables, terrasse et/ou jardin");
+			$body .= lili("situation du fonds de $renovations");
+			$body .= lili("expertise (si disponible)");
+			$body .= lili("acte constitutif de la PPE");
+			$body .= lili("r&egrave;glement d'utilisation et d'administration de la PPE");
+			$body .= lili("bilan et comptes d'exploitation de la PPE");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Informations sur la nouvelle construction:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("acte de vente du terrain");
+			$body .= lili("plans {$detaille}s du projet de construction 1:100 ou 1:50");
+			$body .= lili("descriptif $detaille de la construction");
+			$body .= lili("plan financier $detaille (si possible bas&eacute; sur le volume SIA)");
+			$body .= lili("liste des artisans participant au chantier (si disponible)");
+			$body .= lili("permis de construire");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Informations pour transformations/$renovations:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("plans {$detaille}s du projet 1:100 ou 1:50");
+			$body .= lili("liste des artisans participant au chantier (si disponible)");
+			$body .= lili("permis de construire (si n&eacute;cessaire pour le projet)");
+			$body .= lili("devis $detaille, si possible bas&eacute; sur les offres");
+			$body .= "</ul>\n";
+
+			$body .= "</div>\n";
+		//
 			// Tour horizon
 			$body .= getTitle("Tour d'horizon", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Avant de commencer, il faut pr&eacute;parer un dossier complet et bien pr&eacute;sent&eacute;.\n";
 			$body .= "Id&eacute;alement un classeur avec des s&eacute;parations &eacute;tiquet&eacute;es.</p>\n";
-
-			$body .= todo();  // TODO p41 dossier complet  (VZ comparatif???)
 
 			$body .= "<p>Demander des offres (voir d'abord les sites web) $aa:</p>\n";
 			$body .= "<ul>\n";
@@ -381,13 +452,13 @@ $body .= "</div>\n";
 			$body .= lili("une compagnie d'assurance: Swisslife...");
 			$body .= "</ul>\n";
 
-			$body .= "<p>Demander diff&eacute;rentes variantes, donner un d&eacute;lai pour la r&eacute;ception et indiquer contact tel+email.</p>\n";  // TODO delai reception???
+			$body .= "<p>Demander diff&eacute;rentes variantes, donner un d&eacute;lai pour la r&eacute;ception (car les taux varient) et indiquer contact tel+email.</p>\n";
 
 			$body .= "</div>\n";
 		//
 			// Concurrence
 			$body .= getTitle("Faire jouer la concurrence", 4);
-			$body .= "<p>Etablir une liste comparative d&eacute;taill&eacute;e (anonyme ou pas) de toutes les offres et l'envoyer $aa tous en demandant mieux.</p>\n";
+			$body .= "<p>Etablir une liste comparative {$detaille}e (anonyme ou pas) de toutes les offres et l'envoyer $aa tous en demandant mieux.</p>\n";
 		//
 			// Entretien
 			$body .= getTitle("Entretien personnel", 4);
@@ -651,7 +722,7 @@ $body .= "</div>\n";
 			$body .= liliMinus("pas toujours possible de faire les transformations pour la maison de ses r&ecirc;ves (et c'est cher!)");
 			$body .= liliMinus("$equipements ($electricite, sanitaire, chauffage, isolation) souvent anciens voire obsol&egrave;tes, entra&icirc;nant des charges {$eleve}es et des travaux $aa court terme");
 			$body .= liliMinus("constructions anciennes ne sont pas top pour isolation thermique et phonique");
-			$body .= liliMinus("si des r&eacute;novations sont indispensables, cela peut engendrer des mauvaises surprises au moment des travaux ($electricite, charpente, {$fenetre}s, canalisations) et entra&icirc;ner des co&ucirc;ts {$eleve}s");
+			$body .= liliMinus("si des $renovations sont indispensables, cela peut engendrer des mauvaises surprises au moment des travaux ($electricite, charpente, {$fenetre}s, canalisations) et entra&icirc;ner des co&ucirc;ts {$eleve}s");
 			$body .= liliMinus("il est possible de d&eacute;couvrir que le terrain ait subi une pollution ou renferme des d&eacute;ch&ecirc;ts anciens");
 
 			$body .= "</ul>\n";
@@ -695,7 +766,10 @@ $body .= "</div>\n";
 			$body .= liliPlus("le prix est fixe et juste (&eacute;tudi&eacute; par la banque pour la construction)");
 
 			$body .= liliMinus("on ne peut pas visiter");
-			$body .= liliMinus("on doit verser un accompte et signer le contrat. Si l'entreprise fait faillite, l'accompte est perdu, $aa moins d'exiger une garantie ou de faire le versement sur un compte bloqu&eacute;");  // TODO signer le contrat???
+
+			$body .= "<li class=\"minus\">on doit verser un accompte et signer un contrat de r&eacute;servation.\n";
+			$body .= "Si l'entreprise fait faillite, l'accompte est perdu, $aa moins d'exiger une garantie ou de faire le versement sur un compte bloqu&eacute;</li>";
+
 			$body .= liliMinus("s'il n'y a pas assez d'acheteurs, la construction est annul&eacute;e");
 			$body .= liliMinus("certains choix font vite monter les co&ucirc;ts");
 
@@ -732,10 +806,79 @@ $body .= "</div>\n";
 		$body .= lili("terrasse/balcon au moins 1.5m de large");
 		$body .= lili("escaliers lumineux et chauff&eacute;s, toutes les {$piece}s accessibles avec l'ascenceur");
 		$body .= "</ul>\n";
-
-		$body .= todo();  // TODO equipement pour neuf p61
-
 		$body .= "</div>\n";
+
+			$body .= getTitle("Equipements", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Cuisine:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("plan de travail en pierre ou en inox");
+			$body .= lili("armoires coulissantes");
+			$body .= lili("&eacute;clairages int&eacute;gr&eacute;s aux surfaces de travail");
+			$body .= lili("lpan de cuisson vitroc&eacute;ramique ou induction");
+			$body .= lili("lave-vaisselle classe &eacute;nerg&eacute;tique A");
+			$body .= lili("four $aa hauteur des yeux avec fonction vapeur");
+			$body .= lili("frigo avec compartiment cong&eacute;lation ou cong&eacute;lateur s&eacute;par&eacute;");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Salles de bains:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("carrelage du sol au plafond sur tous les murs");
+			$body .= lili("grande armoire pharmacie");
+			$body .= lili("cabine de douche ou paroi de baignoire en alu et verre, surface minimum 0.8m2");
+			$body .= lili("place de stockage pour produits de nettoyage et linges");
+			$body .= lili("baignoire de minimum 1.80m de long ou d'angle");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Installations &eacute;lectriques:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("prises TV-radio dans toutes les {$piece}s");
+			$body .= lili("interrupteurs $aa distance pour les lampes $aa pied");
+			$body .= lili("bo&icirc;tier de c&acirc;blage universel (informatique, t&eacute;l&eacute;phone)");
+			$body .= lili("actionnement de prises, lampes, stores etc. par un syst&egrave;me de bus de commande");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Sols:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("parquet ou carrelage, carrelage pour cuisine et salles de bains");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Chauffage/ventilation:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("chauffage au sol ou radiateurs dans toutes les {$piece}s");
+			$body .= lili("radiateur s&egrave;che-linge dans les salles de bains");
+			$body .= lili("ventilation contr&ocirc;l&eacute;e avec r&eacute;cup&eacute;rateur de chaleur");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Fen&ecirc;tres:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("doubles voire triples vitrages isolants et antibruits pour les lieux bruyants");
+			$body .= lili("stores $aa lamelles int&eacute;gr&eacute;s");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Buanderie:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("lave-linge et s&eacutechoir individuels dans l'appartement ou au sous-sol");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Cave:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("cave individuelle ferm&eacute;e avec des parois (pas des lattes en bois)");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Meubles int&eacute;gr&eacute;s:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("armoires dans les chambres $aa coucher");
+			$body .= lili("vestiaire $aa l'entr&eacute;e");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Garage:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("<b>immeubles:</b> une place au garage avec armoire fermant $aa cl&eacute; (pneus, porte-bagages...) et une place ext&eacute;rieure");
+			$body .= lili("<b>maison:</b> un box ferm&eacute; pour 2 voitures ou garage souterrain");
+
+			$body .= "</div>\n";
 	//
 		// Pompes a chaleur
 		$body .= getTitle("Pompes $aa chaleur");
@@ -743,7 +886,7 @@ $body .= "</div>\n";
 		$body .= "<p>Il en existe plusieurs sortes:</p>\n";
 		$body .= "<ul>\n";
 		$body .= lili("<b>air/eau:</b> 30$kchf (40$kchf avec solaire) $ideal pour le chauffage au sol, facile $aa installer, mais utilise un gros ventilateur bruyant pour soi et le voisinage.");
-		$body .= lili("<b>eau/eau:</b> 50$kchf et besoin d'un plan d'eau ou une nappe phr&eacute;atique ainsi que des autorisations!!");
+		$body .= lili("<b>eau/eau:</b> 50$kchf et besoin d'un plan d'eau ou une nappe phr&eacute;atique ainsi que des autorisations difficiles $aa obtenir!!");
 		$body .= lili("<b>sol/eau:</b> 45$kchf seulement si le terrain souterrain est OK, avec une autorisation cantonale, une mise $aa l'enqu&ecirc;te. Pour l'installation il faut une foresue de 20 tonnes qui doit pouvoir acc&eacute;der, le forage $coute 75.-/m et il faut creuser au moins 180m.");
 		$body .= "</ul>\n";
 		$body .= "</div>\n";
@@ -772,9 +915,9 @@ $body .= "</div>\n";
 		$body .= "Il est possible d'obtenir des subventions, $aa demander avant le d&eacute;but des travaux (OFEN).\n";
 		$body .= "Tous les architectes/ing&eacute;nieurs ne sont pas encore familiers, voir sur " . getLink("http://minergie.ch") . " une liste de gens de r&eacute;f&eacute;rence.</p>\n";
 
-		$body .= "<p><b>Isolation:</b> ne pas &eacute;conomiser!! Toit 30cm, vitres triples (0.7 U max), murs 24cm.</p>\n";  // TODO 0.7U???
+		$body .= "<p><b>Isolation:</b> ne pas &eacute;conomiser!! Toit 30cm, vitres triples 0.7 U max (unbit&eacute; de perte de chaleur), murs 24cm.</p>\n";
 
-		$body .= "<p><b>Programme {$batiment}s:</b> subventions pour r&eacute;novations " . getLink("http://leprogrammebatiments.ch") . ".\n";
+		$body .= "<p><b>Programme {$batiment}s:</b> subventions pour $renovations " . getLink("http://leprogrammebatiments.ch") . ".\n";
 		$body .= "Il encourage l'isolation dans les {$batiment}s datant d'avant 2000.\n";
 		$body .= "Il faut faire la demande des subventions avant le d&eacute;but des travaux.</p>\n";
 
