@@ -90,8 +90,8 @@ function lili($content, $class="") {
 	return "<li class=\"$class\">$content</li>\n";
 }
 
-function lilink($url) {
-	return lili(getLink($url));
+function cellink($url) {
+	return "<div class=\"csstab64_cell\">" . getLink($url) . "</div>\n";
 }
 
 function liliPlus($content) {
@@ -126,27 +126,29 @@ if($page->UserIsAdmin()) {
 
 $body .= "<div class=\"framed\">\n";
 $body .= "<div style=\"font-weight: 700\">Liens utiles:</div>\n";
-$body .= "<ul>\n";
-$body .= lilink("http://fri.ch");
-$body .= lilink("http://vermoegenszentrum.ch");
-$body .= lilink("http://homegate.ch");
-$body .= lili(getLink("http://toutcomptefait.ch") . " -> calcul -> logement");
-$body .= lilink("http://hausinfo.ch");
-$body .= lilink("http://ubs.com");
-$body .= lilink("http://amiante-info.ch");
-$body .= lilink("http://ch-radon.ch");
-$body .= lilink("http://focore.ch");
-$body .= lilink("http://pac.ch");
-$body .= lilink("http://baubio.ch");
-$body .= lilink("http://eco-energie.ch");
-$body .= lilink("http://gaz-naturel.ch");
-$body .= lilink("http://cecb.ch");
-$body .= lilink("http://swissolar.ch");
-$body .= lilink("http://minergie.ch");
-$body .= lilink("http://leprogrammebatiments.ch");
-//$body .= lilink("http://");
-$body .= "</ul>\n";
-$body .= "</div>\n";
+$body .= "<div class=\"csstab64_table\">\n";
+$body .= "<div class=\"csstab64_row\">\n";
+$body .= cellink("http://fri.ch");
+$body .= cellink("http://vermoegenszentrum.ch");
+$body .= cellink("http://homegate.ch");
+$body .= "<div class=\"csstab64_cell\">" . getLink("http://toutcomptefait.ch") . " -> calcul -> logement</div>\n";
+$body .= cellink("http://hausinfo.ch");
+$body .= cellink("http://ubs.com");
+$body .= cellink("http://amiante-info.ch");
+$body .= cellink("http://ch-radon.ch");
+$body .= cellink("http://focore.ch");
+$body .= cellink("http://pac.ch");
+$body .= cellink("http://baubio.ch");
+$body .= cellink("http://eco-energie.ch");
+$body .= cellink("http://gaz-naturel.ch");
+$body .= cellink("http://cecb.ch");
+$body .= cellink("http://swissolar.ch");
+$body .= cellink("http://minergie.ch");
+$body .= cellink("http://leprogrammebatiments.ch");
+//$body .= cellink("http://");
+$body .= "</div>\n";  // row
+$body .= "</div>\n";  // table
+$body .= "</div>\n";  // framed
 
 
 	// Intro
@@ -898,7 +900,7 @@ $body .= "</div>\n";
 		$body .= "<p>Pour construire &eacute;cologique, il faut penser $aa bien plus que ce que l'on croit: transports, {$materiau}x, $energie...</p>\n";
 
 		$body .= "<p><b>Mat&eacute;riaux:</b> on peut utiliser du bois ou un autre $materiau indig&egrave;ne (pour diminuer l'$energie grise) le plus naturel possible, fixation avec des vis.\n";
-		$body .= "Il existe aussi des {$materiau}x &eacute;cobiologiques (Natureplus, FSC).</p>\n";
+		$body .= "Il existe aussi des {$materiau}x &eacute;cobiologiques (Natureplus, FSC) " . getLink("http://baubio.ch") . ".</p>\n";
 
 		$body .= "<p><b>Energie:</b> on peut obtenir une &eacute;tiquette &eacute;nerg&eacute;tique (CECB) pour une maison, fournie avec des conseils pour environ 1$kchf pour une villa individuelle.\n";
 		$body .= "Le chauffage est la plus grand source de consommation d'$nergie.\n";
@@ -925,6 +927,12 @@ $body .= "</div>\n";
 //
 	// Recherche
 	$body .= getTitle("Recherche de l'objet", 2);
+
+	$body .= "<p>On peut chercher dans {$different}s moyens: internet (agences, portails tel anibis), aussi les journaux.";
+	$body .= "Les assurances, les banques et les caisses de pension vendent aussi des biens immobiliers.</p>\n";
+
+		// Dechifrer
+		$body .= getTitle("D&eacute;chifrer");
 
 
 
