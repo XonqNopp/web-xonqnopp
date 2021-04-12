@@ -933,6 +933,52 @@ $body .= "</div>\n";  // framed
 
 		// Dechifrer
 		$body .= getTitle("D&eacute;chifrer");
+		$body .= "<div>\n";
+		$body .= "<ul>\n";
+
+		$body .= "<li><b>Prix:</b> si plusieurs bien group&eacute;s, le prix est celui du meilleur $marche sans aucune option.\n";
+		$body .= "'Bon rapport qualit&eacute;-prix' ne signifie rien.</li>\n";
+
+		$body .= "<li><b>Surface:</b> souvent exag&eacute;r&eacute;e (comprenant caves, galetas, escaliers...).\n";
+		$body .= "La surface habitable est la somme de toutes les surfaces chauff&eacute;es (sans la surface des murs).</li>\n";
+
+		$body .= lili("Equipements de qualit&eacute;: $aa voir sur place, possible qualit&eacute; minimum.");
+		$body .= lili("Images, animations, photos: se m&eacute;fier de ce qui n'est pas montr&eacute;.");
+		$body .= lili("Si le bien est $aa vendre depuis longtemps, quelque chose cloche (prix, $etat, situation, voisins...).");
+
+		$body .= "</ul>\n";
+		$body .= "</div>\n";
+	//
+		// Aide
+		$body .= getTitle("Aide");
+		$body .= "<div>\n";
+		$body .= "<ul>\n";
+
+		$body .= "<li><b>Courtier:</b> cherche et aide jusqu'$aa la signature.\n";
+		$body .= "Comission de 4% incluse dans le prix.\n";
+		$body .= "Si on engage plusieurs courtiers, il est possible que plusieurs nous proposent le m&ecirc;me bien $aa des prix {$different}s.</li>\n";
+
+		$body .= lili("Agent immobilier: 200.-/h");
+
+		$body .= "<li><b>Chasseur immobilier:</b> assiste l'acheteur.\n";
+		$body .= "Travaille avec un mandat de 3 mois en ayant le budget et les caract&eacute;ristiques.\n";
+		$body .= "Il soumet une s&eacute;lection des biens qu'il va visiter.\n";
+		$body .= "Travaille $generalement pour des biens de minimum 1'500$kchf, ou s'il n'impose pas de minimum, il facture 4% du prix en plus (hors comissions d'agences).</li>\n";
+
+		$body .= "</ul>\n";
+		$body .= "</div>\n";
+	//
+		// Ventes aux encheres
+		$body .= getTitle("Ventes aux ench&egrave;res");
+		$body .= "<div>\n";
+
+		$body .= "<p>Il y a plusieurs biens $aa vendre aux ench&egrave;res chaque semaine, souvent $aa des prix {$interessant}s car ne couvrant que la dette.\n";
+		$body .= "<b>Attention</b> $aa $etre bien pr&eacute;par&eacute; car $apres le coup de marteau, il n'est plus possible de se r&eacute;tracter.</p>\n";
+
+		$body .= "<ul>\n";
+		$body .= "</ul>\n";
+
+		$body .= "</div>\n";
 
 
 
