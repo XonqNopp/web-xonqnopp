@@ -82,16 +82,16 @@ function getTitle($title, $level=3) {
 	return $string;
 }
 
-function getLink($url) {
-	return "<a target=\"_blank\" href=\"$url\">$url</a>";
+function getLink($url, $lineBreak=False) {
+	$string = "<a target=\"_blank\" href=\"$url\">$url</a>";
+	if ($lineBreak) {
+		$string .= "<br />\n";
+	}
+	return $string;
 }
 
 function lili($content, $class="") {
 	return "<li class=\"$class\">$content</li>\n";
-}
-
-function cellink($url) {
-	return "<div class=\"csstab64_cell\">" . getLink($url) . "</div>\n";
 }
 
 function liliPlus($content) {
@@ -128,24 +128,33 @@ $body .= "<div class=\"framed\">\n";
 $body .= "<div style=\"font-weight: 700\">Liens utiles:</div>\n";
 $body .= "<div class=\"csstab64_table\">\n";
 $body .= "<div class=\"csstab64_row\">\n";
-$body .= cellink("http://fri.ch");
-$body .= cellink("http://vermoegenszentrum.ch");
-$body .= cellink("http://homegate.ch");
-$body .= "<div class=\"csstab64_cell\">" . getLink("http://toutcomptefait.ch") . " -> calcul -> logement</div>\n";
-$body .= cellink("http://hausinfo.ch");
-$body .= cellink("http://ubs.com");
-$body .= cellink("http://amiante-info.ch");
-$body .= cellink("http://ch-radon.ch");
-$body .= cellink("http://focore.ch");
-$body .= cellink("http://pac.ch");
-$body .= cellink("http://baubio.ch");
-$body .= cellink("http://eco-energie.ch");
-$body .= cellink("http://gaz-naturel.ch");
-$body .= cellink("http://cecb.ch");
-$body .= cellink("http://swissolar.ch");
-$body .= cellink("http://minergie.ch");
-$body .= cellink("http://leprogrammebatiments.ch");
-//$body .= cellink("http://");
+
+$body .= "<div class=\"csstab64_cell\">\n";
+$body .= getLink("http://fri.ch", True);
+$body .= getLink("http://vermoegenszentrum.ch", True);
+$body .= getLink("http://homegate.ch", True);
+$body .= getLink("http://toutcomptefait.ch") . " -> calcul -> logement<br />\n";
+$body .= getLink("http://hausinfo.ch", True);
+$body .= getLink("http://ubs.com", True);
+$body .= getLink("http://amiante-info.ch", True);
+$body .= getLink("http://ch-radon.ch", True);
+$body .= getLink("http://focore.ch", True);
+$body .= getLink("http://pac.ch", True);
+$body .= getLink("http://baubio.ch", True);
+$body .= getLink("http://eco-energie.ch", True);
+$body .= getLink("http://gaz-naturel.ch", True);
+$body .= getLink("http://cecb.ch", True);
+$body .= getLink("http://swissolar.ch", True);
+$body .= getLink("http://minergie.ch", True);
+$body .= getLink("http://leprogrammebatiments.ch", True);
+$body .= getLink("http://poursuite-faillite-offic.ch", True);
+$body .= getLink("http://cifi.ch", True);
+$body .= getLink("http://uspi.ch", True);
+$body .= getLink("http://sia.ch", True);
+$body .= getLink("http://uts.ch", True);
+//$body .= getLink("http://", True);
+$body .= "</div>\n";  // cell
+
 $body .= "</div>\n";  // row
 $body .= "</div>\n";  // table
 $body .= "</div>\n";  // framed
@@ -973,12 +982,47 @@ $body .= "</div>\n";  // framed
 		$body .= "<div>\n";
 
 		$body .= "<p>Il y a plusieurs biens $aa vendre aux ench&egrave;res chaque semaine, souvent $aa des prix {$interessant}s car ne couvrant que la dette.\n";
+		$body .= "Consulter les offices cantonaux, voir " . getLink("http://poursuite-faillite-offic.ch") . ".\n";
 		$body .= "<b>Attention</b> $aa $etre bien pr&eacute;par&eacute; car $apres le coup de marteau, il n'est plus possible de se r&eacute;tracter.</p>\n";
 
 		$body .= "<ul>\n";
+
+		$body .= lili("Visiter et examiner avec un professionel, car l'ench&egrave;re exclu le droit en cas de d&eacute;faut d&eacute;couverts ensuite.");
+		$body .= lili("Examiner le $RF: &eacute;ventuels charges ($hyp), droits (pr&eacute;emption, usufruit), obligations (servitudes, passage).");
+		$body .= lili("R&eacute;gler le financement $aa l'avance (la banque du vendeur risque de refuser, en choisir une autre).");
+		$body .= lili("V&eacute;rifier le prix estim&eacute;, si doutes faire faire une estimation.");
+		$body .= lili("Fixer une limite (fonds propres et $hyp) $aa l'avance <b>en accord</b> avec le banquier.");
+		$body .= lili("Pr&eacute;parer un ch&egrave;que avec l'accompte (10-20% du prix estim&eacute;), exig&eacute; $apres le coup de marteau.");
+
 		$body .= "</ul>\n";
 
+		$body .= "<p><b>Imm&eacute;diatement $apres la vente</b>, il faut assurer le bien!\n";
+		$body .= "En revanche, il reste un droit de recours de 30 jours (par exemple pour les cr&eacute;anciers), donc on ne peut pas emm&eacute;nager avant sauf si on en a l'accord explicite.</p>\n";
+
 		$body .= "</div>\n";
+	//
+		// Prix
+		$body .= getTitle("Prix");
+
+		$body .= "<p>V&eacute;rifier le prix car la banque {$pret}e selon sa propre estimation.\n";
+		$body .= "Si le prix est plus haut, il faut compenser la diff&eacute;rence avec des fonds propres, et il ne sera peut-$etre pas possible de revendre $aa un prix autant $eleve.</p>\n";
+
+		$body .= "<p>Le principal facteur d&eacute;terminant le prix est la situation: voisinage, $equipements, acc&egrave;s, vue, SOleil, bruit, $impots (d&eacute;chets, eau...).</p>\n";
+
+			// Experts
+			$body .= getTitle("Experts", 4);
+			$body .= "<div>\n";
+
+			$body .= "<ul>\n";
+
+			$body .= "<li><b>CIFI</b> (Centre d'Information et de Formation Immobili&egrave;res:\n";
+			$body .= "estimation online instantan&eacute;e pour environ 500.-.\n";
+			$body .= "Fonctionne bien pour un bien courant \"standard\", utilise environ 20 crit&egrave;res.\n";
+			$body .= "M&eacute;thode h&eacute;doniste: se base sur des milliers de transactions similaires r&eacute;centes, donc proche du $marche.\n";  // TODO link
+
+			$body .= "</ul>\n";
+
+			$body .= "</div>\n";
 
 
 
