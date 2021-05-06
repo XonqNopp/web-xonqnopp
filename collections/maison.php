@@ -57,6 +57,7 @@ function todo() {
 	$meme = "m&ecirc;me";
 	$mobiliteReduite = "mobilit&eacute; r&eacute;duite";
 	$negocier = "n&eacute;gocier";
+	$negociations = "n&eacute;gociations";
 	$p2 = "2e pilier";
 	$p3 = "3e pilier";
 	$piece = "pi&egrave;ce";
@@ -1018,11 +1019,50 @@ $body .= "</div>\n";  // framed
 			$body .= "<li><b>CIFI</b> (Centre d'Information et de Formation Immobili&egrave;res:\n";
 			$body .= "estimation online instantan&eacute;e pour environ 500.-.\n";
 			$body .= "Fonctionne bien pour un bien courant \"standard\", utilise environ 20 crit&egrave;res.\n";
-			$body .= "M&eacute;thode h&eacute;doniste: se base sur des milliers de transactions similaires r&eacute;centes, donc proche du $marche.\n";  // TODO link
+			$body .= "M&eacute;thode h&eacute;doniste: se base sur des milliers de transactions similaires r&eacute;centes, donc proche du $marche.\n";
+			$body .= getLink("http://cifi.ch");
+			$body .= "</li>\n";
+
+			$body .= "<li><b>Courtier immobilier:</b> conna&icirc;t bien le $marche, fait des visites, donne un rapport d&eacute;taill&eacute; des atouts et des d&eacute;fauts.\n";
+			$body .= "Si on engage un courtier pour vendre, le service est un pourcentage du prix.\n";
+			$body .= "Il faut se m&eacute;fier, car il pourrait alors sur&eacute;valuer pour d&eacute;crocher le mandat.\n";
+			$body .= "La contre-expertise de la banque peut $etre plus basse et refroidir les acheteurs.\n";
+			$body .= getLink("http://uspi.ch") . " -> membres</li>\n";
+
+			$body .= "<li><b>Expert en estimation:</b> la meilleure solution pour estimer le prix!\n";
+			$body .= "250.-/h, environ 2$kchf pour une villa.\n";
+			$body .= getLink("http://uspi.ch") . " -> chambre d'experts en estimation immobili&egrave;re</li>\n";
+
+			$body .= "<li><b>Architecte:</b> approche b&acirc;s&eacute;e sur les co&ucirc;ts de construction; utile pour des r&eacute;novations.\n";
+			$body .= "Environ 2$kchf pour une villa, voire plus s'il doit demander des offres pour des travaux.\n";
+			$body .= getLink("http://sia.ch") . " et " . getLink("http://uts.ch") . "</li>\n";
 
 			$body .= "</ul>\n";
 
+			$body .= "<p>Une expertise classique (ch&egrave;re) est appropri&eacute;e pour les immeubles anciens ou pour conna&icirc;tre l'$etat/les possibilit&eacute;s de transformations.\n";
+			$body .= "Sinon la m&eacute;thode h&eacute;doniste est plus proche du $marche.</p>\n";
+
 			$body .= "</div>\n";
+		//
+			// Negocier
+			$body .= getTitle("N&eacute;gocier", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Toujours!!!</p>\n";
+
+			$body .= "<p>Pour un objet <b>ancien</b>, le potentiel de $negociations est &eacute;lev&eacute;.\n";
+			$body .= "Il faut donc $etre bien pr&eacute;par&eacute; et demander une expertise.\n";
+			$body .= "Attention toutefois car si on baisse trop le prix, il est possible qu'un autre acheteur remporte l'objet.\n";
+			$body .= "Si l'objet est recherch&eacute;, il s'agira alors d'une ench&egrave;re officieuse.\n";
+			$body .= "Il est important d'avopir une confirmation &eacute;crite de la banque, et garder en t&ecirc;te nos limites de fonds propres et $hyp.</p>\n";
+
+			$body .= "<p>Pour un objet <b>neuf</b>, on peut $negocier le contenu: parquet au lieu de moquette, plus de rangements, rabais sur une place de parc...\n";
+			$body .= "Il faut bien mettre par &eacute;crit tout arrangement!</p>\n";
+
+			$body .= "</div>\n";
+		//
+			// Visite
+			$body .= getTitle("Visite", 4);
 
 
 
