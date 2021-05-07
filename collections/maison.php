@@ -1063,6 +1063,23 @@ $body .= "</div>\n";  // framed
 		//
 			// Visite
 			$body .= getTitle("Visite", 4);
+			$body .= "<p>Si possible visiter $aa 2 pour une observation plus compl&egrave;te. Pr&eacute;voir assez de temps.</p>\n";
+			$body .= "<p>Si la premi&egrave;re impression est n&eacute;gative, faire quand $meme la visite en entier pour avoir des points de comparaisons et des id&eacute;es d'am&eacute;nagement.</p>\n";
+			$body .= "<p>Si la visite est positive, r&eacute;colter les documents, demander si des travaux sont pr&eacute;vus et l'$etat des $equipements.</p>\n";
+			$body .= "<p>Ne rien signer!! M&ecirc;me si on nous met la pression (autres acheteurs)! Fixer un rendez-vous pour une 2e visite.</p>\n";
+			$body .= "<p>Si int&eacute;ress&eacute;, revenir voir plusieurs fois $aa des jours et des heures {$different}s, id&eacute;alement par tous les temps pour v&eacute;rifier l'ensoleillement, le bruit, l'exposition aux intemp&eacute;ries, les odeurs, la vie du quartier...</p>\n";
+			
+			$body .= "<p>Orientation E-W mieux que N-S (qui a clairement un $cote chaud et un froid).</p>\n";
+			$body .= "<p>Plus on est haut dans les {$etage}s, plus on a de Soleil (sauf s'il y a un vis-a-vis).</p>\n";
+			$body .= "<p>Isolation phonique: SIA181</p>\n";
+			$body .= "<p>Am&eacute;nagements futurs: $ideal si les murs int&eacute;rieurs ne sont pas porteurs.</p>\n";
+			$body .= "<p>La distribution des {$piece}s est importante: ce n'est pas $ideal de traverser le salon pour aller dans la chambre...</p>\n";
+			$body .= "<p>Terrasse: intimit&eacute;, exposition, bruit, abri?</p>\n";
+			$body .= "<p>Jardin: taille, entretenu, plat/pente, escaliers/chemin raide, robinets, prises, $eacute;clairages, outils, cl&ocirc;tur&eacute;?</p>\n";
+			$body .= "<p>\"Am&eacute;nagements ext&eacute;rieurs\" pour objet neuf: $aa clarifier en $detail car les promoteurs &eacute;conomisent souvent.</p>\n";
+		//
+	// Construire: preparation
+	$body .= getTitle("Construire: pr&eacute;paration", 2);
 
 
 
