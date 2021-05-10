@@ -26,6 +26,7 @@ function todo() {
 	$arch = "architecte";
 	$batiment = "b&acirc;timent";
 	$coute = "co&ucirc;te";
+	$couts = "co&ucirc;ts";
 	$credit = "cr&eacute;dit";
 	$deces = "d&eacute;c&egrave;s";
 	$deductions = "d&eacute;ductions";
@@ -1077,10 +1078,60 @@ $body .= "</div>\n";  // framed
 			$body .= "<p>Terrasse: intimit&eacute;, exposition, bruit, abri?</p>\n";
 			$body .= "<p>Jardin: taille, entretenu, plat/pente, escaliers/chemin raide, robinets, prises, $eacute;clairages, outils, cl&ocirc;tur&eacute;?</p>\n";
 			$body .= "<p>\"Am&eacute;nagements ext&eacute;rieurs\" pour objet neuf: $aa clarifier en $detail car les promoteurs &eacute;conomisent souvent.</p>\n";
-		//
+//
 	// Construire: preparation
 	$body .= getTitle("Construire: pr&eacute;paration", 2);
 
+	$body .= "<p>Les $couts de construction sont en constante augmentation.\n";
+	$body .= "Il est possible de partager les frais de chantier et de raccordement si le terrain voisin construit en $meme temps.</p>\n";
+
+		// Terrain
+		$body .= getTitle("Terrain");
+		$body .= "<div>\n";
+
+		$body .= "<p>Pour le choix du terrain, $etre ouvert! Aller voir sur place avant de dire non.</p>";
+
+		$body .= "<p>Contacts pour trouver un terrain:</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("Demander $aa la commune: elle sait avant le public, et poss&egrave;de aussi des terrains");
+		$body .= lili("Aller voir s'il y a des pancartes sur place, des annonces dans les magasin...");
+
+		$body .= "<li>Les architectes/artisans vendent des terrains pas cher, mais avec une clause de construire avec eux.\n";
+		$body .= "Cela supprime la concurrence et peut donc $etre cher.\n";
+		$body .= "Bien se renseigner sur l'ensemble du prix du projet!</li>\n";
+
+		$body .= "</ul>\n";
+
+		$body .= "<p>Avant d'avoir le terrain, il est inutile de choisir les plans car la configuration et les contraintes sont d&eacute;t&eacute;rminants.</p>\n";
+
+		$body .= "<p>Un lotissement est moins cher, mais on a moins de libert&eacute;s.</p>\n";
+
+		$body .= "<p>Points $aa relever lors de la visite du terrain:</p>\n";
+		$body .= "<ul>\n";
+
+		$body .= "<li><b>Qualit&eacute;:</b>\n";
+		$body .= "emplacement, topographie, ensoleillement, tranquilit&eacute;, qualit&eacute; du sol et des sous-sols, passages d'eat ou sources souterraines,\n";
+		$body .= "nappe phr&eacute;atique, $equipements existants (sinon cela fait vite grimper la facture du coup le prix du terrain au m2; &eacute;quiper un terrain $coute env. 150.-/m2)\n";
+		$body .= "acc&egrave;s, vue, futures constructions...</li>\n";
+
+		$body .= "<li><b>Voisinage:</b>\n";
+		$body .= "aller rencontrer les gens (voisins, commerces, resto) et discuter: projets (habitations, commerces, industries, routes),\n";
+		$body .= "qualit&eacute; des infrastructures (commerces, &eacute;coles, h&ocirc;pitaux, transports publics), nuisances...</li>\n";
+
+		$body .= "<li><b>Administratif:</b>\n";
+		$body .= "le terrain correspond-il au prix du $marche de la r&eacute;gion? (se renseigner aupr&egrave;s de fisc, banques r&eacute;gionales/cantonales, courtier, voisins)\n";
+		$body .= "Le terrain est-il grev&eacute; de servitudes fonci&egrave;res? (cf. $RF, plan de zone)\n";
+		$body .= "Quels sont la surface, les limites, les conduites, &eacute;lectricit&eacute; etc, zones $aa b&acirc;tir/agricoles/village/villa...</li>\n";
+
+		$body .= "</ul>\n";
+
+		$body .= "</div>\n";
+	//
+		// Servitudes foncieres
+		$body .= getTitle("Servitudes fonci&egrave;res");
+		$body .= "<div>\n";
+
+		$body .= "</div>\n";
 
 
 echo $body;
