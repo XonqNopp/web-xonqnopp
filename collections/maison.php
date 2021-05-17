@@ -154,6 +154,7 @@ $body .= getLink("http://cifi.ch", True);
 $body .= getLink("http://uspi.ch", True);
 $body .= getLink("http://sia.ch", True);
 $body .= getLink("http://uts.ch", True);
+$body .= getLink("http://lieudevie.ch", True);
 //$body .= getLink("http://", True);
 $body .= "</div>\n";  // cell
 
@@ -1130,6 +1131,45 @@ $body .= "</div>\n";  // framed
 		// Servitudes foncieres
 		$body .= getTitle("Servitudes fonci&egrave;res");
 		$body .= "<div>\n";
+
+		$body .= "<p>Il s'agit d'obligations ou de contraintes pour le $proprio.\n";
+		$body .= "Il peut s'agir d'une interdiction de construire.\n";
+		$body .= "Elles sont inscrites au $RF par un contrat &eacute;crit et notari&eacute; avec les d&eacute;tails de l'&eacute;tendue de la servitude et de l'entretien.\n";
+		$body .= "Elles sont valables jusqu'$aa radiation du $RF.\n";
+		$body .= "Le $proprio peut demander au juge la radiation si elle n'est plus utile au b&eacute;n&eacute;ficiaire.</p>\n";
+
+		$body .= "<p>Formes de servitudes:</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("canalisations");
+		$body .= lili("construction (droit de superficie, voir dessous)");
+		$body .= lili("empi&egrave;tement, restrictions du droit $aa b&acirc;tir");
+		$body .= lili("droit de passage (pied, v&eacute;hicule), parcage");
+		$body .= lili("plantations (tailler les haies), cl&ocirc;tures (repeindre)");
+		$body .= lili("divers: usufruit, usage ext&eacute;rieur, abri PC...");
+		$body .= "</ul>\n";
+
+		$body .= "<p>Le droit de superficie permet de construire sur un terrain lou&eacute; (pour une dur&eacute;e de 30 $aa 100 ans).\n";
+		$body .= "Le $proprio peut r&eacute;clamer le terrain si le b&eacute;n&eacute;ficiant viole gravement ses obligations.\n";
+		$body .= "C'est cher sur le long terme.</p>\n";
+
+		$body .= "</div>\n";
+	//
+		// Reglement de construction
+		$body .= getTitle("R&egrave;glement de construction (communal)");
+		$body .= "<p>Il d&eacute;finit beaucoup de d&eacute;tails pour la construction:\n";
+		$body .= "ratio surface maison/terrain, hauteur max, nombre d'&eacute;tages max, orientation, pente du toit, dimensions des fen&ecirc;tres, nombre max de velux, couleurs ext&eacute;rieures,\n";
+		$body .= "longueur max d'un mur sans d&eacute;crochement, distances entre les maisons et les limites du terrain, surface minimum..........</p>\n";
+	//
+		// Influences negatives
+		$body .= getTitle("Influences n&eacute;gatives");
+		$body .= "<p>On peut demander une &eacute;tude g&eacute;obiologiue (200.-) du terrain avant l'achat, voir " . getLink("http://lieudevie.ch") . ".\n";
+		$body .= "Il s'agit d'une analyse de l'&eacute;lectromagn&eacute;tisme, passage des eaux...\n";
+		$body .= "On peut aussi le faire avant de construire pour aider $aa choisir l'emplacement, l'orientation, l'am&eacute;nagement...</p>\n";
+	//
+		// Concevoir sa maison
+		$body .= getTitle("Concevoir sa maison");
+		$body .= "<div>\n";
+
 
 		$body .= "</div>\n";
 
