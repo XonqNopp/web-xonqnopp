@@ -155,6 +155,16 @@ $body .= getLink("http://uspi.ch", True);
 $body .= getLink("http://sia.ch", True);
 $body .= getLink("http://uts.ch", True);
 $body .= getLink("http://lieudevie.ch", True);
+$body .= getLink("http://lignum.ch", True);
+$body .= getLink("http://cedotec.ch", True);
+$body .= getLink("http://maison-et-bois", True);
+$body .= getLink("http://lecourrierdubois.be", True);
+$body .= getLink("http://schweizerholzbau.ch", True);
+$body .= getLink("http://journal-suisse-du-bois.ch", True);
+$body .= getLink("http://salonbois.ch", True);
+$body .= getLink("http://domespace.ch", True);
+$body .= getLink("http://aber.ch", True);
+$body .= getLink("http://lamaisonnature.ch", True);
 //$body .= getLink("http://", True);
 $body .= "</div>\n";  // cell
 
@@ -1170,6 +1180,43 @@ $body .= "</div>\n";  // framed
 		$body .= getTitle("Concevoir sa maison");
 		$body .= "<div>\n";
 
+		$body .= "<p>On peut concevoir sa maison en suivant diff&eacute;rentes voies:</p>\n";
+
+		$body .= "<ul>\n";
+
+		$body .= lili("<b>Maison d'architecte:</b> sur mesure, tout personnalisable, unique. Co&ucirc;te cher et prend tu temps pour $etre r&eacute;alis&eacute;.");
+
+		$body .= "<li><b>Sur catalogue, maison type, pr&eacute;fabriqu&eacute;e:</b>\n";
+		$body .= "La r&eacute;alisation est rapide.\n";
+		$body .= "On peut visiter une maison t&eacute;moin.\n";
+		$body .= "On peut changer +/- la distribution et la taille des ${piece}s; on ne peut pas choisir les mat&eacute;riaux.\n";
+		$body .= "Le prix ne comprend que le mod&egrave;le le plus basique, il faut compter des suppl&eacute;ments pour beaucoup de choses (excaver, garage, terrassements...).\n";
+		$body .= "Et bien $sur, chaque demande de modifications augmente le prix.\n";
+		$body .= "A noter: les entreprises &eacute;trang&egrave;res proposent de r&eacute;aliser le $meme bien pour moins cher, mais TODO sur place et pas r&eacute;parable.\n";
+		$body .= "</li>\n";
+
+		$body .= lili("<b>Maison syst&egrave;me:</b> plans existants mais construite sur place; comme la maison type.");  // TODO
+
+		$body .= "<li><b>Maison en bois:</b>\n";
+		$body .= "dur&eacute;e de vie comme le b&eacute;ton, $meme prix.\n";
+		$body .= "L'ossature peut $etre l&eacute;g&egrave;re ou massif.\n";
+		$body .= "Le bois offre une meilleure isolation (thermique et phonique), il est l&eacute;ger et solide.\n";
+		$body .= "Il est possible de fabriquer des &eacute;l&eacute;ments en atelier en parall&egrave;le $aa d'autres travaux sur place.\n";
+		$body .= "Attention car le bois apparent a besoin d'entretien (usure du Soleil, air, faune, flore...);\n";
+		$body .= "$aa cet effet, il est bon de pr&eacute;voir un avant-toit d'au moins 1m et un bon drainage.\n";
+		$body .= "</li>\n";
+
+		$body .= "<li><b>Maison $aa d&ocirc;me rotatif:</b>\n";
+		$body .= "ronde, en bois, tourne, peut suivre le Soleil (pour la chaleur ou des panneaux solaires) ou se mettre $aa l'abri du vent/bruit.\n";
+		$body .= "Moins de surface donc moins de chauffage.\n";
+		$body .= "</li>\n";
+
+		$body .= "<li><b>Maison en paille et terre:</b>\n";
+		$body .= "L'ossature est en bois, la paille et la terre isolent.\n";
+		$body .= "On peut visiter une telle maison a Morrens, Pres-vers-Siviriez, Sainte-Ursanne, Eco46 TODO).\n";
+		$body .= "</li>\n";
+
+		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
 
