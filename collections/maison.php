@@ -25,6 +25,7 @@ function todo() {
 	$arcent = "$arch/$entr";
 	$arch = "architecte";
 	$batiment = "b&acirc;timent";
+	$cote = "c&ocirc;t&eacute;";
 	$coute = "co&ucirc;te";
 	$couts = "co&ucirc;ts";
 	$credit = "cr&eacute;dit";
@@ -1218,6 +1219,38 @@ $body .= "</div>\n";  // framed
 
 		$body .= "</ul>\n";
 
+		$body .= "</div>\n";
+	//
+		// Plans
+		$body .= getTitle("Plans");
+		$body .= "<div>\n";
+		$body .= "<ul>\n";
+
+		$body .= "<li><b>Porte d'entr&eacute;e:</b> facilement accessible depuis la cuisine, les escaliers et les zones d'habitation.\n";
+		$body .= "Sur le $cote le moins expos&eacute; aux intemp&eacute;ries (on peut ajouter un avant-toit).</li>\n";
+
+		$body .= lili("<b>Vestibule:</b> plaque tournante. Bien &eacute;clair&eacute; et spacieux.");
+		$body .= lili("<b>Salon:</b> le plus au Sud possible (moins de Soleil en $ete et plus en hiver). Acc&egrave;s jardin/terrasse.");
+		$body .= lili("<b>Salle $aa manger:</b> bien reli&eacute;e $aa cuisine et salon.");
+		$body .= lili("<b>Cuisine:</b> proche de l-entr&eacute;e, du salon, et la salle $aa manger, des chambres d'enfatns et avec vus sur la place de jeux.");
+		$body .= lili("<b>Buanderie:</b> proche de cuisine et salles de bains, si possible $aa la cave ou $aa l'&eacute;tage.");
+
+		$body .= "<li><b>Chambres $aa coucher:</b>\n";
+		$body .= "dans la partie calme, proche des chambres d'enfants et d'une salle de bains.\n";
+		$body .= "Si possible $aa l'Est.\n";
+		$body .= "Attention de la placer dans la partie la plus &eacute;loign&eacute;e du bruit (terrasse, route, voisins...) pour pouvoir ouvrir les fen&ecirc;tres la nuit.\n";
+		$body .= "</li>\n";
+
+		$body .= "<li><b>Chambres d'enfants:</b>\n";
+		$body .= "au Sud ou Sud-Est (l'Ouest chauffe trop).\n";
+		$body .= "Pour des petits enfants, avoir la possibilit&eacute; de les voir et les entendre.\n";
+		$body .= "Ne pas sous-estimer la surface.\n";
+		$body .= "Les situer pour que les enfants puissent participer $aa la vie de la maison depuis leur chambre (pas que pour dormir).\n";
+		$body .= "</li>\n";
+
+		$body .= lili("<b>Salles de bains:</b> $cote dortoir, pas coll&eacute;es (murs) aux chambres mais reli&eacute;es par un couloir.");
+
+		$body .= "</ul>\n";
 		$body .= "</div>\n";
 
 
