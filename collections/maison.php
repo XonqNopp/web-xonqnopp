@@ -1249,9 +1249,57 @@ $body .= "</div>\n";  // framed
 		$body .= "</li>\n";
 
 		$body .= lili("<b>Salles de bains:</b> $cote dortoir, pas coll&eacute;es (murs) aux chambres mais reli&eacute;es par un couloir.");
+		$body .= lili("<b>WC visiteurs:</b> proches de l'entr&eacute;e, &eacute;loign&eacute;s de la cuisine et du salon.");
+		$body .= lili("<b>Chambres d'amis:</b> acc&egrave;s $aa l'entr&eacute;e, &eacute;ventuellement petite salle de bains.");
+		$body .= lili("<b>Bureau:</b> acc&egrave;s salon et vestibule.");
+		$body .= lili("<b>Rangements:</b> N TODO pour pas chauffer, a&eacute;r&eacute;s.");
+		$body .= lili("<b>Cave:</b> attention $aa l'humidit&eacute;.");
+
+		$body .= "<li><b>Jardin:</b>\n";
+		$body .= "souvent oubli&eacute; pour des raisons budgetaires.\n";
+		$body .= "Si on refl&eacute;chit mieux: planifier tous les souhaits et les r&eacute;aliser sur plusieurs ann&eacute;es.\n";
+		$body .= "On peut ainsi faire les gros travaux (fondations) avec le rest du chantier pendant que les machines sont pr&eacute;sentes.\n";
+		$body .= "</li>\n";
 
 		$body .= "</ul>\n";
 		$body .= "</div>\n";
+//
+	// Construire: execution
+	$body .= getTitle("Construire: ex&eacute;cution", 2);
+
+		// Avec un architecte
+		$body .= getTitle("Avec un architecte");
+		$body .= "<div>\n";
+
+		$body .= "<p>L'architecte est la personne de r&eacute;f&eacute;rence.\n";
+		$body .= "Il doit donc $etre un bon planificateur, chef de chantier, comptable, psychologue...</p>\n";
+
+		$body .= "<p>Quelques crit&egrave;res pour bien choisir son architecte:</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("ses maisons r&eacute;alis&eacute;es nous plaisent (esth&eacute;tique, qualit&eacute;)");
+		$body .= lili("il tient les d&eacute;lais et le budget");
+		$body .= lili("ses maisons s'int&egrave;grent dans l'environnement");
+		$body .= lili("il est int&eacute;ress&eacute; $aa la construction &eacute;cologique, id&eacute;alement avec de l-exp&eacute;rience");
+		$body .= lili("il est situ&eacute; proche du futur chantier (plus il est loin, plus il y aura de frais)");
+		$body .= lili("il conna&icirc;t le lieu (et ses r&egrave;glements)");
+		$body .= lili("il est ouvert aux id&eacute;es nouvelles et coop&eacute;ratif");
+		$body .= "</ul>\n";
+
+		$body .= "<p>Il est bien de rencontrer plusieurs architectes,\n";
+		$body .= "visiter plusieurs de leurs r&eacute;alisations,\n";
+		$body .= "les inviter chez nous pour qu'ils voient comment on vit,\n";
+		$body .= "leur poser des questions personnelles,\n";
+		$body .= "leur demander s'ils ont $deja eu des probl&egrave;mes sur un chantier (oui!)...</p>\n";
+
+		$body .= "<p>On peut aussi demander un devis provisoire avec un budget max.\n";
+		$body .= "Quand on a choisi l'architecte, on peut demander un avant-projet.\n";
+		$body .= "C'est une &eacute;tude du terrain et des r&egrave;glements avec une estimation du budget et des dessins.\n";
+		$body .= "Cela compte pour 9% des honoraires, soit environ 9$kchf pour une villa.</p>\n";
+
+		$body .= "</div>\n";
+
+			// Honoraires
+			$body .= getTitle("Honoraires", 4);
 
 
 echo $body;
