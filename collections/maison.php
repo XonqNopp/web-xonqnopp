@@ -166,6 +166,8 @@ $body .= getLink("http://salonbois.ch", True);
 $body .= getLink("http://domespace.ch", True);
 $body .= getLink("http://aber.ch", True);
 $body .= getLink("http://lamaisonnature.ch", True);
+$body .= getLink("http://aseg.ch", True);
+$body .= getLink("http://forumconstruire.ch", True);
 //$body .= getLink("http://", True);
 $body .= "</div>\n";  // cell
 
@@ -416,7 +418,7 @@ $body .= "</div>\n";  // framed
 			$body .= lili("plans {$detaille}s de construction 1:100 ou 1:50 (si $aa disposition)");
 			$body .= lili("plaquette de vente, photos");
 			$body .= lili("$etat locatif");
-			$body .= lili("descriptif de la construction: ann&eacute;e, volume SIA ou assurance incendie");
+			$body .= lili("descriptif de la construction: ann&eacute;e, volume SIA (TODO) ou assurance incendie");
 			$body .= lili("description des $renovations/transformations");
 			$body .= lili("devis et contrats d'entreprises g&eacute;n&eacute;rales");
 			$body .= lili("contrat de vente authentique (maison, terrain)");
@@ -1300,6 +1302,73 @@ $body .= "</div>\n";  // framed
 
 			// Honoraires
 			$body .= getTitle("Honoraires", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>SIA 102</p>\n";
+
+			$body .= "<ul>\n";
+			$body .= lili("tarif-temps: temps n&eacute;cessaire $aa la r&eacutealisation. Tarif horaire SIA en fonction de l'exp&eacute;rience.");
+			$body .= lili("tarif-co&ucirc;t/tarif-volume: en fonction du montant des travaux, de la difficult&eacute; (proportionnel au prix de la maison)");
+
+			$body .= "<li>forfait: en fonction du devis, &eacute;vite que l'architect d&eacute;passe les d&eacute;lais/le budget.\n";
+			$body .= "Exiger que toutes les modifications enatra&icirc;nant un surco&ucirc;t fasse l'objet d'un devis d&eacute;taill&eacute; avec confirmation &eacute;crite de l'architecte.</li>\n";
+			$body .= "</ul>\n";
+
+			$body .= "</div>\n";
+		//
+			// Contrats
+			$body .= getTitle("Contrats", 4);
+			$body .= "<p>SIA formulaire 1102</p>\n";
+			$body .= "<p>Doit contenir les d&eacute;tails du mandat, entre autres faire des plans dans les r&egrave;gles de l'art,\n";
+			$body .= "surveiller et respecter le devis, d&eacute;fendre les int&eacute;r&ecirc;ts des clients.\n";
+			$body .= "Peut $etre r&eacute;sili&eacute; en tout temps par chacune des parties, normalement avec dommages et int&eacute;r&ecirc;ts.</p>\n";
+		//
+			// Devis
+			$body .= getTitle("Devis", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Ce n'est qu'une &eacute;valuation! Pr&eacute;voir des marges:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("avant-projet: +/-15%");
+			$body .= lili("projet: +/-10%");
+			$body .= lili("apr&egrave;s l'appel d'offres: +/-5%");
+			$body .= "</ul>\n";
+
+			$body .= "<p>Avant de signer le contrat, bien v&eacute;rifier toutes les clauses et demander conseil $aa un professionnel.\n";
+			$body .= "Il est possible d'adh&eacute;rer a la Chambre Immobili&egrave;re cantonale qui recommande des experts.</p>\n";
+
+			$body .= "<p>Le versement des honoraires se fait g&eacute;n&eacute;ralement par tranchesfix&eacute;es $aa l'avance, par exemple la premi&egrave;re apr&egrave;s les fondations.</p>\n";
+
+			$body .= "<p>Pour $etre $sur que tout est OK, convenir de la derni&egrave;re tranche de 15% sur un compte blolqu&eacute;,\n";
+			$body .= "vers&eacute;e quand les travaux sont finis $aa la satisfaction du client, y compris des &eacute;ventuels travaux de r&eacute;parations ou de remplacement en cas de d&eacute;faut.</p>\n";
+
+			$body .= "</div>\n";
+	//
+		// Entreprise generale/totale
+		$body .= getTitle("Entreprise g&eacute;n&eacute;rale/totale");
+		$body .= "<div>\n";
+
+		$body .= "<ul>\n";
+		$body .= lili("<b>Entreprise g&eacute;n&eacute;rale:</b> r&eacute;alise l'ensemble des travaux selon les plans.");
+		$body .= lili("<b>Entreprise totale:</b> comnme g&eacute;n&eacute;rale, et planfification de projet, peut concevoir des maisons d'architecte.");
+		$body .= "</ul>\n";
+
+		$body .= "<p>La plupart proposent des avant-projets (devis et plans) gratuits.</p>\n";
+
+		$body .= "<p>Quelques crit&egrave;res pour bien choisir son entreprise (come pour un architecte):</p>\n";
+		$body .= "<ul>\n";
+		$body .= lili("qualit&eacute;: pr&eacute;f&eacute;rer un membre de " . getLink("http://aseg.ch"));
+		$body .= lili("r&eacute;flexion: pas de pr&eacute;cipitation, m&ecirc;me s'il y a des pressions de l'entreprise.");
+		$body .= lili("solvabnilit&eacute;: " . getLink("http://aseg.ch") . " OK, sinon demander Office des Poursuites. Les petites entreprises ne peuvent pas toujours assumer l'impr&eacute;vu.");
+		$body .= lili("r&eacute;putation: fuir les mauvaises (demander aux amis, banquier...).");
+		$body .= lili("lamentations: regarder sur les forums, par ex. " . getLink("http://forumconstruire.ch"));
+		$body .= lili("documents: ASEG peut fournir un contrat-type pour 25.-. Si l'entreprise impose son propre document, mandater un sp&eacute;cialiste (architecte/juriste) pour v&eacute;rifier!");
+		$body .= lili("lucidit&eacute;: se faire une id&eacute;e des prix. Les prix d'appel augmentent durant le chantier.");
+		$body .= "</ul>\n";
+
+		//$body .= "<p>Comparer les offres: ";
+
+		$body .= "</div>\n";
 
 
 echo $body;
