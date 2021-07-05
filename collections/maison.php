@@ -1300,6 +1300,13 @@ $body .= "</div>\n";  // framed
 
 		$body .= "</div>\n";
 
+			// Contrats
+			$body .= getTitle("Contrats", 4);
+			$body .= "<p>SIA formulaire 1102</p>\n";
+			$body .= "<p>Doit contenir les d&eacute;tails du mandat, entre autres faire des plans dans les r&egrave;gles de l'art,\n";
+			$body .= "surveiller et respecter le devis, d&eacute;fendre les int&eacute;r&ecirc;ts des clients.\n";
+			$body .= "Peut $etre r&eacute;sili&eacute; en tout temps par chacune des parties, normalement avec dommages et int&eacute;r&ecirc;ts.</p>\n";
+		//
 			// Honoraires
 			$body .= getTitle("Honoraires", 4);
 			$body .= "<div>\n";
@@ -1315,13 +1322,6 @@ $body .= "</div>\n";  // framed
 			$body .= "</ul>\n";
 
 			$body .= "</div>\n";
-		//
-			// Contrats
-			$body .= getTitle("Contrats", 4);
-			$body .= "<p>SIA formulaire 1102</p>\n";
-			$body .= "<p>Doit contenir les d&eacute;tails du mandat, entre autres faire des plans dans les r&egrave;gles de l'art,\n";
-			$body .= "surveiller et respecter le devis, d&eacute;fendre les int&eacute;r&ecirc;ts des clients.\n";
-			$body .= "Peut $etre r&eacute;sili&eacute; en tout temps par chacune des parties, normalement avec dommages et int&eacute;r&ecirc;ts.</p>\n";
 		//
 			// Devis
 			$body .= getTitle("Devis", 4);
@@ -1366,9 +1366,39 @@ $body .= "</div>\n";  // framed
 		$body .= lili("lucidit&eacute;: se faire une id&eacute;e des prix. Les prix d'appel augmentent durant le chantier.");
 		$body .= "</ul>\n";
 
-		//$body .= "<p>Comparer les offres: ";
+		$body .= "<p>Comparer les offres: les meilleurs prix 'oublient' souvent les ext&eacute;rieurs, ou choisissent des mat&eacute;riaux bon $marche de mauvaise $qualite...</p>";
 
 		$body .= "</div>\n";
+
+			// Contrats
+			$body .= getTitle("Contrats", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Pas de cadre l&eacute;gal, mais $generalement faits selon la norme SIA118.\n";
+			$body .= "Exiger qu'il r&eacute;f&eacute;rencie:</p>\n";
+			$body .= "<ul>\n";
+
+			$body .= "<li>descriptif technique d&eacute;taill&eacute;\n";
+			$body .= "(mat&eacute;riaux, &eacute;paisseurs des murs/parois, isolation, fen&ecirc;tres),\n";
+			$body .= "d&eacute;finit pr&eacute;cis&eacute;ment la collaboration et l'ouvrage.</li>\n";
+
+			$body .= "<li>proc&eacute;dure pour les modifications d&eacute;crite pr&eacute;cis&eacute;ment.\n";
+			$body .= "Le $cout des changements &eacute;ventuels doit $etre transparent;\n";
+			$body .= "les modifications ne doivent $etre r&eacute;alis&eacute;es qu'apr&egrave;s signature de l'offre par le ma&icirc;tre d'ouvrage (futur proprio).\n";
+			$body .= "Etablir un avenant &eacute;crit si cela modifie la valeur de l'ouvrage.</li>\n";
+
+			$body .= lili("le chef du chantier doit $etre formellement nomm&eacute;.");
+
+			$body .= "<li>La date de r&eacute;ception de la maison.\n";
+			$body .= "(Une bonne entreprise respecte le d&eacute;lai y compris avec des impr&eacute;vus.)\n";
+			$body .= "On peut pr&eacute;voir dans le contrat le versement d'une indemnit&eacute; journali&egrave;re.</li>\n";
+
+			$body .= lili("le plan de financement qui garantit que si l'entrepreneur fait faillite, les prestations pay&eacute;es seront bien fournies.");
+
+			$body .= "</ul>\n";
+
+			$body .= "</div>\n";
+
 
 
 echo $body;
