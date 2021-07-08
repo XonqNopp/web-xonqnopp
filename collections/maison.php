@@ -1300,15 +1300,15 @@ $body .= "</div>\n";  // framed
 
 		$body .= "</div>\n";
 
-			// Contrats
-			$body .= getTitle("Contrats", 4);
+			// Contrats de l architecte
+			$body .= getTitle("Contrats de l'architecte", 4);
 			$body .= "<p>SIA formulaire 1102</p>\n";
 			$body .= "<p>Doit contenir les d&eacute;tails du mandat, entre autres faire des plans dans les r&egrave;gles de l'art,\n";
 			$body .= "surveiller et respecter le devis, d&eacute;fendre les int&eacute;r&ecirc;ts des clients.\n";
 			$body .= "Peut $etre r&eacute;sili&eacute; en tout temps par chacune des parties, normalement avec dommages et int&eacute;r&ecirc;ts.</p>\n";
 		//
-			// Honoraires
-			$body .= getTitle("Honoraires", 4);
+			// Honoraires de l'architecte
+			$body .= getTitle("Honoraires de l'architecte", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>SIA 102</p>\n";
@@ -1370,8 +1370,8 @@ $body .= "</div>\n";  // framed
 
 		$body .= "</div>\n";
 
-			// Contrats
-			$body .= getTitle("Contrats", 4);
+			// Contrats de l entrepreneur
+			$body .= getTitle("Contrats de l'entrepreneur", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Pas de cadre l&eacute;gal, mais $generalement faits selon la norme SIA118.\n";
@@ -1395,9 +1395,61 @@ $body .= "</div>\n";  // framed
 
 			$body .= lili("le plan de financement qui garantit que si l'entrepreneur fait faillite, les prestations pay&eacute;es seront bien fournies.");
 
+			$body .= "<li>la garantie d'ex&eacute;cution qui assure les d&eacute;dommagements si pendant les travaux l'entreprise\n";
+			$body .= "ne peut pas fournir les prestations convenues (garantie par banque/assurance).</li>\n";
+
+			$body .= "<li>la garantie pour les d&eacute;fauts occasionn&eacute;s par les sous-traitans de l'entrepreneur.\n";
+			$body .= "Les d&eacute;fauts doivent $etre r&eacute;clam&eacute;s au maximum dans les 2 ans suivant la r&eacute;c&eacute;ption\n";
+			$body .= "(pour les vices cach&eacute;s, max 5 ans apr&egrave;s la r&eacute;c&eacute;ption).</li>\n";
+
+			$body .= "<li>le prix, les modalit&eacute;s de paiement &eacute;chelonn&eacute; selon l'avancement des travaux.\n";
+			$body .= "Attention: ne pas accepter une clause qui interdit de retenir la derni&egrave;re tranche en cas de d&eacute;faut!</li>\n";
+
+			$body .= lili("la RC de l'entreprise (dommages aux personnes et aux choses, dommages et vices de construction).");
+
 			$body .= "</ul>\n";
 
+			$body .= "<p>Bien lire et relire, demander aussi $aa un sp&eacute;cialiste avant de signer.\n";
+			$body .= "Aussi valable pour le contrat d'architecte.</p>\n";  // TODO move to appropriate location
+
 			$body .= "</div>\n";
+		//
+			// Hypothese legale
+			$body .= getTitle("Hypoth&egrave;se l&eacute;gale", 4);
+			$body .= "<div>\n";
+
+			$body .= "<p>Si l'entrepreneur ne peut plus payer les artisans, le $proprio doit les payer.\n";
+			$body .= "Les artisans peuvent demander l'$hyp l&eacute;gale, le droit au gage sur l'ouvrage.\n";
+			$body .= "Cela sert $aa rembourser le mat&eacute;riel et les heures.\n";
+			$body .= "Elle est soumise $aa des r&egrave;gles strictes:</p>\n";
+			$body .= "<ul>\n";
+			$body .= lili("r&eacute;serv&eacute;e aux ma&icirc;tres d'&eacute;tats ind&eacute;pendants qui ont directement travaill&eacute; sur le chantier");
+			$body .= lili("le mat&eacute;riel fourni doit avoir $ete fait sur mesure");
+			$body .= lili("au maximum 4 ans apr&egrave;s le travail");
+			$body .= "</ul>\n";
+
+			$body .= "<p>En cas de d&eacute;saccord, il faut rencontrer un juge pour une inscription provisoire au $RF, m&eacute;diation etc.\n";
+			$body .= "Si pas d'entente, le $proprio doit payer encore.\n";
+			$body .= "Si pas possible, poursuites et vente de la maison!</p>\n";
+
+			$body .= "</div>\n";
+		//
+			// Honoraires
+			$body .= getTitle("Honoraires de l'entrepreneur", 4);
+			$body .= "<div>\n";
+			$body .= "<ul>\n";
+			$body .= lili("forfait");
+			$body .= lili("prix total: comme un forfait, mais varie selon l'&eacute;volution des prix");
+			$body .= lili("prix unitaire: d&eacute;termin&eacute; selon les unit&eacute;s n&eacute;cessaires, fix&eacute; apr&egrave;s les travaux");
+			$body .= lili("prix effectif: devis approximatif, prix apr&egrave;s les travaux");
+			$body .= "</ul>\n";
+			$body .= "</div>\n";
+	//
+		// Architecte vs Entrepreneur
+		$body .= getTitle("Architecte vs Entrepreneur");
+		$body .= "<div>\n";
+
+		$body .= "</div>\n";
 
 
 
