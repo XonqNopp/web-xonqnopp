@@ -168,6 +168,9 @@ $body .= getLink("http://aber.ch", True);
 $body .= getLink("http://lamaisonnature.ch", True);
 $body .= getLink("http://aseg.ch", True);
 $body .= getLink("http://forumconstruire.ch", True);
+$body .= getLink("http://focore.ch", True);
+$body .= getLink("http://bauteilclick.com", True);
+$body .= getLink("http://vd.ch/boum", True);
 //$body .= getLink("http://", True);
 $body .= "</div>\n";  // cell
 
@@ -1448,6 +1451,54 @@ $body .= "</div>\n";  // framed
 		// Architecte vs Entrepreneur
 		$body .= getTitle("Architecte vs Entrepreneur");
 		$body .= "<div>\n";
+
+		$body .= "<p>Quelques diff&eacute;rences si l'on compare la construction avec un architecte plut&ocirc;t qu'avec un entrepreneur:</p>\n";
+		$body .= "<ul>\n";
+
+		$body .= lili("<b>Libert&eacute;:</b>parfois aussi avec un entrepreneur, mais souvent les changements de plans sont tr&egrave;s co&ucirc;teux.");
+		$body .= lili("<b>Choix des mat&eacute;riaux et artisans:</b> pas possible avec un entrepreneur, ce qui fait un risque d'$hyp l&eacute;gale.");
+		$body .= lili("Le projet est unique, les erreurs sont possibles et il y a de multiples interlocuteurs.");
+		$body .= lili("Les co&ucirc;ts sont variables.");
+		$body .= lili("Les d&eacute;lais seront d&eacute;pass&eacute;s.");
+		$body .= lili("L'avant-projet est payant.");
+		$body .= lili("Chaque artisan a un contrat.");
+
+		$body .= "</ul>\n";
+		$body .= "</div>\n";
+	//
+		// SUivi du chantier
+		$body .= getTitle("Suivi du chantier");
+		$body .= "<p>L'interlocuteur est le chef de chantier.\n";
+		$body .= "C'est lui qui s'occupe de signaler les problm&egrave;mes, demander les changements, etc.\n";
+		$body .= "Le $proprio doit aussi suivre de pr&egrave;s.\n";
+		$body .= "En cas de probl&egrave;me, prendre des notes et des photos et aviser l'entrepreneur par ecrit.\n";
+		$body .= "Amener de temps en temps une collation aux ouvriers aide $aa faire avancer les travaux dans le bon sens et dans les d&eacute;lais.\n";
+		$body .= "Venir voir le chantier $aa des heures irr&eacute;guli&egrave;res permet de rep&eacute;rer les fain&eacute;ants.\n";
+		$body .= "Il faut signaler les irr&eacute;gularit&eacute;s (alcool, d&eacute;chets, feux...).\n";
+		$body .= "On peut demander des modifications au r&egrave;glement de chantier, par exemple qu'il soit interdit de fumer dans la maison d&egrave;s qu'elle est \"hors d'eau\"</p>\n";
+	//
+		// Reduire les couts
+		$body .= getTitle("R&eacute;duire les co&ucirc;ts");
+		$body .= "<div>\n";
+
+		$body .= "<p>Il est toujours difficile de faire co&iuml;ncider les d&eacute;sirs avec le budget...<p/>\n";
+
+		$body .= "<ul>\n";
+
+		$body .= "<li>Utiliser des mat&eacute;riaux moins cher et des finitions plus simples.\n";
+		$body .= "<b>MAIS</b> pas pour tout! Certaines choses m&eacute;ritent la meilleure qualit&eacute; (robinets, parquet...).</li>\n";
+
+		$body .= "<li>Reporter (voire renoncer) $aa certaines choses pas essentielles (chemin goudronn&eacute;, mur de sout&egrave;nement en pierres...).\n";
+		$body .= "<b>MAIS</b> pr&eacute;voir les futurs travaux:\n";
+		$body .= "<ul>\n";
+		$body .= lili("si terrasse plus tard, aplanir, tasser, c&acirc;bler");
+		$body .= lili("pr&eacute;voir la tuyauterie et le lieu pour un aspirateur central avec un une sortie dans chaque pi&egrave;ce et une $aa l'ext&eacute;rieur (par ex. garage)");
+		$body .= lili("pour une piscine, prendre une pompe $aa chaleur qui peut chauffer l'eau");
+		$body .= lili("si installation &eacute;lectrique sur la terrasse (store), pr&eacute;voir les tubes pour les c&acirc;bles");
+		$body .= "</ul>\n";
+		$body .= "</li>\n";
+
+		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
 
