@@ -1,10 +1,7 @@
 <?php
-/*** Created: Mon 2014-12-01 09:31:30 CET
- ***
- *** TODO:
- *** * generally 4-seat plane
- ***
- ***/
+/*
+ * TODO:
+ */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
@@ -44,8 +41,9 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<h2>Informations</h2>\n";
 		$contents .= "<div>\n";
 		$contents .= "<ul>\n";
+		$contents .= "<li>COVID-19: vaccin&eacute;, 2e dose juillet 2021</li>\n";
 		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">Mes photos</a> et sur $ig</li>\n";
-		$contents .= "<li>Promenade habituelle 1h-1h30; on peut atterrir ailleurs pour manger/boire un verre mais contacte-moi directement.</li>\n";
+		$contents .= "<li>Promenade habituelle 1h-1h30 moi et 3 passagers; on peut atterrir ailleurs pour manger/boire un verre mais contacte-moi directement.</li>\n";
 		//$contents .= "<li>Enfants de moins de 12 ans comptent comme un demi passager si on peut en attacher 2 ensembles sur le m&ecirc;me si&egrave;ge.</li>\n";
 		$contents .= "<li>Compter vol+1h pour pr&eacute;paration sans stress.</li>\n";
 		$contents .= "<li>D&eacute;part:\n";
@@ -123,8 +121,9 @@ if($page->CheckSessionLang($page->GetFrench())) {
 		$contents .= "<h2>Informations</h2>\n";
 		$contents .= "<div>\n";
 		$contents .= "<ul>\n";
+		$contents .= "<li>COVID-19: vaccinated, 2nd dose July 2021</li>\n";
 		$contents .= "<li><a target=\"_blank\" href=\"$albumURL\">My pictures</a> and on $ig</li>\n";
-		$contents .= "<li>Usual tour 1h-1h30; possible to land somewhere else to eat/drink something but contact me.</li>\n";
+		$contents .= "<li>Usual tour 1h-1h30 me with 3 passengers; possible to land somewhere else to eat/drink something but contact me.</li>\n";
 		//$contents .= "<li>Children below 12 years old account as a half passenger if we can use the same seat belt for both.</li>\n";
 		$contents .= "<li>Plan flight+1h to be ready without time constraints.</li>\n";
 		$contents .= "<li>Departure:\n";
