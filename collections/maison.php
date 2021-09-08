@@ -170,22 +170,21 @@ if($page->UserIsAdmin()) {
 	$body .= getLink("http://lieudevie.ch", True);
 	$body .= getLink("http://lignum.ch", True);
 	$body .= getLink("http://cedotec.ch", True);
-	$body .= getLink("http://maison-et-bois", True);
-	$body .= getLink("http://lecourrierdubois.be", True);
-	$body .= getLink("http://schweizerholzbau.ch", True);
+	$body .= getLink("http://maison-et-bois.com", True);
+	//$body .= getLink("http://lecourrierdubois.be", True);
+	//$body .= getLink("http://schweizerholzbau.ch", True);
 	$body .= "</div>\n";  // cell
 
 	$body .= "<div class=\"csstab64_cell\">\n";
-	$body .= getLink("http://journal-suisse-du-bois.ch", True);
+	//$body .= getLink("http://journal-suisse-du-bois.ch", True);
 	$body .= getLink("http://salonbois.ch", True);
-	$body .= getLink("http://domespace.ch", True);
+	$body .= getLink("http://domespace.wixsite.com/domespace", True);
 	$body .= getLink("http://aber.ch", True);
 	$body .= getLink("http://lamaisonnature.ch", True);
-	$body .= getLink("http://aseg.ch", True);
+	//$body .= getLink("http://aseg.ch", True);
 	$body .= getLink("http://forumconstruire.ch", True);
-	$body .= getLink("http://focore.ch", True);
 	$body .= getLink("http://bauteilclick.com", True);
-	$body .= getLink("http://vd.ch/boum", True);
+	$body .= getLink("http://vd.ch/boume", True);
 	$body .= getLink("http://registre-foncier.ch", True);
 	$body .= getLink("http://infomaison.ch", True);
 	$body .= "</div>\n";  // cell
@@ -1389,9 +1388,9 @@ if($page->UserIsAdmin()) {
 
 		$body .= "<p>Quelques crit&egrave;res pour bien choisir son entreprise (come pour un architecte):</p>\n";
 		$body .= "<ul>\n";
-		$body .= lili("qualit&eacute;: pr&eacute;f&eacute;rer un membre de " . getLink("http://aseg.ch"));
+		$body .= lili("qualit&eacute;: pr&eacute;f&eacute;rer un membre de ASEG");
 		$body .= lili("r&eacute;flexion: pas de pr&eacute;cipitation, m&ecirc;me s'il y a des pressions de l'entreprise.");
-		$body .= lili("solvabnilit&eacute;: " . getLink("http://aseg.ch") . " OK, sinon demander Office des Poursuites. Les petites entreprises ne peuvent pas toujours assumer l'impr&eacute;vu.");
+		$body .= lili("solvabnilit&eacute;: ASEG OK, sinon demander Office des Poursuites. Les petites entreprises ne peuvent pas toujours assumer l'impr&eacute;vu.");
 		$body .= lili("r&eacute;putation: fuir les mauvaises (demander aux amis, banquier...).");
 		$body .= lili("lamentations: regarder sur les forums, par ex. " . getLink("http://forumconstruire.ch"));
 		$body .= lili("documents: ASEG peut fournir un contrat-type pour 25.-. Si l'entreprise impose son propre document, mandater un sp&eacute;cialiste (architecte/juriste) pour v&eacute;rifier!");
@@ -1538,7 +1537,7 @@ if($page->UserIsAdmin()) {
 		$body .= "Mais ce n'est pas une pratique courante.</li>\n";
 
 		$body .= lili("Eviter le luxe: sauna/jaccuzzi 10$kchf utilis&eacute; qu'au d&eacute;but; piscine 50$kchf, entretien cher");
-		$body .= lili("Bourse aux mat&eacute;riaux d'excavations " . getLink("http://vd.ch/boum"));
+		$body .= lili("Bourse aux mat&eacute;riaux d'excavations " . getLink("http://vd.ch/boume"));
 
 		$body .= "</ul>\n";
 
