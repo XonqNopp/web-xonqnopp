@@ -5,23 +5,24 @@ $funcpath = "$rootPath/functions";
 require("preparations.php");
 $page = new PhPage($rootPath);
 //$page->initDB();
-//// debug
+// debug
 //$page->initHTML();
 //$page->LogLevelUp(6);
-//// CSS paths
+// CSS paths
 $page->CSS_ppJump();
 //$page->CSS_ppWing();
-//// init body
+// init body
 $body = "";
 
 
 //$skybriefingLogin .= "<tt>lsge0927@hotmail.com</tt><br /><tt>LSge0927</tt>";
 
 
-//// GoHome
+// GoHome
+use stdClass;
 $gohome = new stdClass();
 $body .= $page->GoHome($gohome);
-//// Set title and hot booty
+// Set title and hot booty
 $body .= $page->SetTitle("LSGE: Ecuvillens");// before HotBooty
 $page->HotBooty();
 
@@ -34,7 +35,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 
-		$body .= "<li><a target=\"_blank\" href=\"http://www.resnet.ch/LSGE/index.asp\">LSGE resair</a></li>\n";
+		$body .= "<li><a target=\"_blank\" href=\"http://www.resair.ch/LSGE/index.asp\">LSGE resair</a></li>\n";
 
 		$body .= "<li><a target=\"_blank\" href=\"http://lsge-flights.azurewebsites.net/LSGE_Login.aspx\">LSGE avis</a>";
 		if($page->UserIsAdmin()) {
@@ -87,11 +88,14 @@ $body .= "</div>\n";
 	$body .= "<div class=\"wide\">\n";
 
 	$body .= "<a target=\"_blank\" href=\"https://montgibloux.roundshot.com/\">\n";
-	$body .= "WebCam Gibloux 4000ft\n";
+	$body .= "WebCam Gibloux 4348ft\n";
 	$body .= "- La Berra 5600ft 6NM\n";
 	$body .= "- Bulle 3NM\n";
 	$body .= "- Mol&eacute;son 6600ft 8NM\n";
 	$body .= "</a>\n";
+
+	$body .= "<br/>\n";
+	$body .= "Depuis LSGE: Neyruz 1.5km, Arconciel 3.5km, Villars-sur-Glane 5.0km, Gibloux 8.3km.\n";
 
 	$body .= "</div>\n";
 
@@ -99,7 +103,7 @@ $body .= "</div>\n";
 $body .= "<div>&nbsp;</div>\n";
 
 
-//// Finish
+// Finish
 echo $body;
 unset($page);
 ?>

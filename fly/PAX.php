@@ -1,7 +1,4 @@
 <?php
-/*
- * TODO:
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
@@ -25,6 +22,8 @@ $ig = "instagram <a target=\"_blank\" href=\"https://www.instagram.com/xonqnopp/
 
 $body = "";
 $contents = "";
+
+use stdClass;
 $gohome = new stdClass();
 $gohome->rootpage = "..";
 $body .= "<div class=\"wide\">\n";

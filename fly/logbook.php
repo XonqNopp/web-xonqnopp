@@ -1,10 +1,4 @@
 <?php
-/* Created: Thu 2014-05-08 10:26:07 CEST
- * Previous major version in revision 416
- *
- * TODO:
- *
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
@@ -13,6 +7,8 @@ $page->InitDB();
 $page->js_Form();
 //$page->initHTML();
 //$page->LogLevelUp(6);
+
+use stdClass;
 
 
 function displaySQLtime($page, $item) {

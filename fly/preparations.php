@@ -29,7 +29,7 @@ function commonPreparations($userIsAdmin, $miscInit) {
 	$wetterklima = "<li><a target=\"_blank\" href=\"http://www.wetterklima.de/flug/swc.htm\">more weather links</a></li>\n";
 	$noaa = "<li><a target=\"_blank\" href=\"http://weather.noaa.gov/pub/fax/PGDE14.PNG\">NOAA.gov</a></li>\n";
 
-	//// CH map
+	// CH map
 	$mapCH  = "<li>";
 	$mapCH .= "<a target=\"_blank\" href=\"";
 	$mapCH .= "http://map.geo.admin.ch/?";

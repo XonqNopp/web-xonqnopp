@@ -1,17 +1,12 @@
 <?php
-/*** Created: Thu 2014-05-01 07:47:18 CEST
- ***
- *** TODO:
- *** * subpages for LSGE and LSGS with associated webcams and pics and links
- ***
- ***/
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->LogLevelUp(6);
-$page->initDB();
+//$page->initDB();
 require("preparations.php");
+use stdClass;
 
 $args = new stdClass();
 $args->redirect = "";
@@ -47,8 +42,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 	$body .= "<div class=\"csstab64_cell half\">\n";
 		$body .= "<ul>\n";
 		// nav
-		$navcount = $page->DB_GetCount("NavList");
-		$body .= "<li><a href=\"NavList.php\">my navigations</a>&nbsp;($navcount)</li>\n";
+		$body .= "<li><a href=\"NavList.php\">my navigations</a></li>\n";
 		// PDF
 		$body .= "<li><a href=\"pdf\">my PDF/checklists</a></li>\n";
 		$body .= "<li><a href=\"computer.php\">computer</a></li>\n";

@@ -156,31 +156,6 @@ div.PAX {
 	padding: 1em;
 }
 
-span.doodle {
-	padding: 0.2em 0.33em;
-}
-
-/*ul.doodle*/
-li {
-	margin: 0.42em 0;
-}
-
-span.yes {
-	background-color: #d1f3d1;
-}
-
-span.ifneedbe {
-	background-color: #ffeda1;
-}
-
-span.no {
-	background-color: #ffccca;
-}
-
-span.doodle img {
-	vertical-align: middle;
-}
-
 p.subnote {
 	border: dotted 3px #009900;
 	background-color: #ffee00;
@@ -275,6 +250,10 @@ td.GCmid {
 
 td.GCmax {
 	border-top: none;
+}
+
+.redBG {
+	background-color: red;
 }
 
 div.FuelCons,

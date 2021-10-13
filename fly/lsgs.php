@@ -5,21 +5,22 @@ $funcpath = "$rootPath/functions";
 require("preparations.php");
 $page = new PhPage($rootPath);
 //$page->initDB();
-//// debug
+// debug
 //$page->initHTML();
 //$page->LogLevelUp(6);
-//// CSS paths
+// CSS paths
 $page->CSS_ppJump();
 //$page->CSS_ppWing();
-//// init body
+// init body
 $body = "";
 
 
 
-//// GoHome
+// GoHome
+use stdClass;
 $gohome = new stdClass();
 $body .= $page->GoHome($gohome);
-//// Set title and hot booty
+// Set title and hot booty
 $body .= $page->SetTitle("LSGS: Sion");// before HotBooty
 $page->HotBooty();
 
@@ -31,7 +32,7 @@ $body .= "<div class=\"csstab64_row\">\n";
 		// Infos
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.resnet.ch/LSGS-GVM/index.asp\">LSGS-GVM resair</a>";
+		$body .= "<li><a target=\"_blank\" href=\"http://www.resair.ch/LSGS-GVM/index.asp\">LSGS-GVM resair</a>";
 		if($page->UserIsAdmin()) {
 			$body .= ":&nbsp;<tt>" . $page->miscInit->lsgsLogin . "</tt>";
 		}
@@ -105,7 +106,7 @@ $body .= "</div>\n";
 $body .= "<div>&nbsp;</div>\n";
 
 
-//// Finish
+// Finish
 echo $body;
 unset($page);
 ?>

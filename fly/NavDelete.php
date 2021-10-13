@@ -1,9 +1,8 @@
 <?php
-/* TODO:
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
+require("common.php");
 $page = new PhPage($rootPath);
 $page->NotAllowed();
 $page->initDB();
@@ -14,6 +13,9 @@ $page->initDB();
 $page->CSS_ppJump();
 $page->CSS_ppWing();
 $page->js_Form();
+
+use stdClass;
+
 // init body
 $body = "";
 
@@ -21,12 +23,9 @@ $body = "";
 if(isset($_POST["erase"])) {
 	$navID = $_POST["navID"];
 
-	$sql = $page->DB_IdManage("DELETE FROM `{$page->ddb->DBname}`.`NavWaypoints` WHERE `NavWaypoints`.`NavID` = ?;", $navID);
+	$page->DB_QueryDelete("NavWaypoints", $navID);
 
-	$filename = "nav/nav" . sprintf("%06d", $navID);
-	if(file_exists("$filename.pdf")) {
-		unlink("$filename.pdf");
-	}
+	deleteNavPdfFile($navID);
 
 	$page->HeaderLocation("NavDetails.php?id=$navID");
 }
@@ -50,12 +49,11 @@ if($tot == 0) {
 }
 
 // Prepare nav variables
-$filename = "nav/nav" . sprintf("%06d", $navID);
+$filename = getNavFilename($navID);
 $nav = $page->DB_IdManage("SELECT `name` FROM `NavList` WHERE `NavList`.`id` = ?", $navID);
-$nav->bind_result($name);
+$nav->bind_result($htmlName);
 $nav->fetch();
 $nav->close();
-$htmlName = preg_replace("/ SKIP/", ",", $name);
 $title = "DELETE WP: $htmlName";
 
 

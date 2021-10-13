@@ -1,10 +1,11 @@
 <?php
-/* TODO:
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
+
+use stdClass;
+
 // debug
 //$page->initHTML();
 //$page->LogLevelUp(6);
@@ -45,8 +46,8 @@ function densityAltitude($pressureAltitude, $oat) {
 	$gradient = -2;  // [K/1000ft]
 	$factor = 120;  // [ft/K]
 
-	$Tisa = $referenceT + $gradient * ($pressureAltitude / 1000.0);
-	$delta = $oat - $Tisa;
+	$tISA = $referenceT + $gradient * ($pressureAltitude / 1000.0);
+	$delta = $oat - $tISA;
 	return ceil($pressureAltitude + $factor * $delta);
 }
 
@@ -365,7 +366,7 @@ if($table != "") {
 
 $body .= $table;
 
-//// Finish
+// Finish
 echo $body;
 unset($page);
 ?>

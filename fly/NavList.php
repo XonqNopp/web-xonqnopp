@@ -1,10 +1,8 @@
 <?php
-/*** Created: Wed 2015-07-08 11:05:39 CEST
- * TODO:
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
+require("common.php");
 $page = new PhPage($rootPath);
 $page->initDB();
 //$page->initHTML();
@@ -16,13 +14,14 @@ $GI = $page->UserIsAdmin();
 
 $navcount = $page->DB_GetCount("NavList");
 
+use stdClass;
 $gohome = new stdClass();
 $gohome->rootpage = "..";
 $body .= $page->GoHome($gohome);
 $body .= $page->SetTitle("Navigations ($navcount)");// before HotBooty
 $page->HotBooty();
-//
-	//// planes (preparation, output comes later)
+
+	// planes (preparation, output comes later)
 	$PlaneOrder = array("PlaneID");
 	$planes = $page->DB_SelectAll("aircrafts", $PlaneOrder);
 	$Nplanes = $page->DB_GetCount("aircrafts");
@@ -41,24 +40,18 @@ $page->HotBooty();
 			$bp .= "<div class=\"csstab64_cell\">\n";
 		}
 		$id = $p->id;
-		$PlaneID = $p->PlaneID;
-		$PlaneType = $p->PlaneType;
-		$PlanningSpeed = $p->PlanningSpeed;
-		$DryMass = $p->DryMass;
-		$DryMassUnit = $p->DryMassUnit;
-		$MTOW = $p->MTOW;
-		$payload = $MTOW - $DryMass;
-		if($DryMassUnit == "lbs") {
+		$payload = $p->MTOW - $p->DryMass;
+		if($p->DryMassUnit == "lbs") {
 			$payload = floor($payload / 2.2);
 		}
-		$AllPlanes[$id] = $PlaneID;
+		$AllPlanes[$id] = $p->PlaneID;
 		$bp .= "<div>\n";
 		if($GI) {
 			$bp .= "<span class=\"edit\">\n";
-			$bp .= "<a href=\"NavPlane.php?id=$id\" title=\"edit $PlaneID\">edit</a>\n";
+			$bp .= "<a href=\"NavPlane.php?id=$id\" title=\"edit {$p->PlaneID}\">edit</a>\n";
 			$bp .= "</span>\n";
 		}
-		$bp .= "$PlaneID: $PlaneType {$PlanningSpeed}kts, payload {$payload}kg\n";
+		$bp .= "{$p->PlaneID}: {$p->PlaneType} {$p->PlanningSpeed}kts, payload {$p->payload}kg\n";
 		$bp .= "</div>\n";
 	}
 	$bp .= "</div>\n";
@@ -66,7 +59,7 @@ $page->HotBooty();
 	$bp .= "</div>\n";
 	$planes->close();
 //
-//// Navigations
+// Navigations
 $NavOrders = array("name", "plane", "id");
 $nav = $page->DB_SelectAll("NavList", $NavOrders);
 $width = 2;
@@ -99,8 +92,6 @@ while($item = $nav->fetch_object()) {
 		$body .= "</div>\n";
 		$body .= "<div class=\"csstab64_cell\">\n";
 	}
-	$id = $item->id;
-	$name = preg_replace("/ SKIP/", ",", $item->name);
 	$plane = "";
 	if($item->plane > 0) {
 		$plane = $AllPlanes[$item->plane];
@@ -108,21 +99,21 @@ while($item = $nav->fetch_object()) {
 	$body .= "<div>\n";
 	if($GI) {
 		$body .= "<span class=\"edit\">\n";
-		$body .= "<a href=\"NavNew.php?id=$id\" title=\"edit $name\">edit</a>\n";
+		$body .= "<a href=\"NavNew.php?id={$item->id}\" title=\"edit {$item->name}\">edit</a>\n";
 		$body .= "</span>\n";
 	}
-	$body .= "<a href=\"NavDetails.php?id=$id\" title=\"$name\">\n";
-	$body .= "$name";
+	$body .= "<a href=\"NavDetails.php?id={$item->id}\" title=\"{$item->name}\">\n";
+	$body .= "{$item->name}";
 	if($plane != "") {
 		$body .= " ($plane)";
 	}
 	$body .= "\n";
 	$body .= "</a>\n";
-	$filename = "nav/nav" . sprintf("%06d", $id);
+	$filename = getNavFilename($item->id);
 	if(file_exists("$filename.pdf")) {
 		$body .= "&nbsp;\n";
 		$body .= "<span class=\"edit\">\n";
-		$body .= "<a href=\"$filename.pdf\" title=\"$name PDF\">PDF</a>\n";
+		$body .= "<a href=\"$filename.pdf\" title=\"{$item->name} PDF\">PDF</a>\n";
 		$body .= "</span>\n";
 	}
 	$body .= "</div>\n";

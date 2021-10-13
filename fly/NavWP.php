@@ -1,11 +1,8 @@
 <?php
-/*** Created: Wed 2015-07-15 17:38:34 CEST
- * TODO:
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
-require("NavFunctions.php");
+require("common.php");
 $page = new PhPage($rootPath);
 $page->NotAllowed();
 $page->initDB();
@@ -16,262 +13,300 @@ $page->initDB();
 $page->CSS_ppJump();
 $page->CSS_ppWing();
 $page->js_Form();
+
+use stdClass;
+
 $body = "";
 
+
+// Make a DB query to select something with matching NavID
+//
+// Args:
+//     query (str)
+//     sqlData (DbDataArray): to use type and value of NavID
+//
+// Returns:
+//     result of the query
+function dbSelectNavID($page, $query, $sqlData) {
+	$sqlQuery = $page->DB_QueryPrepare($query);
+	$sqlQuery->bind_param($sqlData->fields["NavID"]->type, $sqlData->get("NavID"));
+	$page->DB_ExecuteManage($sqlQuery);
+
+	$result = NULL;
+	$sqlQuery->bind_result($result);
+	$sqlQuery->fetch();
+	$sqlQuery->close();
+
+	return $result;
+}
+
+
 $page_title = "Insert new waypoint";
-$id = 0;
-$NavID = 0;
-$WPnum = 0;
-$waypoint = "";
-$TC = 0;
-$distance = 0;
-$altitude = 0;
-$windTC = 0;
-$windSpeed = 0;
-$notes = "";
-$climbing = 0;
+
+$TABLE = "NavWaypoints";
+
+$sqlData = new DbDataArray();
+$sqlData->addField("id", 0, "i");
+$sqlData->addField("NavID", 0, "i");
+$sqlData->addField("WPnum", 0, "i");
+$sqlData->addField("waypoint", "", "s");
+$sqlData->addField("TC", 0, "i");
+$sqlData->addField("distance", 0, "i");
+$sqlData->addField("altitude", 0, "i");
+$sqlData->addField("windTC", 0, "i");
+$sqlData->addField("windSpeed", 0, "i");
+$sqlData->addField("notes", "", "s");
+$sqlData->addField("climbing", 0, "i");
+
+
+if(isset($_POST["erase"]) || isset($_POST["submit"])) {
+	$sqlData->setDataValuesFromPost($page);
+}
 
 if(isset($_POST["erase"])) {
-	//// delete entry
+	// delete entry
 	$id = $_POST["id"];
-	$getNav = $page->DB_IdManage("SELECT `NavID` FROM `{$page->ddb->DBname}`.`NavWaypoints` WHERE `NavWaypoints`.`id` = ?", $id);
+
+	// Get the Nav ID to go back to the correct page
+	$getNav = $page->DB_IdManage("SELECT `NavID` FROM `{$page->ddb->DBname}`.`$TABLE` WHERE `$TABLE`.`id` = ?", $id);
 	$getNav->bind_result($NavID);
 	$getNav->fetch();
 	$getNav->close();
-	$sql = $page->DB_IdManage("DELETE FROM `{$page->ddb->DBname}`.`NavWaypoints` WHERE `NavWaypoints`.`id` = ? LIMIT 1;", $id);
-	$filename = "nav/nav" . sprintf("%06d", $NavID);
-	if(file_exists("$filename.pdf")) {
-		unlink("$filename.pdf");
-	}
+
+	$page->DB_QueryDelete($TABLE, $id);
+
+	// Delete PDF of nav as it is out of date
+	deletaNavPdfFile($NavID);
+
+	// Go back to nav page
 	$page->HeaderLocation("NavDetails.php?id={$_POST["NavID"]}");
+
 } elseif(isset($_POST["submit"])) {
-	//// DB handling
-	$NavID = $_POST["NavID"];
-	$WPnum = $_POST["WPnum"];
-	$waypoint = $page->field2SQL($_POST["waypoint"]);
-	$TC = $_POST["TC"];
-	$distance = $_POST["distance"];
-	$altitude = $_POST["altitude"];
-	$windTC = $_POST["windTC"];
-	$windSpeed = $_POST["windSpeed"];
-	$notes = $page->field2SQL($_POST["notes"]);
-	$climbing = $_POST["climbing"];
-	$filename = "nav/nav" . sprintf("%06d", $NavID);
-	if(isset($_POST["id"])) {
-		//// update
-		$id = $_POST["id"];
-		//// check no different waypoint with same WPnum and NavID
-		$check = $page->DB_QueryPrepare("SELECT COUNT(*) AS `tot` FROM `NavWaypoints` WHERE `NavID` = ? AND `WPnum` = ? AND `id` <> ?");
-		$check->bind_param("iii", $NavID, $WPnum, $id);
-		$page->DB_ExecuteManage($check);
-		$check->bind_result($tot);
-		$check->fetch();
-		$check->close();
-		if($tot > 0) {
-			$page->NewError("WPnum $WPnum already exists for Nav #$NavID");
+	// DB handling
+	// check no different waypoint with same WPnum and NavID
+	$matchingFields = array("NavID", "WPnum");
+	$params = "";
+	$query = "SELECT COUNT(*) AS `tot` FROM `$TABLE` WHERE";
+	$bindParams = array();
+	$first = true;
+	foreach($matchingFields as $field) {
+		if($first) {
+			$first = false;
 		} else {
-			$query = "UPDATE `{$page->ddb->DBname}`.`NavWaypoints` SET ";
-			$query .= "`WPnum` = ?, `waypoint` = ?, `TC` = ?, `distance` = ?, `altitude` = ?, `windTC` = ?, `windSpeed` = ?, `notes` = ?, `climbing` = ?";
-			$query .= " WHERE `NavWaypoints`.`id` = ? LIMIT 1;";
-			$sql = $page->DB_QueryPrepare($query);
-			$sql->bind_param("isiiiiisii", $WPnum, $waypoint, $TC, $distance, $altitude, $windTC, $windSpeed, $notes, $climbing, $id);
-			$page->DB_ExecuteManage($sql);
-			if(file_exists("$filename.pdf")) {
-				unlink("$filename.pdf");
-			}
-			$page->HeaderLocation("NavDetails.php?id=$NavID#WP$WPnum");
+			$query .= " AND";
 		}
-	} else {
-		//// insert
-		//// check no waypoint with same WPnum and NavID
-		$check = $page->DB_QueryPrepare("SELECT COUNT(*) AS `tot` FROM `NavWaypoints` WHERE `NavID` = ? AND `WPnum` = ?");
-		$check->bind_param("ii", $NavID, $WPnum);
-		$page->DB_ExecuteManage($check);
-		$check->bind_result($tot);
-		$check->fetch();
-		$check->close();
-		if($tot > 0) {
-			$page->NewError("WPnum $WPnum already exists for Nav #$NavID");
-		} else {
-			$query = "INSERT INTO `{$page->ddb->DBname}`.`NavWaypoints` (`NavID`, `WPnum`, `waypoint`, `TC`, `distance`, `altitude`, `windTC`, `windSpeed`, `notes`, `climbing`) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			$sql = $page->DB_QueryPrepare($query);
-			$sql->bind_param("iisiiiiisi", $NavID, $WPnum, $waypoint, $TC, $distance, $altitude, $windTC, $windSpeed, $notes, $climbing);
-			$page->DB_ExecuteManage($sql);
-			$id = $sql->insert_id;
-			if(file_exists("$filename.pdf")) {
-				unlink("$filename.pdf");
-			}
-			$page->HeaderLocation("NavDetails.php?id=$NavID#WP$WPnum");
-		}
+
+		$query .= " `$field` = ?";
+		$params .= $sqlData->fields[$field]->type;
+		$bindParams[] = $sqlData->get($field);
 	}
-	$page_title = "Edit waypoint $waypoint (#$WPnum)";
-	$waypoint = $_POST["waypoint"];
-	$notes = $_POST["notes"];
+	if(isset($_POST["id"])) {
+		// Update
+		$query .= " AND `id` <> ?";
+		$params .= $sqlData->fields["id"]->type;
+		$bindParams[] = $sqlData->get("id");
+	}
+
+	$sql = $page->DB_QueryPrepare($query);
+	$sql->bind_params($params, ...$bindParams);
+	$page->DB_ExecuteManage($sql, "NavWP.php", 87);
+	$check->bind_result($tot);
+	$check->fetch();
+	$check->close();
+
+	if($tot > 0) {
+		$page->NewError("WPnum {$sqlData->get('WPnum')} already exists for Nav #{$sqlData->get('NavID')}");
+
+	} else {
+		if(isset($_POST["id"])) {
+			// Update
+			$page->DB_QueryUpdate($TABLE, $sqlData);
+
+		} else {
+			// Insert
+			$id = $page->DB_QueryInsert($TABLE, $sqlData);
+		}
+
+		deleteNavPdfFile($sqlData->get("NavID"));
+		$page->HeaderLocation("NavDetails.php?id={$sqlData->get('NavID')}#WP{$sqlData->get('WPnum')}");
+	}
+
+	$page_title = "Edit waypoint {$sqlData->get('waypoint')} (#{$sqlData->get('WPnum')})";
+
+	// when we fetch from POST, for display in FORM we need without escaping
+	$sqlData->set("waypoint", $_POST["waypoint"]);
+	$sqlData->set("notes", $_POST["notes"]);
+
 } elseif(isset($_GET["id"])) {
-	//// get data for display
-	$id = $_GET["id"];
-	$sql = $page->DB_SelectId("NavWaypoints", $id);
-	$sql->bind_result($id, $NavID, $WPnum, $waypoint, $TCguess, $TC, $distance, $altitude, $windTC, $windSpeed, $notes, $climbing);
+	// get data for display
+	$sqlData->set("id", $_GET["id"]);
+	$sql = $page->DB_SelectId("NavWaypoints", $sqlData->get("id"));
+
+	$sql->bind_result(
+		$sqlData->fields["id"]->value,
+		$sqlData->fields["NavID"]->value,
+		$sqlData->fields["WPnum"]->value,
+		$sqlData->fields["waypoint"]->value,
+		$sqlData->fields["TC"]->value,
+		$sqlData->fields["distance"]->value,
+		$sqlData->fields["altitude"]->value,
+		$sqlData->fields["windTC"]->value,
+		$sqlData->fields["windSpeed"]->value,
+		$sqlData->fields["notes"]->value,
+		$sqlData->fields["climbing"]->value
+	);
+
 	$sql->fetch();
 	$sql->close();
-	$page_title = "Edit waypoint $waypoint (#$WPnum)";
-} else {
-	if(isset($_GET["nav"])) {
-		$NavID = $_GET["nav"];
-		$page_title = "New waypoint";
-		$count = $page->DB_QueryPrepare("SELECT COUNT(*) AS `tot` FROM `NavWaypoints` WHERE `NavID` = ?");
-		$count->bind_param("i", $NavID);
-		$page->DB_ExecuteManage($count);
-		$count->bind_result($sumWP);
-		$count->fetch();
-		$count->close();
-		if($sumWP > 0) {
-			$num = $page->DB_QueryPrepare("SELECT MAX(`WPnum`) AS `oldWP` FROM `NavWaypoints` WHERE `NavID` = ?");
-			$num->bind_param("i", $NavID);
-			$page->DB_ExecuteManage($num);
-			$num->bind_result($oldWP);
-			$num->fetch();
-			$num->close();
-			$WPnum = $oldWP + 1;
-			if($oldWP == 99) {
-				$WPnum = 901;
-			} elseif($oldWP == 199) {
-				$WPnum = 901;
-			} elseif($oldWP == 999) {
-				$WPnum = 98;
-			}
-		} else {
-			$waypoint = "LSGE";
-		}
+	$page_title = "Edit waypoint {$sqlData->get('waypoint')} (#{$sqlData->get('WPnum')})";
+
+} elseif(isset($_GET["nav"])) {
+	$sqlData->set("NavID", $_GET["nav"]);
+	$page_title = "New waypoint";
+
+	$queryEnd = " FROM `$TABLE` WHERE `NavID` = ?";
+
+	// TODO can we already ask max even if no matching?
+	$sumWP = dbSelectNavID($page, "SELECT COUNT(*) AS `tot`" . $queryEnd, $sqlData);
+
+	if($sumWP > 0) {
+		$oldWP = dbSelectNavID($page, "SELECT MAX(`WPnum`) AS `oldWP`" . $queryEnd, $sqlData);
+		$WPnum = $kWaypoints->getNext($oldWP);
+
 	} else {
-		$page->HeaderLocation("NavList.php");
+		$sqlData->set("waypoint", "LSGE");
+		$sqlData->set("WPnum", 0);  // TODO somehow this is not propagated
 	}
+
+} else {
+	// Not enough data to come on this page, fall back
+	$page->HeaderLocation("NavList.php");
 }
 
-$sqlName = $page->DB_SelectId("NavList", $NavID);
-$sqlName->bind_result($NavID_not_used, $navName, $MapUsed, $plane, $Power, $PowerManifold, $PowerManifoldUnit, $PowerRPM, $NavAltitude, $variation, $FrontMass, $RearMass, $LuggageMass, $comment);
-$sqlName->fetch();
-$sqlName->close();
+$navName = dbSelectNavID($page, "SELECT `name` from `NavList` WHERE `id` = ?", $sqlData);
 
-$navName = preg_replace("/ SKIP/", ",", $navName);
-$page_title .= " for $navName (#$NavID)";
+
+$page_title .= " for $navName (#{$sqlData->get('NavID')})";
 
 $gohome = new stdClass();
 $gohome->page = "NavDetails";
-$gohome->id = $NavID;
+$gohome->id = $sqlData->get("NavID");
 $gohome->rootpage = "index";
 $body .= $page->GoHome($gohome);
 $body .= $page->SetTitle($page_title);// before HotBooty
 $page->HotBooty();
 //
-	//// form
+	// form
 	$body .= "<div>\n";
 	$body .= $page->FormTag();
 	//
-		//// fields
-			//// id
+		// fields
+			// id
 			$args = new stdClass();
 			$args->type = "hidden";
 			$args->name = "id";
-			$args->value = $id;
+			$args->value = $sqlData->get("id");
 			if($id > 0) {
 				$body .= $page->FormField($args);
 			}
 		//
-			//// NavID
+			// NavID
 			$args = new stdClass();
 			$args->type = "hidden";
 			$args->name = "NavID";
-			$args->value = $NavID;
+			$args->value = $sqlData->get("NavID");
 			$body .= $page->FormField($args);
 		//
-			//// WPnum
+			// WPnum
 			$args = new stdClass();
 			$args->type = "number";
 			$args->title = "Waypoint number";
 			$args->name = "WPnum";
-			$args->value = $WPnum;
+			$args->value = $sqlData->get("WPnum");
 			$args->min = 0;
 			$args->required = true;
 			$body .= $page->FormField($args);
-				//// explain
+				// explain
 				$body .= "<div class=\"WPnumExplained\">\n";
 				$body .= "<ul>\n";
-				$body .=   "<li><b>0:</b> departure waypoint of nav</li>\n";
-				$body .=   "<li><b>1:</b> first waypoint of nav. If this one has no wind, no wind at all will be computed</li>\n";
-				$body .=  "<li><b>99:</b> last waypoint of nav (destination)</li>\n";
-				$body .= "<li><b>101:</b> first waypoint of backwards nav (optional)</li>\n";
-				$body .= "<li><b>199:</b> last waypoint of backwards nav (optional)</li>\n";
-				$body .= "<li><b>901:</b> first waypoint of alternate nav (optional)</li>\n";
-				$body .= "<li><b>999:</b> last waypoint of alternate nav (optional)</li>\n";
+				$body .= "<li><b>{$kWaypoints->wayOut->base}:</b> departure waypoint of nav</li>\n";
+				$body .= "<li><b>{$kWaypoints->wayOut->start}:</b> first waypoint of nav. If this one has no wind, no wind at all will be computed</li>\n";
+				$body .= "<li><b>{$kWaypoints->wayOut->last}:</b> last waypoint of nav (destination)</li>\n";
+				$body .= "<li><b>{$kWaypoints->wayBack->start}:</b> first waypoint of backwards nav (optional)</li>\n";
+				$body .= "<li><b>{$kWaypoints->wayBack->last}:</b> last waypoint of backwards nav (optional)</li>\n";
+				$body .= "<li><b>{$kWaypoints->alternate->start}:</b> first waypoint of alternate nav (optional)</li>\n";
+				$body .= "<li><b>{$kWaypoints->alternate->last}:</b> last waypoint of alternate nav (optional)</li>\n";
 				$body .= "</ul>\n";
-				$body .= "<p>All these special waypoints except Nr. 0 and Nr. 901 will have an additional 5 minutes in the EET.</p>\n";
-				$body .= "<p>Valid waypoint numbers: 0-99, 101-199, 901-999</p>\n";
+				$body .= "<p>All these special waypoints except Nr. {$kWaypoints->wayOut->base} and Nr. {$kWaypoints->alternate->start} will have an additional 5 minutes in the EET.</p>\n";
+				$body .= "<p>Valid waypoint numbers: ";
+				$body .= "{$kWaypoints->wayOut->base}-{$kWaypoints->wayOut->last}, ";
+				$body .= "{$kWaypoints->wayBack->start}-{$kWaypoints->wayBack->last}, ";
+				$body .= "{$kWaypoints->alternate->start}-{$kWaypoints->alternate->last}";
+				$body .= "</p>\n";
 				$body .= "</div>\n";
 		//
-			//// waypoint
+			// waypoint
 			$args = new stdClass();
 			$args->type = "text";
 			$args->title = "Waypoint name";
 			$args->name = "waypoint";
-			$args->value = $waypoint;
+			$args->value = $sqlData->get("waypoint");
 			$args->required = true;
 			$args->autofocus = true;
 			$body .= $page->FormField($args);
 		//
-			//// TC
+			// TC
 			$args = new stdClass();
 			$args->type = "number";
 			$args->title = "TC";
 			$args->name = "TC";
-			$args->value = $TC;
-			$args->min = 0;
+			$args->value = $sqlData->get("TC");
+			$args->min = 1;
 			$args->max = 360;
 			$args->posttitle = "&deg; (not for WP0)";
 			$body .= $page->FormField($args);
 		//
-			//// distance
+			// distance
 			$args = new stdClass();
 			$args->type = "number";
 			$args->title = "Distance";
 			$args->name = "distance";
-			$args->value = $distance;
+			$args->value = $sqlData->get("distance");
 			$args->min = 0;
 			$args->posttitle = "NM (not for WP0)";
 			$body .= $page->FormField($args);
 		//
-			//// altitude
+			// altitude
 			$args = new stdClass();
-			$args->type = "number";
+			$args->type = "text";
 			$args->title = "Altitude";
 			$args->name = "altitude";
-			$args->value = $altitude;
-			$args->min = 0;
-			$args->posttitle = "ft (not for WP0)";
+			$args->value = $sqlData->get("altitude");
+			$args->posttitle = "ft/FL (not for WP0)";
 			$body .= $page->FormField($args);
 		//
-			//// wind
+			// wind
 			$body .= "<div class=\"WindMain\">\n";
 			$body .= "<p><b>Wind</b> (not for WP0)</p>\n";
-			$body .= "<p>If the waypoint Nr. 1 has no wind, no wind at all will be used for the navigation.</p>\n";
+			$body .= "<p>If the waypoint Nr. {$kWaypoints->wayOut->start} has no wind, no wind at all will be used for the navigation.</p>\n";
 			$body .= "<p>If a following waypoint has no wind, the wind data from the previous one will be used.</p>\n";
-				//// windTC
+				// windTC
 				$args = new stdClass();
 				$args->type = "number";
 				$args->title = "TC";
 				$args->name = "windTC";
-				$args->value = $windTC;
-				$args->min = 0;
+				$args->value = $sqlData->get("windTC");
+				$args->min = 1;
 				$args->max = 360;
 				$args->posttitle = "&deg;";
 				$body .= $page->FormField($args);
 			//
-				//// windSpeed
+				// windSpeed
 				$args = new stdClass();
 				$args->type = "number";
 				$args->title = "speed";
 				$args->name = "windSpeed";
-				$args->value = $windSpeed;
+				$args->value = $sqlData->get("windSpeed");
 				$args->min = 0;
 				$args->posttitle = "kts";
 				$body .= $page->FormField($args);
@@ -279,31 +314,31 @@ $page->HotBooty();
 			$body .= "</div>\n";
 			//
 		//
-			//// notes
+			// notes
 			$args = new stdClass();
 			$args->type = "text";
 			$args->title = "Notes";
 			$args->name = "notes";
-			$args->value = $notes;
+			$args->value = $sqlData->get("notes");
 			$body .= $page->FormField($args);
 		//
-			//// climbing
+			// climbing
 			$args = new stdClass();
 			$args->type = "select";
 			$args->title = "Climbing leg";
 			$args->name = "climbing";
-			$args->value = $climbing;
+			$args->value = $sqlData->get("climbing");
 			$args->list = array("no", "yes");
 			$args->keyval = true;
 			$args->posttitle = "(not for WP0)";
 			$body .= $page->FormField($args);
 		//
 	//
-		//// buttons
+		// buttons
 		$args = new stdClass();
-		$args->cancelURL = "NavDetails.php?id=$NavID";
+		$args->cancelURL = "NavDetails.php?id={$sqlData->get('NavID')}";
 		$args->CloseTag = true;
-		$body .= $page->SubButt($id > 0, "$waypoint (#$WPnum)", $args);
+		$body .= $page->SubButt($sqlData->get("id") > 0, "{$sqlData->get('waypoint')} (#{$sqlData->get('WPnum')})", $args);
 	//
 	$body .= "</div>\n";
 //
