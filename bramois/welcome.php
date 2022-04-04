@@ -13,9 +13,6 @@ $page->CSS_ppWing();
 $body = "";
 
 
-// GoHome
-$gohome = new stdClass();
-$body .= $page->GoHome($gohome);
 // Set title and hot booty
 $body .= $page->SetTitle("Bramois");// before HotBooty
 $page->HotBooty();
