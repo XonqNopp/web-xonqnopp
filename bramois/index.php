@@ -8,7 +8,7 @@ $page = new PhPage($rootPath);
 //$page->LogLevelUp(6);
 // CSS paths
 $page->CSS_ppJump();
-//$page->CSS_ppWing();
+$page->CSS_ppWing();
 // init body
 $body = "";
 
@@ -112,8 +112,8 @@ $page->HotBooty();
 	$body .= "Il y a 3 lignes de bus diff&eacute;rentes, et elles ne passent pas aux m&ecirc;mes arr&ecirc;ts:</p>\n";
 
 	$body .= "<div><ul>\n";
-	$body .= "<li>Le Bus S&eacute;dunois passe juste devant &agrave; l'arr&ecirc;t <a href=\"https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?suche=true&von=Bramois%2C+Ecole\"Bramois, Ecole</a></li>\n";
-	$body .= "<li>Le car Ballestraz suit la route cantonale. On peut le prendre &agrave; <a href\"https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?suche=true&von=Bramois%2C+Paradis\">Bramois, Paradis</a> mais les horaires ne mentionnent pas toujours cet arr&ecirc;t,\n";
+	$body .= "<li>Le Bus S&eacute;dunois passe juste devant &agrave; l'arr&ecirc;t <a href=\"https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?suche=true&von=Bramois%2C+Ecole\">Bramois, Ecole</a></li>\n";
+	$body .= "<li>Le car Ballestraz suit la route cantonale. On peut le prendre &agrave; <a href=\"https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?suche=true&von=Bramois%2C+Paradis\">Bramois, Paradis</a> mais les horaires ne mentionnent pas toujours cet arr&ecirc;t,\n";
 	$body .= "il vaut mieux regarder l'horaire &agrave; <a href=\"https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?suche=true&von=Bramois%2C+Cassieres\">Bramois, Cassi&egrave;re</a></li>\n";
 	$body .= "<li>Le car postal qui monte &agrave; Nax passe par <a href=\"https://www.sbb.ch/fr/acheter/pages/fahrplan/fahrplan.xhtml?suche=true&von=Bramois%2C+Eglise\">Bramois, Eglise</a></li>\n";
 	$body .= "</ul></div>\n";
@@ -130,7 +130,7 @@ $page->HotBooty();
 		$body .= "<li><a href=\"https://goo.gl/maps/yJJhAMPP2YF26GMN6\">Magasin du village (Edelweiss) avec la boucherie</a>. Aussi du pain, bon choix de fromages.</li>\n";
 		$body .= "<li><a href=\"https://goo.gl/maps/HBxGEgHU7oKBpZYv6\">Bioterroir, ou la Roulotte verte</a>: fruits et l&eacute;gumes bio, ouvert tous les jours en libre-service, twint. Aussi fromages, viande froide, pain, jus de fruits...</li>\n";
 
-		$body .= "</ul></div>\n":
+		$body .= "</ul></div>\n";
 	//
 		// Loisirs
 		$body .= "<h3>Loisirs</h3>\n";
@@ -138,7 +138,7 @@ $page->HotBooty();
 		$body .= "<li>Places de jeux: <a href=\"https://goo.gl/maps/Xn3DU9vzLByPAfs87\">&eacute;cole</a>, <a href=\"https://goo.gl/maps/eaeNpJpH19kq7ZQBA\">Clodevis</a>, <a href=\"https://goo.gl/maps/LFEkkHxoP9zCS6iw9\">Vissigen</a></li>\n";
 		$body .= "<li>Sentier p&eacute;destre dans les gorges de la Borgne</li>\n";
 		$body .= "<li>Grimpe dans les gorges de la Borgne</li>\n";
-		$body .= "</ul></div>\n":
+		$body .= "</ul></div>\n";
 
 
 // Finish
