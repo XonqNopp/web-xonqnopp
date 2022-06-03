@@ -39,7 +39,7 @@ $body = "";
 
 // Get info from URL
 $dbtable = $_GET["db"];
-$tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD", "games" => "game");
+$tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD");
 $type = $tables[$dbtable];
 $dbid = $_GET["id"];
 
@@ -85,9 +85,6 @@ if($dbtable == "bds") {
 			$title .= " ($number)";
 		}
 	}
-} elseif($dbtable == "games") {
-	$item->bind_result($dbid, $title, $minP, $maxP, $age, $borrowed, $comment);
-	$item->fetch();
 }
 $item->close();
 // Fetch borrowers infos

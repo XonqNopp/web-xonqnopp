@@ -1,6 +1,4 @@
 <?php
-/* TODO:
- */
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";

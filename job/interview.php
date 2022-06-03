@@ -1,9 +1,4 @@
 <?php
-/*** Created: Mon 2014-10-27 20:57:40 CET
- ***
- *** TODO:
- ***
- ***/
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";

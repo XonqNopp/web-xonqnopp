@@ -1,8 +1,5 @@
 <?php
-/* TODO:
- * SetTitle
- *
- */
+// TODO SetTitle
 require("../../functions/classPage.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";

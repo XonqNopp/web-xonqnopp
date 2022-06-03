@@ -1,10 +1,8 @@
 <?php
-/*** TODO:
- * searchbox to classpage
- * tabledisplay
- * SetTitle
- * Contents for always, results only when asked and below regular content
- */
+// TODO searchbox to classpage
+// TODO tabledisplay
+// TODO SetTitle
+// TODO Contents for always, results only when asked and below regular content
 require("../../functions/classPage.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";

@@ -13,7 +13,7 @@ if(isset($_GET["view"])) {
 	$view = $_GET["view"];
 }
 
-$tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD", "games" => "game");
+$tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD");
 
 $body = "";
 $args = new stdClass();
@@ -60,42 +60,38 @@ if($check_fetch->howmany > 0) {
 					$fulltitle = "";
 					$fulltitle2 = "";
 					$title_needed = true;
-					if($dbtable == "games") {
-						$title = $device->name;
-					} else {
-						if($device->title != "") {
-							$title = $device->title;
-							$fulltitle = $title;
-							$title_needed = false;
+					if($device->title != "") {
+						$title = $device->title;
+						$fulltitle = $title;
+						$title_needed = false;
+					}
+					if($dbtable == "bds") {
+						$serie = "";
+						if($device->serie_id > 1) {
+							$serie_query = $page->DB_QueryManage("SELECT * FROM `bd_series` WHERE `id` = $device->serie_id");
+							$serie_entry = $serie_query->fetch_object();
+							$serie = $serie_entry->name;
 						}
-						if($dbtable == "bds") {
-							$serie = "";
-							if($device->serie_id > 1) {
-								$serie_query = $page->DB_QueryManage("SELECT * FROM `bd_series` WHERE `id` = $device->serie_id");
-								$serie_entry = $serie_query->fetch_object();
-								$serie = $serie_entry->name;
-							}
+						if($title_needed) {
+							$title = $serie;
+						}
+						$fulltitle2 .= $serie;
+						if($device->tome != "" && $device->tome != "0") {
 							if($title_needed) {
-								$title = $serie;
+								$title .= " ($device->tome)";
 							}
-							$fulltitle2 .= $serie;
-							if($device->tome != "" && $device->tome != "0") {
-								if($title_needed) {
-									$title .= " ($device->tome)";
-								}
-								$fulltitle2 .= " ($device->tome)";
-							}
-						} else {
+							$fulltitle2 .= " ($device->tome)";
+						}
+					} else {
+						if($title_needed) {
+							$title = $device->serie;
+						}
+						$fulltitle2 .= $device->serie;
+						if($device->number != "" && $device->number != "0") {
 							if($title_needed) {
-								$title = $device->serie;
+								$title .= " ($device->number)";
 							}
-							$fulltitle2 .= $device->serie;
-							if($device->number != "" && $device->number != "0") {
-								if($title_needed) {
-									$title .= " ($device->number)";
-								}
-								$fulltitle2 .= " ($device->number)";
-							}
+							$fulltitle2 .= " ($device->number)";
 						}
 					}
 					if($fulltitle != "" && $fulltitle2 != "") {

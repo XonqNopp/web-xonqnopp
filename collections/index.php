@@ -1,6 +1,5 @@
 <?php
-// TODO:
-// * rearrange page
+// TODO rearrange page
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";

@@ -44,7 +44,6 @@ img {
 	max-width: 30mm;
 }
 
-img.index_nice,
 img.index_burden,
 img.index_young {
 	max-height: 40mm;
@@ -73,7 +72,6 @@ div.index_book,
 div.index_isbn,
 div.index_borrower,
 div.index_missing,
-div.index_nices,
 div.index_scores,
 div.index_recipes,
 div.index_quotes,

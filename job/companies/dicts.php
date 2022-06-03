@@ -1,9 +1,4 @@
 <?php
-/*** Created: Tue 2015-01-06 09:19:46 CET
- *
- * TODO:
- *
- */
 
 function fields($item = array()) {
 	$back = array(

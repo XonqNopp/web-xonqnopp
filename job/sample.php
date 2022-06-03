@@ -1,12 +1,7 @@
 <?php
-/*** Created: Wed 2014-08-13 11:46:15 CEST
- ***
- *** TODO:
- * redo this page with goal at 42h/w and 5w holidays
- * then compute 1w holliday, 1h/w, -10%/w
- * keep from-to, but default from==to (change link in other page)
- ***
- ***/
+// TODO redo this page with goal at 42h/w and 5w holidays
+// TODO then compute 1w holliday, 1h/w, -10%/w
+// TODO keep from-to, but default from==to (change link in other page)
 require("../functions/classPage.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
