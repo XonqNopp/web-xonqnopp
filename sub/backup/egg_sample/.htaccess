@@ -1,0 +1,16 @@
+Options +Indexes
+
+# Redirect on error
+ErrorDocument 404 /functions/deadlink.php
+
+# Preventing this file to be read
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+# Allowing PDF
+#<Files *.pdf>
+#order allow,deny
+#allow from all
+#</Files>
