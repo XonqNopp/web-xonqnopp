@@ -726,6 +726,8 @@ $queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP
 	$AL_item = familyTime($page, "AnneLaure");
 	$Zoe_item = familyTime($page, "Zoe");
 	$Ludo_item = familyTime($page, "Ludovic");
+	$Kayra_item = familyTime($page, "Kayra");
+	$Alicia_item = familyTime($page, "Alicia");
 
 $today = $page->GetNow();
 $today = $today->date;
@@ -739,6 +741,8 @@ $today = $today->date;
 		$visitedFamily["AL"] = familyVisited($page, "AnneLaure");
 		$visitedFamily["Z"] = familyVisited($page, "Zoe");
 		$visitedFamily["Lu"] = familyVisited($page, "Ludovic");
+		$visitedFamily["K"] = familyVisited($page, "Kayra");
+		$visitedFamily["Ali"] = familyVisited($page, "Alicia");
 	//
 		// table
 		$visited .= "<h3>Visited fields</h3>\n";
@@ -870,6 +874,8 @@ $today = $today->date;
 		$body .= "<li>Anne-Laure: " . displaySQLtime($page, $AL_item) . "</li>\n";
 		$body .= "<li>Zo&eacute;: " . displaySQLtime($page, $Zoe_item) . "</li>\n";
 		$body .= "<li>Ludovic: " . displaySQLtime($page, $Ludo_item) . "</li>\n";
+		$body .= "<li>Kayra: " . displaySQLtime($page, $Kayra_item) . "</li>\n";
+		$body .= "<li>Alicia: " . displaySQLtime($page, $Alicia_item) . "</li>\n";
 		$body .= "</ul>\n";
 		$body .= $visited;
 		$body .= "</div>\n";
