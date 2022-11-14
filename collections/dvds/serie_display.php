@@ -1,41 +1,33 @@
 <?php
-require("../../functions/classPage.php");
+require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-//$page->initHTML();
-$page->initDB();
+//$page->logger->levelUp(6);
+//$page->htmlHelper->init();
+$page->bobbyTable->init();
 
-require("${funcpath}_local/borrowback.php");
+$page->cssHelper->dirUpWing();
 
-// Borrowed item came home
-borrow_back($page, "dvds");
+$GI = $page->loginHelper->userIsAdmin();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
 
-$GI = $page->UserIsAdmin();
-
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyBuilder->goHome("..");
 
 // Find which serie we are dealing with
 $serie_id = $_GET["id"];
-$findserie = $page->DB_IdManage("SELECT * FROM `dvds` WHERE `id` = ?", $serie_id);
+$findserie = $page->bobbyTable->idManage("SELECT * FROM `dvds` WHERE `id` = ?", $serie_id);
 $findserie->store_result();
 if($findserie->num_rows == 0) {
-	$findserie->close();
-	exit("Error bad id");
+    $findserie->close();
+    exit("Error bad id");
 }
 $findserie->bind_result($serie_id, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
 $findserie->fetch();
 $findserie->close();
 // Title
-$body .= $page->SetTitle("$serie (DVDs)");
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("$serie (DVDs)");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -43,73 +35,62 @@ $body .= "</div>\n";
 $body .= "<div class=\"chead\">\n";
 $body .= "</div>\n";
 $body .= "<div class=\"rhead\">\n";
-$body .= "<a href=\"../missings/index.php?view=dvds\" title=\"Missing DVDs\">Missing DVDs</a>\n";
+$body .= $page->bodyBuilder->anchor("../missings/index.php?view=dvds", "Missing DVDs");
 if($GI) {
-	$body .= "<br />\n";
-	// Propose to add a new if authorized
-	$body .= "<a href=\"insert.php\" title=\"New DVD\">New DVD</a>\n";
-	//$body .= "<a href=\"../insert_barcode.php\" title=\"New barcode\">New barcode</a>\n";
-	//$body .= "<a href=\"../insert_imdb.php\" title=\"New IMDB\">New IMDB</a>\n";
+    $body .= "<br />\n";
+    // Propose to add a new if authorized
+    $body .= $page->bodyBuilder->anchor("insert.php", "New DVD");
 }
 $body .= "</div>\n";
 $body .= "</div>\n";
 
 // Fetch all from this serie
 $sql_serie = $serie;
-$dvds = $page->DB_QueryPrepare("SELECT * FROM `dvds` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
+$dvds = $page->bobbyTable->queryPrepare("SELECT * FROM `dvds` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
 $dvds->bind_param("s", $sql_serie);
-$page->DB_ExecuteManage($dvds);
+$page->bobbyTable->executeManage($dvds);
 $dvds->store_result();
 if($dvds->num_rows == 0) {
-	$dvds->close();
-	$page->HeaderLocation();
+    $dvds->close();
+    $page->htmlHelper->headerLocation();
 }
 $dvds->bind_result($id, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
 $body .= "<div class=\"dvd_serie_table\">\n";
-$body .= "<table class=\"dvd_serie_table\">\n";
+$body .= $page->butler->tableOpen(array("class" => "dvd_serie_table"));
 while($dvds->fetch()) {
-	$csstitle = "dvd_serie_table_title";
-	if($borrowed == 1) {
-		$csstitle .= " away";
-	}
-	$body .= "<tr class=\"dvd_serie_table\">\n";
-	// Edit
-	$body .= "<td class=\"dvd_serie_table_edit\">\n";
-	if($GI) {
-		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
-	}
-	$body .= "</td>\n";
-	// Borrow
-	$body .= "<td class=\"dvd_serie_borrow\">\n";
-	if($GI) {
-		$body .= "<a href=\"";
-		if($borrowed) {
-			$body .= "serie_display.php?id=$serie_id&amp;back=$id\" title=\"back\">back";
-			$body .= "&nbsp;-&nbsp;\n";
-			$body .= "<a href=\"../missings/index.php?view=dvds$id#dvds$id\" title=\"who\">who";
-		} else {
-			$body .= "../missings/insert.php?db=dvds&amp;id=$id\" title=\"borrow\">borrow";
-		}
-		$body .= "</a>\n";
-	}
-	$body .= "</td>\n";
-	// Number
-	if($number != "" && $number != "0") {
-		$body .= "<td class=\"dvd_serie_table_number\">$number</td>\n";
-	} else {
-		$body .= "<td class=\"dvd_serie_table_number\"></td>\n";
-	}
-	// Title
-	$body .= "<td class=\"$csstitle\">\n";
-	$body .= "<a id=\"b$id\" class=\"dvd_serie_display_title\"";
-	$body .= " href=\"display.php?id=$id\" title=\"$title\">$title</a>\n";
-	$body .= "</td>\n";
-	$body .= "</tr>\n";
+    $csstitle = "dvd_serie_table_title";
+    if($borrowed == 1) {
+        $csstitle .= " away";
+    }
+    $body .= $page->butler->rowOpen(array("class" => "dvd_serie_table"));
+
+    $body .= $page->butler->cell($GI ? $page->bodyBuilder->anchor("insert.php?id=$id", "edit") : "", array("class" => "dvd_serie_table_edit"));
+
+    // Borrow
+    $body .= $page->butler->cellOpen(array("class" => "dvd_serie_borrow"));
+    if($GI) {
+        if($borrowed) {
+            $body .= $page->bodyBuilder->anchor("../missings/index.php?view=dvds$id#dvds$id", "who");
+        } else {
+            $body .= $page->bodyBuilder->anchor("../missings/insert.php?db=dvds&amp;id=$id", "borrow");
+        }
+    }
+
+    $body .= $page->butler->cellClose();
+
+    // Number
+    if($number == "0") { $number = ""; }
+    $body .= $page->butler->cell($number != "" ? $number : "", array("class" => "dvd_serie_table_number"));
+
+    // Title
+    $body .= $page->butler->cellOpen(array("class" => $csstitle));
+    $body .= $page->bodyBuilder->anchor("display.php?id=$id", $title, NULL, "dvd_serie_display_title", false, "id=\"b$id\"");
+    $body .= $page->butler->cellClose();
+    $body .= $page->butler->rowClose();
 }
-$body .= "</table>\n";
+$body .= $page->butler->tableClose();
 $body .= "</div>\n";
 $dvds->close();
 
-$page->show($body);
-unset($page);
+echo $body;
 ?>

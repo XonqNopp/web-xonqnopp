@@ -1,0 +1,22 @@
+div.csstab64_cell {
+    text-align: center;
+    vertical-align: top;
+}
+
+
+.bd_serie_count {
+    font-size: 8pt;
+    padding: 1px 0;
+}
+
+
+.bd_serie_count_incomplete {
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 1px 0;
+}
+
+
+.bd_serie_item {
+    margin-bottom: 0.2em;
+}

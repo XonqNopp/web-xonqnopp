@@ -1,0 +1,40 @@
+h3.dvd_display {
+    margin-left: 40mm;
+}
+
+
+div.dvd_display_table_serie,
+div.dvd_display_table {
+    text-align: center;
+}
+
+
+div.csstab64_cell {
+    vertical-align: top;
+}
+
+
+.EditBorrow {
+    font-size: 8pt;
+    margin-right: 2mm;
+    min-width: 55px;
+}
+
+
+.flushleft {
+    text-align: left;
+}
+
+
+.MainBook {
+    max-width: 80%;
+}
+
+
+@media only screen and (min-width:64em) {
+
+    div.dvd_display_table_cell {
+        width: 49%;
+    }
+
+}  /** @media only screen and min-width:64em **/

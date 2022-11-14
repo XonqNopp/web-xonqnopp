@@ -1,0 +1,61 @@
+-- ALTER TABLE `NavWaypoints` DROP COLUMN `TCguess`;
+
+
+-- ALTER TABLE `NavList` DROP COLUMN `MapUsed`;
+-- ALTER TABLE `NavList` DROP COLUMN `Power`;
+-- ALTER TABLE `NavList` DROP COLUMN `PowerManifold`;
+-- ALTER TABLE `NavList` DROP COLUMN `PowerManifoldUnit`;
+-- ALTER TABLE `NavList` DROP COLUMN `PowerRPM`;
+-- ALTER TABLE `NavList` DROP COLUMN `altitude`;
+
+-- ALTER TABLE `NavList` RENAME COLUMN `RearMass` TO `Rear0Mass`;
+-- ALTER TABLE `NavList` ADD COLUMN `Rear1Mass` int(3) DEFAULT NULL AFTER `Rear0Mass`;
+-- ALTER TABLE `NavList` RENAME COLUMN `LuggageMass` TO `Luggage0Mass`;
+-- ALTER TABLE `NavList` ADD COLUMN `Luggage1Mass` int(3) DEFAULT NULL AFTER `Luggage0Mass`;
+-- ALTER TABLE `NavList` ADD COLUMN `Luggage2Mass` int(3) DEFAULT NULL AFTER `Luggage1Mass`;
+-- ALTER TABLE `NavList` ADD COLUMN `Luggage3Mass` int(3) DEFAULT NULL AFTER `Luggage2Mass`;
+
+
+-- ALTER TABLE `aircrafts` MODIFY `FuelCons` int(3) NOT NULL AFTER `maxGC`;
+-- ALTER TABLE `aircrafts` MODIFY `FuelUnit` varchar(5) NOT NULL AFTER `FuelCons`;
+-- ALTER TABLE `aircrafts` CHANGE COLUMN `DryMassUnit` `MassUnit` NOT NULL AFTER `ClimbSpeed`;
+-- ALTER TABLE `aircrafts` MODIFY `ArmUnit` varchar(10) NOT NULL AFTER `MassUnit`;
+-- ALTER TABLE `aircrafts` MODIFY COLUMN `DryMomentUnit` `MomentUnit` VARCHAR(10) NOT NULL AFTER `ArmUnit`;
+-- ALTER TABLE `aircrafts` CHANGE `DryTimestamp` `DryEmptyTimestamp` date NOT NULL AFTER `MomentUnit`;
+-- ALTER TABLE `aircrafts` CHANGE COLUMN `DryMass` `DryEmptyMass` INT(10) NOT NULL AFTER `DryEmptyTimestamp`;
+-- ALTER TABLE `aircrafts` CHANGE COLUMN `DryMoment` `DryEmptyMoment` FLOAT NOT NULL AFTER `DryEmptyMass`;
+-- ALTER TABLE `aircrafts` MODIFY `MTOW` int(10) NOT NULL AFTER `DryEmptyMoment`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `MLDGW` int(10) DEFAULT NULL AFTER `MTOW`;
+-- ALTER TABLE `aircrafts` CHANGE COLUMN `minGC` `GCmin` float NOT NULL AFTER `MLDGW`;
+-- ALTER TABLE `aircrafts` CHANGE COLUMN `maxGC` `GCmax` float NOT NULL AFTER `GCmin`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `FrontMaxMass` float DEFAULT NULL AFTER `FrontArm`;
+-- ALTER TABLE `aircrafts` RENAME COLUMN `RearArm` TO `Rear0Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Rear0MaxMass` float DEFAULT NULL AFTER `Rear0Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Rear1Arm` float DEFAULT NULL AFTER `Rear0MaxMass`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Rear1MaxMass` float DEFAULT NULL AFTER `Rear1Arm`;
+-- ALTER TABLE `aircrafts` RENAME COLUMN `LuggageArm` TO `Luggage0Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage0MaxMass` float DEFAULT NULL AFTER `Luggage0Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage1Arm` float DEFAULT NULL AFTER `Luggage0MaxMass`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage1MaxMass` float DEFAULT NULL AFTER `Luggage1Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage2Arm` float DEFAULT NULL AFTER `Luggage1MaxMass`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage2MaxMass` float DEFAULT NULL AFTER `Luggage2Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage3Arm` float DEFAULT NULL AFTER `Luggage2MaxMass`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Luggage3MaxMass` float DEFAULT NULL AFTER `Luggage3Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `LuggageMaxTotalMass` float DEFAULT NULL AFTER `Luggage3MaxMass`;
+-- ALTER TABLE `aircrafts` RENAME COLUMN `FuelArm` TO `Fuel0Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel0TotalCapacity` int(5) NOT NULL AFTER `Fuel0Arm`;
+-- ALTER TABLE `aircrafts` CHANGE COLUMN `UnusableFuel` `Fuel0Unusable` int(5) NOT NULL AFTER `Fuel0TotalCapacity`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel0AllOrNothing` tinyint(1) NOT NULL AFTER `Fuel0Unusable`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel1Arm` float DEFAULT NULL AFTER `Fuel0AllOrNothing`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel1TotalCapacity` int(5) DEFAULT NULL AFTER `Fuel1Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel1Unusable` int(5) DEFAULT NULL AFTER `Fuel1TotalCapacity`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel1AllOrNothing` tinyint(1) DEFAULT NULL AFTER `Fuel1Unusable`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel2Arm` float DEFAULT NULL AFTER `Fuel1AllOrNothing`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel2TotalCapacity` int(5) DEFAULT NULL AFTER `Fuel2Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel2Unusable` int(5) DEFAULT NULL AFTER `Fuel2TotalCapacity`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel2AllOrNothing` tinyint(1) DEFAULT NULL AFTER `Fuel2Unusable`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel3Arm` float DEFAULT NULL AFTER `Fuel2AllOrNothing`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel3TotalCapacity` int(5) DEFAULT NULL AFTER `Fuel3Arm`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel3Unusable` int(5) DEFAULT NULL AFTER `Fuel3TotalCapacity`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `Fuel3AllOrNothing` tinyint(1) DEFAULT NULL AFTER `Fuel3Unusable`;
+-- ALTER TABLE `aircrafts` ADD COLUMN `FuelType` varchar(10) NOT NULL AFTER `FuelUnit`;

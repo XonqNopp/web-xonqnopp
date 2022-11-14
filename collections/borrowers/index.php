@@ -1,87 +1,92 @@
 <?php
-require("../../functions/classPage.php");
+require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->bobbyTable->init();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("List of known borrowers");
-$page->HotBooty();
+$body = $page->bodyBuilder->goHome("../..", "..");
+$body .= $page->htmlHelper->setTitle("List of known borrowers");
+$page->htmlHelper->hotBooty();
 
-$UserIsAdmin = $page->UserIsAdmin();
 
-$body .= "<div class=\"wide\">\n";
-$body .= "<div class=\"lhead\">\n";
-$body .= "</div>\n";
-$body .= "<div class=\"chead\">\n";
-$body .= "</div>\n";
-$body .= "<div class=\"rhead\">\n";
-if($UserIsAdmin) {
-	// Propose to add a new if authorized
-	$body .= "<a href=\"insert.php\" title=\"Add a borrower\">Add a borrower</a>\n";
+/**
+ * Get the body of this page.
+ *
+ * @SuppressWarnings(PHPMD.ElseExpression)
+ */
+function getBody() {
+    global $page;
+    $userIsAdmin = $page->loginHelper->userIsAdmin();
+    $body = "";
+
+        // header
+        $body .= "<div class=\"wide\">\n";
+        $body .= "<div class=\"lhead\"></div>\n";
+        $body .= "<div class=\"chead\"></div>\n";
+        $body .= "<div class=\"rhead\">\n";
+        if($userIsAdmin) {
+            // Propose to add a new if authorized
+            $body .= $page->bodyBuilder->anchor("insert.php", "Add a borrower");
+        }
+        $body .= "</div><!-- rhead -->\n";
+        $body .= "</div><!-- wide -->\n";
+
+    $query = $page->bobbyTable->queryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
+
+    if($query->num_rows == 0) {
+        $query->close();
+        $body .= "Sorry, no one stored yet...";
+        return $body;
+    }
+
+    $body .= "<div class=\"borrower_display_table\">\n";
+    $body .= $page->butler->tableOpen(array("class" => "borrower_display"));
+    $body .= $page->butler->rowOpen(array("class" => "borrower_display_header"));
+    $body .= $page->butler->headerCell("Who");
+    $body .= $page->butler->headerCell("Number");
+    $body .= $page->butler->rowClose();
+    while($borrower = $query->fetch_object()) {
+        $borrowerId = $borrower->id;
+        $name = $borrower->name;
+        $body .= $page->butler->rowOpen(array("class" => "borrower_display"));
+        $body .= $page->butler->cellOpen(array("class" => "borrower_display"));
+        if($userIsAdmin) {
+            $body .= $page->bodyBuilder->anchor("insert.php?id=$borrowerId", $name);
+        } else {
+            $body .= "$name\n";
+        }
+        $body .= $page->butler->cellClose();
+
+        // Fetch count items borrowed
+        $howmany = 0;
+        $howManyQuery = $page->bobbyTable->idManage("SELECT COUNT(*) AS `how_many` FROM `missings` WHERE `borrower` = ?", $borrowerId);
+        $howManyQuery->bind_result($howmany);
+        $howManyQuery->fetch();
+        $howManyQuery->close();
+
+        $plural = "";
+        $howManyLink = "no item";
+        if($howmany > 0) {
+            if($howmany > 1) {
+                $plural = "s";
+            }
+            $howManyLink = $page->bodyBuilder->anchor("../missings/index.php?view=borrower$borrowerId#borrower$borrowerId", "$howmany item$plural");
+        }
+
+        $body .= $page->butler->cell($howManyLink, array("class" => "borrower_display_count"));
+        $body .= $page->butler->rowClose();
+    }
+    $query->close();
+
+    $body .= $page->butler->tableClose();
+    $body .= "</div><!-- borrower_display_table -->\n";
+
+    return $body;
 }
-$body .= "</div>\n";
-$body .= "</div>\n";
 
-// Display exsiting ones
-$query = $page->DB_QueryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
-if($query->num_rows == 0) {
-	$body .= "Sorry, no one stored yet...";
-} else {
-	$body .= "<div class=\"borrower_display_table\">\n";
-	$body .= "<table class=\"borrower_display\">\n";
-	$body .= "<tr class=\"borrower_display_header\">\n";
-	$body .= "<th>Who</th>\n";
-	$body .= "<th>Number</th>\n";
-	$body .= "</tr>\n";
-	while($it = $query->fetch_object()) {
-		$id = $it->id;
-		$name = $it->name;
-		$body .= "<tr class=\"borrower_display\">\n";
-		$body .= "<td class=\"borrower_display\">\n";
-		if($UserIsAdmin) {
-			$body .= "<a href=\"insert.php?id=$id\" title=\"$name\">";
-		}
-		$body .= "$name";
-		if($UserIsAdmin) {
-			$body .= "</a>";
-		}
-		$body .= "\n";
-		$body .= "</td>\n";
-		// Fetch count items borrowed
-		$howmany_q = $page->DB_IdManage("SELECT COUNT(*) AS `how_many` FROM `missings` WHERE `borrower` = ?", $id);
-		$howmany_q->bind_result($howmany);
-		$howmany_q->fetch();
-		$howmany_q->close();
-		if($howmany == 0) {
-			$plural = "";
-			$howmany = "no";
-			$the_link = "no item";
-		} else {
-			if($howmany == 1) {
-				$plural = "";
-			} else {
-				$plural = "s";
-			}
-			$the_link = "<a href=\"../missings/index.php?view=borrower$id#borrower$id\" title=\"$howmany item$plural\">$howmany item$plural</a>";
-		}
-		$body .= "<td class=\"borrower_display_count\">";
-		$body .= $the_link;
-		$body .= "</td>\n";
-		$body .= "</tr>\n";
-	}
-	$body .= "</table>\n";
-	$body .= "</div>\n";
-}
-$query->close();
 
-$page->show($body);
-unset($page);
+echo $body . getBody();
 ?>

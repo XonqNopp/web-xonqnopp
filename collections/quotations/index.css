@@ -1,0 +1,42 @@
+div#navigation {
+    width: 100%;
+    text-align: center;
+}
+
+
+.editbutton {
+    text-align: center;
+    font-size: 10pt;
+}
+
+
+td.quotab {
+    width: 96%;
+}
+
+
+.quote {
+    text-align: justify;
+    line-height: 125%;
+    margin: 1mm 3mm;
+}
+
+
+.author {
+    text-align: left;
+    font-size: 16pt;
+    margin-top: 25pt;
+    color: #c00;
+}
+
+
+.place {
+    text-align: right;
+    font-style: italic;
+    color: #0a0;
+}
+
+
+.favclass {
+    color: #080;
+}

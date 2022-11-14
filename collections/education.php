@@ -1,28 +1,22 @@
 <?php
-/* TODO:
- */
-require("../functions/classPage.php");
+require_once("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->initDB();
-//// debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
-//// CSS paths
-$page->CSS_ppJump();
-//$page->CSS_ppWing();
-//// init body
-$body = "";
+// debug
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
+// CSS paths
+//$page->cssHelper->dirUpWing();
 
 
-//// GoHome
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
-//// Set title and hot booty
-$body .= $page->SetTitle("&Eacute;ducation positive");// before HotBooty
-$page->HotBooty();
+$page->bodyBuilder->titleAnchorCountEnable();
+
+$body = $page->bodyBuilder->goHome("..");
+
+// Set title and hot booty
+$body .= $page->htmlHelper->setTitle("&Eacute;ducation positive");// before HotBooty
+$page->htmlHelper->hotBooty();
 
 $body .= "<p>Petit r&eacute;sum&eacute; <b>subjectif</b> de:\n";
 $body .= "<i>Mon p'tit cahier d'&Eacute;ducation positive</i>,\n";
@@ -60,140 +54,119 @@ $body .= "qualit&eacute;.</p>\n";
 $body .= "<p>Un enfant <b>n'est pas</b> un petit adulte.\n";
 $body .= "Voici un tableau qui explique les capacit&eacute;s de l'enfant par rapport &agrave; son &acirc;ge (p.18-19):</p>\n";
 
-$body .= "<div class=\"tablebottom\"><table>\n";
-    $body .= "<tr>\n";
-        $body .= "<th>&Acirc;ge</th>\n";
-        $body .= "<th>Comportement</th>\n";
-        $body .= "<th>Explications</th>\n";
-        $body .= "<th>Pistes de changement</th>\n";
-    $body .= "</tr>\n";
+$body .= "<div class=\"tablebottom\">\n";
+$body .= $page->butler->tableOpen();
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->headerCell("&Acirc;ge");
+        $body .= $page->butler->headerCell("Comportement");
+        $body .= $page->butler->headerCell("Explications");
+        $body .= $page->butler->headerCell("Pistes de changement");
+    $body .= $page->butler->rowClose();
 
     $body .= "<!-- 0-2 -->\n";
-    $body .= "<tr><td colspan=\"4\" class=\"fullLine\">0-2 ans</td></tr>\n";
+    $body .= $page->butler->row("0-2 ans", array(), array("colspan" => 4, "class" => "fullLine"));
 
-    $body .= "<tr>\n";
-        $body .= "<td rowspan=\"3\">18-24 mois</td>\n";
-        $body .= "<td>hurle &agrave; la moindre frustration</td>\n";
-        $body .= "<td>la partie de son cerveau qui ma&icirc;trise ses impulsions n'est pas encore mature</td>\n";
-	$body .= "<td>pratiquer l'&eacute;coute active: formuler ce qui vient de se passer pour l'aider &agrave; comprendre et a se\n";
-        $body .= "sentir reconnu</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("18-24 mois", array("rowspan" => 3));
+        $body .= $page->butler->cell("hurle &agrave; la moindre frustration");
+        $body .= $page->butler->cell("la partie de son cerveau qui ma&icirc;trise ses impulsions n'est pas encore mature");
+        $body .= $page->butler->cell("pratiquer l'&eacute;coute active: formuler ce qui vient de se passer pour l'aider &agrave; comprendre et a se sentir reconnu");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
+    $body .= $page->butler->rowOpen();
         $body .= "<!--<td>18-24 mois</td>-->\n";
-        $body .= "<td>il me regarde dans les yeux tout en faisant exactement ce que je viens de lui interdire</td>\n";
-	$body .= "<td>l'enfant ne dispose pas du tout du langage ou que tr&egrave;s peu. C'est avec son corps qu'il demande la\n";
-        $body .= "validation de la consigne: c'est ca que tu ne veux pas que je fasse?</td>\n";
-        $body .= "<td>lui confirmer qu'il a bien compris la consigne et lui proposer une autre activit&eacute;</td>\n";
-    $body .= "</tr>\n";
+        $body .= $page->butler->cell("il me regarde dans les yeux tout en faisant exactement ce que je viens de lui interdire");
+        $body .= $page->butler->cell("l'enfant ne dispose pas du tout du langage ou que tr&egrave;s peu. C'est avec son corps qu'il demande la validation de la consigne: c'est ca que tu ne veux pas que je fasse?");
+        $body .= $page->butler->cell("lui confirmer qu'il a bien compris la consigne et lui proposer une autre activit&eacute;");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
+    $body .= $page->butler->rowOpen();
         $body .= "<!--<td>18-24 mois</td>-->\n";
-        $body .= "<td>il n'&eacute;coute pas quand je lui demande d'arr&ecirc;ter un comportement</td>\n";
-        $body .= "<td>le cerveau ne comprend pas la n&eacute;gation</td>\n";
-	$body .= "<td>formuler les demandes de facon affirmatives et aider l'enfant &agrave; se diriger vers le comportement\n";
-        $body .= "souhait&eacute;</td>\n";
-    $body .= "</tr>\n";
+        $body .= $page->butler->cell("il n'&eacute;coute pas quand je lui demande d'arr&ecirc;ter un comportement");
+        $body .= $page->butler->cell("le cerveau ne comprend pas la n&eacute;gation");
+    $body .= $page->butler->cell("formuler les demandes de facon affirmatives et aider l'enfant &agrave; se diriger vers le comportement souhait&eacute;");
+    $body .= $page->butler->rowClose();
 
     $body .= "<!-- 2-4 -->\n";
-    $body .= "<tr><td colspan=\"4\" class=\"fullLine\">2-4 ans</td></tr>\n";
+    $body .= $page->butler->row("2-4 ans", array(), array("colspan" => 4, "class" => "fullLine"));
 
-    $body .= "<tr>\n";
-        $body .= "<td>2-6 ans</td>\n";
-        $body .= "<td>il ne sait pas se tenir tranquille (restaurant, courses...)</td>\n";
-	$body .= "<td>les capacit&eacute;s neuronales de l'enfant ne lui permettent pas de rester calement assis, et un cerveau qui\n";
-        $body .= "s'ennuie trouvera une occupation</td>\n";
-	$body .= "<td>Chercher &agrave; occuper l'enfant autrement plut&ocirc;t que de lui demander de rester calme</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("2-6 ans");
+        $body .= $page->butler->cell("il ne sait pas se tenir tranquille (restaurant, courses...)");
+        $body .= $page->butler->cell("les capacit&eacute;s neuronales de l'enfant ne lui permettent pas de rester calement assis, et un cerveau qui s'ennuie trouvera une occupation");
+    $body .= $page->butler->cell("Chercher &agrave; occuper l'enfant autrement plut&ocirc;t que de lui demander de rester calme");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>2 ans</td>\n";
-        $body .= "<td>quand il s'amuse &agrave; un endroit (amis, place de jeux), impossible d'en partir sans drame</td>\n";
-	$body .= "<td>il est encore tr&egrave;s difficile &agrave; ce jeune cerveau d'anticiper.\n";
-        $body .= "Les notions de temps et de duree sont encore tres floues</td>\n";
-        $body .= "<td>Installer des routines pour faciliter les moments de transition de la vie courante</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("2 ans");
+        $body .= $page->butler->cell("quand il s'amuse &agrave; un endroit (amis, place de jeux), impossible d'en partir sans drame");
+        $body .= $page->butler->cell("il est encore tr&egrave;s difficile &agrave; ce jeune cerveau d'anticiper. Les notions de temps et de duree sont encore tres floues");
+        $body .= $page->butler->cell("Installer des routines pour faciliter les moments de transition de la vie courante");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>3 ans</td>\n";
-        $body .= "<td>bien qu'il connaisse les r&egrave;gles, il ne les respecte pas</td>\n";
-	$body .= "<td>la partie du cerveau qui reformule la r&egrave;gle est encore mal connect&eacute;e &agrave; la partie du cerveau\n";
-        $body .= "qui permet d'emp&ecirc;cher le geste</td>\n";
-	$body .= "<td>&ecirc;tre parent c'est r&eacute;p&eacute;ter souvent...\n";
-	$body .= "L'enfant a encore besoin que le cadre lui soit rappel&eacute;.\n";
-	$body .= "On peut aussi r&eacute;fl&eacute;chir &agrave; une alternative qui l'aiderait &agrave; se tenir (un jeu, un signal\n";
-        $body .= "convenu d'avance)</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("3 ans");
+        $body .= $page->butler->cell("bien qu'il connaisse les r&egrave;gles, il ne les respecte pas");
+        $body .= $page->butler->cell("la partie du cerveau qui reformule la r&egrave;gle est encore mal connect&eacute;e &agrave; la partie du cerveau qui permet d'emp&ecirc;cher le geste");
+        $body .= $page->butler->cell("&ecirc;tre parent c'est r&eacute;p&eacute;ter souvent... L'enfant a encore besoin que le cadre lui soit rappel&eacute;. On peut aussi r&eacute;fl&eacute;chir &agrave; une alternative qui l'aiderait &agrave; se tenir (un jeu, un signal convenu d'avance)");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>3-4 ans</td>\n";
-        $body .= "<td>il a de nouvelles peurs et il imagine des choses terrifiantes, il fait des cauchemars</td>\n";
-	$body .= "<td>la construction mentale et l'imaginaire se developpent. L'enfant est encore dans la confusion: ce qui existe\n";
-        $body .= "dans son imaginaire existe pour de vrai</td>\n";
-	$body .= "<td>Les actes symboliques sont int&eacute;resants, comme le dessin, la poup&eacute;e &agrave; soucis, le\n";
-	$body .= "pi&egrave;ge &agrave; monstres.\n";
-        $body .= "Se mettre &agrave; l'&eacute;coute pour d&eacute;charger l'intensit&eacute; &eacute;motionnelle de l'enfant.</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("3-4 ans");
+        $body .= $page->butler->cell("il a de nouvelles peurs et il imagine des choses terrifiantes, il fait des cauchemars");
+        $body .= $page->butler->cell("la construction mentale et l'imaginaire se developpent. L'enfant est encore dans la confusion: ce qui existe dans son imaginaire existe pour de vrai");
+        $body .= $page->butler->cell("Les actes symboliques sont int&eacute;resants, comme le dessin, la poup&eacute;e &agrave; soucis, le pi&egrave;ge &agrave; monstres. Se mettre &agrave; l'&eacute;coute pour d&eacute;charger l'intensit&eacute; &eacute;motionnelle de l'enfant.");
+    $body .= $page->butler->rowClose();
 
     $body .= "<!-- 4-6 -->\n";
-    $body .= "<tr><td colspan=\"4\" class=\"fullLine\">4-6 ans</td></tr>\n";
+    $body .= $page->butler->row("4-6 ans", array(), array("colspan" => 4, "class" => "fullLine"));
 
-    $body .= "<tr>\n";
-        $body .= "<td>4 ans</td>\n";
-        $body .= "<td>il ment en disant que ce n'est pas lui qui a fait telle chose</td>\n";
-        $body .= "<td>l'enfant ne fait pas encore le lien entre ses actes et leurs cons&eacute;quences</td>\n";
-	$body .= "<td>l'aider progressivement &agrave; faire le lien entre ses actions et les cons&eacute;quences qui en\n";
-	$body .= "d&eacute;coulent. Par exemple: tu as pris le feutre dans ta main et il laisse des traces sur le mur</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("4 ans");
+        $body .= $page->butler->cell("il ment en disant que ce n'est pas lui qui a fait telle chose");
+        $body .= $page->butler->cell("l'enfant ne fait pas encore le lien entre ses actes et leurs cons&eacute;quences");
+        $body .= $page->butler->cell("l'aider progressivement &agrave; faire le lien entre ses actions et les cons&eacute;quences qui en d&eacute;coulent. Par exemple: tu as pris le feutre dans ta main et il laisse des traces sur le mur");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>4 ans</td>\n";
-        $body .= "<td>il parle sans filtre: elle est grosse la dame, le monsieur sent mauvais</td>\n";
-	$body .= "<td>&agrave; cet &acirc;ge, les pens&eacute;es se font a haute voix, l'enfant ne peut pas encore penser en silence\n";
-        $body .= "dans sa t&ecirc;te</td>\n";
-	$body .= "<td>l'adulte qui est souvent mal &agrave; l'aise gronde l'enfant. Il n'y a pas grand chose &agrave; faire cependant,\n";
-        $body .= "si ce n'est expliquer &agrave; l'enfant la raison de son embarras, &agrave; distance de la \"victime\"</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("4 ans");
+        $body .= $page->butler->cell("il parle sans filtre: elle est grosse la dame, le monsieur sent mauvais");
+        $body .= $page->butler->cell("&agrave; cet &acirc;ge, les pens&eacute;es se font a haute voix, l'enfant ne peut pas encore penser en silence dans sa t&ecirc;te");
+        $body .= $page->butler->cell("l'adulte qui est souvent mal &agrave; l'aise gronde l'enfant. Il n'y a pas grand chose &agrave; faire cependant, si ce n'est expliquer &agrave; l'enfant la raison de son embarras, &agrave; distance de la \"victime\"");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>5 ans</td>\n";
-        $body .= "<td>alors qu'il sait parfaitement le faire, il met tr&egrave;s longtemps &agrave; s'habiller</td>\n";
-	$body .= "<td>&agrave; cause de son immaturit&eacute; c&eacute;r&eacute;brale, il se laisse encore distraire tr&egrave;s\n";
-        $body .= "facilement</td>\n";
-	$body .= "<td>l'encourager &agrave; chacune des &eacute;tapes, et pourquoi pas, nommer chacun de ses v&ecirc;tements pour\n";
-        $body .= "l'aider &agrave; se concentrer</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("5 ans");
+        $body .= $page->butler->cell("alors qu'il sait parfaitement le faire, il met tr&egrave;s longtemps &agrave; s'habiller");
+        $body .= $page->butler->cell("&agrave; cause de son immaturit&eacute; c&eacute;r&eacute;brale, il se laisse encore distraire tr&egrave;s facilement");
+        $body .= $page->butler->cell("l'encourager &agrave; chacune des &eacute;tapes, et pourquoi pas, nommer chacun de ses v&ecirc;tements pour l'aider &agrave; se concentrer");
+    $body .= $page->butler->rowClose();
 
     $body .= "<!-- 6-8 -->\n";
-    $body .= "<tr><td colspan=\"4\" class=\"fullLine\">6-8 ans </td></tr>\n";
+    $body .= $page->butler->row("6-8 ans", array(), array("colspan" => 4, "class" => "fullLine"));
 
-    $body .= "<tr>\n";
-        $body .= "<td>6-7 ans</td>\n";
-        $body .= "<td>il raconte avec aplomb des histoires hallucinantes</td>\n";
-	$body .= "<td>il commence &agrave; utilsier le poteentiel imaginatif de son cerveau mais il distingue encore difficilement la\n";
-        $body .= "realit&eacute; des histoires qu'il se raconte dans la t&ecirc;te</td>\n";
-	$body .= "<td>&eacute;couter son histoire et ne pas h&eacute;siter &agrave; lui faire un petit clin d'oeil pour lui montrer\n";
-	$body .= "que vous n'&ecirc;tes pas dupe.\n";
-        $body .= "Vous pourrez revenir dessus plus tard pour l'aider &agrave; faire la part des choses</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("6-7 ans");
+        $body .= $page->butler->cell("il raconte avec aplomb des histoires hallucinantes");
+        $body .= $page->butler->cell("il commence &agrave; utilsier le poteentiel imaginatif de son cerveau mais il distingue encore difficilement la realit&eacute; des histoires qu'il se raconte dans la t&ecirc;te");
+        $body .= $page->butler->cell("&eacute;couter son histoire et ne pas h&eacute;siter &agrave; lui faire un petit clin d'oeil pour lui montrer que vous n'&ecirc;tes pas dupe. Vous pourrez revenir dessus plus tard pour l'aider &agrave; faire la part des choses");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>7-8 ans</td>\n";
-        $body .= "<td>il est encore bien maladroit</td>\n";
-        $body .= "<td>le corps de l'enfant grandit et se modifie rapidement; pas facile pour lui de s'adapter sans cesse</td>\n";
-        $body .= "<td>se poser la question: si un ami faisait la m&ecirc;me maladresse, quel discours lui tiendrais-je?</td>\n";
-    $body .= "</tr>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("7-8 ans");
+        $body .= $page->butler->cell("il est encore bien maladroit");
+        $body .= $page->butler->cell("le corps de l'enfant grandit et se modifie rapidement; pas facile pour lui de s'adapter sans cesse");
+        $body .= $page->butler->cell("se poser la question: si un ami faisait la m&ecirc;me maladresse, quel discours lui tiendrais-je?");
+    $body .= $page->butler->rowClose();
 
-    $body .= "<tr>\n";
-        $body .= "<td>8 ans</td>\n";
-        $body .= "<td>il fait tout ce qui est interdit</td>\n";
-	$body .= "<td>l'interdit incite &agrave; la transgression et bien que la maturation de leur cerveau le permette maintenant de\n";
-	$body .= "r&eacute;flechir, les enfants ne peuvent pas r&eacute;sister &agrave; l'envie d'aller l&agrave; o&ugrave; se porte\n";
-        $body .= "leur attention (et leurs envies)</td>\n";
-        $body .= "<td>&eacute;tablir des r&egrave;gles plut&ocirc;t que des interdits</td>\n";
-    $body .= "</tr>\n";
-
-$body .= "</table></div>\n";
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("8 ans");
+        $body .= $page->butler->cell("il fait tout ce qui est interdit");
+        $body .= $page->butler->cell("l'interdit incite &agrave; la transgression et bien que la maturation de leur cerveau le permette maintenant de r&eacute;flechir, les enfants ne peuvent pas r&eacute;sister &agrave; l'envie d'aller l&agrave; o&ugrave; se porte leur attention (et leurs envies)");
+        $body .= $page->butler->cell("&eacute;tablir des r&egrave;gles plut&ocirc;t que des interdits");
+    $body .= $page->butler->rowClose();
+$body .= $page->butler->tableClose();
+$body .= "</div><!-- tablebottom -->\n";
 
 
 $body .= "<!-- H3 Cles de l'educ -->\n";
@@ -229,7 +202,9 @@ $body .= "<p>&Eacute;motion est un d&eacute;clencheur, et notre cerveau y apport
 $body .= "comportementale, cognitive.</p>\n";
 $body .= "<p>Equit&eacute; est plus important que &eacute;galit&eacute;: ce qui compte, ce sont les besoins de chacun.</p>\n";
 
-$body .= "<div><img src=\"/pictures/equite.png\" alt=\"equite\" /></div>\n";
+$body .= "<div>\n";
+$body .= $page->bodyBuilder->img("/pictures/equite.png", "equite");
+$body .= "</div>\n";
 
 $body .= "<p>Lorsqu'on est dans une crise &eacute;motionnelle, on est prisonnier du cerveau &eacute;motionnel, le cerveau\n";
 $body .= "sup&eacute;rieur est hors service.</p>\n";
@@ -405,7 +380,7 @@ $body .= "<div><ul>\n";
     $body .= "<ul>\n";
         $body .= "<li>on se met debout</li>\n";
         $body .= "<li>on imagine des valises (forme, couleur...)</li>\n";
-	$body .= "<li>on met dans les valises les choses dont l'enfant veut s'all&eacute;ger, cec qui le met en col&egrave;re\n";
+    $body .= "<li>on met dans les valises les choses dont l'enfant veut s'all&eacute;ger, cec qui le met en col&egrave;re\n";
         $body .= "(interdiction de mettre des personnes, plut&ocirc;t des attitudes, des ressentis...)</li>\n";
         $body .= "<li>sur une longue inspiration, on prend les valises, on l&egrave;ve les &eacute;paules</li>\n";
         $body .= "<li>on bloque la respiration, on baisse et rel&egrave;ve les &eacute;paules de 3 &agrave; 5 fois</li>\n";
@@ -592,28 +567,30 @@ $body .= "Il faut comprendre les facteurs d&eacute;clencheurs de stress pour leu
 $body .= "appropri&eacute;e.</p>\n";
 $body .= "<p>Pour identifier les situations &agrave; stress, on peut utiliser le mn&eacute;motechnique CINE: quel CINE je me fais\n";
 $body .= "face &agrave; mon stress?</p>\n";
-$body .= "<div><table>\n";
-    $body .= "<tr>\n";
-	$body .= "<td class=\"cineLeft\">perte de&nbsp;</td>\n";
-        $body .= "<td class=\"cineCenter\">C</td>\n";
-	$body .= "<td class=\"cineRight\">ontr&ocirc;le</td>\n";
-    $body .= "</tr>\n";
-    $body .= "<tr>\n";
-        $body .= "<td></td>\n";
-        $body .= "<td class=\"cineCenter\">I</td>\n";
-        $body .= "<td class=\"cineRight\">mpr&eacute;visibilit&eacute;</td>\n";
-    $body .= "</tr>\n";
-    $body .= "<tr>\n";
-        $body .= "<td></td>\n";
-        $body .= "<td class=\"cineCenter\">N</td>\n";
-        $body .= "<td class=\"cineRight\">ouveaut&eacute;</td>\n";
-    $body .= "</tr>\n";
-    $body .= "<tr>\n";
-        $body .= "<td class=\"cineLeft\">menace pour l'</td>\n";
-        $body .= "<td class=\"cineCenter\">E</td>\n";
-	$body .= "<td class=\"cineRight\">go (ne pas se sentir &agrave; la hauteur)</td>\n";
-    $body .= "</tr>\n";
-$body .= "</table></div>\n";
+$body .= "<div>\n";
+$body .= $page->butler->tableOpen();
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("perte de&nbsp;", array("class" => "cineLeft"));
+        $body .= $page->butler->cell("C", array("class" => "cineCenter"));
+        $body .= $page->butler->cell("ontr&ocirc;le", array("class" => "cineRight"));
+    $body .= $page->butler->rowClose();
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell();
+        $body .= $page->butler->cell("I", array("class" => "cineCenter"));
+        $body .= $page->butler->cell("mpr&eacute;visibilit&eacute;", array("class" => "cineRight"));
+    $body .= $page->butler->rowClose();
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell();
+        $body .= $page->butler->cell("N", array("class" => "cineCenter"));
+        $body .= $page->butler->cell("ouveaut&eacute;", array("class" => "cineRight"));
+    $body .= $page->butler->rowClose();
+    $body .= $page->butler->rowOpen();
+        $body .= $page->butler->cell("menace pour l'", array("class" => "cineLeft"));
+        $body .= $page->butler->cell("E", array("class" => "cineCenter"));
+        $body .= $page->butler->cell("go (ne pas se sentir &agrave; la hauteur)", array("class" => "cineRight"));
+    $body .= $page->butler->rowClose();
+$body .= $page->butler->tableClose();
+$body .= "</div>\n";
 $body .= "<p>Le cerveau ne voit <b>pas de diff&eacute;rences</b> entre le r&eacute;el et l'imaginaire, les m&ecirc;mes aires\n";
 $body .= "c&eacute;r&eacute;brales sont activ&eacute;es.\n";
 $body .= "Imaginer une situation &agrave; stress va donc provoquer la m&ecirc;me r&eacute;action de stress que de vivre ladite\n";
@@ -803,8 +780,8 @@ $body .= "<div><ul>\n";
     $body .= "<li>Faire de grandes et lentes respirations</li>\n";
     $body .= "<li>Quand l'&eacute;motion est redevenue g&eacute;rable, se poser des questions:</li>\n";
     $body .= "<ul>\n";
-	$body .= "<li>qu'est-ce qui est si important pour moi dans cette situation? Clarifier les valeurs/besoins frustr&eacute;s</li>\n";
-	$body .= "<li>quelle comp&eacute;tence manque &agrave; mon enfant pour changer de comportement? Gestion de la col&egrave;re?\n";
+    $body .= "<li>qu'est-ce qui est si important pour moi dans cette situation? Clarifier les valeurs/besoins frustr&eacute;s</li>\n";
+    $body .= "<li>quelle comp&eacute;tence manque &agrave; mon enfant pour changer de comportement? Gestion de la col&egrave;re?\n";
         $body .= "Li&eacute; &agrave; l'&acirc;ge?</li>\n";
     $body .= "</ul>\n";
     $body .= "<li>En fonction des r&eacute;ponses aux pr&eacute;c&eacute;dentes questions, pr&eacute;parer son i-message</li>\n";
@@ -917,7 +894,4 @@ $body .= "</ul></div>\n";
 
 
 echo $body;
-
-//// Finish
-unset($page);
 ?>

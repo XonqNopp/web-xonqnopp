@@ -1,127 +1,185 @@
 <?php
-require("../../functions/classPage.php");
+require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
-require("${funcpath}_local/borrowback.php");
+require_once("{$funcpath}_local/borrowback.php");
+
 
 $page = new PhPage($rootPath);
 
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 
-$page->initDB();
+$page->bobbyTable->init();
 
-// Borrowed item came home
-borrow_back($page, "bds");
-
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
-
-$body = "";
-
-$GI = $page->UserIsAdmin();
-
-//// Find serie
-$serie_id = $_GET["id"];
-$serie = "";
-$findserie = $page->DB_IdManage("SELECT `name` FROM `bd_series` WHERE `id` = ?", $serie_id);
-$findserie->store_result();
-if($findserie->num_rows == 0) {
-	$findserie->close();
-	$page->HeaderLocation();
-} else {
-	$findserie->bind_result($serie);
-	$findserie->fetch();
-	$findserie->close();
+// Borrowed item came home (link from missing index)
+if(isset($_GET["back"])) {
+    $backId = NULL;
+    if(isset($_GET["id"])) {
+        $backId = $_GET["id"];
+    }
+    borrow_back($page, "bds", $_GET["back"], $backId);
 }
-	// Title
-	$page_title = "$serie (BDs)";
-	if($serie == "") {
-		$page_title = "Hors s&eacute;rie (BDs)";
-	}
-//
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);// add previous+next
-$body .= $page->SetTitle($page_title);
 
-$page->HotBooty();
+$page->cssHelper->dirUpWing();
 
-$body .= "<div class=\"wide\">\n";
-$body .= "<div class=\"lhead\">\n";
-$body .= "<a href=\"search.php\" title=\"Search\">Search</a>\n";
-$body .= "</div>\n";
-$body .= "<div class=\"chead\">\n";
-$body .= "</div>\n";
-//// Propose to add a new
-$body .= "<div class=\"rhead\">\n";
-$body .= "<a href=\"../missings/index.php?view=bds\" title=\"Missing BDs\">Missing BDs</a>\n";
-if($GI) {
-	$body .= "<br />\n";
-	if($serie_id > 1) {
-		$body .= "<a href=\"serie_insert.php?id=$serie_id\" title=\"Edit BD serie\">Edit BD serie</a><br />\n";
-	}
-	//$body .= "<a href=\"../insert_isbn.php\" title=\"Add a BD by ISBN\">New ISBN</a><br />\n";
-	$body .= "<a href=\"insert.php?serie_id=$serie_id\" title=\"Add a BD\">New BD</a><br />\n";
-	$body .= "<a href=\"serie_insert.php\" title=\"Add a BD serie\">New serie</a>\n";
+
+/**
+ * Get the serie details.
+ *
+ * @SuppressWarnings(PHPMD.MissingImport)
+ */
+function getSerieDetails($serieId) {
+    global $page;
+
+    $result = new stdClass();
+    $result->serie = "";
+    $result->nAlbums = NULL;
+
+    $findserie = $page->bobbyTable->idManage("SELECT `name`, `Nalbums` FROM `bd_series` WHERE `id` = ?", $serieId);
+    $findserie->store_result();
+    if($findserie->num_rows == 0) {
+        $findserie->close();
+        $page->htmlHelper->headerLocation();
+        return;
+    }
+
+    $findserie->bind_result($result->serie, $result->nAlbums);
+    $findserie->fetch();
+    $findserie->close();
+
+    return $result;
 }
-$body .= "</div>\n";
 
-$body .= "</div>\n";
 
-// Fetch all from this serie
-$display_serie = $page->DB_IdManage("SELECT * FROM `bds` WHERE `serie_id` = ? ORDER BY `tome` ASC, `title` ASC", $serie_id);
-$display_serie->store_result();
-if($display_serie->num_rows == 0) {
-	$body .= "<div>No BD yet</div>\n";
-} else {
-	$display_serie->bind_result($id, $isbn, $serie_id, $tome, $title, $ti, $author, $publisher, $date, $borrowed);
-	$body .= "<div class=\"bd_serie_table\">\n";
-	$body .= "<table class=\"bd_serie_table\">\n";
-	while($display_serie->fetch()) {
-		if($borrowed == "1") {
-			$isbor = " away";
-		} else {
-			$isbor = "";
-		}
-		$body .= "<tr class=\"bd_serie_table$isbor\">\n";
-		//// Edit'n'Borrow
-		$body .= "<td class=\"bd_serie_edit twenty\">\n";
-		if($GI) {
-			$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
-			$body .= "&nbsp;\n";
-			if($borrowed) {
-				$body .= "<a href=\"serie_display.php?id=$serie_id&amp;back=$id\" title=\"back\">back</a>\n";
-				$body .= "&nbsp;\n";
-				$body .= "<a href=\"../missings/index.php?view=bds$id#bds$id\" title=\"who\">who</a>\n";
-			} else {
-				$body .= "<a href=\"../missings/insert.php?db=bds&amp;id=$id\" title=\"borrow\">borrow</a>\n";
-			}
-		}
-		$body .= "</td>\n";
-		//// Tome
-		$body .= "<td class=\"bd_serie_table_tome ten\">\n";
-		if($tome > 0) {
-			$body .= "$tome\n";
-		}
-		$body .= "</td>\n";
-		//// Title
-		$body .= "<td id=\"bd$id\" class=\"bd_serie_table_title\">\n";
-		$body .= "$title\n";
-		$body .= "</td>\n";
-		//// author
-		$body .= "<td class=\"bd_serie_table_author\">\n";
-		$body .= "$author\n";
-		$body .= "</td>\n";
-		//
-		$body .= "</tr>\n";
-	}
-	$body .= "</table>\n";
-	$body .= "</div>\n";
+function getAdminLinks($isGI, $bdId, $borrowed) {
+    if(!$isGI) {
+        return "";
+    }
+
+    global $page;
+
+    $body = $page->bodyBuilder->anchor("insert.php?id=$bdId", "edit");
+    $body .= "&nbsp;\n";
+
+    if($borrowed) {
+        $body .= $page->bodyBuilder->anchor("../missings/index.php?view=bds$bdId#bds$bdId", "who");
+        return $body;
+
+    }
+
+    $body .= $page->bodyBuilder->anchor("../missings/insert.php?db=bds&amp;id=$bdId", "borrow");
+    return $body;
 }
-$display_serie->close();
 
-/*** Printing ***/
-$page->show($body);
-unset($page);
+
+function getPageTitle($serie) {
+    if($serie == "") {
+        return "Hors s&eacute;rie (BDs)";
+    }
+
+    return "$serie (BDs)";
+}
+
+
+function rHead($isGI, $serieId) {
+    global $page;
+
+    $body = $page->bodyBuilder->anchor("../missings/index.php?view=bds", "Missing BDs");
+    if(!$isGI) {
+        return $body;
+    }
+
+    $body .= "<br />\n";
+    if($serieId > 1) {
+        $body .= $page->bodyBuilder->anchor("serie_insert.php?id=$serieId", "Edit BD serie") . "<br />\n";
+    }
+    $body .= $page->bodyBuilder->anchor("insert.php?serie_id=$serieId", "Add a BD") . "<br />\n";
+    $body .= $page->bodyBuilder->anchor("serie_insert.php", "Add a BD serie");
+
+    return $body;
+}
+
+
+function getBody($serieId) {
+    global $page;
+
+    $body = "";
+
+    $isGI = $page->loginHelper->userIsAdmin();
+
+    // Find serie
+    $serieDetails = getSerieDetails($serieId);
+    $serie = $serieDetails->serie;
+    $nAlbums = $serieDetails->nAlbums;
+
+    $pageTitle = getPageTitle($serie);
+
+    $body .= $page->bodyBuilder->goHome("..");
+    $body .= $page->htmlHelper->setTitle($pageTitle);
+
+    $page->htmlHelper->hotBooty();
+
+    $body .= "<div class=\"wide\">\n";
+    $body .= "<div class=\"lhead\">\n";
+    //$body .= $page->bodyBuilder->anchor("search.php", "Search");
+    $body .= "</div><!-- lhead -->\n";
+    $body .= "<div class=\"chead\"></div>\n";
+    // Propose to add a new
+    $body .= "<div class=\"rhead\">\n";
+    $body .= rHead($isGI, $serieId);
+    $body .= "</div><!-- rhead -->\n";
+
+    $body .= "</div><!-- wide -->\n";
+
+
+    // Fetch all from this serie
+    $displaySerie = $page->bobbyTable->idManage("SELECT * FROM `bds` WHERE `serie_id` = ? ORDER BY `tome` ASC, `title` ASC", $serieId);
+    $displaySerie->store_result();
+
+    if($displaySerie->num_rows == 0) {
+        $displaySerie->close();
+        return "<div>No BD yet</div>\n";
+    }
+
+    if($nAlbums > 0 && $displaySerie->num_rows >= $nAlbums) {
+        $body .= "<div class=\"bd_serie_complete\">S&eacute;rie compl&egrave;te</div>\n";
+    }
+
+    $bdId = NULL;
+    $isbnNOTUSED = NULL;
+    $tome = NULL;
+    $title = NULL;
+    $tiNOTUSED = NULL;
+    $author = NULL;
+    $publisher = NULL;
+    $date = NULL;
+    $borrowed = NULL;
+    $displaySerie->bind_result($bdId, $isbnNOTUSED, $serieId, $tome, $title, $tiNOTUSED, $author, $publisher, $date, $borrowed);
+    $body .= "<div class=\"bd_serie_table\">\n";
+    $body .= $page->butler->tableOpen(array("class" => "bd_serie_table"));
+    while($displaySerie->fetch()) {
+        $isbor = "";
+        if($borrowed == "1") {
+            $isbor = " away";
+        }
+        $body .= $page->butler->rowOpen(array("class" => "bd_serie_table$isbor"));
+
+        $body .= $page->butler->cell(getAdminLinks($isGI, $bdId, $borrowed), array("class" => "bd_serie_edit"));
+        $body .= $page->butler->cell($tome > 0 ? $tome : "", array("class" => "bd_serie_table_tome ten"));
+        $body .= $page->butler->cell($title, array("class" => "bd_serie_table_title"));
+        $body .= $page->butler->cell($author, array("class" => "bd_serie_table_author"));
+
+        $body .= $page->butler->rowClose();
+    }
+    $body .= $page->butler->tableClose();
+    $body .= "</div><!-- bd_serie_table -->\n";
+
+    $displaySerie->close();
+
+    return $body;
+}
+
+
+echo getBody($_GET["id"]);
 ?>

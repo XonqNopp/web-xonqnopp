@@ -1,0 +1,42 @@
+div.missing_display_table {
+    width: 100%;
+    text-align: center;
+}
+
+
+table.missing_display {
+    margin: auto;
+    margin-bottom: 1cm;
+}
+
+
+td.missing_display_name {
+    text-align: center;
+    font-weight: 700;
+    font-size: 16pt;
+    padding-bottom: 1mm;
+    padding-top: 5mm;
+}
+
+
+td.missing_display_title,
+td.missing_display_date {
+    text-align: left;
+    padding: 1mm;
+}
+
+
+tr.missing_wanted,
+td.missing_display_name_borrower,
+tr.missing_display_borrowed {
+    border-style: solid;
+    border-width: 2pt;
+    border-color: #fa8;
+    background-color: #fa8;
+}
+
+
+td.missing_back {
+    font-size: 8pt;
+    padding: 0 1em;
+}

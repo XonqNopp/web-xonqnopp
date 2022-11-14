@@ -1,91 +1,75 @@
 <?php
-/*** Created: Thu 2014-05-01 07:47:18 CEST
- ***
- *** TODO:
- *** * subpages for LSGE and LSGS with associated webcams and pics and links
- ***
- ***/
-require("../functions/classPage.php");
-$rootPath = "..";
-$funcpath = "$rootPath/functions";
-$page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-$page->initDB();
-require("preparations.php");
+require_once("../functions/page_helper.php");
+$page = new PhPage("..");
+//$page->logger->levelUp(6);
+require_once("preparations.php");
 
-$args = new stdClass();
-$args->redirect = "";
-$page->LoginCookie($args);
+//$page->cssHelper->dirUpWing();// cannot because it screws my display (but why?)
 
-$page->CSS_ppJump();
-//$page->CSS_ppWing();// cannot because it screws my display (but why?)
+$body = $page->bodyBuilder->goHome("..");
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Fly!");
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("Fly!");
+$page->htmlHelper->hotBooty();
 
-$body .= "<div class=\"csstab64_table\" style=\"margin-bottom: 2em;\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
-	// PAX
-	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
-	$body .= "<a href=\"PAX.php?language=francais\">Informations pour mes passagers</a>\n";
-	$body .= "</div>\n";
+$body .= $page->waitress->tableOpen(array(), false);
+$body .= $page->waitress->rowOpen();
+    // PAX
+    $body .= $page->waitress->cell(
+        $page->bodyBuilder->anchor("pax.php?language=francais", "Informations pour mes passagers"),
+        array("class" => "flyTitle")
+    );
 
-	// logbook
-	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
-	$body .= "<a href=\"logbook.php\">My flight logbook</a>\n";
-	$body .= "</div>\n";
-$body .= "</div>\n";
-$body .= "</div>\n";
+    // logbook
+    $body .= $page->waitress->cell(
+        $page->bodyBuilder->anchor("logbook.php", "My flight logbook"),
+        array("class" => "flyTitle")
+    );
 
+$body .= $page->waitress->rowClose();
+$body .= $page->waitress->tableClose();
 
-$body .= "<div class=\"csstab64_table left\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
-	$body .= "<div class=\"csstab64_cell half\">\n";
-		$body .= "<ul>\n";
-		// nav
-		$navcount = $page->DB_GetCount("NavList");
-		$body .= "<li><a href=\"NavList.php\">my navigations</a>&nbsp;($navcount)</li>\n";
-		// PDF
-		$body .= "<li><a href=\"pdf\">my PDF/checklists</a></li>\n";
-		$body .= "<li><a href=\"computer.php\">computer</a></li>\n";
-		$body .= "</ul>\n";
-	//
-		// Preparation
-		$body .= "Flight preparations:\n";
-		$body .= "<ul>\n";
-		$body .= "<li><a href=\"lsge.php\" title=\"LSGE\">LSGE</a></li>\n";
-		$body .= "<li><a href=\"lsgs.php\" title=\"LSGS\">LSGS</a></li>\n";
-		$body .= "</ul>\n";
-	//
-		// misc
-		$body .= "Misc:\n";
-		$body .= "<ul>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.sust.admin.ch/fr/index.html\">SESE/SUST</a></li>\n";
+$body .= "<div></div>\n";  // some space
 
-		$body .= "<li>\n";
-		$body .= "<a target=\"_blank\" href=\"http://www.bazl.admin.ch/index.html?lang=fr\">OFAC/BAZL</a>\n";
-		$body .= "&nbsp;-&nbsp;\n";
-		$body .= "<a target=\"_blank\" href=\"https://www.bazl.admin.ch/bazl/fr/home/experts/formation-et-licences/pilotes/formulaires.html\">Formulaires AESA, avions a moteur, 60.521 SEP TMG revalidation EASA</a>\n";
-		$body .= "</li>\n";
+$body .= $page->waitress->tableOpen(array("class" => "left"), false);
+$body .= $page->waitress->rowOpen();
+    $body .= $page->waitress->cellOpen(array("class" => "half"));
+        $body .= "<ul>\n";
+        $body .= $page->bodyBuilder->liAnchor("nav/index.php", "navigations");
+        $body .= $page->bodyBuilder->liAnchor("pdf", "my PDFs");
+        $body .= $page->bodyBuilder->liAnchor("computer.php", "computer");
+        $body .= "</ul>\n";
+    //
+        // Preparation
+        $body .= "Flight preparations:\n";
+        $body .= "<ul>\n";
+        $body .= $page->bodyBuilder->liAnchor("lsge.php", "LSGE");
+        $body .= $page->bodyBuilder->liAnchor("lsgs.php", "LSGS");
+        $body .= "</ul>\n";
+    //
+        // misc
+        $body .= "Misc:\n";
+        $body .= "<ul>\n";
+        $body .= $page->bodyBuilder->liAnchor("https://www.sust.admin.ch/fr/sese-page-daccueil", "SESE/SUST");
 
-		$body .= "<li><a target=\"_blank\" href=\"http://seaplanes.ch/\">seaplanes.ch</a></li>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.flightradar24.com/\">FlightRadar24</a></li>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://planefinder.net/\">PlaneFinder</a></li>\n";
-		$body .= "</ul>\n";
-	// Closing div
-	$body .= "</div>\n";
+        $body .= "<li>\n";
+        $body .= $page->bodyBuilder->anchor("https://www.bazl.admin.ch/bazl/fr/home.html", "OFAC/BAZL");
+        $body .= "&nbsp;-&nbsp;\n";
+        $body .= $page->bodyBuilder->anchor("https://www.bazl.admin.ch/bazl/fr/home/personal/flugausbildung/pilotes/formulaires.html", "Formulaires AESA, avions &agrave; moteur, 60.521 SEP TMG revaildation EASA");
+        $body .= "</li>\n";
+
+        $body .= $page->bodyBuilder->liAnchor("http://seaplanes.ch/", "seaplanes.ch");
+        $body .= $page->bodyBuilder->liAnchor("http://www.flightradar24.com/", "FlightRadar24.com");
+        $body .= $page->bodyBuilder->liAnchor("http://planefinder.net/", "PlaneFinder.net");
+        $body .= "</ul>\n";
+    $body .= $page->waitress->cellClose();
 //
-	$body .= "<div class=\"csstab64_cell half\">\n";
-	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
-	$body .= "</div>\n";
+    $body .= $page->waitress->cell(
+        commonPreparations($page),
+        array("class" => "half")
+    );
 
-$body .= "</div>\n";
-$body .= "</div>\n";
+$body .= $page->waitress->rowClose();
+$body .= $page->waitress->tableClose();
 
-$page->show($body);
-unset($page);
+echo $body;
 ?>
