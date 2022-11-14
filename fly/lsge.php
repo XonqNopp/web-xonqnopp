@@ -60,9 +60,9 @@ $body .= "<div class=\"csstab64_row\">\n";
 		// LSGE webcam
 		$body .= "<div>\n";
 		$body .= "<a href=\"http://www.aerodrome-ecuvillens.ch/index.php?page=meteo_webcam.htm\" target=\"_blank\">\n";
-		$body .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy28.jpg\" />\n";
+		$body .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy27.jpg\" />\n";
 		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy10.jpg\" />\n";
+		$body .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy09.jpg\" />\n";
 		$body .= "</a>\n";
 		$body .= "</div>\n";
 	$body .= "</div>\n";
