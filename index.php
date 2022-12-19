@@ -102,9 +102,7 @@ $page->HotBooty();
 			$the_count = $page->DB_GetCount("quotations");
 		//
 			// A random citation
-			$randid = $page->DB_RandomEntry("quotations");
-			$randquery = "SELECT * FROM `quotations` WHERE `id` = $randid";
-			$randsql = $page->DB_QueryManage($randquery);
+			$randsql = $page->DB_RandomEntry("quotations");
 			$randquot = $randsql->fetch_object();
 			$randsql->close();
 	//

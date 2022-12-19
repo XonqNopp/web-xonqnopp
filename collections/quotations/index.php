@@ -1,9 +1,4 @@
 <?php
-/*** Created: Thu 2014-08-07 15:06:56 CEST
- ***
- *** TODO:
- ***
- ***/
 require("../../functions/classPage.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
@@ -42,9 +37,8 @@ $body .= $page->GoHome($args);
 //
 	/*** Prepare query ***/
 	if(isset($_GET["random"])) {
-		/*** random entry ***/
-		$randid = $page->DB_RandomEntry("quotations");
-		$query = "SELECT * FROM `quotations` WHERE `id` = $randid";
+		$result = $page->DB_RandomEntry("quotations");
+
 	} else {
 		/*** query and order ***/
 			/*** prepare sorting order ***/
@@ -122,9 +116,9 @@ $body .= $page->GoHome($args);
 			$query = " WHERE $query";
 		}
 		$query = "SELECT * FROM `quotations`$query$order";
+		$result = $page->DB_QueryManage($query);
 	}
 //
-$result = $page->DB_QueryManage($query);
 
 $body .= $page->SetTitle("Citations");
 $page->HotBooty();
