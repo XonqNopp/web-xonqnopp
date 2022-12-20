@@ -91,12 +91,12 @@ function getLink($url, $lineBreak=False) {
 
 
 function lili($content, $class="") {
-	$li = "<li";
+	$item = "<li";
 	if($class != "") {
-		$li .= " class=\"$class\"";
+		$item .= " class=\"$class\"";
 	}
-	$li .= ">$content</li>\n";
-	return $li;
+	$item .= ">$content</li>\n";
+	return $item;
 }
 
 
