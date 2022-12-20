@@ -38,10 +38,10 @@ $body = "";
 		//
 			//// company name (if required)
 			if($cname == "") {
-				$com_sql = $page->DB_QueryManage("SELECT * FROM `companies` WHERE `id` = $cid");
-				$com_obj = $com_sql->fetch_object();
-				$com_sql->close();
-				$cname = $com_obj->name;
+				$query = $page->DB_QueryManage("SELECT * FROM `companies` WHERE `id` = $cid");
+				$companyObj = $query->fetch_object();
+				$query->close();
+				$cname = $companyObj->name;
 				$back .= "<div class=\"csstab64_cell company_name\">\n";
 				$back .= "<a href=\"display.php?id=$cid\" title=\"$cname\">$cname</a>\n";
 				$back .= "</div>\n";
@@ -144,8 +144,8 @@ if($chrono) {
 	$sql->close();
 } else {
 	//// companies
-	$com_sql = $page->DB_QueryManage("SELECT * FROM `companies` ORDER BY `name` ASC");
-	while($c = $com_sql->fetch_object()) {
+	$query = $page->DB_QueryManage("SELECT * FROM `companies` ORDER BY `name` ASC");
+	while($c = $query->fetch_object()) {
 		$cid = $c->id;
 		$name = $c->name;
 		$sql = $page->DB_QueryManage("SELECT * FROM `comco` WHERE `company` = $cid ORDER BY `timestamp` DESC");
@@ -161,7 +161,7 @@ if($chrono) {
 		}
 		$sql->close();
 	}
-	$com_sql->close();
+	$query->close();
 }
 $body .= "</div>\n";
 

@@ -34,19 +34,20 @@ function fields($item = array()) {
 		"health" => "health",
 		"pharma" => "pharmaceutics"
 	);
-	if($item != array()) {
-		$out = array();
-		if($item !== array("")) {
-			foreach($item as $in) {
-				//// TEMPORARY
-				if($in == "engineer") { $in = "consulting"; }
-				$out[] = $back[$in];
-			}
-		}
-		return $out;
-	} else {
+
+	if($item == array()) {
 		return $back;
 	}
+
+	$out = array();
+	if($item !== array("")) {
+		foreach($item as $in) {
+			//// TEMPORARY
+			if($in == "engineer") { $in = "consulting"; }
+			$out[] = $back[$in];
+		}
+	}
+	return $out;
 }
 
 function physicist($item = array()) {
@@ -61,20 +62,21 @@ function physicist($item = array()) {
 		"prog" => "programmation",
 		"management" => "management"
 	);
-	if($item != array()) {
-		$out = array();
-		if($item !== array("")) {
-			foreach($item as $in) {
-				$out[] = $back[$in];
-			}
-		}
-		return $out;
-	} else {
+
+	if($item == array()) {
 		return $back;
 	}
+
+	$out = array();
+	if($item !== array("")) {
+		foreach($item as $in) {
+			$out[] = $back[$in];
+		}
+	}
+	return $out;
 }
 
-function media($item = "") {
+function media() {
 	$back = array(
 		"mail"    => "mail",
 		"website" => "website",
@@ -85,7 +87,7 @@ function media($item = "") {
 	return $back;
 }
 
-function kind($item = "") {
+function kind() {
 	$back = array(
 		"application" => "application",
 		"offer"  => "offer",
