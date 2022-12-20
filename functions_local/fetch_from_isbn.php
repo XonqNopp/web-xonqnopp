@@ -1,4 +1,7 @@
 <?php
+use stdClass;
+use SimpleXMLElement;
+
 function fetch_ISBN(PhPage $page, $type, $isbn) {
 	$page->ln_3(6, "fetch_ISBN($type, $isbn)", "LOCAL");
 	$infos = new stdClass();
