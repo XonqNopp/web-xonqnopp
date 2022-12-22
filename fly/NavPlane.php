@@ -66,18 +66,10 @@ $body = "";
 			$armArgs->div = False;
 			$armArgs->required = $required;
 
-			// Args are the same until this point
-			$massArgs = clone($armArgs);
-
 			$armArgs->step = $defaultStep;
 			$armArgs->name = "Luggage{$index}Arm";
 			$armArgs->value = $sqlData->get($armArgs->name);
 			$output .= "<div class=\"csstab64_cell\">{$page->FormField($armArgs)}</div>\n";
-
-			// Max mass
-			$massArgs->name = "Luggage{$index}MaxMass";
-			$massArgs->value = $sqlData->get($massArgs->name);
-			$output .= "<div class=\"csstab64_cell\">{$page->FormField($massArgs)}</div>\n";
 
 			$output .= "</div>  <!-- row -->\n";
 			return $output;
@@ -117,24 +109,10 @@ $body = "";
 				$armArgs->value = $sqlData->get($armArgs->name);
 				$output .= "<div class=\"csstab64_cell\">{$page->FormField($armArgs)}</div>\n";;
 			//
-				// Total capacity
-				$quantityArgs->name = "Fuel{$index}TotalCapacity";
-				$quantityArgs->value = $sqlData->get($quantityArgs->name);
-				$output .= "<div class=\"csstab64_cell\">{$page->FormField($quantityArgs)}</div>\n";;
-			//
 				// Unusable
 				$quantityArgs->name = "Fuel{$index}Unusable";
 				$quantityArgs->value = $sqlData->get($quantityArgs->name);
 				$output .= "<div class=\"csstab64_cell\">{$page->FormField($quantityArgs)}</div>\n";;
-			//
-				// All or nothing
-				$allArgs = new stdClass();
-				$allArgs->type = "select";
-				$allArgs->name = "Fuel{$index}AllOrNothing";
-				$allArgs->value = $sqlData->get($allArgs->name);
-				$allArgs->list = array("no", "yes");
-				$allArgs->keyval = true;
-				$output .= "<div class=\"csstab64_cell\">{$page->FormField($allArgs)}</div>\n";;
 			//
 			$output .= "</div>  <!-- row -->\n";
 			return $output;
@@ -166,7 +144,6 @@ $TABLE = "aircrafts";
 	$sqlData->addField("DryEmptyMoment", "d", 0);
 
 	$sqlData->addField("MTOW", "i", 0);
-	$sqlData->addField("MLDGW", "i", 0);
 
 	$sqlData->addField("GCmin", "d", 0);
 	$sqlData->addField("GCmax", "d", 0);
@@ -174,42 +151,14 @@ $TABLE = "aircrafts";
 	$sqlData->addField("FrontArm", "d", 0);
 
 	$sqlData->addField("Rear0Arm", "d", 0);
-	$sqlData->addField("Rear1Arm", "d", 0);
 
 	$sqlData->addField("Luggage0Arm", "d", 0);
-	$sqlData->addField("Luggage0MaxMass", "i", 0);
-	$sqlData->addField("Luggage1Arm", "d", 0);
-	$sqlData->addField("Luggage1MaxMass", "i", 0);
-	$sqlData->addField("Luggage2Arm", "d", 0);
-	$sqlData->addField("Luggage2MaxMass", "i", 0);
-	$sqlData->addField("Luggage3Arm", "d", 0);
-	$sqlData->addField("Luggage3MaxMass", "i", 0);
-
-	$sqlData->addField("LuggageMaxTotalMass", "i", 0);
 
 	$sqlData->addField("Fuel0Arm", "d", 0);
-	$sqlData->addField("Fuel0TotalCapacity", "i", 0);
 	$sqlData->addField("Fuel0Unusable", "i", 0);
-	$sqlData->addField("Fuel0AllOrNothing", "i", 0);
-
-	$sqlData->addField("Fuel1Arm", "d", 0);
-	$sqlData->addField("Fuel1TotalCapacity", "i", 0);
-	$sqlData->addField("Fuel1Unusable", "i", 0);
-	$sqlData->addField("Fuel1AllOrNothing", "i", 0);
-
-	$sqlData->addField("Fuel2Arm", "d", 0);
-	$sqlData->addField("Fuel2TotalCapacity", "i", 0);
-	$sqlData->addField("Fuel2Unusable", "i", 0);
-	$sqlData->addField("Fuel2AllOrNothing", "i", 0);
-
-	$sqlData->addField("Fuel3Arm", "d", 0);
-	$sqlData->addField("Fuel3TotalCapacity", "i", 0);
-	$sqlData->addField("Fuel3Unusable", "i", 0);
-	$sqlData->addField("Fuel3AllOrNothing", "i", 0);
 
 	$sqlData->addField("FuelCons", "i", 0);
 	$sqlData->addField("FuelUnit", "s", "");
-	$sqlData->addField("FuelType", "s", "");
 
 
 if(isset($_POST["erase"]) || isset($_POST["submit"])) {
@@ -217,15 +166,8 @@ if(isset($_POST["erase"]) || isset($_POST["submit"])) {
 	$roundedFields = array(
 		"FrontArm",
 		"Rear0Arm",
-		"Rear1Arm",
 		"Luggage0Arm",
-		"Luggage1Arm",
-		"Luggage2Arm",
-		"Luggage3Arm",
 		"Fuel0Arm",
-		"Fuel1Arm",
-		"Fuel2Arm",
-		"Fuel3Arm",
 	);
 	foreach($fields as $field) {
 		$sqlData->round($field);
@@ -300,7 +242,6 @@ if(isset($_POST["erase"])) {
 		$sqlData->fields["DryEmptyMoment"]->value,
 
 		$sqlData->fields["MTOW"]->value,
-		$sqlData->fields["MLDGW"]->value,
 
 		$sqlData->fields["GCmin"]->value,
 		$sqlData->fields["GCmax"]->value,
@@ -308,42 +249,14 @@ if(isset($_POST["erase"])) {
 		$sqlData->fields["FrontArm"]->value,
 
 		$sqlData->fields["Rear0Arm"]->value,
-		$sqlData->fields["Rear1Arm"]->value,
 
 		$sqlData->fields["Luggage0Arm"]->value,
-		$sqlData->fields["Luggage0MaxMass"]->value,
-		$sqlData->fields["Luggage1Arm"]->value,
-		$sqlData->fields["Luggage1MaxMass"]->value,
-		$sqlData->fields["Luggage2Arm"]->value,
-		$sqlData->fields["Luggage2MaxMass"]->value,
-		$sqlData->fields["Luggage3Arm"]->value,
-		$sqlData->fields["Luggage3MaxMass"]->value,
-
-		$sqlData->fields["LuggageMaxTotalMass"]->value,
 
 		$sqlData->fields["Fuel0Arm"]->value,
-		$sqlData->fields["Fuel0TotalCapacity"]->value,
 		$sqlData->fields["Fuel0Unusable"]->value,
-		$sqlData->fields["Fuel0AllOrNothing"]->value,
-
-		$sqlData->fields["Fuel1Arm"]->value,
-		$sqlData->fields["Fuel1TotalCapacity"]->value,
-		$sqlData->fields["Fuel1Unusable"]->value,
-		$sqlData->fields["Fuel1AllOrNothing"]->value,
-
-		$sqlData->fields["Fuel2Arm"]->value,
-		$sqlData->fields["Fuel2TotalCapacity"]->value,
-		$sqlData->fields["Fuel2Unusable"]->value,
-		$sqlData->fields["Fuel2AllOrNothing"]->value,
-
-		$sqlData->fields["Fuel3Arm"]->value,
-		$sqlData->fields["Fuel3TotalCapacity"]->value,
-		$sqlData->fields["Fuel3Unusable"]->value,
-		$sqlData->fields["Fuel3AllOrNothing"]->value,
 
 		$sqlData->fields["FuelConsumption"]->value,
 		$sqlData->fields["FuelUnit"]->value,
-		$sqlData->fields["FuelType"]->value
 	);
 
 	$theplane->fetch();
@@ -508,13 +421,6 @@ $page->HotBooty();
 				$args->min = 0;
 				$args->required = true;
 				$body .= $page->FormField($args);
-			//
-				// MLDGW
-				$args->title = "Landing (optional)";
-				$args->name = "MLDGW";
-				$args->value = $sqlData->get($args->name);
-				$args->required = False;
-				$body .= $page->FormField($args);
 		//
 			// GC boundaries
 			$body .= "<$hSubtitle>Gravity center boundaries</$hSubtitle>\n";
@@ -553,7 +459,6 @@ $page->HotBooty();
 				$body .= "<div class=\"csstab64_row\">\n";
 				$body .= "<div class=\"csstab64_cell\"><b>Rear arms (optional):</b></div>\n";
 				$body .= getRearArmField($page, $sqlData, $DEFAULT_STEP, 0);
-				$body .= getRearArmField($page, $sqlData, $DEFAULT_STEP, 1);
 				$body .= "</div>  <!-- row -->\n";
 				$body .= "</div>  <!-- table -->\n";
 		//
@@ -563,29 +468,9 @@ $page->HotBooty();
 				// Header row
 				$body .= "<div class=\"csstab64_row bo\">\n";
 				$body .= "<div class=\"csstab64_cell\">Arm</div>\n";
-				$body .= "<div class=\"csstab64_cell\">Max mass</div>\n";
 				$body .= "</div>  <!-- row -->\n";
 			//
 			$body .= getLuggageStationFieldsRow($page, $sqlData, $DEFAULT_STEP, 0, True);
-			$body .= getLuggageStationFieldsRow($page, $sqlData, $DEFAULT_STEP, 1);
-			$body .= getLuggageStationFieldsRow($page, $sqlData, $DEFAULT_STEP, 2);
-			$body .= getLuggageStationFieldsRow($page, $sqlData, $DEFAULT_STEP, 3);
-
-				// Max Luggage total mass
-				$body .= "<div class=\"csstab64_row\">\n";
-				$body .= "<div class=\"csstab64_cell bo\">Max total mass:</div>\n";
-				$body .= "<div class=\"csstab64_cell\"></div>\n";  // no arm
-
-				$massArgs = new stdClass();
-				$massArgs->type = "number";
-				$massArgs->min = 0;
-				$massArgs->div = False;
-				$massArgs->name = "LuggageMaxTotalMass";
-				$massArgs->value = $sqlData->get($massArgs->name);
-				$body .= "<div class=\"csstab64_cell\">{$page->FormField($massArgs)}</div>\n";
-
-				$body .= "</div>  <!-- row -->\n";
-			//
 
 			$body .= "</div>  <!-- table -->\n";
 		//
@@ -596,15 +481,10 @@ $page->HotBooty();
 				$body .= "<div class=\"csstab64_row bo\">\n";
 				$body .= "<div class=\"csstab64_cell\">Fuel tank</div>\n";
 				$body .= "<div class=\"csstab64_cell\">Arm</div>\n";
-				$body .= "<div class=\"csstab64_cell\">Total capacity</div>\n";
 				$body .= "<div class=\"csstab64_cell\">Unusable</div>\n";
-				$body .= "<div class=\"csstab64_cell\">All or nothing</div>\n";
 				$body .= "</div>  <!-- row -->\n";
 
 			$body .= getFuelTankRow($page, $sqlData, $DEFAULT_STEP, 0, True);
-			$body .= getFuelTankRow($page, $sqlData, $DEFAULT_STEP, 1);
-			$body .= getFuelTankRow($page, $sqlData, $DEFAULT_STEP, 2);
-			$body .= getFuelTankRow($page, $sqlData, $DEFAULT_STEP, 3);
 
 			$body .= "</div>  <!-- table -->\n";
 		//
@@ -628,12 +508,6 @@ $page->HotBooty();
 				$args->value = $sqlData->get($args->name);
 				$args->list = flattenDict($kFuelUnits);
 				$args->required = true;
-				$body .= $page->FormField($args);
-			//
-				// FuelType
-				$args->name = "FuelType";
-				$args->value = $sqlData->get($args->name);
-				$args->list = flattenDict($kFuelTypes);
 				$body .= $page->FormField($args);
 			//
 			$body .= "</div>\n";

@@ -26,7 +26,7 @@ $body = "";
 $bIsAdmin = $page->UserIsAdmin();
 
 $kDefaultPrecision = 3;
-$kFuelTanksNum = 4;
+$kFuelTanksNum = 1;
 
 //
 	// Aircraft data used to compute nav
@@ -58,8 +58,8 @@ $kFuelTanksNum = 4;
 	// Usually 2 out of 3 are provided and the remaining is computed.
 
 		// GC data
-		$kGcRearNums = 2;
-		$kGcLuggagesNum = 4;
+		$kGcRearNums = 1;
+		$kGcLuggagesNum = 1;
 
 			// Object having a mass, arm and moment.
 			// Used for computation of gravity center.
@@ -159,7 +159,6 @@ $kFuelTanksNum = 4;
 				public $momentUnit = "?";  // Moment unit
 
 				public $maxTOW = 0;  // Maximum Take-Off Weight
-				public $maxLdgW = 0;  // Maximum Landing Weight
 
 				public $gcBoundaries = NULL;  // boundaries of GC
 
@@ -169,7 +168,6 @@ $kFuelTanksNum = 4;
 				public $rears = null;  // dynamic array
 
 				public $luggages = null;  // dynamic array
-				public $luggageMaxTotalMass = 0;  // if >0 then all luggage stations together shall not exceed this value
 
 				// Data for all fuel tanks
 				public $fuelUnusables = null;  // dynamic array
@@ -269,16 +267,6 @@ $kFuelTanksNum = 4;
 				//     (bool) true if luggages mass are OK including total luggage mass (if max provided)
 				public function isLuggageMassOk() {
 					$status = true;
-					if ($this->luggageMaxTotalMass != 0) {
-						$status = ($this->getLuggageTotalMass() <= $this->luggageMaxTotalMass);
-					}
-
-					$luggagesCount = count($this->luggages);
-					for ($i = 0; $i < $luggagesCount; ++$i) {
-						if($this->luggages[$i]->maxMass > 0) {
-							$status = ($status && $this->luggages[$i]->mass <= $this->luggages[$i]->maxMass);
-						}
-					}
 					return $status;
 				}
 
@@ -373,14 +361,11 @@ $kFuelTanksNum = 4;
 		class FuelTankObject {
 			private $precision = NULL;  // Rounding precision
 
-			public $totalCapacity = 0;  // total capacity of the fuel tank
 			public $unusable = 0;  // unusable fuel in the tank
 
 			public $fuelUnit = "?";  // fuel unit
-			public $fuelType = "?";  // fuel type
 
 			public $quantity = 0;  // fuel quantity computed
-			public $allOrNothing = False;  // if True, tank is filled full or not
 
 			public function __construct() {
 				global $kDefaultPrecision;
@@ -393,11 +378,8 @@ $kFuelTanksNum = 4;
 			//     new object with data from this
 			public function deepcopy() {
 				$object = new FuelTankObject();
-				$object->totalCapacity = $this->totalCapacity;
 				$object->unusable = $this->unusable;
 				$object->fuelUnit = $this->fuelUnit;
-				$object->fuelType = $this->fuelType;
-				$object->allOrNothing = $this->allOrNothing;
 				// quantity not duplicated since we want to duplicate from TheoricTrip to RealTrip
 				return $object;
 			}
@@ -410,9 +392,8 @@ $kFuelTanksNum = 4;
 			// Returns:
 			//     (float) fuel mass
 			public function getFuelMass($quantity) {
-				global $kFuelTypes;
 				global $kFuelUnits;
-				return round($quantity * $kFuelUnits[$this->fuelUnit] * $kFuelTypes[$this->fuelType], $this->precision);  // [kg]
+				return round($quantity * $kFuelUnits[$this->fuelUnit], $this->precision);  // [kg]
 			}
 
 			// Get the unusable fuel mass
@@ -436,7 +417,6 @@ $kFuelTanksNum = 4;
 		class FuelRequirements {
 			public $consumption = 0;         // fuel consumption [unit/h]
 			public $unit = "";               // unit of fuel consumption
-			public $type = "";               // type of fuel
 
 			public $tanks = NULL;            // Fuel tanks objects
 
@@ -467,7 +447,6 @@ $kFuelTanksNum = 4;
 
 				$object->consumption = $this->consumption;
 				$object->unit = $this->unit;
-				$object->type = $this->type;
 
 				$object->tanks = array();
 				$tanksCount = count($this->tanks);
@@ -496,7 +475,6 @@ $kFuelTanksNum = 4;
 				$tanksCount = count($this->tanks);
 				for ($i = 0; $i < $tanksCount; ++$i) {
 					$this->tanks[$i]->fuelUnit = $this->fuelUnit;
-					$this->tanks[$i]->fuelType = $this->fuelType;
 				}
 			}
 
@@ -527,19 +505,6 @@ $kFuelTanksNum = 4;
 					$unusable += $this->tanks[$i]->unusable;
 				}
 				return $unusable;
-			}
-
-			// Get the total fuel capacity.
-			//
-			// Returns:
-			//     (float) total fuel capacity
-			public function getTotalCapacity() {
-				$totalCapacity = 0;
-				$tanksCount = count($this->tanks);
-				for($i = 0; $i < $tanksCount; ++$i) {
-					$totalCapacity += $this->tanks[$i]->totalCapacity;
-				}
-				return $totalCapacity;
 			}
 
 			// Convert time to fuel quantity.
@@ -632,33 +597,8 @@ $kFuelTanksNum = 4;
 					return 0;
 				}
 
-				$usable = $tank->totalCapacity - $tank->unusable;
-
-				if($tank->allOrNothing) {
-					// Fill tank to max even if we need less
-					$tank->quantity = $usable;
-					$quantity -= $usable;
-
-					// Return the leftover
-					if($quantity < 0) {
-						return 0;
-					}
-
-					return $quantity;
-				}
-
-				if($quantity <= $usable) {
-					// Fill only what we need
-					$tank->quantity = $quantity;
-					return 0;
-				}
-
-				// Fill tank to max
-				$tank->quantity = $usable;
-				$quantity -= $usable;
-
-				// Return the leftover
-				return $quantity;
+				$tank->quantity = $quantity;
+				return 0;
 			}
 
 			// Fill all the tanks with the required fuel quantity.
@@ -914,6 +854,7 @@ $kFuelTanksNum = 4;
 	if(isset($_GET["dup"]) && $bIsAdmin) {
 		$dupID = $_GET["dup"];
 
+		// TODO SQL
 		$copy_nav = "INSERT INTO `{$page->ddb->DBname}`.`$TABLE` (";
 		$copy_nav .= "`name`";
 		$copy_nav .= ", `plane`";
@@ -2125,8 +2066,10 @@ $kFuelTanksNum = 4;
 	//
 		// HTML GC
 		function htmlGC($gcData) {
+			global $kStrings;
 			global $kFuelTypes;
 			global $kFuelUnits;
+			global $usgAvgas2lbs;
 
 			$htmlGC = "";
 
@@ -2191,6 +2134,7 @@ $kFuelTanksNum = 4;
 				}
 			}
 
+			// TODO do we check somewhere for max luggage mass?
 			// luggages...
 			$luggagesCount = count($gcData->luggages);
 			for ($i = 0; $i < $luggagesCount; ++$i) {
@@ -2234,12 +2178,9 @@ $kFuelTanksNum = 4;
 				$gcMinStyle = ($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min) ? $redBG : "";
 				$gcMaxStyle = ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max) ? $redBG : "";
 
-				// Special: color red o-fuel mass if Take-off mass is more than maxLdgW
-				$MLDGWstyle  = ($gcData->maxLdgW  > 0 && $gcData->takeOff->mass > $gcData->maxLdgW) ? $redBG : "";
-
 				$htmlGC .= "<tr>\n";
 				$htmlGC .= "<td rowspan=\"3\" class=\"GCend GCtitle\">{$kStrings["ZeroFuel"]}</td>\n";
-				$htmlGC .= "<td class=\"GCend GCmin\"$MLDGWstyle></td>\n";
+				$htmlGC .= "<td class=\"GCend GCmin\"></td>\n";
 				$htmlGC .= "<td class=\"GCend GCmin\"$gcMinStyle>min:&nbsp;";
 				$htmlGC .= ($gcData->gcBoundaries->min == 0) ? "&nbsp;&nbsp;&nbsp;" : $gcData->gcBoundaries->min;
 				$htmlGC .= "</td>\n";
@@ -2249,7 +2190,7 @@ $kFuelTanksNum = 4;
 				$htmlGC .= "</tr>\n";
 
 				$htmlGC .= "<tr>\n";
-				$htmlGC .= "<td class=\"mass GCend GCmid\"$MLDGWstyle>";
+				$htmlGC .= "<td class=\"mass GCend GCmid\">";
 				$htmlGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? $gcData->zeroFuel->mass : "";
 				$htmlGC .= "</td>\n";
 				$htmlGC .= "<td class=\"arm GCend GCmid\"$gcMinStyle$gcMaxStyle>";
@@ -2258,7 +2199,7 @@ $kFuelTanksNum = 4;
 				$htmlGC .= "</tr>\n";
 
 				$htmlGC .= "<tr>\n";
-				$htmlGC .= "<td class=\"GCend GCmax\"$MLDGWstyle></td>\n";
+				$htmlGC .= "<td class=\"GCend GCmax\"></td>\n";
 				$htmlGC .= "<td class=\"GCend GCmax\"$gcMaxStyle>max:&nbsp;";
 				$htmlGC .= ($gcData->gcBoundaries->max == 0) ? "&nbsp;&nbsp;&nbsp;" : $gcData->gcBoundaries->max;
 				$htmlGC .= "</td>\n";
@@ -2285,11 +2226,11 @@ $kFuelTanksNum = 4;
 				// Take-off
 				$gcMinStyle = ($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min) ? $redBG : "";
 				$gcMaxStyle = ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max) ? $redBG : "";
-				$MTOWstyle  = ($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) ? $redBG : "";
+				$mtowStyle  = ($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) ? $redBG : "";
 				$htmlGC .= "<tr>\n";
 				$htmlGC .= "<td rowspan=\"3\" class=\"GCend GCtitle\">Take-off</td>\n";
-				$htmlGC .= "<td class=\"mass GCend GCmin\"$MTOWstyle>";
-				$htmlGc .= (gcData->maxLdgW > 0) ? "MLDGW={$gcData->maxLdgW}" : "";
+				$htmlGC .= "<td class=\"mass GCend GCmin\"$mtowStyle>";
+				$htmlGc .= "";
 				$htmlGc .= "</td>\n";
 				$htmlGC .= "<td class=\"GCend GCmin\"$gcMinStyle>min:&nbsp;";
 				$htmlGC .= ($gcData->gcBoundaries->min == 0) ? "&nbsp;&nbsp;&nbsp;" : $gcData->gcBoundaries->min;
@@ -2300,7 +2241,7 @@ $kFuelTanksNum = 4;
 				$htmlGC .= "</tr>\n";
 
 				$htmlGC .= "<tr>\n";
-				$htmlGC .= "<td class=\"mass GCend GCmid\"$MTOWstyle>";
+				$htmlGC .= "<td class=\"mass GCend GCmid\"$mtowStyle>";
 				$htmlGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? $gcData->takeOff->mass : "";
 				$htmlGC .= "</td>\n";
 				$htmlGC .= "<td class=\"arm GCend GCmid\"$gcMinStyle$gcMaxStyle>";
@@ -2309,7 +2250,7 @@ $kFuelTanksNum = 4;
 				$htmlGC .= "</tr>\n";
 
 				$htmlGC .= "<tr>\n";
-				$htmlGC .= "<td class=\"GCend GCmax\"$MTOWstyle>max:";
+				$htmlGC .= "<td class=\"GCend GCmax\"$mtowStyle>max:";
 				$htmlGC .= ($gcData->maxTOW > 0) ? $gcData->maxTOW : "";
 				$htmlGC .= "</td>\n";
 				$htmlGC .= "<td class=\"GCend GCmax\"$gcMaxStyle>max:&nbsp;";
@@ -2329,6 +2270,8 @@ $kFuelTanksNum = 4;
 	//
 		// LaTeX GC
 		function LaTeXGC($gcData) {
+			global $kStrings;
+
 			$latexGC = "";
 			$redCell  = "\\RedCell";
 			$grayCell = "\\Gray";
@@ -2425,20 +2368,14 @@ $kFuelTanksNum = 4;
 					|| ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max)
 				) ? $redCell : $grayCell;
 
-				// Special: color red o-fuel mass if Take-off mass is more than maxLdgW
-				$MLDGWstyle = $grayCell;
-				if ($gcData->maxLdgW > 0 && $gcData->takeOff->mass > $gcData->maxLdgW) {
-					$MLDGWstyle = $redCell;
-				}
-
 				$latexGC .= "\\multirow{3}{*}{\\textbf{{$kStrings["ZeroFuel"]}}}\n";
-				$latexGC .= "& $MLDGWstyle\n";
+				$latexGC .= "& \n";
 				$latexGC .= "& $gcMinStyle {\\normalsize min: ";
 				$latexGC .= ($gcData->gcBoundaries->min == 0) ? "\phantom{ooooo}" : $gcData->gcBoundaries->min;
 				$latexGC .= "}\n";
 				$latexGC .= "&\\\\\n";
 
-				$latexGC .= "& $MLDGWstyle";
+				$latexGC .= "& ";
 				$latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->zeroFuel->mass}" : "";
 				$latexGC .= "\n";
 				$latexGC .= "& $gcStyle";
@@ -2448,7 +2385,7 @@ $kFuelTanksNum = 4;
 				$latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->zeroFuel->getMoment()}" : "";
 				$latexGC .= "\\\\\n";
 
-				$latexGC .= "& $MLDGWstyle\n";
+				$latexGC .= "& \n";
 				$latexGC .= "& $gcMaxStyle {\\normalsize max: ";
 				$latexGC .= ($gcData->gcBoundaries->max == 0) ? "\phantom{ooooo}" : $gcData->gcBoundaries->max;
 				$latexGC .= "}\n";
@@ -2477,21 +2414,21 @@ $kFuelTanksNum = 4;
 					|| ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max)
 				) ? $redCell : $grayCell;
 
-				$MTOWstyle = $grayCell;
+				$mtowStyle = $grayCell;
 				if ($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) {
-					$MTOWstyle = $redCell;
+					$mtowStyle = $redCell;
 				}
 
 				$latexGC .= "\\multirow{3}{*}{\\textbf{{$kStrings["TakeOff"]}}}\n";
-				$latexGC .= "& $MTOWstyle";
-				$latexGC .= ($gcData->maxLdgW > 0) ? " {\\normalsize MLDGW={$gcData->maxLdgW}}" : "";
+				$latexGC .= "& $mtowStyle";
+				$latexGC .= "";
 				$latexGC .= "\n";
 				$latexGC .= "& $gcMinStyle {\\normalsize min: ";
 				$latexGC .= ($gcData->gcBoundaries->min == 0) ? "\phantom{ooooo}" : $gcData->gcBoundaries->min;
 				$latexGC .= "}\n";
 				$latexGC .= "&\\\\\n";
 
-				$latexGC .= "& $MTOWstyle";
+				$latexGC .= "& $mtowStyle";
 				$latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->takeOff->mass}" : "";
 				$latexGC .= "\n";
 				$latexGC .= "& $gcStyle";
@@ -2501,7 +2438,7 @@ $kFuelTanksNum = 4;
 				$latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->takeOff->getMoment()}" : "";
 				$latexGC .= "\\\\\n";
 
-				$latexGC .= "& $MTOWstyle {\\normalsize max: ";
+				$latexGC .= "& $mtowStyle {\\normalsize max: ";
 				$latexGC .= ($gcData->maxTOW > 0) ? $gcData->maxTOW : "\\phantom{1000}";
 				$latexGC .= "}\n";
 				$latexGC .= "& $gcMaxStyle {\\normalsize max: ";
@@ -2569,11 +2506,7 @@ $kFuelTanksNum = 4;
 		$variation,
 		$gcData->front->mass,
 		$gcData->rears[0]->mass,
-		$gcData->rears[1]->mass,
 		$gcData->luggages[0]->mass,
-		$gcData->luggages[1]->mass,
-		$gcData->luggages[2]->mass,
-		$gcData->luggages[3]->mass,
 		$comment,
 	); // TODO adapt SQL
 
@@ -2633,7 +2566,6 @@ $theoricFuel = new FuelRequirements();
 			$gcData->dryEmpty->moment,
 
 			$gcData->maxTOW,
-			$gcData->maxLdgW,
 
 			$gcData->gcBoundaries->min,
 			$gcData->gcBoundaries->max,
@@ -2641,42 +2573,14 @@ $theoricFuel = new FuelRequirements();
 			$gcData->front->arm,
 
 			$gcData->rears[0]->arm,
-			$gcData->rears[1]->arm,
 
 			$gcData->luggages[0]->arm,
-			$gcData->luggages[0]->maxMass,
-			$gcData->luggages[1]->arm,
-			$gcData->luggages[1]->maxMass,
-			$gcData->luggages[2]->arm,
-			$gcData->luggages[2]->maxMass,
-			$gcData->luggages[3]->arm,
-			$gcData->luggages[3]->maxMass,
-
-			$gcData->luggageMaxTotalMass,
 
 			$gcData->fuelUnusables[0]->arm,
-			$theoricFuel->tanks[0]->totalCapacity,
 			$theoricFuel->tanks[0]->unusable,
-			$theoricFuel->tanks[0]->allOrNothing,
-
-			$gcData->fuelUnusables[1]->arm,
-			$theoricFuel->tanks[1]->totalCapacity,
-			$theoricFuel->tanks[1]->unusable,
-			$theoricFuel->tanks[1]->allOrNothing,
-
-			$gcData->fuelUnusables[2]->arm,
-			$theoricFuel->tanks[2]->totalCapacity,
-			$theoricFuel->tanks[2]->unusable,
-			$theoricFuel->tanks[2]->allOrNothing,
-
-			$gcData->fuelUnusables[3]->arm,
-			$theoricFuel->tanks[3]->totalCapacity,
-			$theoricFuel->tanks[3]->unusable,
-			$theoricFuel->tanks[3]->allOrNothing,
 
 			$theoricFuel->consumption,
 			$theoricFuel->fuelUnit,
-			$theoricFuel->fuelType
 		);
 		$theplane->fetch();
 		$theplane->close();
@@ -2685,7 +2589,6 @@ $theoricFuel = new FuelRequirements();
 		if($gcData->armUnit    == "") {$gcData->armUnit    = "?";}
 		if($gcData->momentUnit == "") {$gcData->momentUnit = "?";}
 		if($theoricFuel->fuelUnit == "") {$theoricFuel->fuelUnit = "?";}
-		if($theoricFuel->fuelType == "") {$theoricFuel->fuelType = "?";}
 
 		// apply mass unit
 		$gcData->propagateMassUnit();
@@ -2744,47 +2647,51 @@ $roundTrip = false;
 $warning = "";
 
 $wp = $page->DB_QueryManage("SELECT * FROM `{$page->ddb->DBname}`.`NavWaypoints` WHERE `NavID` = $navid ORDER BY `WPnum` ASC");
-while($w = $wp->fetch_object()) {
+while($wpObj = $wp->fetch_object()) {
 	// run
 		// get data and compute
-		$id = $w->id;
+		$id = $wpObj->id;
 		$oldWP = $wpNum;
-		$wpNum = $w->WPnum + 0;
+		$wpNum = $wpObj->WPnum + 0;
 
 		if($wpNum == $kWaypoints->wayBack->start || $wpNum == $kWaypoints->wayBack->last) {
 			// flag to know if round-trip
 			$roundTrip = true;
 		}
 
-		$waypoint = $w->waypoint;
-		$trueCourse = $w->TC + 0;
+		$waypoint = $wpObj->waypoint;
+		$trueCourse = $wpObj->TC + 0;
 		$magneticCourse = 0;
 		if($trueCourse > 0) {
 			$magneticCourse = (360 + $trueCourse - $variation) % 360;
 		}
-		$distance = $w->distance + 0;
-		$altitude = $w->altitude + 0;
-		$windTC = $w->windTC + 0;
-		$windSpeed = $w->windSpeed + 0;
+		$distance = $wpObj->distance + 0;
+		$altitude = $wpObj->altitude + 0;
+		$windTC = $wpObj->windTC + 0;
+		$windSpeed = $wpObj->windSpeed + 0;
 		if($windTC > 0 && $windSpeed > 0) {
 			if($wpNum == $kWaypoints->wayOut->start || $bHasWind) {
 				$bHasWind = true;
 				$oldWindTC = $windTC;
 				$oldWindSpeed = $windSpeed;
+
 			} else {
 				$windTC = 0;
 				$windSpeed = 0;
 			}
+
 		} elseif($bHasWind && $windTC == 0) {
 			$windTC = $oldWindTC;
 			$windSpeed = $oldWindSpeed;
 		}
-		$notes = $w->notes;
-		$climbing = $w->climbing + 0;
+
+		$notes = $wpObj->notes;
+		$climbing = $wpObj->climbing + 0;
 
 		// sum distance
 		if($wpNum < $kWaypoints->alternate->limit) {
 			$tripDistance += $distance;
+
 		} else {
 			$alternateDistance += $distance;
 		}
@@ -2793,14 +2700,17 @@ while($w = $wp->fetch_object()) {
 			if($trueCourse == 0) {
 				$TH = 0;
 				$magneticHeading = 0;
+
 			} else {
 				// wind angles
 				$alpha1 = (360 + $trueCourse - $windTC) % 360;
 				$sign = 1;
+
 				if($alpha1 > 180) {
 					$alpha1 = (360 + $windTC - $trueCourse) % 360;
 					$sign = -1;
 				}
+
 				$alpha2 = asind(1.0 * $windSpeed / $speed * sind($alpha1));
 				$alpha3 = 180 - $alpha1 - $alpha2;
 				$TH = round($trueCourse + $sign * $alpha2) % 360;
@@ -2810,38 +2720,49 @@ while($w = $wp->fetch_object()) {
 
 		if($plane->speedPlanning > 0) {
 			// time computation
-			$speed = $plane->speedPlanning;
-			if($climbing && $plane->speedClimb > 0) {$speed = $plane->speedClimb;}
+			$speed = ($climbing && $plane->speedClimb > 0) ? $plane->speedClimb : $plane->speedPlanning;
+
 			$theoricEET = ComputeEET($distance, $speed);
+
 			if($wpNum < $kWaypoints->alternate->limit) {
 				$theoricTripTime += $theoricEET;
+
 			} else {
 				$theoricAlternateTime += $theoricEET;
 			}
+
 			if($kWaypoints->isStartLast($wpNum)) {
 				if($wpNum < $kWaypoints->alternate->limit) {
 					$theoricTripTime += 5;
+
 				} else {
 					$theoricAlternateTime += 5;
 				}
 			}
+
 			if($bHasWind) {
 				if($trueCourse == 0) {
 					// No heading indication, take worst-case
 					$groundSpeed = $speed - $windSpeed;
+
 				} else {
 					// speed and time with wind
 					if($windTC == $trueCourse) {
 						$groundSpeed = $speed + $windSpeed;
+
 					} elseif($alpha1 == 180) {
 						$groundSpeed = $speed - $windSpeed;
+
 					} else {
 						$groundSpeed = round($speed * sind($alpha3) / sind($alpha1));
 					}
 				}
+
 				$realEET = ComputeEET($distance, $groundSpeed);
+
 				if($wpNum < $kWaypoints->alternate->limit) {
 					$realTripTime += $realEET;
+
 				} else {
 					$realAlternateTime += $realEET;
 				}
@@ -2855,6 +2776,7 @@ while($w = $wp->fetch_object()) {
 				}
 			}
 		}
+
 		if($wpNum == $kWaypoints->wayOut->last) {
 			$destination = $waypoint;
 			$destinationDistance = $tripDistance;
