@@ -35,7 +35,11 @@ $sqlData->addField("plane", "i", 0);  // plane ID from table
 $sqlData->addField("variation", "i", $kDefaultVariation);
 $sqlData->addField("FrontMass", "i", $kDefaultPilotMass);
 $sqlData->addField("Rear0Mass", "i", 0);
+$sqlData->addField("Rear1Mass", "i", 0);
 $sqlData->addField("Luggage0Mass", "i", $kDefaultLuggageMass);
+$sqlData->addField("Luggage1Mass", "i", 0);
+$sqlData->addField("Luggage2Mass", "i", 0);
+$sqlData->addField("Luggage3Mass", "i", 0);
 $sqlData->addField("comment", "s", "");
 
 
@@ -91,7 +95,11 @@ if(isset($_POST["erase"])) {
 		$sqlData->fields["variation"]->value,
 		$sqlData->fields["FrontMass"]->value,
 		$sqlData->fields["Rear0Mass"]->value,
+		$sqlData->fields["Rear1Mass"]->value,
 		$sqlData->fields["Luggage0Mass"]->value,
+		$sqlData->fields["Luggage1Mass"]->value,
+		$sqlData->fields["Luggage2Mass"]->value,
+		$sqlData->fields["Luggage3Mass"]->value,
 		$sqlData->fields["comment"]->value
 	);
 
@@ -99,7 +107,11 @@ if(isset($_POST["erase"])) {
 	$sql->close();
 
 	if($sqlData->get("Rear0Mass") === NULL) {$sqlData->set("Rear0Mass", 0);}
+	if($sqlData->get("Rear1Mass") === NULL) {$sqlData->set("Rear1Mass", 0);}
 	if($sqlData->get("Luggage0Mass") === NULL) {$sqlData->set("Luggage0Mass", 0);}
+	if($sqlData->get("Luggage1Mass") === NULL) {$sqlData->set("Luggage1Mass", 0);}
+	if($sqlData->get("Luggage2Mass") === NULL) {$sqlData->set("Luggage2Mass", 0);}
+	if($sqlData->get("Luggage3Mass") === NULL) {$sqlData->set("Luggage3Mass", 0);}
 
 	$page_title = "Edit navigation " . $sqlData->get("name");
 }
@@ -194,6 +206,10 @@ $page->HotBooty();
 			$args->value = $sqlData->get($args->name);
 			$body .= "<div class=\"csstab64_cell\">{$page->FormField($args)}</div>\n";
 
+			$args->name = "Rear1Mass";
+			$args->value = $sqlData->get($args->name);
+			$body .= "<div class=\"csstab64_cell\">{$page->FormField($args)}</div>\n";
+
 			$body .= "</div>  <!-- row -->\n";
 			$body .= "</div>  <!-- table -->\n";
 		//
@@ -208,6 +224,18 @@ $page->HotBooty();
 			$args->posttitle = "kg";
 
 			$args->name = "Luggage0Mass";
+			$args->value = $sqlData->get($args->name);
+			$body .= "<div class=\"csstab64_cell\">{$page->FormField($args)}</div>\n";
+
+			$args->name = "Luggage1Mass";
+			$args->value = $sqlData->get($args->name);
+			$body .= "<div class=\"csstab64_cell\">{$page->FormField($args)}</div>\n";
+
+			$args->name = "Luggage2Mass";
+			$args->value = $sqlData->get($args->name);
+			$body .= "<div class=\"csstab64_cell\">{$page->FormField($args)}</div>\n";
+
+			$args->name = "Luggage3Mass";
 			$args->value = $sqlData->get($args->name);
 			$body .= "<div class=\"csstab64_cell\">{$page->FormField($args)}</div>\n";
 
