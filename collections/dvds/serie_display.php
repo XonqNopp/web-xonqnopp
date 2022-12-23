@@ -10,7 +10,13 @@ $page->initDB();
 require("${funcpath}_local/borrowback.php");
 
 // Borrowed item came home
-borrow_back($page, "dvds");
+if(isset($_GET["back"])) {
+	$backId = NULL;
+	if(isset($_GET["id"])) {
+		$backId = $_GET["id"];
+	}
+	borrow_back($page, "dvds", $_GET["back"], $backId);
+}
 
 $page->CSS_ppJump(2);
 $page->CSS_ppWing();

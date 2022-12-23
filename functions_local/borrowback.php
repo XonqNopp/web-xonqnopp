@@ -1,19 +1,13 @@
 <?php
-function borrow_back(PhPage $page, $dbTable) {
-	if(!isset($_GET["back"])) {  // TODO arg
-		return;
-	}
-
+function borrow_back(PhPage $page, $dbTable, $back, $backId) {
 	$page->NotAllowed();
 	// Get id
 	$backId = 0;
-	if($_GET["back"] != "") {
-		$backId = $_GET["back"];
-	} elseif(isset($_GET["id"])) {
-		$backId = $_GET["id"];
+	if($back != "") {
+		$backId = $back;
 	}
 	// Check we have id
-	if($backId == 0) {
+	if($backId === NULL || $backId == 0) {
 		$page->FatalError("back id undefined");
 	}
 

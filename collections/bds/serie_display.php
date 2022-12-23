@@ -12,7 +12,13 @@ $page = new PhPage($rootPath);
 $page->initDB();
 
 // Borrowed item came home
-borrow_back($page, "bds");
+if(isset($_GET["back"])) {
+	$backId = NULL;
+	if(isset($_GET["id"])) {
+		$backId = $_GET["id"];
+	}
+	borrow_back($page, "bds", $_GET["back"], $backId);
+}
 
 $page->CSS_ppJump(2);
 $page->CSS_ppWing();
