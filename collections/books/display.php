@@ -9,7 +9,13 @@ require("${funcpath}_local/borrowback.php");
 $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "??" => "other");
 
 // Borrowed item came home
-borrow_back($page, "books");
+if(isset($_GET["back"])) {
+	$backId = NULL;
+	if(isset($_GET["id"])) {
+		$backId = $_GET["id"];
+	}
+	borrow_back($page, "books", $_GET["back"], $backId);
+}
 
 $body = "";
 
