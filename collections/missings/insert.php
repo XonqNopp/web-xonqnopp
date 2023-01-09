@@ -1,5 +1,6 @@
 <?php
 require("../../functions/classPage.php");
+// FIXME BUG when BD has no title
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
@@ -10,21 +11,23 @@ $page->initDB();
 if(isset($_POST["dbid"])) {
 	$dbtable = $_POST["dbtable"];
 	$dbid = $_POST["dbid"];
-	////
+
 	$borrower = $_POST["borrower"];
 	$dt = new stdClass();
 	$dt->year  = $_POST["date_year"];
 	$dt->month = $_POST["date_month"];
 	$dt->day   = $_POST["date_day"];
 	$date = $page->ConvertDate($dt)->date;
-	$missing = $page->DB_QueryPrepare("INSERT INTO `" . $page->ddb->DBname . "` . `missings` (`id`, `borrower`, `dbtable`, `dbid`, `when`) VALUES(NULL, ?, ?, ?, ?)");
-	$otherdb = $page->DB_QueryPrepare("UPDATE `" . $page->ddb->DBname . "` . `$dbtable` SET `borrowed` = 1 WHERE `id` = ? LIMIT 1;");
+	$missing = $page->DB_QueryPrepare("INSERT INTO `{$page->ddb->DBname}` . `missings` (`id`, `borrower`, `dbtable`, `dbid`, `when`) VALUES(NULL, ?, ?, ?, ?)");
+	$otherdb = $page->DB_QueryPrepare("UPDATE `{$page->ddb->DBname}` . `{$dbtable}` SET `borrowed` = 1 WHERE `id` = ? LIMIT 1;");
 	$missing->bind_param("isis", $borrower, $dbtable, $dbid, $date);
 	$otherdb->bind_param("i", $dbid);
 	$page->DB_ExecuteManage($missing);
 	$page->DB_ExecuteManage($otherdb);
+
 	if($dbtable == "bds") {
 		$page->HeaderLocation("index.php?view=bds$dbid#borrower$borrower");
+
 	} else {
 		$page->HeaderLocation("index.php?view=$dbtable$dbid#borrower$borrower");
 	}
@@ -51,60 +54,69 @@ $body .= $page->GoHome($args);
 // Fetch item info
 $item = $page->DB_IdManage("SELECT * FROM `$dbtable` WHERE `id` = ?", $dbid);
 $item->store_result();
+
 if($item->num_rows == 0) {
 	$item->close();
-	exit("Item not found");
+	$page->FatalError("Item not found");
 }
+
 if($dbtable == "bds") {
-	$item->bind_result($dbid, $isbn, $serie_id, $tome, $title, $ti, $author, $publisher, $date, $borrowed);
+	$item->bind_result($dbid, $isbn, $serie_id, $number, $title, $ti, $author, $publisher, $date, $borrowed);
 	$item->fetch();
-	if($title == "") {
+	$serie = "";
+	if($serie_id > 0) {
 		$getserie = $page->QueryManage("SELECT * FROM `bdseries` WHERE `id` = $serie_id");
 		$serieSQL = $getserie->fetch_object();
 		$getserie->close();
-		$title = $serieSQL->name;
-		if($tome != 0) {
-			$title .= " ($tome)";
-		}
+		$serie = $serieSQL->name;
 	}
+
 } elseif($dbtable == "books") {
 	$item->bind_result($dbid, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
 	$item->fetch();
-	if($title == "") {
-		$title = $serie;
-		if($number != 0) {
-			$title .= " ($number)";
-		}
-	}
+
 } elseif($dbtable == "dvds") {
 	$item->bind_result($dbid, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
 	$item->fetch();
-	if($title == "") {
-		$title = $serie;
-		if($number != 0) {
-			$title .= " ($number)";
-		}
-	}
 }
+
 $item->close();
+
 // Fetch borrowers infos
 $borrowers = $page->DB_QueryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
 if($borrowers->num_rows == 0) {
-	exit("No borrowers found");
+	$borrowers->close();
+	$page->FatalError("No borrowers found");
+
 } else {
 	while($person = $borrowers->fetch_object()) {
 		$people[$person->id] = $person->name;
 	}
 }
+$borrowers->close();
 
-/*** Now what to print ***/
-$leaf = new stdClass();
+// Now what to print
 // Title
+function titleSerie($title, $serie, $number) {
+	if($serie == "") {
+		return $title;
+	}
+
+	if($title == "") {
+		return "$serie $number";
+	}
+
+	return "$title ($serie $number)";
+}
+
+
+$title = titleSerie($title, $serie, $number);
 $body .= $page->SetTitle("Borrow request for $title ($type)");
 $page->HotBooty();
 
 $body .= "<div class=\"whole\">\n";
 $body .= $page->FormTag();
+
 // Hidden infos
 $body .= "<div class=\"missing_insert_hidden\">\n";
 
@@ -121,7 +133,9 @@ $args->value = $dbid;
 $body .= $page->FormField($args);
 
 $body .= "</div>\n";
+
 // Borrower
+$leaf = new stdClass();
 $leaf->type = "select";
 $leaf->title = "Borrower";
 $leaf->name = "borrower";
@@ -144,13 +158,16 @@ $body .= $page->FormField($leaf);
 $args = new stdClass();
 $args->css = "missing_insert_button";
 $args->CloseTag = true;
+
 if($dbtable == "bds") {
 	$args->cancelURL = "../bds/index.php";// suggestions???
+
 } else {
 	$sharp = substr($dbtable, 0, -1);
 	$sharp = "#$sharp$dbid";
 	$args->cancelURL = "../$dbtable/index.php$sharp";
 }
+
 $body .= $page->SubButt(false, null, $args);
 $body .= "</div>\n";
 

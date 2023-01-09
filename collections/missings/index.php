@@ -8,12 +8,12 @@ $page->initDB();
 $page->CSS_ppJump(2);
 $page->CSS_ppWing();
 
+$tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD");
+
 $view = "";
 if(isset($_GET["view"])) {
 	$view = $_GET["view"];
 }
-
-$tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD");
 
 $body = "";
 $args = new stdClass();
@@ -23,131 +23,183 @@ $body .= $page->SetTitle("Missing items");
 $page->HotBooty();
 
 $body .= "<div class=\"whole\">\n";
-$check_do_miss = $page->DB_QueryManage("SELECT COUNT(*) AS `howmany` FROM `missings`");
-$check_fetch = $check_do_miss->fetch_object();
-$check_do_miss->close();
-if($check_fetch->howmany > 0) {
+
+
+function getMissingBD($page, $borrowerId, $missingItem) {
+	global $view;
+
+	$dbid = $missingItem->dbid;
+
+	$iteminfo = $page->DB_QueryManage("SELECT * FROM `bds` WHERE `id` = $dbid");
+	$device = $iteminfo->fetch_object();
+	$iteminfo->close();
+
+	$serieId = $device->serie_id;
+	$title = $device->title;
+
+	if($serieId > 1) {
+		$serieQuery = $page->DB_QueryManage("SELECT * FROM `bd_series` WHERE `id` = {$device->serie_id}");
+		$serieEntry = $serieQuery->fetch_object();
+		$serieQuery->close();
+		$title = "{$serieEntry->name} {$device->tome}";
+
+		if($device->title != "") {
+			$title = "{$device->title} ($title)";
+		}
+	}
+
+	$cssitems = "";
+	if($view == "borrower$borrowerId") {
+		$cssitems = " missing_display_borrowed";
+	}
+
+	$csswanted = "";
+	if($view == "bds$dbid" || $view == "bds") {
+		$csswanted = " missing_wanted";
+	}
+
+	$body = "<tr class=\"missing_display$csswanted$cssitems\">\n";
+
+	if($page->UserIsAdmin()) {
+		$body .= "<td class=\"missing_back\">\n";
+		$body .= "<a href=\"../bds/serie_display.php?back=$dbid&amp;id=$serieId\" title=\"back\">back</a>\n";
+		$body .= "</td>\n";
+	}
+
+	$body .= "<td class=\"missing_display_title\">\n";
+	$body .= "<a id=\"bds$dbid\"";
+	$body .= " href=\"../bds/serie_display.php?id=$serieId\"";
+	$body .= " title=\"$title\">";
+	$body .= "$title - BD";
+	$body .= "</a>\n";
+	$body .= "</td>\n";
+	$body .= "<td class=\"missing_display_date\">{$missingItem->when}</td>\n";
+	$body .= "</tr>\n";
+
+	return $body;
+}
+
+
+function getMissingOther($page, $borrowerId, $missingItem) {
+	global $view;
+	global $tables;
+
+	$dbtable = $missingItem->dbtable;
+	$dbid = $missingItem->dbid;
+	$iteminfo = $page->DB_QueryManage("SELECT * FROM `$dbtable` WHERE `id` = $dbid");
+	$device = $iteminfo->fetch_object();
+	$iteminfo->close();
+	$title = "";
+
+	$title = $device->title;
+	if($device->serie != "") {
+		$title .= " ({$device->serie} {$device->number})";
+	}
+
+	$cssitems = "";
+	if($view == "borrower$borrowerId") {
+		$cssitems = " missing_display_borrowed";
+	}
+
+	$csswanted = "";
+	if($view == "$dbtable$dbid" || $view == $dbtable) {
+		$csswanted = " missing_wanted";
+	}
+
+	$body = "<tr class=\"missing_display$csswanted$cssitems\">\n";
+
+	if($page->UserIsAdmin()) {
+		$body .= "<td class=\"missing_back\">\n";
+		$body .= "<a href=\"../$dbtable/index.php?back=$dbid\" title=\"back\">back</a>\n";
+		$body .= "</td>\n";
+	}
+
+	$body .= "<td class=\"missing_display_title\">\n";
+	$body .= "<a id=\"$dbtable$dbid\"";
+	$body .= " href=\"../$dbtable/index.php?id=$dbid\"";
+	$body .= " title=\"$title\">";
+	$body .= "$title - {$tables[$dbtable]}";
+	$body .= "</a>\n";
+	$body .= "</td>\n";
+	$body .= "<td class=\"missing_display_date\">{$missingItem->when}</td>\n";
+	$body .= "</tr>\n";
+
+	return $body;
+}
+
+
+function getMissingItem($page, $borrowerId, $missingItem) {
+	if($missingItem->dbtable == "bds") {
+		return getMissingBD($page, $borrowerId, $missingItem);
+	}
+
+	return getMissingOther($page, $borrowerId, $missingItem);
+}
+
+
+function getMissingsFromBorrower($page, $person) {
+	global $view;
+
+	$borrowerId = $person->id;
+	$missings = $page->DB_QueryManage("SELECT * FROM `missings` WHERE `borrower` = $borrowerId ORDER BY `when` ASC, `dbtable` ASC, `id` ASC");
+	if($missings->num_rows <= 0) {
+		$missings->close();
+		return "";
+	}
+
+	$body = "<tr>\n";
+
+	$cssborrower = "";
+	if($view == "borrower$borrowerId") {
+		$cssborrower = " missing_display_name_borrower";
+	}
+
+	$body .= "<td class=\"missing_display_name$cssborrower\" colspan=\"2\">\n";
+	$body .= "<a id=\"borrower$borrowerId\">{$person->name} ({$missings->num_rows})</a>\n";
+	$body .= "</td>\n";
+	$body .= "</tr>\n";
+
+	while($item = $missings->fetch_object()) {
+		$body .= getMissingItem($page, $borrowerId, $item);
+	}
+	$missings->close();
+	return $body;
+}
+
+
+function getBorrowers($page) {
 	$borrowers = $page->DB_QueryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
 	if($borrowers->num_rows == 0) {
-		$body .= "Nobody is registered as a borrower...\n";
-	} else {
-		$body .= "<div class=\"missing_display_table\">\n";
-		$body .= "<table class=\"missing_display\">\n";
-		while($person = $borrowers->fetch_object()) {
-			$b_id = $person->id;
-			$b_name = $person->name;
-			$missings = $page->DB_QueryManage("SELECT * FROM `missings` WHERE `borrower` = $b_id ORDER BY `when` ASC, `dbtable` ASC, `id` ASC");// Check if another order may be usefull
-			if($missings->num_rows > 0) {
-				$body .= "<tr>\n";
-				if($view == "borrower$b_id") {
-					$cssborrower = " missing_display_name_borrower";
-					$cssitems = " missing_display_borrowed";
-				} else {
-					$cssborrower = "";
-					$cssitems = "";
-				}
-				$body .= "<td class=\"missing_display_name$cssborrower\" colspan=\"2\"><a id=\"borrower$b_id\">$b_name</a></td>\n";
-				$body .= "</tr>\n";
-				while($item = $missings->fetch_object()) {
-					$m_id = $item->id;
-					$dbtable = $item->dbtable;
-					$dbid = $item->dbid;
-					$date = $item->when;
-					$iteminfo = $page->DB_QueryManage("SELECT * FROM `$dbtable` WHERE `id` = $dbid");
-					$device = $iteminfo->fetch_object();
-					$iteminfo->close();
-					$title = "";
-					$fulltitle = "";
-					$fulltitle2 = "";
-					$title_needed = true;
-					if($device->title != "") {
-						$title = $device->title;
-						$fulltitle = $title;
-						$title_needed = false;
-					}
-					if($dbtable == "bds") {
-						$serie = "";
-						if($device->serie_id > 1) {
-							$serie_query = $page->DB_QueryManage("SELECT * FROM `bd_series` WHERE `id` = $device->serie_id");
-							$serie_entry = $serie_query->fetch_object();
-							$serie = $serie_entry->name;
-						}
-						if($title_needed) {
-							$title = $serie;
-						}
-						$fulltitle2 .= $serie;
-						if($device->tome != "" && $device->tome != "0") {
-							if($title_needed) {
-								$title .= " ($device->tome)";
-							}
-							$fulltitle2 .= " ($device->tome)";
-						}
-					} else {
-						if($title_needed) {
-							$title = $device->serie;
-						}
-						$fulltitle2 .= $device->serie;
-						if($device->number != "" && $device->number != "0") {
-							if($title_needed) {
-								$title .= " ($device->number)";
-							}
-							$fulltitle2 .= " ($device->number)";
-						}
-					}
-					if($fulltitle != "" && $fulltitle2 != "") {
-						$fulltitle .= ", $fulltitle2";
-					}
-					if($view == "$dbtable$dbid" || $view == $dbtable) {
-						$csswanted = " missing_wanted";
-					} else {
-						$csswanted = "";
-					}
-					if($dbtable == "bds") {
-						$serie_id = $device->serie_id;
-					}
-					$body .= "<tr class=\"missing_display$csswanted$cssitems\">\n";
-					if($page->UserIsAdmin()) {
-						$body .= "<td class=\"missing_back\">\n";
-						$ink = "index";
-						$moreBD = "";
-						if($dbtable == "bds") {
-							$ink = "serie_display";
-							$moreBD = "&amp;id=$serie_id";
-						}
-						$body .= "<a href=\"../$dbtable/$ink.php?back=$dbid$moreBD\" title=\"back\">back</a>\n";
-						$body .= "</td>\n";
-					}
-					$body .= "<td class=\"missing_display_title\">\n";
-					// FULLTITLE for link title
-					$body .= "<a id=\"$dbtable$dbid\"";
-					$ink = "index";
-					$GETid = $dbid;
-					if($dbtable == "bds") {
-						$ink = "serie_display";
-						$GETid = $serie_id;
-					}
-					$body .= " href=\"../$dbtable/$ink.php?id=$GETid\"";
-					$body .= " title=\"$fulltitle\">";
-					$body .= "$fulltitle";
-					$body .= " (" . $tables[$dbtable] . ")";
-					$body .= "</a>";
-					$body .= "\n";
-					$body .= "</td>\n";
-					$body .= "<td class=\"missing_display_date\">\n";
-					$body .= "$date\n";
-					$body .= "</td>\n";
-					$body .= "</tr>\n";
-				}
-			}
-			$missings->close();
-		}
-		$body .= "</table>\n";
-		$body .= "</div>\n";
+		$borrowers->close();
+		return "Nobody is registered as a borrower...\n";
+	}
+
+	$body = "<div class=\"missing_display_table\">\n";
+	$body .= "<table class=\"missing_display\">\n";
+	while($person = $borrowers->fetch_object()) {
+		$body .= getMissingsFromBorrower($page, $person);
 	}
 	$borrowers->close();
-} else {
-	$body .= "Nothing is being borrowed for now...\n";
+
+	$body .= "</table>\n";
+	$body .= "</div>\n";
+	return $body;
 }
+
+
+function getBorrowed($page) {
+	$checkDoMiss = $page->DB_QueryManage("SELECT COUNT(*) AS `howmany` FROM `missings`");
+	$checkFetch = $checkDoMiss->fetch_object();
+	$checkDoMiss->close();
+	if($checkFetch->howmany <= 0) {
+		return "Nothing is being borrowed for now...\n";
+	}
+
+	return getBorrowers($page);
+}
+
+
+$body .= getBorrowed($page);
 $body .= "</div>\n";
 
 $page->show($body);
