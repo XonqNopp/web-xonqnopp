@@ -1,0 +1,44 @@
+div.dvd_display_people,
+div.dvd_display_lang {
+    text-align: left;
+}
+
+
+div.dvd_display_director {
+    padding: 2mm 8mm;
+}
+
+
+div.dvd_display_actors,
+div.dvd_display_languages,
+div.dvd_display_subtitles {
+    display: inline-block;
+    padding: 2mm 8mm;
+}
+
+div.dvd_display_duration {
+    font-size: 10pt;
+    margin-left: 1cm;
+    padding: 1mm 0mm;
+}
+
+div.dvd_display_category {
+    font-size: 10pt;
+    font-style: italic;
+    padding: 2mm 0mm;
+}
+
+div.dvd_display_burnt {
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 2mm 0mm;
+}
+
+div.dvd_display_format {
+    font-size: 10pt;
+}
+
+div.dvd_display_summary {
+    text-align: justify;
+    text-indent: 7mm;
+}

@@ -1,0 +1,28 @@
+div.title {
+    padding: 2mm 0mm;
+    display: inline-block;
+}
+
+
+div.director,
+div.actors,
+div.languages,
+div.subtitles,
+div.duration,
+div.serie,
+div.number,
+div.burnt,
+div.format,
+div.category,
+div.summary {
+    padding: 2mm 0mm;
+}
+
+
+@media only screen and (min-width:64em) {
+
+    div.main {
+        margin-left: 23mm;
+    }
+
+}  /** @media only screen and min-width:64em **/

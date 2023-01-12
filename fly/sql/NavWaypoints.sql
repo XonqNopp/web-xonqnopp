@@ -23,3 +23,5 @@ CREATE TABLE `NavWaypoints` (
 
   `climbing` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ALTER TABLE `NavWaypoints` DROP COLUMN `TCguess`;

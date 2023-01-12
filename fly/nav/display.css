@@ -1,0 +1,101 @@
+table {
+    border: solid 1px;
+    margin: 1em 0;
+}
+
+
+th,
+td {
+    border: solid 1px;
+    padding: 1mm 2mm;
+}
+
+
+th.TC,
+td.TC {
+    background-color: #888;
+}
+
+
+th.wind,
+td.wind {
+    background-color: #aaa;
+}
+
+
+td.newWP,
+td.heading {
+    text-align: center;
+}
+
+
+td.sum {
+    font-weight: 700;
+    border-top: double;
+    vertical-align: top;
+    padding-top: 0;
+}
+
+
+tr.WP99 td,
+tr.WP199 td,
+tr.WP999 td {
+    border-bottom: double;
+}
+
+
+tr.WP101 td,
+tr.WP901 td {
+    border-top: double;
+}
+
+
+td.unavailable {
+    background-color: #555;
+}
+
+
+li.optional {
+    list-style-type: circle;
+}
+
+
+td.mass,
+td.arm,
+td.moment {
+    text-align: right;
+}
+
+
+td.GCend {
+    background-color: #999;
+    font-weight: 700;
+}
+
+
+td.GCtitle {
+    font-weight: 700;
+}
+
+
+td.GCmin {
+    border-bottom: none;
+}
+
+
+td.GCmid {
+    border-bottom: none;
+    border-top: none;
+}
+
+
+td.GCmax {
+    border-top: none;
+}
+
+
+td.nav-alternate-title {
+    background-color: #ddd;
+    text-align: center;
+    font-weight: 700;
+}

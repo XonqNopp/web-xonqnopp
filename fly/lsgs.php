@@ -1,112 +1,59 @@
 <?php
-require("../functions/classPage.php");
-$rootPath = "..";
-$funcpath = "$rootPath/functions";
-require("preparations.php");
-$page = new PhPage($rootPath);
-//$page->initDB();
-// debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
-// CSS paths
-$page->CSS_ppJump();
-//$page->CSS_ppWing();
-// init body
-$body = "";
+require_once("../functions/page_helper.php");
+
+$page = new PhPage("..");
+
+require_once("homebase.php");
+
+$title = "LSGS: Sion";
 
 
+    // Infos
+    $infos = $page->bodyBuilder->liAnchor("http://app.aviator.club/", "LSGS app");
 
-// GoHome
-use stdClass;
-$gohome = new stdClass();
-$body .= $page->GoHome($gohome);
-// Set title and hot booty
-$body .= $page->SetTitle("LSGS: Sion");// before HotBooty
-$page->HotBooty();
+    $infos .= "<li>";
+    $infos .= $page->bodyBuilder->anchor("http://gvm-sion.ch/", "GVM Sion");
+    if($page->loginHelper->userIsAdmin()) {
+        $infos .= ":&nbsp;<tt>{$page->miscInit->lsgsDoor}</tt>";
+    }
+    $infos .= "</li>\n";
 
-$body .= "<div class=\"csstab64_table links\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
+    $infos .= "<li>Sion handling:<br />\n";
+    $infos .= "131.475MHz<br />\n";
+    $infos .= $page->bodyBuilder->tel("+41273290600");
+    $infos .= "</li>\n";
 
-	// Infos & webcam
-	$body .= "<div class=\"csstab64_cell third\">\n";
-		// Infos
-		$body .= "<div>\n";
-		$body .= "<ul>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.resair.ch/LSGS-GVM/index.asp\">LSGS-GVM resair</a>";
-		if($page->UserIsAdmin()) {
-			$body .= ":&nbsp;<tt>" . $page->miscInit->lsgsLogin . "</tt>";
-		}
-		$body .= "</li>\n";
+    $infos .= "<li>Sion ATIS:<br />\n";
+    $infos .= "130.630MHz<br />\n";
+    $infos .= $page->bodyBuilder->tel("+41224174080");
+    $infos .= "</li>\n";
 
-		$body .= "<li><a target=\"_blank\" href=\"http://gvm-sion.ch/\">GVM Sion</a>";
-		if($page->UserIsAdmin()) {
-			$body .= ":&nbsp;<tt>" . $page->miscInit->lsgsDoor . "</tt>";
-		}
-		$body .= "</li>\n";
-
-		$body .= "<li>Sion handling:<br />\n";
-		$body .= "131.475MHz<br />\n";
-		$body .= "<a href=\"tel:+41273290600\">+41&nbsp;27&nbsp;329&nbsp;06&nbsp;00</a></li>\n";
-
-		$body .= "<li>Sion ATIS:<br />\n";
-		$body .= "130.630MHz<br />\n";
-		$body .= "<a href=\"tel:+41224174080\">+41&nbsp;22&nbsp;417&nbsp;40&nbsp;80</a></li>\n";
-
-		$body .= "<li>\n";
-		$body .= "<a target=\"_blank\" href=\"http://fgo.ch\">LSTA Raron</a>\n";
-		$body .= "&nbsp;-&nbsp;\n";
-		$body .= "<a target=\"_blank\" href=\"https://fgo.ch/clubdesk/www?p=1000002\">PPR</a>\n";
-		$body .= "</li>\n";
-		$body .= "</ul>\n";
-		$body .= "</div>\n";
-	//
-		// webcam
-		$body .= "<div>\n";
-		$body .= "<a href=\"https://www.air-zermatt.ch/wordpress/en/webcam/\" target=\"_blank\">\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Richtung_Goms.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Heliport2.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Heliport1.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Richtung_Sion.jpg\" />\n";
-		$body .= "</a>\n";
-		$body .= "</div>\n";
-	$body .= "</div>\n";
+    $infos .= "<li>\n";
+    $infos .= $page->bodyBuilder->anchor("http://fgo.ch", "LSTA Raron");
+    $infos .= "&nbsp;-&nbsp;\n";
+    $infos .= $page->bodyBuilder->anchor("https://fgo.ch/clubdesk/www?p=1000002", "PPR");
+    $infos .= "</li>\n";
 //
-	// Weather station
-	$station = "IVALAISS15";
-	$body .= "<div class=\"csstab64_cell third\">\n";
-	$body .= "<a target=\"_blank\" href=\"https://www.wunderground.com/dashboard/pws/$station\">\n";
-	$body .= "<img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=$station&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" />\n";
-	$body .= "</a>\n";
-	$body .= "</div>\n";
-//
-	// Common
-	$body .= "<div class=\"csstab64_cell third left\">\n";
-	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
-	$body .= "</div>\n";
+    // Webcam airport
+    $webcamAirportImg = $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Richtung_Goms.jpg", "LSTA Webcam Richtung Goms", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Heliport2.jpg", "LSTA Webcam Heliport2", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Heliport1.jpg", "LSTA Webcam Heliport1", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Richtung_Sion.jpg", "LSTA Webcam Richtung Sion", "width");
+    $webcamAirport = $page->bodyBuilder->anchor("https://www.air-zermatt.ch/wordpress/en/webcam/", $webcamAirportImg, "LSTA Webcams");
 
-$body .= "</div>\n";
-$body .= "</div>\n";
+$wunderground = "IVALAISS15";
 
-	// webcam
-	$body .= "<div class=\"wide\">\n";
+    // Webcam area
+    $webcamArea = $page->bodyBuilder->anchor("https://sionairport.roundshot.com/", "Webcam Sion airport");
+    $webcamArea .= "<br />\n";
 
-	$body .= "<a target=\"_blank\" href=\"https://sionairport.roundshot.com/\">WebCam Sion airport</a>\n";
-	$body .= "<br />\n";
-
-	$body .= "Veysonnaz 4200ft:\n";
-	$body .= "<br />\n";
-	$body .= "<img src=\"https://www.caboulis.ch/sion.jpg\" alt=\"WebCam Veysonnaz\" />\n";
-
-	$body .= "</div>\n";
-
-// Do not have text glued at bottom
-$body .= "<div>&nbsp;</div>\n";
+    $webcamArea .= "Veysonnaz 4200ft:\n";
+    $webcamArea .= "<br />\n";
+    $webcamArea .= "<img src=\"https://www.caboulis.ch/sion.jpg\" alt=\"WebCam Veysonnaz\" />\n";
 
 
-// Finish
-echo $body;
-unset($page);
+echo homebase($page, $title, $infos, $webcamAirport, $wunderground, $webcamArea);
 ?>
