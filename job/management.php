@@ -1,19 +1,16 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Management");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("Management");
+$page->htmlHelper->hotBooty();
 
 $body .= "<p>work 60% on regular tasks, 20% to help others and 20% on free investigations</p>\n";
 
@@ -56,6 +53,6 @@ $body .= "<li>Think Ahead, See The Big Picture</li>\n";
 $body .= "</ul>\n";
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

@@ -1,28 +1,24 @@
 <?php
 // TODO rearrange page
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->initHTML();
-//$page->LogLevelUp(6);
-$page->initDB();
-$UserIsAdmin = $page->UserIsAdmin();
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
+$page->dbHelper->init();
+$UserIsAdmin = $page->loginHelper->userIsAdmin();
 //
-$page->CSS_ppJump();
-$page->SetTitle("Collections");
-$page->HotBooty();
+$page->htmlHelper->setTitle("Collections");
+$page->htmlHelper->hotBooty();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyHelper->goHome(NULL, "..");
 $body .= "<h1>Collections</h1>\n";
 $body .= "<div>\n";
 	$body .= "<ul>\n";
 	/* DISABLED
 		// DVD
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `dvds`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `dvds`");
 		$fetch_count = $getcount->fetch_object();
 		$dvd_count = $fetch_count->the_count;
 		$getcount->close();
@@ -40,7 +36,7 @@ $body .= "<div>\n";
 		$body .= "</div>\n";
 	//
 		// Book
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `books`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `books`");
 		$fetch_count = $getcount->fetch_object();
 		$book_count = $fetch_count->the_count;
 		$getcount->close();
@@ -58,11 +54,11 @@ $body .= "<div>\n";
 	/DISABLED */
 	//
 		// BD
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `bds`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `bds`");
 		$fetch_count = $getcount->fetch_object();
 		$bd_count = $fetch_count->the_count;
 		$getcount->close();
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `bd_series`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `bd_series`");
 		$fetch_count = $getcount->fetch_object();
 		$serie_count = $fetch_count->the_count;
 		$getcount->close();
@@ -81,7 +77,7 @@ $body .= "<div>\n";
 		$body .= "</li>\n";
 	//
 		// Borrower
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `borrowers`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `borrowers`");
 		$fetch_count = $getcount->fetch_object();
 		$borrower_count = $fetch_count->the_count;
 		$getcount->close();
@@ -96,7 +92,7 @@ $body .= "<div>\n";
 		$body .= "</li>\n";
 	//
 		// Missing
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `missings`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `missings`");
 		$fetch_count = $getcount->fetch_object();
 		$missing_count = $fetch_count->the_count;
 		$getcount->close();
@@ -108,7 +104,7 @@ $body .= "<div>\n";
 		$body .= "</li>\n";
 	//
 		// Quotations
-		$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `quotations`");
+		$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `quotations`");
 		$fetch_count = $getcount->fetch_object();
 		$quote_count = $fetch_count->the_count;
 		$getcount->close();
@@ -150,6 +146,6 @@ $body .= "<div>\n";
 $body .= "</div>\n";
 
 /*** Printing ***/
-$page->show($body);
+echo $body;
 unset($page);
 ?>

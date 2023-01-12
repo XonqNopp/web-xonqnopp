@@ -1,21 +1,20 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 // debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 // CSS paths
-$page->CSS_ppJump(2);
-$page->CSS_ppWing(2);
+$page->cssHelper->dirUpWing(2);
 // init body
 $body = "";
 
 
 // Set title and hot booty
-$body .= $page->SetTitle("Bramois");// before HotBooty
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("Bramois");// before HotBooty
+$page->htmlHelper->hotBooty();
 
 	// Fumee
 	$body .= "<h2>Fum&eacute;e</h2>\n";
@@ -86,7 +85,9 @@ $page->HotBooty();
 	$body .= "La fen&ecirc;tre de la chambre a aussi un store int&eacute;rieur pour mieux obscurcir.</p>\n";
 
 	$body .= "<p>Les velux ont des stores &eacute;lectriques.\n";
-	$body .= "Il y a des t&eacute;l&eacute;commandes (salon et cuisine dans le tiroir de la cuisine, chambre dans l'armoir a balais au milieu a gauche).</p>\n";
+	$body .= "Il y a des t&eacute;l&eacute;commandes\n";
+	$body .= "(salon et cuisine dans le tiroir de la cuisine,\n";
+	$body .= "chambre dans l'armoire a balais en haut du support en metal).</p>\n";
 
 	$body .= "<p>Quand il g&egrave;le ou neige, les stores peuvent rester coinc&eacute;s.\n";
 	$body .= "Soit dans la position qu'ils ont (ferm&eacute;s, ouverts ou entre deux), soit il peut s'&ecirc;tre form&eacute; un obstacle qui emp&ecirc;che\n";

@@ -1,16 +1,15 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-$page->initDB();
+//$page->logger->levelUp(6);
+$page->dbHelper->init();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing(2);
-$GI = $page->UserIsAdmin();
+$page->cssHelper->dirUpWing(2);
+$GI = $page->loginHelper->userIsAdmin();
 
-$sum = $page->DB_QueryManage("SELECT COUNT(*) AS `sum` FROM `companies`");// WHERE `ranking` <> 0");
+$sum = $page->dbHelper->queryManage("SELECT COUNT(*) AS `sum` FROM `companies`");// WHERE `ranking` <> 0");
 $sumo = $sum->fetch_object();
 $sum->close();
 $sum = $sumo->sum;
@@ -18,20 +17,17 @@ $sum = $sumo->sum;
 $page_title = "$sum companies";
 
 if($GI) {
-	$comco = $page->DB_QueryManage("SELECT COUNT(*) AS `sum` FROM `comco`");
+	$comco = $page->dbHelper->queryManage("SELECT COUNT(*) AS `sum` FROM `comco`");
 	$comcoo = $comco->fetch_object();
 	$comco->close();
 	$comco = $comcoo->sum;
 	$page_title .= " ($comco com)";
 }
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$args->rootpage = "../..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle($page_title);
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("../..", "..");
+
+$body .= $page->htmlHelper->setTitle($page_title);
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -47,12 +43,12 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 $body .= "<div class=\"AllCompanies\">\n";
-$body .= "<div class=\"csstab64_table\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
-$body .= "<div class=\"csstab64_cell\">\n";
-//// get N for all ranks
+$body .= $page->tableHelper->open();
+$body .= $page->tableHelper->rowOpen();
+$body .= $page->tableHelper->cellOpen();
+// get N for all ranks
 for($rank = 9; $rank >= 0; $rank--) {
-	$get = $page->DB_QueryManage("SELECT COUNT(*) AS `count` FROM `companies` WHERE `ranking` = $rank");
+	$get = $page->dbHelper->queryManage("SELECT COUNT(*) AS `count` FROM `companies` WHERE `ranking` = $rank");
 	$fetch = $get->fetch_object();
 	$get->close();
 	${"N$rank"} = $fetch->count;
@@ -62,7 +58,7 @@ $sorting = array("name");
 if($GI) {
 	$sorting = array("DESCranking", "name");
 }
-$all = $page->DB_SelectAll("companies", $sorting);
+$all = $page->dbHelper->selectAll("companies", $sorting);
 $width = 2.0;
 $N = $all->num_rows;
 $i = 0;
@@ -83,49 +79,51 @@ if($N == 0) {
 			if($Nthis > 1 && $i >= $maxis && $rank == $oldrank) {
 				$i = 0;
 				$colis++;
-				$body .= "</div>\n";
-				$body .= "<div class=\"csstab64_cell";
-				$body .= " cellrank$rank";
-				$body .= "\">\n";
+				$body .= $page->tableHelper->cellClose();
+				$body .= $page->tableHelper->cellOpen("cellrank$rank");
+
 			} elseif($rank < $oldrank) {
 				$i = 0;
-				$body .= "</div>\n";
+				$body .= $page->tableHelper->cellClose();
 				while($colis < $width) {
 					$colis++;
-					$body .= "<div class=\"csstab64_cell";
-					$body .= " cellrank$oldrank";
-					$body .= "\">\n";
-					$body .= "</div>\n";
+
+					$body .= $page->tableHelper->cellOpen("cellrank$oldrank");
+					$body .= $page->tableHelper->cellClose();
 				}
-				$body .= "</div>\n";
-				//// new row
+
+				$body .= $page->tableHelper->rowClose();
+
+				// new row
 				$oldrank = $rank;
-				$body .= "<div class=\"csstab64_row";
-				//$body .= " cellrank$rank";
-				//// not working
-				$body .= "\">\n";
-				//// new column
+				$body .= $page->tableHelper->rowOpen();  //"cellrank$rank"; not working
+
+				// new column
 				$colis = 1;
-				$body .= "<div class=\"csstab64_cell";
-				$body .= " cellrank$rank";
-				$body .= "\">\n";
+				$body .= $page->tableHelper->cellOpen("cellrank$rank");
 			}
+
 		} else {
 			if($N > 1 && $i > $maxis) {
 				$i = 0;
-				$body .= "</div>\n";
-				$body .= "<div class=\"csstab64_cell\">\n";
+
+				$body .= $page->tableHelper->cellClose();
+				$body .= $page->tableHelper->cellOpen();
 			}
 		}
+
 		$body .= "<div id=\"c$id\">\n";
+
 		if($GI) {
 			$body .= "<a class=\"edit\" href=\"insert.php?id=$id\" title=\"edit\">edit</a>&nbsp;\n";
 			//$body .= "$rank.&nbsp;";
 			$body .= "<span class=\"co$rank\">\n";
 		}
+
 		$body .= "<a href=\"display.php?id=$id\" title=\"$name\">$name</a>\n";
+
 		if($GI) {
-			$sub = $page->DB_QueryManage("SELECT COUNT(*) AS bus FROM `comco` WHERE `company` = $id");
+			$sub = $page->dbHelper->queryManage("SELECT COUNT(*) AS bus FROM `comco` WHERE `company` = $id");
 			$subtot = $sub->fetch_object();
 			$sub->close();
 			$subval = $subtot->bus;
@@ -134,13 +132,14 @@ if($N == 0) {
 			}
 			$body .= "</span>\n";
 		}
+
 		$body .= "</div>\n";
 	}
 }
 $all->close();
-$body .= "</div>\n";
-$body .= "</div>\n";
-$body .= "</div>\n";
+$body .= $page->tableHelper->cellClose();
+$body .= $page->tableHelper->rowClose();
+$body .= $page->tableHelper->close();
 //
 //// Portals
 $portals = array(
@@ -256,6 +255,6 @@ $body .= "</div>\n";
 
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

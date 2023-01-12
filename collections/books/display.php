@@ -1,24 +1,21 @@
 <?php
 // TODO SetTitle
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "??" => "other");
 
 
 $body = "";
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body .= $page->bodyHelper->goHome("..");
 
 $id = $_GET["id"];
-$query = $page->DB_IdManage("SELECT * FROM `books` WHERE `id` = ?", $id);
+$query = $page->dbHelper->idManage("SELECT * FROM `books` WHERE `id` = ?", $id);
 $query->store_result();
 if($query->num_rows == 0) {
 	$title = "Sorry, no result...";
@@ -42,7 +39,7 @@ if($query->num_rows == 0) {
 	// L head
 	$body .= "<div class=\"lhead\">\n";
 
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		// Edit
 		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a><br />\n";
 
@@ -66,7 +63,7 @@ if($query->num_rows == 0) {
 	$body .= "<a href=\"../missings/index.php?view=books\" title=\"Missing books\">Missing books</a>\n";
 	// Search
 	// Propose to add a new if authorized
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		$body .= "<br />\n";
 		// Add
 		$body .= "<a href=\"insert.php\" title=\"New book\">New book</a><br />\n";
@@ -92,9 +89,9 @@ if($query->num_rows == 0) {
 }
 $query->close();
 
-$page->SetTitle($title);
-$page->HotBooty();
+$page->htmlHelper->setTitle($title);
+$page->htmlHelper->hotBooty();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

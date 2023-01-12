@@ -1,16 +1,15 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
 // Set languages
-$page->setAvailLangs(array("french", "english"));  // This page is both french and english
-$page->ChangeSessionLang();  // check if got anything in GET
+$page->languageHelper->setAvailLangs(array("french", "english"));  // This page is both french and english
+$page->languageHelper->changeSessionLang();  // check if got anything in GET
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
 $aref = "http://www.aerodrome-ecuvillens.ch/index.php?page=meteo_webcam.htm";
 $gmaps = "http://maps.google.ch/?f=d&amp;daddr=aerodrome+ecuvillens";
@@ -20,21 +19,17 @@ $albumURL = "https://en.wikipedia.org/wiki/User:Xonqnopp/Photos/Flights";
 $xnGmail = "<tt>xonqnopp.airlines</tt>&nbsp;__A-t__&nbsp;<tt>gmail.com</tt>";
 $ig = "instagram <a target=\"_blank\" href=\"https://www.instagram.com/xonqnopp/\"><tt>@xonqnopp</tt></a>";
 
-$body = "";
 $contents = "";
 
-use stdClass;
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= "<div class=\"wide\">\n";
-$body .= $page->GoHome($gohome);
-$body .= $page->Languages();
+$body = "<div class=\"wide\">\n";
+$body .= $page->bodyHelper->goHome("..");
+$body .= $page->languageHelper->languages();
 $body .= "</div>\n";
 
 
 $page_title = "Welcome to XonqNopp Airlines!";
 
-if($page->CheckSessionLang($page->GetFrench())) {
+if($page->languageHelper->checkSessionLang("french")) {
 	// french
 		// infos
 		$contents .= "<h2>Informations</h2>\n";
@@ -200,8 +195,8 @@ if($page->CheckSessionLang($page->GetFrench())) {
 }
 
 
-$body .= $page->SetTitle($page_title);
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle($page_title);
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -217,6 +212,6 @@ $body .= $contents;
 $body .= "</div>\n";
 $body .= "<div>&nbsp;</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

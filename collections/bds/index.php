@@ -1,32 +1,28 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-$page->initDB();
+//$page->logger->levelUp(6);
+$page->dbHelper->init();
 
-$GI = $page->UserIsAdmin();
+$GI = $page->loginHelper->userIsAdmin();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `bds`");
+$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `bds`");
 $fetch_count = $getcount->fetch_object();
 $bd_count = $fetch_count->the_count;
 $getcount->close();
-$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `bd_series`");
+$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `bd_series`");
 $fetch_count = $getcount->fetch_object();
 $serie_count = $fetch_count->the_count;
 $getcount->close();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$args->rootpage = "../..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("My $bd_count BDs in $serie_count series");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("../..", "..");
+
+$body .= $page->htmlHelper->setTitle("My $bd_count BDs in $serie_count series");
+$page->htmlHelper->hotBooty();
 
 // Propose to add a new if authorized
 $body .= "<div class=\"wide\">\n";
@@ -50,7 +46,7 @@ $body .= "</div>\n";
 $body .= "<div>\n";
 //
 $serie = "";
-$query_series = $page->DB_QueryAlpha("bd_series", "name");
+$query_series = $page->dbHelper->queryAlpha("bd_series", "name");
 $N = $query_series->num_rows;
 if($N == 0) {
 	$body .= "Sorry, no result to display...";
@@ -59,15 +55,15 @@ if($N == 0) {
 	$L = $N * 1.0 / $serie_width;
 	$bd_series = array();
 	$body .= "<div class=\"bd_display_table\">\n";
-	$body .= "<div class=\"csstab64_table\">\n";
-	$body .= "<div class=\"csstab64_row\">\n";
-	$body .= "<div class=\"csstab64_cell stem_cell\">\n";
+	$body .= $page->tableHelper->open();
+	$body .= $page->tableHelper->rowOpen();
+	$body .= $page->tableHelper->cellOpen("stem_cell");
 	$check = 0;
 	while($serie = $query_series->fetch_object()) {
 		$check++;
 		if($check > $L) {
-			$body .= "</div>\n";
-			$body .= "<div class=\"csstab64_cell\">\n";
+			$body .= $page->tableHelper->cellClose();
+			$body .= $page->tableHelpe->cellOpen();
 			$check = 0;
 		}
 		//if($serie !== null) {
@@ -79,7 +75,7 @@ if($N == 0) {
 				$name = "Hors s&eacute;ries";
 			}
 			$thumb = $serie->thumb;
-			$GetCount = $page->DB_IdManage("SELECT COUNT(*) AS `count` FROM `bds` WHERE `serie_id` = ?", $id);
+			$GetCount = $page->dbHelper->idManage("SELECT COUNT(*) AS `count` FROM `bds` WHERE `serie_id` = ?", $id);
 			$GetCount->bind_result($count);
 			$GetCount->fetch();
 			$GetCount->close();
@@ -108,9 +104,9 @@ if($N == 0) {
 			$body .= "</div>\n";
 		//}
 	}
-	$body .= "</div>\n";
-	$body .= "</div>\n";
-	$body .= "</div>\n";
+	$body .= $page->tableHelper->cellClose();
+	$body .= $page->tableHelper->rowClose();
+	$body .= $page->tableHelper->close();
 	$body .= "</div>\n";
 }
 $query_series->close();
@@ -119,6 +115,6 @@ $body .= "</div>\n";
 //
 
 /*** Printing ***/
-$page->show($body);
+echo $body;
 unset($page);
 ?>

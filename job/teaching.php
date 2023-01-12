@@ -1,19 +1,16 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Enseignement");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("Enseignement");
+$page->htmlHelper->hotBooty();
 
 	/*** General ***/
 	$body .= "<h2>G&eacute;n&eacute;ral</h2>\n";
@@ -67,6 +64,6 @@ $page->HotBooty();
 	$body .= "<p><a href=\"http://formasciences.epfl.ch/page-57532-fr.html\">Compl&eacute;ment de formation de l'EPFL</a></p>\n";
 //
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

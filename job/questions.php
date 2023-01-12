@@ -1,21 +1,17 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->page = "preparation";
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Interview questions commented (or not)");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..", "preparation.php");
+
+$body .= $page->htmlHelper->setTitle("Interview questions commented (or not)");
+$page->htmlHelper->hotBooty();
 //
 	//// TOC
 	$body .= "<h2>TOC</h2>\n";
@@ -344,6 +340,6 @@ $page->HotBooty();
 	$body .= "</ul>\n";
 //
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

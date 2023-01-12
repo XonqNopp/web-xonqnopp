@@ -1,6 +1,6 @@
 <?php
 function borrow_back(PhPage $page, $dbTable, $back, $backId) {
-	$page->NotAllowed();
+	$page->loginHelper->notAllowed();
 	// Get id
 	$backId = 0;
 	if($back != "") {
@@ -8,21 +8,21 @@ function borrow_back(PhPage $page, $dbTable, $back, $backId) {
 	}
 	// Check we have id
 	if($backId === NULL || $backId == 0) {
-		$page->FatalError("back id undefined");
+		$page->logger->fatal("back id undefined");
 	}
 
-	$query = $page->DB_QueryPrepare("UPDATE `" . $page->ddb->DBname . "`.`$dbTable` SET `borrowed` = 0 WHERE `$dbTable`.`id` = ? LIMIT 1;");
+	$query = $page->dbHelper->queryPrepare("UPDATE `{$page->dbHelper->dbName}`.`$dbTable` SET `borrowed` = 0 WHERE `$dbTable`.`id` = ? LIMIT 1;");
 	$query->bind_param("i", $backId);
-	$frommissing = $page->DB_QueryManage("SELECT * FROM `missings` WHERE `dbtable` = '$dbTable' AND `dbid` = $backId");
+	$frommissing = $page->dbHelper->queryManage("SELECT * FROM `missings` WHERE `dbtable` = '$dbTable' AND `dbid` = $backId");
 	if($frommissing->num_rows != 1) {
-		$page->FatalError("Borrowed item not found in missing database");
+		$page->logger->fatal("Borrowed item not found in missing database");
 	}
 	$missingitem = $frommissing->fetch_object();
 	$frommissing->close();
 	$missingId = $missingitem->id;
-	$mdb = $page->DB_QueryPrepare("DELETE FROM `" . $page->ddb->DBname . "`.`missings` WHERE `missings`.`id` = ? LIMIT 1;");
+	$mdb = $page->dbHelper->queryPrepare("DELETE FROM `{$page->dbHelper->dbName}`.`missings` WHERE `missings`.`id` = ? LIMIT 1;");
 	$mdb->bind_param("i", $missingId);
-	$page->DB_ExecuteManage($query);
-	$page->DB_ExecuteManage($mdb);
+	$page->dbHelper->executeManage($query);
+	$page->dbHelper->executeManage($mdb);
 }
 ?>

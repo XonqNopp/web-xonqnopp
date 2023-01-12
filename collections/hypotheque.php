@@ -1,20 +1,23 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-// debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
 
-$page->setAvailLangs(array("french"));
-$page->ChangeSessionLang();
+require("$funcpath/form_fields.php");
+use FieldAttributes;
+global $theNumberInput;
+
+
+// debug
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
+
+$page->languageHelper->setAvailLangs(array("french"));
+$page->languageHelper->changeSessionLang();
 
 // CSS paths
-$page->CSS_ppJump();
-$page->CSS_ppWing();
-// init body
-$body = "";
+$page->cssHelper->dirUpWing();
 
 
 function getTitle($title, $level=2) {
@@ -31,13 +34,11 @@ function getTitle($title, $level=2) {
 }
 
 
-// GoHome
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
+$body = $page->bodyHelper->goHome("..");
+
 // Set title and hot booty
-$body .= $page->SetTitle("Calculateur d'hypotheque");  // before HotBooty
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("Calculateur d'hypotheque");  // before HotBooty
+$page->htmlHelper->hotBooty();
 
 
 	// Data
@@ -59,42 +60,17 @@ $body .= "<p><b>Note:</b> les revenus et charges sont annuels.</p>\n";
 	$body .= "</div>\n";
 
 	$body .= "<div>\n";
-	$formArgs = new stdClass();
-	$formArgs->method = "get";
-	$body .= $page->FormTag($formArgs);
+	$body .= $page->formHelper->tag("get");
 
-		// revenu
-		$args = new stdClass();
-		$args->type = "number";
-		$args->title = "Revenu CHF";
-		$args->name = "revenu";
-		$args->value = $revenu;
-		$args->min = 0;
-		$body .= $page->FormField($args);
-	//
-		// cash
-		$args = new stdClass();
-		$args->type = "number";
-		$args->title = "Cash CHF";
-		$args->name = "cash";
-		$args->value = $cash;
-		$args->min = 0;
-		$body .= $page->FormField($args);
-	//
-		// LPP
-		$args = new stdClass();
-		$args->type = "number";
-		$args->title = "LPP CHF";
-		$args->name = "lpp";
-		$args->value = $lpp;
-		$args->min = 0;
-		$body .= $page->FormField($args);
-	//
-		// buttons
-		$args = new stdClass();
-		$args->cancelURL = "hypotheque.php";
-		$args->add = "Calculer";
-		$body .= $page->SubButt(False, NULL, $args);
+	$attr = new FieldAttributes();
+	$attr->min = 0;
+
+	$body .= $theNumberInput->get("revenu", $revenu, "Revenu CHF", $attr);
+	$body .= $theNumberInput->get("cash", $cash, "Cash CHF", $attr);
+	$body .= $theNumberInput->get("lpp", $lpp, "LPP CHF", $attr);
+
+	// buttons
+	$body .= $page->formHelper->subButt(False, NULL, "file", true, "Calculer");
 
 	$body .= "</form>\n";
 	$body .= "</div>\n";
@@ -305,7 +281,7 @@ if ($revenu == 0 && $cash == 0 && $lpp == 0) {
 
 
 
-//// Finish
+// Finish
 echo $body;
 unset($page);
 ?>

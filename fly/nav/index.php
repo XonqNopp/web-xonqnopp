@@ -1,43 +1,39 @@
 <?php
-require("../functions/classPage.php");
-$rootPath = "..";
+require("../../functions/page_helper.php");
+$rootPath = "../..";
 $funcpath = "$rootPath/functions";
 require("common.php");
 $page = new PhPage($rootPath);
-$page->initDB();
-//$page->initHTML();
-//$page->LogLevelUp(6);
-$page->CSS_ppJump();
-$page->CSS_ppWing();
-$body = "";
-$GI = $page->UserIsAdmin();
+$page->dbHelper->init();
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
+$page->cssHelper->dirUpWing();
+$GI = $page->loginHelper->userIsAdmin();
 
-$navcount = $page->DB_GetCount("NavList");
+$navcount = $page->dbHelper->getCount("NavList");
 
-use stdClass;
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
-$body .= $page->SetTitle("Navigations ($navcount)");// before HotBooty
-$page->HotBooty();
+$body = $page->bodyHelper->goHome(NULL, "..");
+$body .= $page->htmlHelper->setTitle("Navigations ($navcount)");// before HotBooty
+$page->htmlHelper->hotBooty();
 
 	// planes (preparation, output comes later)
 	$PlaneOrder = array("PlaneID");
-	$planes = $page->DB_SelectAll("aircrafts", $PlaneOrder);
-	$Nplanes = $page->DB_GetCount("aircrafts");
+	$planes = $page->dbHelper->selectAll("aircrafts", $PlaneOrder);
+	$Nplanes = $page->dbHelper->getCount("aircrafts");
 	$AllPlanes = array();
 	$width = 1;
 	$L = $Nplanes / (1.0 * $width);
 	$i = 0;
-	$bp = "";
-	$bp .= "<div class=\"csstab64_table\">\n";
-	$bp .= "<div class=\"csstab64_row\">\n";
-	$bp .= "<div class=\"csstab64_cell\">\n";
+
+	$bp = $page->tableHelper->open();
+	$bp .= $page->tableHelper->rowOpen();
+	$bp .= $page->tableHelper->cellOpen();
+
 	while($p = $planes->fetch_object()) {
 		$i++;
 		if($i > $L) {
-			$bp .= "</div>\n";
-			$bp .= "<div class=\"csstab64_cell\">\n";
+			$bp .= $page->tableHelper->cellClose();
+			$bp .= $page->tableHelper->cellOpen();
 		}
 		$id = $p->id;
 		$payload = $p->MTOW - $p->DryMass;
@@ -48,20 +44,22 @@ $page->HotBooty();
 		$bp .= "<div>\n";
 		if($GI) {
 			$bp .= "<span class=\"edit\">\n";
-			$bp .= "<a href=\"NavPlane.php?id=$id\" title=\"edit {$p->PlaneID}\">edit</a>\n";
+			$bp .= "<a href=\"plane.php?id=$id\" title=\"edit {$p->PlaneID}\">edit</a>\n";
 			$bp .= "</span>\n";
 		}
 		$bp .= "{$p->PlaneID}: {$p->PlaneType} {$p->PlanningSpeed}kts, payload {$p->payload}kg\n";
 		$bp .= "</div>\n";
 	}
-	$bp .= "</div>\n";
-	$bp .= "</div>\n";
-	$bp .= "</div>\n";
+
 	$planes->close();
+
+	$bp .= $page->tableHelper->cellClose();
+	$bp .= $page->tableHelper->rowClose();
+	$bp .= $page->tableHelper->close();
 //
 // Navigations
 $NavOrders = array("name", "plane", "id");
-$nav = $page->DB_SelectAll("NavList", $NavOrders);
+$nav = $page->dbHelper->selectAll("NavList", $NavOrders);
 $width = 2;
 $N = $navcount;
 $L = $N / (1.0 * $width);
@@ -70,27 +68,28 @@ $i = 0;
 if($GI) {
 	$body .= "<div class=\"wide\">\n";
 	$body .= "<div class=\"lhead\">\n";
-	$body .= "<a href=\"NavDetails.php?id=0\" title=\"refresh tempate\">refresh template</a><br />\n";
+	$body .= "<a href=\"display.php?id=0\" title=\"refresh tempate\">refresh template</a><br />\n";
 	$body .= "<a href=\"nav/navTemplate.tex\" title=\"template\">template</a><br />\n";
 	$body .= "<a href=\"pdf/navTemplate.pdf\" target=\"_blank\">PDF</a>\n";
 	$body .= "</div>\n";
 	$body .= "<div class=\"chead\">\n";
 	$body .= "</div>\n";
 	$body .= "<div class=\"rhead\">\n";
-	$body .= "<a href=\"NavNew.php\" title=\"new nav\">new nav</a>\n";
+	$body .= "<a href=\"insert.php\" title=\"new nav\">new nav</a>\n";
 	$body .= "</div>\n";
 	$body .= "</div>\n";
 }
 
-$body .= "<div class=\"csstab64_table\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
-$body .= "<div class=\"csstab64_cell\">\n";
+$body .= $page->tableHelper->open();
+$body .= $page->tableHelper->rowOpen();
+$body .= $page->tableHelper->cellOpen();
+
 while($item = $nav->fetch_object()) {
 	$i++;
 	if($i > $L) {
 		$i = 0;
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell\">\n";
+		$body .= $page->tableHelper->cellClose();
+		$body .= $page->tableHelper->cellOpen();
 	}
 	$plane = "";
 	if($item->plane > 0) {
@@ -99,10 +98,10 @@ while($item = $nav->fetch_object()) {
 	$body .= "<div>\n";
 	if($GI) {
 		$body .= "<span class=\"edit\">\n";
-		$body .= "<a href=\"NavNew.php?id={$item->id}\" title=\"edit {$item->name}\">edit</a>\n";
+		$body .= "<a href=\"insert.php?id={$item->id}\" title=\"edit {$item->name}\">edit</a>\n";
 		$body .= "</span>\n";
 	}
-	$body .= "<a href=\"NavDetails.php?id={$item->id}\" title=\"{$item->name}\">\n";
+	$body .= "<a href=\"display.php?id={$item->id}\" title=\"{$item->name}\">\n";
 	$body .= "{$item->name}";
 	if($plane != "") {
 		$body .= " ($plane)";
@@ -118,11 +117,12 @@ while($item = $nav->fetch_object()) {
 	}
 	$body .= "</div>\n";
 }
-$body .= "</div>\n";
-$body .= "</div>\n";
-$body .= "</div>\n";
 
 $nav->close();
+
+$body .= $page->tableHelper->cellClose();
+$body .= $page->tableHelper->rowClose();
+$body .= $page->tableHelper->close();
 
 
 $body .= "<h2>Available airplanes</h2>\n";
@@ -133,13 +133,13 @@ if($GI) {
 	$body .= "<div class=\"chead\">\n";
 	$body .= "</div>\n";
 	$body .= "<div class=\"rhead\">\n";
-	$body .= "<a href=\"NavPlane.php\" title=\"new plane\">new plane</a>\n";
+	$body .= "<a href=\"plane.php\" title=\"new plane\">new plane</a>\n";
 	$body .= "</div>\n";
 	$body .= "</div>\n";
 }
 $body .= $bp;
 
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

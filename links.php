@@ -1,13 +1,13 @@
 <?php
-require("functions/classPage.php");
+require("functions/page_helper.php");
 $page = new PhPage();
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 	/*** prepare text ***/
 	$annwvyn = "Le Peuple d&#039;Annwvyn";
 	$cdj = "Choeur Sainte-C&eacute;cile de Bramois";
 	$ski = "Ski-Club Bramois";
 	$crpp = "Centre de Recherches en Physique des Plasmas";
-	if($page->CheckSessionLang($page->GetFrench())) {
+	if($page->languageHelper->checkSessionLang("french")) {
 		$title = "Quelques liens externes";
 		$aum = "Aum&ocirc;nerie de l&#039;UNIL et de l&#039;EPFL";
 		$bb = "Mon";
@@ -19,12 +19,12 @@ $page = new PhPage();
 //
 
 $body = "";
-$page->CSS_Push("index");
-$page->HotBooty();
+$page->cssHelper->push("index");
+$page->htmlHelper->hotBooty();
 
 $body .= "<h1 class=\"ext\">$title</h1>\n";
-$body .= $page->Languages();
-$body .= $page->GoHome();
+$body .= $page->languageHelper->languages();
+$body .= $page->bodyHelper->goHome();
 
 $body .= "<div>\n";
 $body .= "<ul>\n";
@@ -42,6 +42,6 @@ $body .= "</div>\n";
 //
 
 /*** DISPLAY ***/
-$page->show($body);
+echo $body;
 unset($page);
 ?>

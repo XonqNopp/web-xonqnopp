@@ -1,21 +1,17 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("List of known borrowers");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome(NULL, "..");
+$body .= $page->htmlHelper->setTitle("List of known borrowers");
+$page->htmlHelper->hotBooty();
 
-$UserIsAdmin = $page->UserIsAdmin();
+$UserIsAdmin = $page->loginHelper->userIsAdmin();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -31,7 +27,7 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 // Display exsiting ones
-$query = $page->DB_QueryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
+$query = $page->dbHelper->queryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
 if($query->num_rows == 0) {
 	$body .= "Sorry, no one stored yet...";
 } else {
@@ -56,7 +52,7 @@ if($query->num_rows == 0) {
 		$body .= "\n";
 		$body .= "</td>\n";
 		// Fetch count items borrowed
-		$howmany_q = $page->DB_IdManage("SELECT COUNT(*) AS `how_many` FROM `missings` WHERE `borrower` = ?", $id);
+		$howmany_q = $page->dbHelper->idManage("SELECT COUNT(*) AS `how_many` FROM `missings` WHERE `borrower` = ?", $id);
 		$howmany_q->bind_result($howmany);
 		$howmany_q->fetch();
 		$howmany_q->close();
@@ -82,6 +78,6 @@ if($query->num_rows == 0) {
 }
 $query->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

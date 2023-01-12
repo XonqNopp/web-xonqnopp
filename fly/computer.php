@@ -1,28 +1,30 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 
-use stdClass;
+require("$funcpath/form.php");
+use FieldAttributes;
+use FieldEmbedder;
+global $theHiddenInput;
+global $theTextInput;
+global $theNumberInput;
+
 
 // debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 // CSS paths
-$page->CSS_ppJump();
-$page->CSS_ppWing();
-$page->js_Form();
-// init body
-$body = "";
+$page->cssHelper->dirUpWing();
+$page->htmlHelper->jsForm();
 
 
-// GoHome
-$gohome = new stdClass();
-$body .= $page->GoHome($gohome);
+$body = $page->bodyHelper->goHome();
+
 // Set title and hot booty
-$body .= $page->SetTitle("Flight computer");// before HotBooty
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("Flight computer");// before HotBooty
+$page->htmlHelper->hotBooty();
 
 
 function pressureAltitude($altitude, $qnh) {
@@ -133,141 +135,84 @@ if(isset($_POST["MC"])) {
 $table = "";
 
 $body .= "<div style=\"text-align: center; margin: 1em;\">\n";
-$body .= $page->FormTag();
+$body .= $page->formHelper->tag();
 
 	// Density altitude
 	$body .= "<div>\n";
 		// altitude
-		$args = new stdClass();
-		$args->type = "number";
-		$args->title = "Altitude";
-		$args->name = "alt";
-		$args->value = $alt;
-		$args->min = -2000;
-		$args->max = 60000;
-		$args->posttitle = "ft&nbsp;";
-		//$args->div = false;
-		$args->size = 2;
-		$args->autofocus = true;
-		$body .= $page->FormField($args);
+		$attrAlt = new FieldAttributes(false, true);
+		$attrAlt->min = -5000;
+		$attrAlt->max = 60000;
+		$embedderAlt = new FieldEmbedder("Altitude", "ft&nbsp;");
+		$body .= $theNumberInput->get("alt", $alt, NULL, 2, NULL, $attrAlt, $embedderAlt);
 	//
 		// qnh
-		$args = new stdClass();
-		$args->type = "number";
-		$args->title = "QNH";
-		$args->name = "qnh";
-		$args->value = $qnh;
-		$args->min = 900;
-		$args->max = 1100;
-		$args->posttitle = "hPa&nbsp;";
-		//$args->div = false;
-		$body .= $page->FormField($args);
+		$embedderQnh = new FieldEmbedder("QNH", "hPa&nbsp;");
+		$attrQnh = new FieldAttributes();
+		$attrQnh->min = 900;
+		$attrQnh->max = 1100;
+		$attrQnh->step = 1;
+		$body .= $theNumberInput->get("qnh", $qnh, NULL, NULL, NULL, $attrQnh, $embedderQnh);
 	//
 		// -> pressure altitude
 		$pa = pressureAltitude($alt, $qnh);
-		$args = new stdClass();
-		$args->type = "text";
-		$args->title = "Pressure altitude";
-		$args->name = "pa";
-		$args->value = $pa;
-		$args->posttitle = "ft&nbsp;";
-		//$args->div = false;
-		$args->readonly = true;
-		$body .= $page->FormField($args);
+		$paAttr = FieldAttributes();
+		$paAttr->bReadonly = true;
+		$paEmbedder = FieldEmbedder("Pressure altitude", "ft&nbsp;");
+		$body .= $theTextInput->get("pa", $pa, NULL, 0, NULL, NULL, $paAttr, $paEmbedder);
 	//
 		// oat
-		$args = new stdClass();
-		$args->type = "number";
-		$args->title = "Temperature";
-		$args->name = "oat";
-		$args->value = $oat;
-		$args->min = -50;
-		$args->max = 100;
-		$args->posttitle = "degC&nbsp;";
-		//$args->div = false;
-		$body .= $page->FormField($args);
+		$attrOat = new FieldAttributes();
+		$attrOat->min = -50;
+		$attrOat->max = 100;
+		$embedderOat = new FieldEmbedder("Temperature", "&deg;C&nbsp;");
+		$body .= $theNumberInput->get("oat", $oat, NULL, NULL, NULL, $attrOat, $embedderOat);
 	//
 		// -> density altitude
-		$args = new stdClass();
-		$args->type = "text";
-		$args->title = "Density altitude";
-		$args->name = "DA";
-		$args->value = densityAltitude($pa, $oat);
-		$args->posttitle = "ft&nbsp;";
-		//$args->div = false;
-		$args->readonly = true;
-		$body .= $page->FormField($args);
+		$daAttr = FieldAttributes();
+		$daAttr->bReadonly = true;
+		$daEmbedder = FieldEmbedder("Density altitude", "ft&nbsp;");
+		$body .= $theTextInput->get("DA", densityAltitude($pa, $oat), NULL, 0, NULL, NULL, $daAttr, $daEmbedder);
 
 	$body .= "</div>\n";
 
 $body .= "<div>&nbsp;</div>\n";
 
+$attrHdg = new FieldAttributes();
+$attrHdg->min = 0;
+$attrHdg->max = 359;
+
+$embedderHdg = new FieldEmbedder("MC", "deg");
+
 	// MC
-	$args = new stdClass();
-	$args->type = "number";
-	$args->title = "MC";
-	$args->name = "MC[]";
-	$args->value = $MC;
-	$args->min = 0;
-	$args->max = 359;
-	$args->posttitle = "deg";
-	$body .= $page->FormField($args);
+	$embedderHdg->title = "MC";
+	$body .= $theNumberInput->get("MC[]", $MC, NULL, NULL, NULL, $attrHdg, $embedderHdg);
 //
 	// speed
-	$args = new stdClass();
-	$args->type = "number";
-	$args->title = "speed";
-	$args->name = "speed[]";
-	$args->value = $speed;
-	$args->min = 0;
-	$args->posttitle = "kts";
-	$body .= $page->FormField($args);
+	$attrSpeed = new FieldAttributes();
+	$attrSpeed->min = 0;
+	$embedderSpeed = new FieldEmbedder("speed", "kts");
+	$body .= $theNumberInput->get("speed[]", $speed, NULL, NULL, NULL, $attrSpeed, $embedderSpeed);
 //
 	// altitude
-	$args = new stdClass();
-	$args->type = "number";
-	$args->title = "altitude";
-	$args->name = "altitude[]";
-	$args->value = $altitude;
-	$args->posttitle = "ft";
-	$body .= $page->FormField($args);
+	$embedderAlt = new FieldEmbedder("altitude", "ft");
+	$body .= $theNumberInput->get("altitude[]", $altitude, NULL, NULL, NULL, NULL, $embedderAlt);
 //
 	// temperature
-	$args = new stdClass();
-	$args->type = "number";
-	$args->title = "temperature";
-	$args->name = "temperature[]";
-	$args->value = $temperature;
-	$args->posttitle = "degC";
-	$body .= $page->FormField($args);
+	$embedderTemperature = new FieldEmbedder("temperature", "&deg;C");
+	$body .= $theNumberInput->get("temperature[]", $temperature, NULL, NULL, NULL, NULL, $embedderTemperature);
 //
 	// windHeading
-	$args = new stdClass();
-	$args->type = "number";
-	$args->title = "wind hdg";
-	$args->name = "windHeading[]";
-	$args->value = $windHeading;
-	$args->min = 0;
-	$args->max = 359;
-	$args->posttitle = "deg";
-	$args->autofocus = true;
-	$body .= $page->FormField($args);
+	$attrHdg->bAutofocus = true;
+	$embedderHdg->title = "wind hdg";
+	$body .= $theNumberInput->get("windHeading[]", $windHeading, NULL, NULL, NULL, $attrHeading, $embedderHdg);
 //
 	// windSpeed
-	$args = new stdClass();
-	$args->type = "number";
-	$args->title = "wind speed";
-	$args->name = "windSpeed[]";
-	$args->value = $windSpeed;
-	$args->min = 0;
-	$args->posttitle = "kts";
-	$body .= $page->FormField($args);
+	$embedderSpeed->title = "wind speed";
+	$body .= $theNumberInput->get("windSpeed[]", $windSpeed, NULL, NULL, NULL, $attrSpeed, $embedderSpeed);
 //
 	// buttons
-	$args = new stdClass();
-	$args->cancelURL = "computer.php";
-	$args->CloseTag = false;
-	$body .= $page->SubButt(False, NULL, $args);
+	$body .= $page->formHelper->subButt(False, NULL, "file", false);
 //
 	// Prepare table
 	if(isset($_POST["MC"])) {
@@ -313,32 +258,12 @@ $body .= "<div>&nbsp;</div>\n";
 				$GS = $windInfluence["GS"];
 			//
 				// form
-				$args = new stdClass();
-				$args->type = "hidden";
-
-				$args->name = "MC[]";
-				$args->value = $MC;
-				$body .= $page->FormField($args);
-
-				$args->name = "speed[]";
-				$args->value = $speed;
-				$body .= $page->FormField($args);
-
-				$args->name = "altitude[]";
-				$args->value = $altitude;
-				$body .= $page->FormField($args);
-
-				$args->name = "temperature[]";
-				$args->value = $temperature;
-				$body .= $page->FormField($args);
-
-				$args->name = "windHeading[]";
-				$args->value = $windHeading;
-				$body .= $page->FormField($args);
-
-				$args->name = "windSpeed[]";
-				$args->value = $windSpeed;
-				$body .= $page->FormField($args);
+				$body .= $theHiddenInput->get("MC[]", $MC);
+				$body .= $theHiddenInput->get("speed[]", $speed);
+				$body .= $theHiddenInput->get("altitude[]", $altitude);
+				$body .= $theHiddenInput->get("temperature[]", $temperature);
+				$body .= $theHiddenInput->get("windHeading[]", $windHeading);
+				$body .= $theHiddenInput->get("windSpeed[]", $windSpeed);
 			//
 				// table
 				$table .= "<tr>\n";

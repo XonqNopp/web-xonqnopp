@@ -39,14 +39,14 @@ td.missing_back {
 	font-size : 8pt;
 }
 
-div.missing_insert_borrower {
+div.borrower {
 	padding : 3mm 0mm;
 }
 
-div.missing_insert_date {
+div.date {
 	padding : 3mm 8mm;
 }
 
-div.missing_insert_button {
+div.SubButt {
 	padding : 3mm 0mm;
 }

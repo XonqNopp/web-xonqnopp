@@ -1,19 +1,16 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Useful stuff before changing of position");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("Useful stuff before changing of position");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div><ul>\n";
 $body .= "<li><a href=\"questions.php\">Interview questions</a></li>\n";
@@ -48,6 +45,6 @@ $body .= "<li>On your resume, put at the beginning 3 key points you want the rec
 $body .= "</ul>\n";
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

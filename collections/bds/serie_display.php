@@ -1,15 +1,15 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
-require("${funcpath}_local/borrowback.php");
+require("{$funcpath}_local/borrowback.php");
 
 $page = new PhPage($rootPath);
 
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 
-$page->initDB();
+$page->dbHelper->init();
 
 // Borrowed item came home
 if(isset($_GET["back"])) {
@@ -20,23 +20,22 @@ if(isset($_GET["back"])) {
 	borrow_back($page, "bds", $_GET["back"], $backId);
 }
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
 $body = "";
 
-$GI = $page->UserIsAdmin();
+$GI = $page->loginHelper->userIsAdmin();
 
 //// Find serie
 $serie_id = $_GET["id"];
 $serie = "";
-$findserie = $page->DB_IdManage("SELECT `name` FROM `bd_series` WHERE `id` = ?", $serie_id);
+$findserie = $page->dbHelper->idManage("SELECT `name`, `Nalbums` FROM `bd_series` WHERE `id` = ?", $serie_id);
 $findserie->store_result();
 if($findserie->num_rows == 0) {
 	$findserie->close();
-	$page->HeaderLocation();
+	$page->htmlHelper->headerLocation();
 } else {
-	$findserie->bind_result($serie);
+	$findserie->bind_result($serie, $nAlbums);
 	$findserie->fetch();
 	$findserie->close();
 }
@@ -45,13 +44,11 @@ if($findserie->num_rows == 0) {
 	if($serie == "") {
 		$page_title = "Hors s&eacute;rie (BDs)";
 	}
-//
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);// add previous+next
-$body .= $page->SetTitle($page_title);
 
-$page->HotBooty();
+$body .= $page->bodyHelper->goHome("..");
+$body .= $page->htmlHelper->setTitle($page_title);
+
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -76,11 +73,16 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 // Fetch all from this serie
-$display_serie = $page->DB_IdManage("SELECT * FROM `bds` WHERE `serie_id` = ? ORDER BY `tome` ASC, `title` ASC", $serie_id);
+$display_serie = $page->dbHelper->idManage("SELECT * FROM `bds` WHERE `serie_id` = ? ORDER BY `tome` ASC, `title` ASC", $serie_id);
 $display_serie->store_result();
 if($display_serie->num_rows == 0) {
 	$body .= "<div>No BD yet</div>\n";
 } else {
+
+	if($display_serie->num_rows >= $nAlbums) {
+		$body .= "<div>Serie is complete.</div>\n";
+	}
+
 	$display_serie->bind_result($id, $isbn, $serie_id, $tome, $title, $ti, $author, $publisher, $date, $borrowed);
 	$body .= "<div class=\"bd_serie_table\">\n";
 	$body .= "<table class=\"bd_serie_table\">\n";
@@ -133,6 +135,6 @@ if($display_serie->num_rows == 0) {
 $display_serie->close();
 
 /*** Printing ***/
-$page->show($body);
+echo $body;
 unset($page);
 ?>

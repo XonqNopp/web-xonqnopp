@@ -1,6 +1,9 @@
 Fly
 ###
 
+* initDB -> dbInit
+* Review all files for readiness
+
 
 Nav
 ***

@@ -1,5 +1,5 @@
 <?php
-function commonPreparations($userIsAdmin, $miscInit) {
+function commonPreparations($userIsAdmin) {
 	$metar = "<li><a target=\"_blank\" href=\"http://www.meteosuisse.admin.ch/home/service-et-publications/conseil-et-service/previsions-aeronautiques-meteorologie-aeronautique/metar-taf.html\" title=\"METAR CH\">METAR CH</a></li>\n";
 	$dabs = "<li><a target=\"_blank\" href=\"https://www.skybriefing.com/portal/dabs\">DABS</a></li>\n";
 
@@ -7,12 +7,6 @@ function commonPreparations($userIsAdmin, $miscInit) {
 	$aipF = "<a target=\"_blank\" href=\"https://www.sia.aviation-civile.gouv.fr/html/frameset_aip_fr.htm\">France</a>\n";
 	$aipOe = "<a target=\"_blank\" href=\"http://eaip.austrocontrol.at/lo/141114/ad_2.htm\">&Ouml;sterreich</a>\n";
 	$aipEU = "<a target=\"_blank\" href=\"https://www.eurocontrol.int/articles/ais-online\">Europe</a>\n";
-
-	$homebriefing = "<li><a target=\"_blank\" href=\"https://www.homebriefing.com/aes/login.jsp\">HomeBriefing</a>";
-	if($userIsAdmin) {
-		$homebriefing .= "<br />mib<br />" . $miscInit->homebriefing;
-	}
-	$homebriefing .= "</li>\n";
 
 	$skybriefing = "<li>";
 	$skybriefing .= "<a target=\"_blank\" href=\"https://www.skybriefing.com/portal/\">SkyBriefing</a>";
@@ -57,7 +51,6 @@ function commonPreparations($userIsAdmin, $miscInit) {
 	$column .= $dabs;
 	$column .= $mapCH;
 	$column .= $skybriefing;
-	$column .= $homebriefing;
 	$column .= $navplan;
 	$column .= $skyvector;
 

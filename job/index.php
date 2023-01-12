@@ -1,19 +1,16 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Job stuff");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome(NULL, "..");
+
+$body .= $page->htmlHelper->setTitle("Job stuff");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div>\n";
 $body .= "<ul>\n";
@@ -22,7 +19,7 @@ $body .= "<li><a href=\"teaching.php\">Teaching</a></li>\n";
 $body .= "<li><a href=\"management.php\">Management</a></li>\n";
 $body .= "<li><a href=\"companies/index.php\">Companies</a></li>\n";
 $body .= "<li><a href=\"https://www.gate.bfs.admin.ch/salarium/public/index.html#/calculation?regionCode=2&nogaId=26&skillLevelCode=25&mgmtLevelCode=3&weeklyHourValue=42&educationCode=1&ageCode=30&workYearsCode=4&companySizeCode=3&month13SalaryCode=1&specialFeesCode=0&hourSalaryCode=0\" target=\"_blank\">Salarium OFS</a></li>\n";
-if($page->UserIsAdmin()) {
+if($page->loginHelper->userIsAdmin()) {
 	$body .= "<li><a href=\"applications\">Submitted applications</a></li>\n";
 }
 $body .= "</ul>\n";
@@ -30,7 +27,7 @@ $body .= "</div>\n";
 
 
 $body .= "<div>\n";
-if($page->UserIsAdmin()) {
+if($page->loginHelper->userIsAdmin()) {
 		//// Current goals
 		$body .= "<h2>Desired goals</h2>\n";
 		$body .= "<p>I would like to work in something involving computers which leads to a concrete application.\n";
@@ -51,6 +48,6 @@ if($page->UserIsAdmin()) {
 }
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

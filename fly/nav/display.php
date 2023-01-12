@@ -1,6 +1,6 @@
 <?php
-require("../functions/classPage.php");
-$rootPath = "..";
+require("../../functions/page_helper.php");
+$rootPath = "../..";
 $funcpath = "$rootPath/functions";
 
 use stdClass;
@@ -14,16 +14,14 @@ $docVersion = "2022-12-25";  // TODO before merging
 // TODO remove &eacute from latex
 
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 // debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 // CSS
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$bIsAdmin = $page->UserIsAdmin();
+$bIsAdmin = $page->loginHelper->userIsAdmin();
 
 $kDefaultPrecision = 3;
 $kFuelTanksNum = 4;
@@ -432,7 +430,11 @@ $kFuelTanksNum = 4;
 			}
 		}
 	//
-		// Fuel requirements holding all information required to compute how much fuel we take on board.
+		/**
+		 * Fuel requirements holding all information required to compute how much fuel we take on board.
+		 *
+		 * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+		 */
 		class FuelRequirements {
 			public $consumption = 0;         // fuel consumption [unit/h]
 			public $unit = "";               // unit of fuel consumption
@@ -761,7 +763,7 @@ $kFuelTanksNum = 4;
 
 				$htmlRow = "<td class=\"unavailable\"></td>\n";  // default, if minutes==0
 				if($minutes > 0) {
-					$htmlRow = "<td>{$page->minutesDisplay($minutes)}</td>\n";
+					$htmlRow = "<td>{$page->timeHelper->minutesDisplay($minutes)}</td>\n";
 				}
 
 				$htmlRow .= "<td>{$this->getEntryQuantity($fuelEntry)}</td>\n";
@@ -807,7 +809,8 @@ $kFuelTanksNum = 4;
 				$latexRow = " \\multicolumn{2}{c}{\\DarkGray}\n";
 
 				if($minutes > 0) {
-					$latexRow = " {$page->minutes2HoursInt($minutes)}&" . sprintf("%02d", $page->minutes2MinutesRest($minutes)) . " ";
+					$latexRow = " {$page->timeHelper->minutes2HoursInt($minutes)}&";
+					$latexRow .= sprintf("%02d", $page->timeHelper->minutes2MinutesRest($minutes)) . " ";
 				}
 
 				$latexRow .= "& {$this->getEntryQuantity($fuelEntry)} &";
@@ -915,7 +918,7 @@ $kFuelTanksNum = 4;
 		$dupID = $_GET["dup"];
 
 		// TODO SQL
-		$copy_nav = "INSERT INTO `{$page->ddb->DBname}`.`$TABLE` (";
+		$copy_nav = "INSERT INTO `{$page->dbHelper->dbName}`.`$TABLE` (";
 		$copy_nav .= "`name`";
 		$copy_nav .= ", `plane`";
 		$copy_nav .= ", `variation`";
@@ -931,10 +934,10 @@ $kFuelTanksNum = 4;
 		$copy_nav .= ", 0";
 		$copy_nav .= ", $kDefaultLuggageMass";
 		$copy_nav .= ", `comment`";
-		$copy_nav .= " FROM `{$page->ddb->DBname}`.`$TABLE`";
+		$copy_nav .= " FROM `{$page->dbHelper->dbName}`.`$TABLE`";
 		$copy_Nav .= " WHERE `$TABLE`.`id` = ?";
 
-		$copy_WP  = "INSERT INTO `{$page->ddb->DBname}`.`NavWaypoints` (";
+		$copy_WP  = "INSERT INTO `{$page->dbHelper->dbName}`.`NavWaypoints` (";
 		$copy_WP .= "`NavID`";
 		$copy_WP .= ", `WPnum`";
 		$copy_WP .= ", `waypoint`";
@@ -956,20 +959,20 @@ $kFuelTanksNum = 4;
 		$copy_WP .= ", `windSpeed`";
 		$copy_WP .= ", `notes`";
 		$copy_WP .= ", `climbing`";
-		$copy_WP .= " FROM `{$page->ddb->DBname}`.`NavWaypoints`";
+		$copy_WP .= " FROM `{$page->dbHelper->dbName}`.`NavWaypoints`";
 		$copy_WP .= " WHERE `NavWaypoints`.`NavID` = ?";
 
-		$qNav = $page->DB_QueryPrepare($copy_nav);
+		$qNav = $page->dbHelper->queryPrepare($copy_nav);
 		$qNav->bind_param("i", $dupID);
-		$page->DB_ExecuteManage($qNav);
+		$page->dbHelper->executeManage($qNav);
 		$newID = $qNav->insert_id;
 
-		$qWP  = $page->DB_QueryPrepare($copy_WP );
+		$qWP  = $page->dbHelper->queryPrepare($copy_WP );
 		$qWP->bind_param("ii", $newID, $dupID);
-		$page->DB_ExecuteManage($qWP);
+		$page->dbHelper->executeManage($qWP);
 
 		// redirect to edit page so we can change title and nav infos
-		$page->HeaderLocation("NavNew.php?id=$newID");
+		$page->htmlHelper->headerLocation("insert.php?id=$newID");
 	}
 //
 
@@ -1472,7 +1475,7 @@ $kFuelTanksNum = 4;
 				$htmlRow .= "<td class=\"edit\">\n";
 
 				if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-					$htmlRow .= "<a href=\"NavWP.php?id={$rowArgs->id}\" title=\"edit {$rowArgs->waypoint}\">edit</a>\n";
+					$htmlRow .= "<a href=\"waypoint.php?id={$rowArgs->id}\" title=\"edit {$rowArgs->waypoint}\">edit</a>\n";
 				}
 
 				$htmlRow .= "</td>\n";
@@ -1542,7 +1545,7 @@ $kFuelTanksNum = 4;
 
 			if($rowArgs->bIsAdmin) {
 				$htmlRow .= "<td class=\"edit\">\n";
-				$htmlRow .= "<a href=\"NavWP.php?id={$rowArgs->id}\" title=\"edit {$rowArgs->waypoint}\">edit</a>\n";
+				$htmlRow .= "<a href=\"waypoint.php?id={$rowArgs->id}\" title=\"edit {$rowArgs->waypoint}\">edit</a>\n";
 				$htmlRow .= "</td>\n";
 			}
 
@@ -2554,16 +2557,16 @@ $kFuelTanksNum = 4;
 
 		fclose($latexfile);
 		// download it??? or link on index?
-		$page->HeaderLocation("NavList.php");
+		$page->htmlHelper->headerLocation();
 	}
 
-	$tot = $page->DB_GetCount($TABLE, $navid);
+	$tot = $page->dbHelper->getCount($TABLE, $navid);
 	if($tot == 0) {
-		$page->HeaderLocation("NavList.php");
+		$page->htmlHelper->headerLocation();
 	}
 
 	$filename = getNavFilename($navid);
-	$nav = $page->DB_SelectId($TABLE, $navid);
+	$nav = $page->dbHelper->selectId($TABLE, $navid);
 
 	$nav->bind_result(
 		$navid,
@@ -2584,18 +2587,15 @@ $kFuelTanksNum = 4;
 	$nav->close();
 //
 	// gohome and make title
-	$gohome = new stdClass();
-	$gohome->page = "NavList";
-	$gohome->rootpage = "index";
-	$body .= $page->GoHome($gohome);
-	$body .= $page->SetTitle("Nav: $name");// before HotBooty
-	$page->HotBooty();
+	$body = $page->bodyHelper->goHome("..");
+	$body .= $page->htmlHelper->setTitle("Nav: $name");// before HotBooty
+	$page->htmlHelper->hotBooty();
 //
 	// heads
 	$body .= "<div class=\"wide\">\n";
 	$body .= "<div class=\"lhead\">\n";
 	//if(file_exists("$filename.tex")) {
-		$body .= "<a href=\"$filename.tex\" title=\"$name LaTeX\">{$page->LaTeX}</a>\n";
+		$body .= "<a href=\"$filename.tex\" title=\"$name LaTeX\">{$page->textHelper->strLaTeX}</a>\n";
 		if(file_exists("$filename.pdf")) {
 			$body .= "<br />\n";
 			$body .= "<a href=\"$filename.pdf\" title=\"$name PDF\">PDF</a>\n";
@@ -2606,10 +2606,10 @@ $kFuelTanksNum = 4;
 	$body .= "</div>\n";
 	$body .= "<div class=\"rhead\">\n";
 	if($bIsAdmin) {
-		$body .= "<a href=\"NavNew.php?id=$navid\" title=\"edit $name\">edit</a>\n";
-		$body .= "<br /><a href=\"NavNew.php\" title=\"new\">new</a>\n";
-		$body .= "<br /><a href=\"NavDetails.php?dup=$navid\" title=\"duplicate\">duplicate</a>\n";
-		$body .= "<br /><a href=\"NavDelete.php?id=$navid\" title=\"delete all WP\">delete all WP</a>\n";
+		$body .= "<a href=\"insert.php?id=$navid\" title=\"edit $name\">edit</a>\n";
+		$body .= "<br /><a href=\"insert.php\" title=\"new\">new</a>\n";
+		$body .= "<br /><a href=\"display.php?dup=$navid\" title=\"duplicate\">duplicate</a>\n";
+		$body .= "<br /><a href=\"delete.php?id=$navid\" title=\"delete all WP\">delete all WP</a>\n";
 	}
 	$body .= "</div>\n";
 	$body .= "</div>\n";
@@ -2619,7 +2619,7 @@ $theoricFuel = new FuelRequirements();
 //
 	// plane details
 	if($plane->sqlID > 0) {
-		$theplane = $page->DB_SelectId("aircrafts", $plane->sqlID);
+		$theplane = $page->dbHelper->selectId("aircrafts", $plane->sqlID);
 		$theplane->bind_result(
 			$plane->sqlID,
 			$plane->type,
@@ -2746,7 +2746,7 @@ $roundTrip = false;
 
 $warning = "";
 
-$wp = $page->DB_QueryManage("SELECT * FROM `{$page->ddb->DBname}`.`NavWaypoints` WHERE `NavID` = $navid ORDER BY `WPnum` ASC");
+$wp = $page->dbHelper->queryManage("SELECT * FROM `{$page->dbHelper->dbName}`.`NavWaypoints` WHERE `NavID` = $navid ORDER BY `WPnum` ASC");
 while($wpObj = $wp->fetch_object()) {
 	// run
 		// get data and compute
@@ -2936,7 +2936,7 @@ if($bIsAdmin) {
 	// option to insert new WP
 	$body .= "<tr>\n";
 	$body .= "<td colspan=\"15\" class=\"newWP\">\n";
-	$body .= "<a href=\"NavWP.php?nav=$navid\" title=\"new waypoint\">new waypoint</a>\n";
+	$body .= "<a href=\"waypoint.php?nav=$navid\" title=\"new waypoint\">new waypoint</a>\n";
 	$body .= "</td>\n";
 	$body .= "</tr>\n";
 }
@@ -3026,6 +3026,6 @@ $latexcontent .= LaTeXfinish1($wpNum, $rows, $maxRow - int($roundTrip));  // rou
 
 	fclose($latexfile);
 //
-$page->show($body);
+echo $body;
 unset($page);
 ?>

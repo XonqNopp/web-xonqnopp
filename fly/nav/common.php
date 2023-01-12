@@ -6,7 +6,7 @@ $kDefaultVariation = 3;  // [deg] NavDetails: to create empty nav
 
 
 function getNavFilename($navId) {
-	return "nav/nav" . sprintf("%06d", $navId);
+	return "files/nav" . sprintf("%06d", $navId);
 }
 
 
@@ -19,7 +19,7 @@ function deleteNavPdfFile($navId) {
 
 
 	// arrays
-	function flattenDict($array) {
+	function arrayKeysWithoutEmptyString($array) {
 		if(array_key_exists("", $array)) {
 			// Discard default empty key
 			unset($array[""]);

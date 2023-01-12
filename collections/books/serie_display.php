@@ -1,34 +1,29 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyHelper->goHome("..");
 
 // Find which serie we are dealing with
 $serie_id = $_GET["id"];
 $serie = "";
-$findserie = $page->DB_IdManage("SELECT * FROM `books` WHERE `id` = ?", $serie_id);
+$findserie = $page->dbHelper->idManage("SELECT * FROM `books` WHERE `id` = ?", $serie_id);
 $findserie->store_result();
 if($findserie->num_rows == 0) {
-	$page->HeaderLocation();
+	$page->htmlHelper->headerLocation();
 }
 $findserie->bind_result($serie_id, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
 $findserie->fetch();
 $findserie->close();
 // Title
-$body .= $page->SetTitle("$serie (books)");
+$body .= $page->htmlHelper->setTitle("$serie (books)");
 
-$page->HotBooty();
+$page->htmlHelper->hotBooty();
 
 
 $body .= "<div class=\"wide\">\n";
@@ -38,7 +33,7 @@ $body .= "<div class=\"chead\">\n";
 $body .= "</div>\n";
 $body .= "<div class=\"rhead\">\n";
 $body .= "<a href=\"../missings/index.php?view=books\" title=\"Missing books\">Missing books</a>\n";
-if($page->UserIsAdmin()) {
+if($page->loginHelper->userIsAdmin()) {
 	// Propose to add a new if authorized
 	$body .= "<br />\n";
 	$body .= "<a href=\"insert.php\" title=\"New book\">New book</a><br />\n";
@@ -49,12 +44,12 @@ $body .= "</div>\n";
 
 // Fetch all from this serie
 $sql_serie = $serie;
-$books = $page->DB_QueryPrepare("SELECT * FROM `books` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
+$books = $page->dbHelper->queryPrepare("SELECT * FROM `books` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
 $books->bind_param("s", $sql_serie);
-$page->DB_ExecuteManage($books);
+$page->dbHelper->executeManage($books);
 $books->store_result();
 if($books->num_rows == 0) {
-	$page->HeaderLocation();
+	$page->htmlHelper->headerLocation();
 }
 $books->bind_result($id, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
 $body .= "<div class=\"book_serie_table\">\n";
@@ -67,7 +62,7 @@ while($books->fetch()) {
 	$body .= "<tr class=\"book_serie_table\" id=\"b$id\">\n";
 	$body .= "<td class=\"book_serie_edit\">\n";
 
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		$body .= "<div class=\"InB EditBorrow\">\n";
 		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
 		$body .= "&nbsp;\n";
@@ -95,6 +90,6 @@ $body .= "</table>\n";
 $body .= "</div>\n";
 $books->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

@@ -1,21 +1,17 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 
 $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "??" => "other");
 
 
-$body = "";
-
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyHelper->goHome("..");
 
 $id = $_GET["id"];
-$query = $page->DB_IdManage("SELECT * FROM `dvds` WHERE `id` = ?", $id);
+$query = $page->dbHelper->idManage("SELECT * FROM `dvds` WHERE `id` = ?", $id);
 $query->store_result();
 if($query->num_rows == 0) {
 	$body .= "Sorry, no result...";
@@ -32,11 +28,7 @@ if($query->num_rows == 0) {
 	$number = (int)$number;
 
 	if($category == "tvserie") {
-		$args = new stdClass();
-		$args->page = "serie_display";
-		$args->id = $id;
-		$args->rootpage = "..";
-		$body = $page->GoHome($args);
+		$body = $page->bodyHelper->goHome("..", "serie_display.php?id=$id");
 	}
 	if($borrowed == "1") {
 		$isbor = " class=\"away\"";
@@ -73,7 +65,7 @@ if($query->num_rows == 0) {
 
 	// L head
 	$body .= "<div class=\"lhead\">\n";
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		// Edit
 		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a><br />\n";
 
@@ -96,7 +88,7 @@ if($query->num_rows == 0) {
 	$body .= "<a href=\"../missings/index.php?view=dvds\" title=\"Missing DVDs\">Missing DVDs</a>\n";
 	// Search
 	// Propose to add a new if authorized
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		$body .= "<br />\n";
 		// Add
 		$body .= "<a href=\"insert.php\" title=\"New DVD\">New DVD</a>\n";
@@ -199,11 +191,10 @@ if($query->num_rows == 0) {
 }
 $query->close();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
-$page->SetTitle($page_title);
-$page->HotBooty();
+$page->cssHelper->dirUpWing();
+$page->htmlHelper->setTitle($page_title);
+$page->htmlHelper->hotBooty();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

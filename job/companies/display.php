@@ -1,11 +1,11 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 require("dicts.php");
 $page = new PhPage($rootPath);
-$page->initDB();
-//$page->LogLevelUp(6);
+$page->dbHelper->init();
+//$page->logger->levelUp(6);
 $body = "";
 
 function SIround($val) {
@@ -29,17 +29,16 @@ function SIround($val) {
 	return $val;
 }
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing(2);
-$GI = $page->UserIsAdmin();
+$page->cssHelper->dirUpWing(2);
+$GI = $page->loginHelper->userIsAdmin();
 
 if(!isset($_GET["id"])) {
-	$page->HeaderLocation();
+	$page->htmlHelper->headerLocation();
 }
 
 $id = $_GET["id"];
 
-$SQL = $page->DB_IdManage("SELECT * FROM `companies` WHERE `id` = ?", $id);
+$SQL = $page->dbHelper->idManage("SELECT * FROM `companies` WHERE `id` = ?", $id);
 $SQL->bind_result($id, $name, $location, $car_time, $train_time, $fields, $physicist, $contact, $HR, $peopleAll, $peopleCH, $peopleRD, $competitors, $website, $ranking, $comment);
 $SQL->fetch();
 $SQL->close();
@@ -78,11 +77,10 @@ if($website != "") {
  */
 
 
-$gohome = new stdClass();
-$gohome->rootpage = "../..";
-$body .= $page->GoHome($gohome);
-$body .= $page->SetTitle($name);// before HotBooty
-$page->HotBooty();
+$body .= $page->bodyHelper->goHome("../..");
+
+$body .= $page->htmlHelper->setTitle($name);// before HotBooty
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -149,7 +147,7 @@ if($location != "") {
 	if($car_time > 0 || $train_time > 0 || $cff != "") {
 		$body .= " (";
 		if($car_time > 0) {
-			$body .= "car: " . $page->minutesDisplay($car_time);
+			$body .= "car: " . $page->timeHelper->minutesDisplay($car_time);
 			if($train_time > 0) {
 				$body .= ", ";
 			}
@@ -160,7 +158,7 @@ if($location != "") {
 			}
 			$body .= "train: ";
 			if($train_time > 0) {
-				$body .= $page->minutesDisplay($train_time);
+				$body .= $page->timeHelper->minutesDisplay($train_time);
 			} else {
 				$body .= "?";
 			}
@@ -197,7 +195,7 @@ if($competitors != "") {
 }
 if($website != "") {
 	$body .= "<li><b>Website:</b> ";
-	$body .= $page->SQL2URL($website);
+	$body .= $page->dbText->sql2url($website);
 	$body .= "</li>\n";
 }
 if($GI) {
@@ -209,54 +207,68 @@ if($comment != "") {
 $body .= "</ul>\n";
 
 if($GI) {
-	$oldLang = $page->ChangeSessionLang("english");
-	$sub = $page->DB_IdManage("SELECT * FROM `comco` WHERE `company` = ? ORDER BY `timestamp` ASC", $id);
+	$page->languageHelper->changeSessionLang("english");
+	$sub = $page->dbHelper->idManage("SELECT * FROM `comco` WHERE `company` = ? ORDER BY `timestamp` ASC", $id);
 	$sub->bind_result($sid, $forgetit, $timestamp, $who, $media, $way, $kind, $content);
-	$body .= "<div class=\"csstab64_table comco\">\n";
-	$now = $page->GetNow();
+
+	$body .= $page->tableHelper->open("comco");
+
+	$nowYear = $page->timeHelper->getNow()->year;
 	while($sub->fetch()) {
 		$txtTimestamp = substr($timestamp, 0, 10);
 		$year  = substr($txtTimestamp, 0, 4) + 0;
 		$month = substr($txtTimestamp, 5, 2) + 0;
 		$day   = substr($txtTimestamp, 8, 2) + 0;
-		$txtTimestamp = $page->Months($month) . "&nbsp;$day";
-		if($year != $now->year) {
+		$txtTimestamp = $page->timeHelper->months($month) . "&nbsp;$day";
+		if($year != $nowYear) {
 			$txtTimestamp .= ", $year";
 		}
-		$titleTimestamp = (substr($timestamp, 11) == "00:00:00") ? "" : $timestamp;
-		$body .= "<div class=\"csstab64_row\">\n";
-		$body .= "<div class=\"csstab64_cell\">\n";
+		//$titleTimestamp = (substr($timestamp, 11) == "00:00:00") ? "" : $timestamp;
+		$body .= $page->tableHelper->rowOpen();
+
+		$body .= $page->tableHelper->cellOpen();
 		$body .= "<a class=\"edit\" href=\"communication.php?id=$sid\" title=\"edit\">edit</a>\n";
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell way\">\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->cellOpen("way");
 		$body .= "<img alt=\"$way\" src=\"$way.png\" />\n";
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell timestamp\" title=\"$titleTimestamp\">\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->cellOpen("timestamp");// title="$titleTimestamp"
 		$body .= "$txtTimestamp\n";
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell who\">\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->cellOpen("who");
 		$body .= "$who\n";
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell media\">\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->cellOpen("media");
 		$body .= "<img alt=\"$media\" title=\"$media\" src=\"$media.png\" />\n";
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell kind\">\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->cellOpen("kind");
 		$body .= "<img alt=\"$kind\" title=\"$kind\" src=\"$kind.png\" />\n";
-		$body .= "</div>\n";
-		$body .= "<div class=\"csstab64_cell content\">\n";
-		$body .= $page->SQL2URL($content) . "\n";
-		$body .= "</div>\n";
-		$body .= "</div>\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->cellOpen("content");
+		$body .= $page->dbText->sql2url($content) . "\n";
+		$body .= $page->tableHelper->cellClose();
+
+		$body .= $page->tableHelper->rowClose();
 	}
+
 	$sub->close();
-	$body .= "<div class=\"csstab64_row\"><a href=\"communication.php?new=$id\" title=\"new\">new</a></div>\n";
-	$body .= "</div>\n";
-	$page->ChangeSessionLang($oldLang);
+
+	$body .= $page->tableHelper->rowOpen();
+	$body .= "<a href=\"communication.php?new=$id\" title=\"new\">new</a>\n";
+	$body .= $page->tableHelper->rowClose();
+
+	$body .= $page->tableHelper->close();
 }
 
 $body .= "</div>\n";
 
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

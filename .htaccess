@@ -20,12 +20,12 @@ RewriteEngine on
 # FIRST: subdomains {{{
 # Fly (without using index) {{{
 RewriteCond %{HTTP_HOST} ^fly\.xonqnopp\.ch [NC]
-RewriteRule ^(francais|english)$ https://xonqnopp.ch/fly/PAX.php?language=$1 [L,R=301]
-RewriteRule ^regles$ https://xonqnopp.ch/fly/PAX.php?language=francais#instructions [L,NE,R=301]
-RewriteRule ^rules$ https://xonqnopp.ch/fly/PAX.php?language=english#instructions [L,NE,R=301]
+RewriteRule ^(francais|english)$ https://xonqnopp.ch/fly/pax.php?language=$1 [L,R=301]
+RewriteRule ^regles$ https://xonqnopp.ch/fly/pax.php?language=francais#instructions [L,NE,R=301]
+RewriteRule ^rules$ https://xonqnopp.ch/fly/pax.php?language=english#instructions [L,NE,R=301]
 
 RewriteCond %{HTTP_HOST} ^fly\.xonqnopp\.ch [NC]
-RewriteRule ^ https://xonqnopp.ch/fly/PAX.php [L,R=301]
+RewriteRule ^ https://xonqnopp.ch/fly/pax.php [L,R=301]
 # }}}
 
 # BD {{{

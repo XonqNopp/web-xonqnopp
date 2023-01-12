@@ -1,19 +1,17 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
 
-$page->CSS_ppJump();
-$page->CSS_Push("index");
+$page->cssHelper->push("index");
 
-$body = "";
-$body .= $page->GoHome();
-$body .= $page->SetTitle("Les &eacute;l&eacute;phants");
-$page->HotBooty();
-//
+$body = $page->bodyHelper->goHome();
+$body .= $page->htmlHelper->setTitle("Les &eacute;l&eacute;phants");
+$page->htmlHelper->hotBooty();
+
 	/*** contents ***/
 	$querries = array(
 	"Qu&#039;est ce qui est jaune et qui traverse les murs&nbsp;?" =>
@@ -193,8 +191,8 @@ $page->HotBooty();
 	"Quel est le cri le plus strident de la jungle&nbsp;?" =>
 		"Une girafe qui mange des cerises."
 	);
-//
-/*** prepare body ***/
+
+// prepare body
 $body .= "<div class=\"elephant\">Mettre la souris sur le texte pour voir la r&eacute;ponse</div>\n";
 
 $body .= "<div class=\"elephant_table\">\n";
@@ -209,6 +207,6 @@ foreach($querries as $question => $answer) {
 }
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

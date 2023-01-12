@@ -1,10 +1,10 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
-require("${funcpath}_local/borrowback.php");
+require("{$funcpath}_local/borrowback.php");
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 
 // Borrowed item came home
 if(isset($_GET["back"])) {
@@ -15,22 +15,19 @@ if(isset($_GET["back"])) {
 	borrow_back($page, "books", $_GET["back"], $backId);
 }
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$GI = $page->UserIsAdmin();
+$GI = $page->loginHelper->userIsAdmin();
 
-$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `books`");
+$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `books`");
 $fetch_count = $getcount->fetch_object();
 $book_count = $fetch_count->the_count;
 $getcount->close();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("My $book_count books");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("My $book_count books");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -49,25 +46,25 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 // Fetch data
-$books = $page->DB_QueryAlpha("books", "title");
-$series = $page->DB_QueryXi("books", array("serie" => "a", "number" => "", "title" => "a"));
-$series_count = $page->DB_QueryManage("SELECT COUNT(DISTINCT(serie)) AS `sc` FROM `books`");
+$books = $page->dbHelper->queryAlpha("books", "title");
+$series = $page->dbHelper->queryXi("books", array("serie" => "a", "number" => "", "title" => "a"));
+$series_count = $page->dbHelper->queryManage("SELECT COUNT(DISTINCT(serie)) AS `sc` FROM `books`");
 $sc = $series_count->fetch_object();
 $series_count->close();
 $N = $sc->sc;
 if($books->num_rows == 0) {
 	$body .= "Sorry, no result to display...";
 } else {
-	//// Results
-		//// Series
+	// Results
+		// Series
 		$old_serie = "";
 		if($N > 0) {
 			$serie_width = 3;
 			$body .= "<!--    SERIES   -->\n";
 			$body .= "<h3 class=\"book_display\">Series</h3>\n";
-			$body .= "<div class=\"csstab64_table book_display_table_serie\">\n";
-			$body .= "<div class=\"csstab64_row\">\n";
-			$body .= "<div class=\"csstab64_cell\">\n";
+			$body .= $page->tableHelper->open("book_display_table_serie");
+			$body .= $page->tableHelper->rowOpen();
+			$body .= $page->tableHelper->cellOpen();
 			$serie_index = 0;
 			while($volume = $series->fetch_object()) {
 				$serie = $volume->serie;
@@ -76,8 +73,8 @@ if($books->num_rows == 0) {
 					$serie_index++;
 					if($serie_index > $N * 1.0 / $serie_width) {
 						$serie_index = 0;
-						$body .= "</div>\n";
-						$body .= "<div class=\"csstab64_cell\">\n";
+						$body .= $page->tableHelper->cellClose();
+						$body .= $page->tableHelper->cellOpen();
 					}
 					$id = $volume->id;
 					$title = $volume->serie;
@@ -86,27 +83,27 @@ if($books->num_rows == 0) {
 					$body .= "</div>\n";
 				}
 			}
-			$body .= "</div>\n";
-			$body .= "</div>\n";
-			$body .= "</div>\n";
-			////
+			$body .= $page->tableHelper->cellClose();
+			$body .= $page->tableHelper->rowClose();
+			$body .= $page->tableHelper->close();
+
 			$body .= "<!--    BOOKS    -->\n";
 			$body .= "<h3 class=\"book_display\">Books</h3>\n";
 		}
 	//
-		//// Individual books (including those in series)
+		// Individual books (including those in series)
 		$book_width = 2;
 		$N = $books->num_rows;
 		$index = 0;
-		$body .= "<div class=\"csstab64_table book_display_table\">\n";
-		$body .= "<div class=\"csstab64_row\">\n";
-		$body .= "<div class=\"csstab64_cell\">\n";
+		$body .= $page->tableHelper->open("book_display_table");
+		$body .= $page->tableHelper->rowOpen();
+		$body .= $page->tableHelper->cellOpen();
 		while($book = $books->fetch_object()) {
 			$index++;
 			if($index > $N * 1.0 / $book_width) {
 				$index = 0;
-				$body .= "</div>\n";
-				$body .= "<div class=\"csstab64_cell\">\n";
+				$body .= $page->tableHelper->cellClose();
+				$body .= $page->tableHelper->cellOpen();
 			}
 			$id = $book->id;
 			$title  = $book->title;
@@ -147,13 +144,13 @@ if($books->num_rows == 0) {
 			$body .= "</div>\n";
 			$body .= "</div>\n";
 		}
-		$body .= "</div>\n";
-		$body .= "</div>\n";
-		$body .= "</div>\n";
+		$body .= $page->tableHelper->cellClose();
+		$body .= $page->tableHelper->rowClose();
+		$body .= $page->tableHelper->close();
 }
 $books->close();
 $series->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

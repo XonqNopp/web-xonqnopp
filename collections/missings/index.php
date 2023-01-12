@@ -1,12 +1,11 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
 $tables = array("bds" => "BD", "books" => "book", "dvds" => "DVD");
 
@@ -15,12 +14,9 @@ if(isset($_GET["view"])) {
 	$view = $_GET["view"];
 }
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Missing items");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome(NULL, "..");
+$body .= $page->htmlHelper->setTitle("Missing items");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"whole\">\n";
 
@@ -30,7 +26,7 @@ function getMissingBD($page, $borrowerId, $missingItem) {
 
 	$dbid = $missingItem->dbid;
 
-	$iteminfo = $page->DB_QueryManage("SELECT * FROM `bds` WHERE `id` = $dbid");
+	$iteminfo = $page->dbHelper->queryManage("SELECT * FROM `bds` WHERE `id` = $dbid");
 	$device = $iteminfo->fetch_object();
 	$iteminfo->close();
 
@@ -38,7 +34,7 @@ function getMissingBD($page, $borrowerId, $missingItem) {
 	$title = $device->title;
 
 	if($serieId > 1) {
-		$serieQuery = $page->DB_QueryManage("SELECT * FROM `bd_series` WHERE `id` = {$device->serie_id}");
+		$serieQuery = $page->dbHelper->queryManage("SELECT * FROM `bd_series` WHERE `id` = {$device->serie_id}");
 		$serieEntry = $serieQuery->fetch_object();
 		$serieQuery->close();
 		$title = "{$serieEntry->name} {$device->tome}";
@@ -60,7 +56,7 @@ function getMissingBD($page, $borrowerId, $missingItem) {
 
 	$body = "<tr class=\"missing_display$csswanted$cssitems\">\n";
 
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		$body .= "<td class=\"missing_back\">\n";
 		$body .= "<a href=\"../bds/serie_display.php?back=$dbid&amp;id=$serieId\" title=\"back\">back</a>\n";
 		$body .= "</td>\n";
@@ -86,7 +82,7 @@ function getMissingOther($page, $borrowerId, $missingItem) {
 
 	$dbtable = $missingItem->dbtable;
 	$dbid = $missingItem->dbid;
-	$iteminfo = $page->DB_QueryManage("SELECT * FROM `$dbtable` WHERE `id` = $dbid");
+	$iteminfo = $page->dbHelper->queryManage("SELECT * FROM `$dbtable` WHERE `id` = $dbid");
 	$device = $iteminfo->fetch_object();
 	$iteminfo->close();
 	$title = "";
@@ -108,7 +104,7 @@ function getMissingOther($page, $borrowerId, $missingItem) {
 
 	$body = "<tr class=\"missing_display$csswanted$cssitems\">\n";
 
-	if($page->UserIsAdmin()) {
+	if($page->loginHelper->userIsAdmin()) {
 		$body .= "<td class=\"missing_back\">\n";
 		$body .= "<a href=\"../$dbtable/index.php?back=$dbid\" title=\"back\">back</a>\n";
 		$body .= "</td>\n";
@@ -141,7 +137,7 @@ function getMissingsFromBorrower($page, $person) {
 	global $view;
 
 	$borrowerId = $person->id;
-	$missings = $page->DB_QueryManage("SELECT * FROM `missings` WHERE `borrower` = $borrowerId ORDER BY `when` ASC, `dbtable` ASC, `id` ASC");
+	$missings = $page->dbHelper->queryManage("SELECT * FROM `missings` WHERE `borrower` = $borrowerId ORDER BY `when` ASC, `dbtable` ASC, `id` ASC");
 	if($missings->num_rows <= 0) {
 		$missings->close();
 		return "";
@@ -168,7 +164,7 @@ function getMissingsFromBorrower($page, $person) {
 
 
 function getBorrowers($page) {
-	$borrowers = $page->DB_QueryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
+	$borrowers = $page->dbHelper->queryManage("SELECT * FROM `borrowers` ORDER BY `name` ASC");
 	if($borrowers->num_rows == 0) {
 		$borrowers->close();
 		return "Nobody is registered as a borrower...\n";
@@ -188,7 +184,7 @@ function getBorrowers($page) {
 
 
 function getBorrowed($page) {
-	$checkDoMiss = $page->DB_QueryManage("SELECT COUNT(*) AS `howmany` FROM `missings`");
+	$checkDoMiss = $page->dbHelper->queryManage("SELECT COUNT(*) AS `howmany` FROM `missings`");
 	$checkFetch = $checkDoMiss->fetch_object();
 	$checkDoMiss->close();
 	if($checkFetch->howmany <= 0) {
@@ -202,6 +198,6 @@ function getBorrowed($page) {
 $body .= getBorrowed($page);
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

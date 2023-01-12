@@ -1,6 +1,6 @@
 <?php
-require("functions/classPage.php");
+require("functions/page_helper.php");
 $funcpath = "functions";
 $page = new PhPage();
-$page->LogOut();
+$page->loginHelper->logOut();
 ?>

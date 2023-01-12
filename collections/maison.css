@@ -45,21 +45,6 @@ div.tablebottom td {
 	padding: 0.3em;
 }
 
-a.titleAnchor {
-	visibility: hidden;
-	color: #888;
-}
-
-h2:hover > a.titleAnchor,
-h3:hover > a.titleAnchor,
-h4:hover > a.titleAnchor,
-h5:hover > a.titleAnchor,
-h6:hover > a.titleAnchor,
-a.titleAnchor:hover {
-	visibility: visible;
-}
-
-
 li.plus, li.minus {
 	text-indent: 0.2em;
 }

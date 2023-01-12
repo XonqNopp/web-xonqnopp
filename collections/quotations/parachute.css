@@ -183,16 +183,16 @@ and (min-width:64em) {
 
 div.quotationinput,
 div.authorinput,
-div.authorinput_first,
-div.authorinput_last,
-div.placeinput,
-div.favinput,
-div.catsinput {
+div.authorfirst,
+div.authorlast,
+div.place,
+div.fav,
+div.cats{
 	padding: 1em;
 }
 
-div.authorinput_first,
-div.authorinput_last {
+div.authorfirst,
+div.authorlast {
 	display: inline-block;
 }
 

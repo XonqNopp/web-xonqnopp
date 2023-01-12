@@ -1,26 +1,22 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-//$page->initHTML();
-$page->initDB();
+//$page->logger->levelUp(6);
+//$page->htmlHelper->init();
+$page->dbHelper->init();
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$GI = $page->UserIsAdmin();
+$GI = $page->loginHelper->userIsAdmin();
 
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyHelper->goHome("..");
 
 // Find which serie we are dealing with
 $serie_id = $_GET["id"];
-$findserie = $page->DB_IdManage("SELECT * FROM `dvds` WHERE `id` = ?", $serie_id);
+$findserie = $page->dbHelper->idManage("SELECT * FROM `dvds` WHERE `id` = ?", $serie_id);
 $findserie->store_result();
 if($findserie->num_rows == 0) {
 	$findserie->close();
@@ -30,8 +26,8 @@ $findserie->bind_result($serie_id, $title, $director, $actors, $languages, $subt
 $findserie->fetch();
 $findserie->close();
 // Title
-$body .= $page->SetTitle("$serie (DVDs)");
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("$serie (DVDs)");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -52,13 +48,13 @@ $body .= "</div>\n";
 
 // Fetch all from this serie
 $sql_serie = $serie;
-$dvds = $page->DB_QueryPrepare("SELECT * FROM `dvds` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
+$dvds = $page->dbHelper->queryPrepare("SELECT * FROM `dvds` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
 $dvds->bind_param("s", $sql_serie);
-$page->DB_ExecuteManage($dvds);
+$page->dbHelper->executeManage($dvds);
 $dvds->store_result();
 if($dvds->num_rows == 0) {
 	$dvds->close();
-	$page->HeaderLocation();
+	$page->htmlHelper->headerLocation();
 }
 $dvds->bind_result($id, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
 $body .= "<div class=\"dvd_serie_table\">\n";
@@ -108,6 +104,6 @@ $body .= "</table>\n";
 $body .= "</div>\n";
 $dvds->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

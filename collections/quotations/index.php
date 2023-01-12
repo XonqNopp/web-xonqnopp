@@ -1,25 +1,21 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
-//$page->LogLevelUp(6);
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
-//
+$page->dbHelper->init();
+//$page->logger->levelUp(6);
+$page->cssHelper->dirUpWing();
+
 require("categories.php");
+global $kCategories;
 
-$cats = GetCats();
 $alphabet = array("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z");
-$UserIsAdmin = $page->UserIsAdmin();
+$UserIsAdmin = $page->loginHelper->userIsAdmin();
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-//$args->rootpage = "../..";
-$body .= $page->GoHome($args);
-//
+$body = $page->bodyHelper->goHome(NULL, "..");
+
+
 	/*** new favourite ***/
 	if($UserIsAdmin && isset($_GET["NewFav"])) {
 		$NewFav = $_GET["NewFav"];
@@ -29,15 +25,15 @@ $body .= $page->GoHome($args);
 			$NewFav = -$NewFav;
 		}
 		if($NewFav > 0) {
-			$q = $page->DB_QueryPrepare("UPDATE `quotations` SET `fav` = ? WHERE `id` = ? LIMIT 1;");
+			$q = $page->dbHelper->queryPrepare("UPDATE `quotations` SET `fav` = ? WHERE `id` = ? LIMIT 1;");
 			$q->bind_param("ii", $FavVal, $NewFav);
-			$page->DB_ExecuteManage($q);// no header because link should be .php?NewFav=-0#c0
+			$page->dbHelper->executeManage($q);// no header because link should be .php?NewFav=-0#c0
 		}
 	}
 //
 	/*** Prepare query ***/
 	if(isset($_GET["random"])) {
-		$result = $page->DB_RandomEntry("quotations");
+		$result = $page->dbHelper->randomEntry("quotations");
 
 	} else {
 		/*** query and order ***/
@@ -73,7 +69,7 @@ $body .= $page->GoHome($args);
 			if(in_array("fav", $_POST["cats"])) {
 				$favq = "`fav` = '1'";
 			}
-			foreach($cats as $dog) {
+			foreach($kCategories as $dog) {
 				if(in_array($dog, $_POST["cats"])) {
 					if($catq != "") {
 						$catq .= " AND ";
@@ -85,7 +81,7 @@ $body .= $page->GoHome($args);
 		/*
 		$keyword = "";
 		if(isset($_POST["keyword"])) {
-			$keyword = $page->field2SQL($_POST["keyword"]);
+			$keyword = $page->dbText->field2SQL($_POST["keyword"]);
 		}
 		$query = "";
 		if($keyword != "") {
@@ -116,14 +112,14 @@ $body .= $page->GoHome($args);
 			$query = " WHERE $query";
 		}
 		$query = "SELECT * FROM `quotations`$query$order";
-		$result = $page->DB_QueryManage($query);
+		$result = $page->dbHelper->queryManage($query);
 	}
-//
 
-$body .= $page->SetTitle("Citations");
-$page->HotBooty();
 
-$body .= $page->FormTag();
+$body .= $page->htmlHelper->setTitle("Citations");
+$page->htmlHelper->hotBooty();
+
+$body .= $page->formHelper->tag();
 $body .= "<div id=\"gael\">\n";
 
 	$body .= "<div class=\"wide\">\n";
@@ -224,9 +220,9 @@ $body .= "<div id=\"gael\">\n";
 	//
 	$body .= "</div>\n";
 	$body .= "</div>\n";
-//
+
 $body .= "</div>\n";
-//
+
 	/*** search fields ***/
 	if(isset($_GET["search"]) || isset($_POST["search"])) {
 		$body .= "<div class=\"search\">\n";
@@ -242,7 +238,7 @@ $body .= "</div>\n";
 			$body .= $checked;
 		}
 		$body .= " /><label for=\"s_fav\">Favourite</label><br />\n";
-		foreach($cats as $dog) {
+		foreach($kCategories as $dog) {
 			$body .= "<input id=\"s_$dog\" type=\"checkbox\" name=\"cats[]\" value=\"$dog\"";
 			if(in_array($dog, $_POST["cats"])) {
 				$body .= $checked;
@@ -252,7 +248,7 @@ $body .= "</div>\n";
 		$body .= "<input type=\"submit\" name=\"search\" value=\"search\" />\n";
 		$body .= "</div>\n";
 	}
-//
+
 $body .= "</form>\n";
 
 // here comes display
@@ -358,6 +354,6 @@ if($result->num_rows == 0) {
 
 $result->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

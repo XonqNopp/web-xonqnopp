@@ -1,15 +1,13 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-$args = new stdClass();
-$args->path = "..";
-$page->NotAllowed($args);
-$page->initDB();
+//$page->logger->levelUp(6);
+$page->loginHelper->loginHelper->notAllowed("../index.php");
+$page->dbHelper->init();
 
-$today = $page->GetNow();
+$today = $page->timeHelper->getNow();
 
 $next = clone($today);
 $next->day = 1;
@@ -38,61 +36,53 @@ if(isset($_POST["go"])) {
 		$dt->year  = $_POST["ownyear"];
 		$dt->month = $_POST["ownmonth"];
 		$dt->day   = $_POST["ownday"];
-		$newdate = $page->ConvertDate($dt)->date;
-		$query  = "UPDATE `" . $page->ddb->DBname . "` . `testament` ";
+		$newdate = $page->timeHelper->obj2date($dt)->date;
+		$query  = "UPDATE `{$page->dbHelper->dbName}` . `testament` ";
 		$query .= "SET `duedate` = ? ";
 		$query .= "WHERE `testament` . `id` = 1 ";
 		$query .= "LIMIT 1";
-		$q = $page->DB_QueryPrepare($query);
+		$q = $page->dbHelper->queryPrepare($query);
 		$q->bind_param("s", $newdate);
-		$page->DB_executemanage($q);
+		$page->dbHelper->executemanage($q);
 	}
 } elseif(isset($_POST["NOW"])) {
 	/*** EMERGENCY SET TO TOMORROW ***/
 	if($_POST["pawo"] == $page->miscInit->testament) {
-		$newdate = $page->ConvertDate($tomorrow)->date;
-		$query  = "UPDATE `" . $page->ddb->DBname . "` . `testament` ";
+		$newdate = $page->timeHelper->obj2date($tomorrow)->date;
+		$query  = "UPDATE `{$page->dbHelper->dbName}` . `testament` ";
 		$query .= "SET `duedate` = ? ";
 		$query .= "WHERE `testament` . `id` = 1 ";
 		$query .= "LIMIT 1";
-		$q = $page->DB_QueryPrepare($query);
+		$q = $page->dbHelper->queryPrepare($query);
 		$q->bind_param("s", $newdate);
-		$page->DB_executemanage($q);
+		$page->dbHelper->executemanage($q);
 	}
 }
 
-$page->CSS_ppJump();
 
-/*** Display ***/
-$body = "";
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
-$body .= $page->SetTitle("Unauthorized page: please go back!");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
 
-$body .= $page->FormTag();
+$body .= $page->htmlHelper->setTitle("Unauthorized page: please go back!");
+$page->htmlHelper->hotBooty();
+
+$body .= $page->formHelper->tag();
 $body .= "<div id=\"testament_body\">\n";
 
-$check = $page->DB_querymanage("SELECT * FROM `" . $page->ddb->DBname . "` . `testament` WHERE `testament` . `id` = 1 LIMIT 1" );
+$check = $page->dbHelper->querymanage("SELECT * FROM `{$page->dbHelper->dbName}` . `testament` WHERE `testament` . `id` = 1 LIMIT 1" );
+
 if($check->num_rows == 0) {
 	$body .= "Sorry, there has been a problem in the DB, you should check it right now!";
 }
+
 $due = $check->fetch_object();
 $check->close();
-$date = $page->ConvertDate($due->duedate);
-$body .= "<div id=\"testament_date\">Due date: ";
-$body .= $date->day;
-$body .= ".";
-$body .= $date->month;
-$body .= ".";
-$body .= $date->year;
-$body .= "</div>\n";
+$date = $page->timeHelper->str2date($due->duedate);
+$body .= "<div id=\"testament_date\">Due date: {$date->day}.{$date->month}.{$date->year}</div>\n";
 
 $body .= "<div id=\"testament_next\">Do you want to set it to:\n";
-$body .= "<input type=\"text\" maxlength=\"4\" size=\"3\" name=\"ownyear\" value=\"" . $next->year . "\" />\n";
-$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownmonth\" value=\"" . $next->month . "\" />\n";
-$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownday\" value=\"" . $next->day . "\" />\n";
+$body .= "<input type=\"text\" maxlength=\"4\" size=\"3\" name=\"ownyear\" value=\"{$next->year}\" />\n";
+$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownmonth\" value=\"{$next->month}\" />\n";
+$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownday\" value=\"{$next->day}\" />\n";
 $body .= "</div>\n";
 
 $body .= "<div id=\"testament_password\">\n";
@@ -107,6 +97,6 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 $body .= "</form>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

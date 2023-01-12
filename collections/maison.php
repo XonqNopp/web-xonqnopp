@@ -1,16 +1,13 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 // debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 // CSS paths
-$page->CSS_ppJump();
-//$page->CSS_ppWing();
-// init body
-$body = "";
+//$page->cssHelper->dirUpWing();
 
 	// Shortcuts
 	$aa = "&agrave;";
@@ -66,21 +63,14 @@ $body = "";
 	$pasoblvivrec = "Pas obligatoire, vivement recommand&eacute;";
 
 
-function getTitle($title, $level=3, $idPrefix="") {
-	$ascii = $title;
-	$ascii = $idPrefix . preg_replace("/[ &;:'\?!\(\)\/]/", '', $title);
-
-	$string = "";
-	$string .= "<!-- H$level $title -->\n";
-	$string .= "<h$level id=\"$ascii\">";
-	$string .= "$title&nbsp;";
-	$string .= "<a class=\"titleAnchor\" href=\"#$ascii\">#</a>";
-	$string .= "</h$level>";
-	$string .= "\n";
-	return $string;
-}
-
-
+/**
+ * Set url as a link.
+ *
+ * Args:
+ *     lineBreak (bool): true to append a line break to the link
+ *
+ * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+ */
 function getLink($url, $lineBreak=False) {
 	$string = "<a target=\"_blank\" href=\"$url\">$url</a>";
 	if ($lineBreak) {
@@ -110,20 +100,17 @@ function liliMinus($content) {
 }
 
 
-// GoHome
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
+$body = $page->bodyHelper->goHome("..");
 // Set title and hot booty
-$body .= $page->SetTitle("Je deviens $proprio");// before HotBooty
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("Je deviens $proprio");// before HotBooty
+$page->htmlHelper->hotBooty();
 
 $body .= "<p>Petit r&eacute;sum&eacute; <b>subjectif</b> de:\n";
 $body .= "<i>Je deviens $proprio</i>,\n";
 $body .= "Ellen Weigand,\n";
 $body .= "aux Editions Tout compte fait (2015).</p>\n";
 
-if($page->UserIsAdmin()) {
+if($page->loginHelper->userIsAdmin()) {
 	// Personal stuff
 	$body .= "<div><ul>\n";
 	$body .= "<li>Localisation: pas VD ni NE; FR ou BE</li>\n";  // TODO
@@ -136,10 +123,10 @@ if($page->UserIsAdmin()) {
 
 	$body .= "<div style=\"font-weight: 700\">Liens utiles:</div>\n";
 
-	$body .= "<div class=\"csstab64_table\">\n";
-	$body .= "<div class=\"csstab64_row\">\n";
+	$body .= $page->tableHelper->open();
+	$body .= $page->tableHelper->rowOpen();
 
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= $page->tableHelper->cellOpen();
 	$body .= getLink("http://fri.ch", True);
 	$body .= getLink("http://vermoegenszentrum.ch", True);
 	$body .= getLink("http://homegate.ch", True);
@@ -154,9 +141,9 @@ if($page->UserIsAdmin()) {
 	$body .= getLink("http://eco-energie.ch", True);
 	$body .= getLink("http://gaz-naturel.ch", True);
 	$body .= getLink("http://cecb.ch", True);
-	$body .= "</div>\n";  // cell
+	$body .= $page->tableHelper->cellClose();
 
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= $page->tableHelper->cellOpen();
 	$body .= getLink("http://swissolar.ch", True);
 	$body .= getLink("http://minergie.ch", True);
 	$body .= getLink("http://leprogrammebatiments.ch", True);
@@ -171,9 +158,9 @@ if($page->UserIsAdmin()) {
 	$body .= getLink("http://maison-et-bois.com", True);
 	//$body .= getLink("http://lecourrierdubois.be", True);
 	//$body .= getLink("http://schweizerholzbau.ch", True);
-	$body .= "</div>\n";  // cell
+	$body .= $page->tableHelper->cellClose();
 
-	$body .= "<div class=\"csstab64_cell\">\n";
+	$body .= $page->tableHelper->cellOpen();
 	//$body .= getLink("http://journal-suisse-du-bois.ch", True);
 	$body .= getLink("http://salonbois.ch", True);
 	$body .= getLink("http://domespace.wixsite.com/domespace", True);
@@ -185,22 +172,22 @@ if($page->UserIsAdmin()) {
 	$body .= getLink("http://vd.ch/boume", True);
 	$body .= getLink("http://registre-foncier.ch", True);
 	$body .= getLink("http://infomaison.ch", True);
-	$body .= "</div>\n";  // cell
+	$body .= $page->tableHelper->cellClose();
 
-	$body .= "</div>\n";  // row
-	$body .= "</div>\n";  // table
+	$body .= $page->tableHelper->rowClose();
+	$body .= $page->tableHelper->close();
 
 	$body .= "</div>\n";  // framed
 //
 
 //
 	// Intro
-	$body .= getTitle("Introduction", 2);
+	$body .= $page->bodyHelper->titleAnchor("Introduction", 2);
 
 	$body .= "<p>(Rien de notable, mais gard&eacute;e seulement pour la coh&eacute;rence de la num&eacute;rotation des chapitres.)</p>\n";
 //
 	// Financement
-	$body .= getTitle("Financement", 2);
+	$body .= $page->bodyHelper->titleAnchor("Financement", 2);
 	$body .= "<div>\n";
 
 	$body .= "<p>Futur $proprio doit obtenir un $pret $hypothecaire en mettant sa maison en gage.\n";
@@ -248,42 +235,52 @@ if($page->UserIsAdmin()) {
 	$body .= "</div>\n";
 //
 	// Recherche du financement
-	$body .= getTitle("Recherche du financement", 2);
+	$body .= $page->bodyHelper->titleAnchor("Recherche du financement", 2);
 
 		// 2e pilier
-		$body .= getTitle($p2);
+		$body .= $page->bodyHelper->titleAnchor($p2);
 		$body .= "<div>\n";
 
 		$body .= "<ul>\n";
-		$body .= lili("On peut retirer le $p2 jusqu'$aa 50 ans. Pass&eacute; ce cap, on peut sortir le maximum de l'$etat qu'il avait $aa 50 ans ou la moiti&eacute; actuelle.");
+		$body .= lili("On peut retirer le $p2 jusqu'$aa 50 ans."
+			          . " Pass&eacute; ce cap, on peut sortir le maximum de l'$etat qu'il avait $aa 50 ans ou la moiti&eacute; actuelle.");
 		$body .= lili("On peut utiliser son $p2 au maximum jusqu'$aa 3 ans avant l'&acirc;ge de la retraite <b>selon le r&egrave;glement de la caisse de pension</b>.");
 		$body .= lili("Les pr&eacute;l&egrave;vements dans le $p2 sont sous les conditions de retirer au minimum 20$kchf, un retrait par tranche de 5 ans");
 		$body .= lili("On n'a pas le droit de pr&eacute;lever dans le $p2 si l'on touche une rente AI.");
-		$body .= lili("La caisse de pension fait $generalement le versement dans les 6 mois, mais cela peut aller jusqu'$aa 24 mois si elle a des {$probleme}s de liquidit&eacute;s.");
-		$body .= lili("Il est beaucoup plus rentable de mettre le $p2 en gage (nantissement) $plutot que d'en retirer une partie, mais ce n'est pas accept&eacute; partout.");
-		$body .= lili("Le versement du $p2 est soumis aux {$impot}s! Penser $aa en tenir compte dans le calcul des fonds propres. Note: l'$impot est restitu&eacute; au remboursement <b>seulement si demand&eacute;</b> dans les 3 ans suivant le remboursement.");
-		$body .= lili("Demander $aa la caisse de pension un comparatif des prestations avant-$apres le retrait. Attention: les rentes de retraites, d'invalide, de $deces peuvent fortement diminuer... Dans ce cas, il est utile de conclure un $p3 et/ou une assurance vie en plus. Mais cela augmente les charges...");
+		$body .= lili("La caisse de pension fait $generalement le versement dans les 6 mois,"
+			          . " mais cela peut aller jusqu'$aa 24 mois si elle a des {$probleme}s de liquidit&eacute;s.");
+		$body .= lili("Il est beaucoup plus rentable de mettre le $p2 en gage (nantissement) "
+			          . "$plutot que d'en retirer une partie, mais ce n'est pas accept&eacute; partout.");
+		$body .= lili("Le versement du $p2 est soumis aux {$impot}s! Penser $aa en tenir compte dans le calcul des fonds propres."
+			          . " Note: l'$impot est restitu&eacute; au remboursement <b>seulement si demand&eacute;</b> dans les 3 ans suivant le remboursement.");
+		$body .= lili("Demander $aa la caisse de pension un comparatif des prestations avant-$apres le retrait."
+					  . " Attention: les rentes de retraites, d'invalide, de $deces peuvent fortement diminuer..."
+					  . " Dans ce cas, il est utile de conclure un $p3 et/ou une assurance vie en plus. Mais cela augmente les charges...");
 		$body .= lili("On peut rembourser jusqu'$aa 3 ans avant la retraite, chaque remboursement au minimum 20$kchf.");
-		$body .= lili("Il est parfois possible de conclure une assurance compl&eacute;mentaire aupr&egrave;s de la caisse de pension pour &eacute;viter une r&eacute;duction de la rente de retraite.");
+		$body .= lili("Il est parfois possible de conclure une assurance compl&eacute;mentaire"
+			          . " aupr&egrave;s de la caisse de pension pour &eacute;viter une r&eacute;duction de la rente de retraite.");
 		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
 	//
 		// 3e pilier
-		$body .= getTitle($p3);
+		$body .= $page->bodyHelper->titleAnchor($p3);
 		$body .= "<p>A peu pr&egrave;s idem. Nantiseement peut permettre d'augmenter l'$hyp au-del$aa des 80%.</p>\n";
 	//
 		// Emprunter
-		$body .= getTitle("Emprunter");
+		$body .= $page->bodyHelper->titleAnchor("Emprunter");
 		$body .= "<div>\n";
 
 		$body .= "<ul>\n";
 
-		$body .= "<li><b>Banques:</b> elles app&acirc;tent: action, mois gratuits... Elles peuvent proposer des avantages si on met tous les comptes chez elle (ce qui est parfois obligatoire).\n";
-		$body .= "Attention car cela peut entra&icirc;ner plus de frais que la banque actuelle. Les frais de dossier sont calcul&eacute;s selon un pourcentage de la valeur du bien.\n";
+		$body .= "<li><b>Banques:</b> elles app&acirc;tent: action, mois gratuits...\n";
+		$body .= "Elles peuvent proposer des avantages si on met tous les comptes chez elle (ce qui est parfois obligatoire).\n";
+		$body .= "Attention car cela peut entra&icirc;ner plus de frais que la banque actuelle.\n";
+		$body .= "Les frais de dossier sont calcul&eacute;s selon un pourcentage de la valeur du bien.\n";
 		$body .= "On peut faire jouer la concurrence pour essayer de les $negocier.</li>\n";
 
-		$body .= "<li><b>Assurances:</b> $hyp $generalement taux fixe ou taux variable. Maximum 65-80%. Les fonds propres de $prevoyance ne sont pas forc&eacute;ment accept&eacute;s.\n";
+		$body .= "<li><b>Assurances:</b> $hyp $generalement taux fixe ou taux variable.\n";
+		$body .= "Maximum 65-80%. Les fonds propres de $prevoyance ne sont pas forc&eacute;ment accept&eacute;s.\n";
 		$body .= "Certaines proposent une suspension des paiements en cas d'incapacit&eacute; de travail.</li>\n";
 
 		$body .= "<li><b>Autres:</b>\n";
@@ -301,7 +298,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Types d'hyp
-		$body .= getTitle("Types d'$hyp");
+		$body .= $page->bodyHelper->titleAnchor("Types d'$hyp");
 		$body .= "<div>\n";
 
 		$body .= "<p>G&eacute;n&eacute;ralement une $hyp se fait en 2 parties, appel&eacute;es rang.\n";
@@ -370,7 +367,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Amortissement
-		$body .= getTitle("Amortissement");
+		$body .= $page->bodyHelper->titleAnchor("Amortissement");
 		$body .= "<div>\n";
 		$body .= "<p>La dette doit $etre au maximum au 2/3 de la valeur $apres 15 ans.\n";
 		$body .= "On peut amortir de 2 fa&ccedil;ons:</p>\n";
@@ -402,14 +399,14 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Strategie hyp
-		$body .= getTitle("Strat&eacute;gie $hypotecaire");
+		$body .= $page->bodyHelper->titleAnchor("Strat&eacute;gie $hypotecaire");
 		$body .= "<p>Il faut bien regarder les taux et les variantes, mais parfois les avantages fiscaux sont plus int&eacute;ressants que les taux.</p>\n";
 	//
 		// Negocier hyp
-		$body .= getTitle("N&eacute;gocier l'$hyp");
+		$body .= $page->bodyHelper->titleAnchor("N&eacute;gocier l'$hyp");
 
 			// Documents
-			$body .= getTitle("Documents $aa r&eacute;unir", 4);
+			$body .= $page->bodyHelper->titleAnchor("Documents $aa r&eacute;unir", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Informations personnelles:</p>\n";
@@ -483,7 +480,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Tour horizon
-			$body .= getTitle("Tour d'horizon", 4);
+			$body .= $page->bodyHelper->titleAnchor("Tour d'horizon", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Avant de commencer, il faut pr&eacute;parer un dossier complet et bien pr&eacute;sent&eacute;.\n";
@@ -502,11 +499,11 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Concurrence
-			$body .= getTitle("Faire jouer la concurrence", 4);
+			$body .= $page->bodyHelper->titleAnchor("Faire jouer la concurrence", 4);
 			$body .= "<p>Etablir une liste comparative {$detaille}e (anonyme ou pas) de toutes les offres et l'envoyer $aa tous en demandant mieux.</p>\n";
 		//
 			// Entretien
-			$body .= getTitle("Entretien personnel", 4);
+			$body .= $page->bodyHelper->titleAnchor("Entretien personnel", 4);
 			$body .= "<div>\n";
 			$body .= "<p>Avec les 2e offres, en choisir 3-5 et prendre RDV pour un entretien personnel.</p>\n";
 			$body .= "<ul>\n";
@@ -517,20 +514,20 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Courtier
-			$body .= getTitle("Courtier en $hyp", 4);
+			$body .= $page->bodyHelper->titleAnchor("Courtier en $hyp", 4);
 			$body .= "<p>Pour &eacute;viter ces &eacute;tapes, on peut faire appel $aa un courtier.\n";
 			$body .= "Il est familier des produits et du $marche et va chercher les meilleures offres.\n";
 			$body .= "Il accompagne aussi $aa la banque pour les n&eacute;gociations finales (et obtient de meilleures conditions car aux yeux de la banque il repr&eacute;sente un certain volume d'affaires).\n";
 			$body .= "Il est normalament gratuit sauf en cas d'annulation, mais $aa v&eacute;rifier avant de s'engager.</p>\n";
 		//
 			// Vocabulaire
-			$body .= getTitle("Vocabulaire", 4);
+			$body .= $page->bodyHelper->titleAnchor("Vocabulaire", 4);
 			$body .= "<p>Quand la banque accorde le $pret, le notaire cr&eacute;e une <b>c&eacute;dule $hypotecaire</b> exig&eacute;e comme garantie par la banque.\n";
 			$body .= "C'est le titre de propri&eacute;t&eacute; du bien qui est &eacute;mis par le $RF et remis au notaire qui le transmet $aa la banque en &eacute;change du $pret.\n";
 			$body .= "Quand la c&eacute;dule est lib&eacute;r&eacute;e par la banque, elle peut $etre r&eacute;utilis&eacute;e (travaux, autre bien).</p>\n";
 	//
 		// Renouveler
-		$body .= getTitle("Renouveler l'$hyp");
+		$body .= $page->bodyHelper->titleAnchor("Renouveler l'$hyp");
 		$body .= "<div>\n";
 		$body .= "<p>Quand arrive l'$echeance et qu'il faut renouveler l'$hyp, il s'agit de:</p>\n";
 		$body .= "<ul>\n";
@@ -546,7 +543,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Credit construction
-		$body .= getTitle("Cr&eacute;dit de construction");
+		$body .= $page->bodyHelper->titleAnchor("Cr&eacute;dit de construction");
 
 		$body .= "<p>Un $credit de construction ne s'obtient qu'$aupres d'une banque, les assurances et les caisses de pension ne l'accordent pas.\n";
 		$body .= "Il s'agit d'une sorte de compte courant.\n";
@@ -563,10 +560,10 @@ if($page->UserIsAdmin()) {
 		$body .= "Quand le compte du $credit est ouvert, attendre que le chantier commence avant de commencer $aa verser des fonds propres, les $interets sont r&eacute;mun&eacute;r&eacute;s au max 0.125%.</p>\n";
 //
 	// Acheter quoi?
-	$body .= getTitle("Acheter quoi?", 2);
+	$body .= $page->bodyHelper->titleAnchor("Acheter quoi?", 2);
 
 		// Logement ideal
-		$body .= getTitle("Logement $ideal");
+		$body .= $page->bodyHelper->titleAnchor("Logement $ideal");
 		$body .= "<div>\n";
 
 		$body .= "<p>Commencer par &eacute;tablir une liste des besoins et des envies.\n";
@@ -608,7 +605,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Formes d'habitat
-		$body .= getTitle("Formes d'habitat");
+		$body .= $page->bodyHelper->titleAnchor("Formes d'habitat");
 
 		$body .= "<p>Il faut consid&eacute;rer plusieurs aspects pour choisir la forme d'habitat qui nous convienne.\n";
 		$body .= "Si l'on regarde le c&ocirc;t&eacute; &eacute;cologique, on peut compter le nombres de faces (murs et toit) $aa b&acirc;tir, isoler, faire les finitions, puis chauffer.</p>\n";
@@ -624,7 +621,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 
 			// Individuelle
-			$body .= getTitle("Maison individuelle", 4);
+			$body .= $page->bodyHelper->titleAnchor("Maison individuelle", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 
@@ -642,11 +639,11 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Bungalow
-			$body .= getTitle("Bungalow (maison sur 1 $etage)", 4);
+			$body .= $page->bodyHelper->titleAnchor("Bungalow (maison sur 1 $etage)", 4);
 			$body .= "<p>Comme pour une maison individuelle mais avec plus de terrain et plus cher.</p>\n";
 		//
 			// Individuelle en lotissement
-			$body .= getTitle("Maison individuelle en lotissement", 4);
+			$body .= $page->bodyHelper->titleAnchor("Maison individuelle en lotissement", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 
@@ -662,7 +659,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Mitoyenne
-			$body .= getTitle("Maison mitoyenne/jumelle", 4);
+			$body .= $page->bodyHelper->titleAnchor("Maison mitoyenne/jumelle", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 
@@ -678,7 +675,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// En terrasses
-			$body .= getTitle("Maison en terrasses", 4);
+			$body .= $page->bodyHelper->titleAnchor("Maison en terrasses", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 
@@ -694,7 +691,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// PPE
-			$body .= getTitle("Appartement en PPE", 4);
+			$body .= $page->bodyHelper->titleAnchor("Appartement en PPE", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 
@@ -732,10 +729,10 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 	//
 		// Neuf/occasion
-		$body .= getTitle("Neuf ou occasion");
+		$body .= $page->bodyHelper->titleAnchor("Neuf ou occasion");
 
 			// Occasion
-			$body .= getTitle("Occasion", 4);
+			$body .= $page->bodyHelper->titleAnchor("Occasion", 4);
 
 			$body .= "<div>\n";
 			$body .= "<p>On peut acheter un bien existant, mais suivant l'ann&eacute;e de construction il faut se m&eacute;fier de certains {$materiau}x de construction:</p>\n";
@@ -802,7 +799,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Neuf
-			$body .= getTitle("Neuf", 4);
+			$body .= $page->bodyHelper->titleAnchor("Neuf", 4);
 			$body .= "<div>\n";
 			$body .= "<p>Avantages et inconv&eacute;nients d'acheter \"sur plans\":</p>\n";
 			$body .= "<ul>\n";
@@ -828,7 +825,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 	//
 		// Mobilite reduite
-		$body .= getTitle("Mobilit&eacute; r&eacute;duite");
+		$body .= $page->bodyHelper->titleAnchor("Mobilit&eacute; r&eacute;duite");
 		$body .= "<div>\n";
 		$body .= "<p>Sachant qu'on peut chacun $etre $aa $mobiliteReduite $aa un moment de sa vie, il est bon d'anticiper:</p>\n";
 		$body .= "<ul>\n";
@@ -842,7 +839,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Minimum exigible
-		$body .= getTitle("Minimum exigible");
+		$body .= $page->bodyHelper->titleAnchor("Minimum exigible");
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 		$body .= lili("un $batiment neuf devrait $etre minergie");
@@ -853,7 +850,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</ul>\n";
 		$body .= "</div>\n";
 
-			$body .= getTitle("Equipements", 4);
+			$body .= $page->bodyHelper->titleAnchor("Equipements", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Cuisine:</p>\n";
@@ -927,7 +924,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 	//
 		// Pompes a chaleur
-		$body .= getTitle("Pompes $aa chaleur");
+		$body .= $page->bodyHelper->titleAnchor("Pompes $aa chaleur");
 		$body .= "<div>\n";
 		$body .= "<p>Il en existe plusieurs sortes:</p>\n";
 		$body .= "<ul>\n";
@@ -938,7 +935,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Ecologie
-		$body .= getTitle("Ecologie");
+		$body .= $page->bodyHelper->titleAnchor("Ecologie");
 		$body .= "<div>\n";
 
 		$body .= "<p>Pour construire &eacute;cologique, il faut penser $aa bien plus que ce que l'on croit: transports, {$materiau}x, $energie...</p>\n";
@@ -970,13 +967,13 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 //
 	// Recherche
-	$body .= getTitle("Recherche de l'objet", 2);
+	$body .= $page->bodyHelper->titleAnchor("Recherche de l'objet", 2);
 
 	$body .= "<p>On peut chercher dans {$different}s moyens: internet (agences, portails tel anibis), aussi les journaux.";
 	$body .= "Les assurances, les banques et les caisses de pension vendent aussi des biens immobiliers.</p>\n";
 
 		// Dechifrer
-		$body .= getTitle("D&eacute;chifrer");
+		$body .= $page->bodyHelper->titleAnchor("D&eacute;chifrer");
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 
@@ -994,7 +991,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Aide
-		$body .= getTitle("Aide");
+		$body .= $page->bodyHelper->titleAnchor("Aide");
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 
@@ -1013,7 +1010,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Ventes aux encheres
-		$body .= getTitle("Ventes aux ench&egrave;res");
+		$body .= $page->bodyHelper->titleAnchor("Ventes aux ench&egrave;res");
 		$body .= "<div>\n";
 
 		$body .= "<p>Il y a plusieurs biens $aa vendre aux ench&egrave;res chaque semaine, souvent $aa des prix {$interessant}s car ne couvrant que la dette.\n";
@@ -1037,7 +1034,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Prix
-		$body .= getTitle("Prix");
+		$body .= $page->bodyHelper->titleAnchor("Prix");
 
 		$body .= "<p>V&eacute;rifier le prix car la banque {$pret}e selon sa propre estimation.\n";
 		$body .= "Si le prix est plus haut, il faut compenser la diff&eacute;rence avec des fonds propres, et il ne sera peut-$etre pas possible de revendre $aa un prix autant $eleve.</p>\n";
@@ -1045,7 +1042,7 @@ if($page->UserIsAdmin()) {
 		$body .= "<p>Le principal facteur d&eacute;terminant le prix est la situation: voisinage, $equipements, acc&egrave;s, vue, SOleil, bruit, $impots (d&eacute;chets, eau...).</p>\n";
 
 			// Experts
-			$body .= getTitle("Experts", 4);
+			$body .= $page->bodyHelper->titleAnchor("Experts", 4);
 			$body .= "<div>\n";
 
 			$body .= "<ul>\n";
@@ -1079,7 +1076,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Negocier
-			$body .= getTitle("N&eacute;gocier", 4);
+			$body .= $page->bodyHelper->titleAnchor("N&eacute;gocier", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Toujours!!!</p>\n";
@@ -1096,7 +1093,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Visite
-			$body .= getTitle("Visite", 4);
+			$body .= $page->bodyHelper->titleAnchor("Visite", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Si possible visiter $aa 2 pour une observation plus compl&egrave;te. Pr&eacute;voir assez de temps:</p>\n";
@@ -1120,13 +1117,13 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 //
 	// Construire: preparation
-	$body .= getTitle("Construire: pr&eacute;paration", 2);
+	$body .= $page->bodyHelper->titleAnchor("Construire: pr&eacute;paration", 2);
 
 	$body .= "<p>Les $couts de construction sont en constante augmentation.\n";
 	$body .= "Il est possible de partager les frais de chantier et de raccordement si le terrain voisin construit en $meme temps.</p>\n";
 
 		// Terrain
-		$body .= getTitle("Terrain");
+		$body .= $page->bodyHelper->titleAnchor("Terrain");
 		$body .= "<div>\n";
 
 		$body .= "<p>Pour le choix du terrain, $etre ouvert! Aller voir sur place avant de dire non.</p>";
@@ -1168,7 +1165,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Servitudes foncieres
-		$body .= getTitle("Servitudes fonci&egrave;res");
+		$body .= $page->bodyHelper->titleAnchor("Servitudes fonci&egrave;res");
 		$body .= "<div>\n";
 
 		$body .= "<p>Il s'agit d'obligations ou de contraintes pour le $proprio.\n";
@@ -1194,19 +1191,19 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Reglement de construction
-		$body .= getTitle("R&egrave;glement de construction (communal)");
+		$body .= $page->bodyHelper->titleAnchor("R&egrave;glement de construction (communal)");
 		$body .= "<p>Il d&eacute;finit beaucoup de d&eacute;tails pour la construction:\n";
 		$body .= "ratio surface maison/terrain, hauteur max, nombre d'&eacute;tages max, orientation, pente du toit, dimensions des fen&ecirc;tres, nombre max de velux, couleurs ext&eacute;rieures,\n";
 		$body .= "longueur max d'un mur sans d&eacute;crochement, distances entre les maisons et les limites du terrain, surface minimum..........</p>\n";
 	//
 		// Influences negatives
-		$body .= getTitle("Influences n&eacute;gatives");
+		$body .= $page->bodyHelper->titleAnchor("Influences n&eacute;gatives");
 		$body .= "<p>On peut demander une &eacute;tude g&eacute;obiologiue (200.-) du terrain avant l'achat, voir " . getLink("http://lieudevie.ch") . ".\n";
 		$body .= "Il s'agit d'une analyse de l'&eacute;lectromagn&eacute;tisme, passage des eaux...\n";
 		$body .= "On peut aussi le faire avant de construire pour aider $aa choisir l'emplacement, l'orientation, l'am&eacute;nagement...</p>\n";
 	//
 		// Concevoir sa maison
-		$body .= getTitle("Concevoir sa maison");
+		$body .= $page->bodyHelper->titleAnchor("Concevoir sa maison");
 		$body .= "<div>\n";
 
 		$body .= "<p>On peut concevoir sa maison en suivant diff&eacute;rentes voies:</p>\n";
@@ -1218,7 +1215,7 @@ if($page->UserIsAdmin()) {
 		$body .= "<li><b>Sur catalogue, maison type, pr&eacute;fabriqu&eacute;e:</b>\n";
 		$body .= "La r&eacute;alisation est rapide.\n";
 		$body .= "On peut visiter une maison t&eacute;moin.\n";
-		$body .= "On peut changer +/- la distribution et la taille des ${piece}s; on ne peut pas choisir les mat&eacute;riaux.\n";
+		$body .= "On peut changer +/- la distribution et la taille des {$piece}s; on ne peut pas choisir les mat&eacute;riaux.\n";
 		$body .= "Le prix ne comprend que le mod&egrave;le le plus basique, il faut compter des suppl&eacute;ments pour beaucoup de choses (excaver, garage, terrassements...).\n";
 		$body .= "Et bien $sur, chaque demande de modifications augmente le prix.\n";
 		$body .= "A noter: les entreprises &eacute;trang&egrave;res proposent de r&eacute;aliser le $meme bien pour moins cher, mais il faut aller sur place pour faire les choix, et pas facilement r&eacute;parable.\n";
@@ -1251,7 +1248,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Plans
-		$body .= getTitle("Plans");
+		$body .= $page->bodyHelper->titleAnchor("Plans");
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 
@@ -1294,10 +1291,10 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 //
 	// Construire: execution
-	$body .= getTitle("Construire: ex&eacute;cution", 2);
+	$body .= $page->bodyHelper->titleAnchor("Construire: ex&eacute;cution", 2);
 
 		// Avec un architecte
-		$body .= getTitle("Avec un architecte");
+		$body .= $page->bodyHelper->titleAnchor("Avec un architecte");
 		$body .= "<div>\n";
 
 		$body .= "<p>L'architecte est la personne de r&eacute;f&eacute;rence.\n";
@@ -1328,7 +1325,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 
 			// Contrats de l architecte
-			$body .= getTitle("Contrats de l'architecte", 4);
+			$body .= $page->bodyHelper->titleAnchor("Contrats de l'architecte", 4);
 			$body .= "<p>SIA formulaire 1102</p>\n";
 			$body .= "<p>Doit contenir les d&eacute;tails du mandat, entre autres faire des plans dans les r&egrave;gles de l'art,\n";
 			$body .= "surveiller et respecter le devis, d&eacute;fendre les int&eacute;r&ecirc;ts des clients.\n";
@@ -1337,7 +1334,7 @@ if($page->UserIsAdmin()) {
 			$body .= "<p>Bien lire et relire, demander aussi $aa un sp&eacute;cialiste avant de signer.</p>\n";
 		//
 			// Honoraires de l'architecte
-			$body .= getTitle("Honoraires de l'architecte", 4);
+			$body .= $page->bodyHelper->titleAnchor("Honoraires de l'architecte", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>SIA 102</p>\n";
@@ -1353,7 +1350,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Devis
-			$body .= getTitle("Devis", 4);
+			$body .= $page->bodyHelper->titleAnchor("Devis", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Ce n'est qu'une &eacute;valuation! Pr&eacute;voir des marges:</p>\n";
@@ -1374,7 +1371,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 	//
 		// Entreprise generale/totale
-		$body .= getTitle("Entreprise g&eacute;n&eacute;rale/totale");
+		$body .= $page->bodyHelper->titleAnchor("Entreprise g&eacute;n&eacute;rale/totale");
 		$body .= "<div>\n";
 
 		$body .= "<ul>\n";
@@ -1400,7 +1397,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 
 			// Contrats de l entrepreneur
-			$body .= getTitle("Contrats de l'entrepreneur", 4);
+			$body .= $page->bodyHelper->titleAnchor("Contrats de l'entrepreneur", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Pas de cadre l&eacute;gal, mais $generalement faits selon la norme SIA118.\n";
@@ -1443,7 +1440,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Hypothese legale
-			$body .= getTitle("Hypoth&egrave;se l&eacute;gale", 4);
+			$body .= $page->bodyHelper->titleAnchor("Hypoth&egrave;se l&eacute;gale", 4);
 			$body .= "<div>\n";
 
 			$body .= "<p>Si l'entrepreneur ne peut plus payer les artisans, le $proprio doit les payer.\n";
@@ -1463,7 +1460,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Honoraires
-			$body .= getTitle("Honoraires de l'entrepreneur", 4);
+			$body .= $page->bodyHelper->titleAnchor("Honoraires de l'entrepreneur", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 			$body .= lili("forfait");
@@ -1474,7 +1471,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 	//
 		// Architecte vs Entrepreneur
-		$body .= getTitle("Architecte vs Entrepreneur");
+		$body .= $page->bodyHelper->titleAnchor("Architecte vs Entrepreneur");
 		$body .= "<div>\n";
 
 		$body .= "<p>Quelques diff&eacute;rences si l'on compare la construction avec un architecte plut&ocirc;t qu'avec un entrepreneur:</p>\n";
@@ -1492,7 +1489,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// SUivi du chantier
-		$body .= getTitle("Suivi du chantier");
+		$body .= $page->bodyHelper->titleAnchor("Suivi du chantier");
 		$body .= "<p>L'interlocuteur est le chef de chantier.\n";
 		$body .= "C'est lui qui s'occupe de signaler les problm&egrave;mes, demander les changements, etc.\n";
 		$body .= "Le $proprio doit aussi suivre de pr&egrave;s.\n";
@@ -1503,7 +1500,7 @@ if($page->UserIsAdmin()) {
 		$body .= "On peut demander des modifications au r&egrave;glement de chantier, par exemple qu'il soit interdit de fumer dans la maison d&egrave;s qu'elle est \"hors d'eau\"</p>\n";
 	//
 		// Reduire les couts
-		$body .= getTitle("R&eacute;duire les co&ucirc;ts");
+		$body .= $page->bodyHelper->titleAnchor("R&eacute;duire les co&ucirc;ts");
 		$body .= "<div>\n";
 
 		$body .= "<p>Il est toujours difficile de faire co&iuml;ncider les d&eacute;sirs avec le budget...</p>\n";
@@ -1542,7 +1539,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// De l'avant-projet au permis de construire
-		$body .= getTitle("De l'avant-projet au permis de construire");
+		$body .= $page->bodyHelper->titleAnchor("De l'avant-projet au permis de construire");
 		$body .= "<div>\n";
 		$body .= "<ol>\n";
 
@@ -1584,7 +1581,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Assurances
-		$body .= getTitle("Assurances", 3, "ConstruireExecution");
+		$body .= $page->bodyHelper->titleAnchor("Assurances", 3, "ConstruireExecution");
 		$body .= "<div>\n";
 
 		$body .= "<p>Les co&ucirc;ts varient selon les risques (distance au b&acirc;timent le plus proche, pente du terrain, nappe phr&eacute;atique...).\n";
@@ -1613,7 +1610,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Reception et etat des lieux
-		$body .= getTitle("R&eacute;ception et &eacute;tat des lieux");
+		$body .= $page->bodyHelper->titleAnchor("R&eacute;ception et &eacute;tat des lieux");
 
 		$body .= "<p>Si on d&eacute;couvre un probl&egrave;me, il faut imm&eacute;diatement le signaler par lettre recommand&eacute;e a l'entrepreneur.\n";
 		$body .= "Les d&eacute;fauts cach&eacute;s peuvent &ecirc;tre annonc&eacute;s jusqu'$aa 5 ans apr&egrave;s, 10 ans si l'entrepreneur a intentionnellement abus&eacute;.\n";
@@ -1623,7 +1620,7 @@ if($page->UserIsAdmin()) {
 		$body .= "V&eacute;rifier les nettoyages avant d'emm&eacute;nager, si besoin r&eacute;clamer et rappeler les nettoyeurs.</p>\n";
 	//
 		// Defaut d'ouvrage
-		$body .= getTitle("D&eacute;faut d'ouvrage");
+		$body .= $page->bodyHelper->titleAnchor("D&eacute;faut d'ouvrage");
 		$body .= "<div>\n";
 
 		$body .= "<p>Cela signifie que l'ouvrage livr&eacute; ne correspond pas au contrat.</p>\n";
@@ -1648,14 +1645,14 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Decompte final
-		$body .= getTitle("D&eacute;compte final");
+		$body .= $page->bodyHelper->titleAnchor("D&eacute;compte final");
 
 		$body .= "<p>A contr&ocirc;ler de pr&egrave;s!!!\n";
 		$body .= "Bien v&eacute;rifier que les plus-/moins-values des travaux y figurent toutes.\n";
 		$body .= "Puis vient la consolidation; pas $aa l'emm&eacute;nagement, mais quand tous les documents exig&eacute;s par la banque sont r&eacute;unis.</p>\n";
 //
 	// Contrats et proprietes
-	$body .= getTitle("Contrats et propri&eacute;t&eacute;s", 2);
+	$body .= $page->bodyHelper->titleAnchor("Contrats et propri&eacute;t&eacute;s", 2);
 	$body .= "<div>\n";
 	$body .= "<ul>\n";
 
@@ -1708,7 +1705,7 @@ if($page->UserIsAdmin()) {
 	$body .= "</div>\n";
 	//
 		// Notaires
-		$body .= getTitle("Notaires");
+		$body .= $page->bodyHelper->titleAnchor("Notaires");
 		$body .= "<div>\n";
 
 		$body .= "<p>Il r&eacute;dige le contrat, r&egrave;gle les d&eacute;tails administratifs ($RF, droits de mutation), la c&eacute;dule.\n";
@@ -1751,7 +1748,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Paiement
-		$body .= getTitle("Paiement");
+		$body .= $page->bodyHelper->titleAnchor("Paiement");
 
 		$body .= "<p>Quand le contrat est conclu et le changement de $proprio est inscrit au $RF, vient le paiement.\n";
 		$body .= "MAIS on a besoin d'une preuve que l'acheteur est capable de payer:\n";
@@ -1761,13 +1758,13 @@ if($page->UserIsAdmin()) {
 		$body .= "le contrat est annul&eacute;!</p>\n";
 	//
 		// RF
-		$body .= getTitle("Registre foncier");
+		$body .= $page->bodyHelper->titleAnchor("Registre foncier");
 		$body .= "<div>\n";
 
 		$body .= "<p>Le notaire fait l'inscription et le paiement.</p>\n";
 
 		$body .= "<p>Il est en libre acc&egrave;s pour consultation:\n";
-		$body .= "coordonn&eacute;es des ${proprio}s, servitudes, droits de gage immobili&egrave;re, date d'achat, adresse compl&egrave;te...</p>\n";
+		$body .= "coordonn&eacute;es des {$proprio}s, servitudes, droits de gage immobili&egrave;re, date d'achat, adresse compl&egrave;te...</p>\n";
 
 		$body .= "<p>Les documents qui composent une entr&eacute;e du $RF (un feuillet) sont:</p>\n";
 		$body .= "<ul>\n";
@@ -1775,19 +1772,19 @@ if($page->UserIsAdmin()) {
 		$body .= lili("grand livre: ensemble des feuillets");
 		$body .= lili("plan");
 		$body .= lili("contrats: achat, servitudes");
-		$body .= lili("registres accessoires: ${proprio}s, cr&eacute;anciers...");
+		$body .= lili("registres accessoires: {$proprio}s, cr&eacute;anciers...");
 		$body .= "</ul>\n";
 
 		$body .= "</div>\n";
 	//
 		// Formes de proriete
-		$body .= getTitle("Formes de propri&eacute;t&eacute;");
+		$body .= $page->bodyHelper->titleAnchor("Formes de propri&eacute;t&eacute;");
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 
 		$body .= lili("Individuelle: tout seul, mais le conjoint officiel a l&eacute;gallement des droits.");
 
-		$body .= "<li>Commune: co${proprio}s avec des liens ant&eacute;rieurs (conjoints, h&eacute;ritiers).\n";
+		$body .= "<li>Commune: co{$proprio}s avec des liens ant&eacute;rieurs (conjoints, h&eacute;ritiers).\n";
 		$body .= "Les d&eacute;cisions se prennent ensemble, on ne peut pas disposer librement de sa \"part\".\n";
 		$body .= "Le bien appartient $aa tous ind&eacute;pendamment des sommes investies.</li>\n";
 
@@ -1796,7 +1793,7 @@ if($page->UserIsAdmin()) {
 
 		$body .= "<li>Participation $aa une soci&eacute;t&eacute; immobili&egrave;re (SI):\n";
 		$body .= "l'immeuble est la propri&eacute;t&eacute; de la SI (elle g&egrave;re les achats/ventes et la gestion d'immeubles).\n";
-		$body .= "Les actionnaires ne sont pas ${proprio}s, mais ont des droits de participation et touchent des dividendes.\n";
+		$body .= "Les actionnaires ne sont pas {$proprio}s, mais ont des droits de participation et touchent des dividendes.\n";
 		$body .= "Une SI d'actionnaires locataires (SIAL) fait la location des appartements aux actionnaires.\n";
 		$body .= "Une SIAL-PPE est coupl&eacute;e aux r&egrave;gles de la PPE, est $proprio de toutes les parts de la PPE et loue aux actionnaires.\n";
 		$body .= "</li>\n";
@@ -1805,7 +1802,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// PPE
-		$body .= getTitle("PPE");
+		$body .= $page->bodyHelper->titleAnchor("PPE");
 		$body .= "<div>\n";
 
 		$body .= "<p>Il s'agit d'une copropri&eacute;t&eacute; o&ugrave; chacun a droit $aa certaines parties.\n";
@@ -1829,7 +1826,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</ul>\n";
 
 		$body .= "<p>Il est souvent membre de l'entreprise de consrtuction ou de la g&eacute;rance.\n";
-		$body .= "Ca pourrait &ecirc;tre un des co${proprio}s mais il y a un risque de conflit d'int&eacute;r&ecirc;t.</p>\n";
+		$body .= "Ca pourrait &ecirc;tre un des co{$proprio}s mais il y a un risque de conflit d'int&eacute;r&ecirc;t.</p>\n";
 
 		$body .= "<p>L'assembl&eacute;e (organe supr&ecirc;me) g&egrave;re ce que l'administrateur ne fait pas:</p>\n";
 		$body .= "<ul>\n";
@@ -1845,7 +1842,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 
 			// Fond de renovation
-			$body .= getTitle("Fonds de r&eacute;novation", 4);
+			$body .= $page->bodyHelper->titleAnchor("Fonds de r&eacute;novation", 4);
 
 			$body .= "<p>Pas obligatoire, mais vivement recommand&eacute;.\n";
 			$body .= "A v&eacute;rifier avant achat, aussi comment il est g&eacute;r&eacute; (s&eacute;curit&eacute; et disponibilit&eacute;).\n";
@@ -1853,7 +1850,7 @@ if($page->UserIsAdmin()) {
 			$body .= "Si un $proprio vend sa part, la participation aux fonds de r&eacute;novation n'est pas transf&eacute;r&eacute;e $aa l'acheteur.</p>\n";
 		//
 			// Charges
-			$body .= getTitle("Charges", 4);
+			$body .= $page->bodyHelper->titleAnchor("Charges", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 			$body .= lili("frais d'entretiens/r&eacute;parations");
@@ -1866,13 +1863,13 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Reglement
-			$body .= getTitle("R&egrave;glement", 4);
+			$body .= $page->bodyHelper->titleAnchor("R&egrave;glement", 4);
 
 			$body .= "<p>Concerne la vien en commun.\n";
 			$body .= "Certaines dispositions l&eacute;gales, mais possible de changer la plupart.</p>\n";
 		//
 			// Contenu du contrat d'achat
-			$body .= getTitle("Contenu du contrat d'achat", 4);
+			$body .= $page->bodyHelper->titleAnchor("Contenu du contrat d'achat", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 			$body .= lili("r&egrave;glement de la communeaut&eacute; de co{$proprio}s");
@@ -1882,7 +1879,7 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 		//
 			// Check-list avant achat
-			$body .= getTitle("Check-list avant l'achat", 4);
+			$body .= $page->bodyHelper->titleAnchor("Check-list avant l'achat", 4);
 			$body .= "<div>\n";
 			$body .= "<ul>\n";
 
@@ -1900,16 +1897,16 @@ if($page->UserIsAdmin()) {
 			$body .= "</div>\n";
 	//
 		// Couple et succession
-		$body .= getTitle("Couple et succession");
+		$body .= $page->bodyHelper->titleAnchor("Couple et succession");
 
 		$body .= "<p>Testament/pacte successoral, sinon les droits de successions s'appliquent (50% conjoint, 50% enfants).\n";
 		$body .= "Le testament peut modifier les parts, par exemple min 50% conjoint, ou 75% enfants...</p>\n";
 //
 	// Charges et impots
-	$body .= getTitle("Charges et imp&ocirc;ts", 2);
+	$body .= $page->bodyHelper->titleAnchor("Charges et imp&ocirc;ts", 2);
 
 		// Charges en un coup d'oeil
-		$body .= getTitle("Les charges en un coup d'oeil");
+		$body .= $page->bodyHelper->titleAnchor("Les charges en un coup d'oeil");
 		$body .= "<div>\n";
 
 		$body .= "<p>Voici une petite liste de charges qu'un $proprio doit assumer:</p>\n";
@@ -1944,7 +1941,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Assurances
-		$body .= getTitle("Assurances", 3, "ChargesEtImpots");
+		$body .= $page->bodyHelper->titleAnchor("Assurances", 3, "ChargesEtImpots");
 		$body .= "<div>\n";
 		$body .= "<ul>\n";
 
@@ -1994,7 +1991,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Entretien (frais+provisions)
-		$body .= getTitle("Entretien (frais et provisions)");
+		$body .= $page->bodyHelper->titleAnchor("Entretien (frais et provisions)");
 		$body .= "<div>\n";
 
 		$body .= "<p>Un petit entretien r&eacute;gulier (m&ecirc;me si le bien est neuf) est mieux qu'un gros entretien ponctuel.\n";
@@ -2031,7 +2028,7 @@ if($page->UserIsAdmin()) {
 		$body .= "</div>\n";
 	//
 		// Impots
-		$body .= getTitle("Imp&ocirc;ts");
+		$body .= $page->bodyHelper->titleAnchor("Imp&ocirc;ts");
 
 		$body .= "<p>Les int&eacute;r&ecirc;ts du cr&eacute;dit de construction ne sont pas d&eacute;ductibles (sauf VS+BE).</p>\n";
 
@@ -2041,10 +2038,10 @@ if($page->UserIsAdmin()) {
 		$body .= "La 1&egrave;re fois le calcul est laborieux, ensuite c'est facile.</p>\n";
 	//
 		// Deductions
-		$body .= getTitle("D&eacute;ductions");
+		$body .= $page->bodyHelper->titleAnchor("D&eacute;ductions");
 
 			// Interets hypotecaires
-			$body .= getTitle("Int&eacute;r&ecirc;ts hypot&eacute;caires",4);
+			$body .= $page->bodyHelper->titleAnchor("Int&eacute;r&ecirc;ts hypot&eacute;caires",4);
 
 			$body .= "<p>Pas l'amortissement, seulement les int&eacute;r&ecirc;ts.</p>\n";
 
@@ -2052,7 +2049,7 @@ if($page->UserIsAdmin()) {
 			$body .= "travaux d'utilit&eacute; publique $aa charge du $proprio, (r)achat de servitudes, frais des {$hyp}s...</p>\n";
 		//
 			// Entretien
-			$body .= getTitle("Entretien", 4);
+			$body .= $page->bodyHelper->titleAnchor("Entretien", 4);
 
 			$body .= "<p>D&eacute;ductible si n&eacute;cessaire, pas pour une plus-value.\n";
 			$body .= "Partiellement d&eacute;ductible si n&eacute;cessaire, mais choix fait une plus-value.</p>\n";
@@ -2062,31 +2059,31 @@ if($page->UserIsAdmin()) {
 			$body .= "<p>PPE: on peut d&eacute;duire la quote-part des frais communs, l'imp&ocirc;t foncier, les frais pay&eacute;s directement, les versements au fonds de r&eacute;novation</p>\n";
 		//
 			// Exploitation
-			$body .= getTitle("Exploitation", 4);
+			$body .= $page->bodyHelper->titleAnchor("Exploitation", 4);
 
 			$body .= "<p>Les primes d'assurances choses.</p>\n";
 
 			$body .= "<p>PPE: fonds de r&eacute;novation (FR, GE)</p>\n";
 		//
 			// Administration
-			$body .= getTitle("Administration", 4);
+			$body .= $page->bodyHelper->titleAnchor("Administration", 4);
 
 			$body .= "<p>Seulement si le bien est lou&eacute;: g&eacute;rance, pub, agence immobili&egrave;re...</p>\n";
 		//
 			// Planification
-			$body .= getTitle("Planification", 4);
+			$body .= $page->bodyHelper->titleAnchor("Planification", 4);
 
 			$body .= "<p>Penser $aa bien planifier les travaux pour &eacute;viter que les d&eacute;ductions ne d&eacute;passent le revenu,\n";
 			$body .= "r&eacute;partir les travaux sur plusieurs ann&eacute;es.\n";
 			$body .= "Garder en t&ecirc;te que la d&eacute;duction est valable pour l'ann&eacute;e dans laquelle le paiement est effectu&eacute;.</p>\n";
 	//
 		// Impot sur la fortune immobiliere
-		$body .= getTitle("Imp&ocirc;t sur la fortune immobili&egrave;re");
+		$body .= $page->bodyHelper->titleAnchor("Imp&ocirc;t sur la fortune immobili&egrave;re");
 
 		$body .= "<p>En tant que $proprio, le bien est compt&eacute; dans la fortune, moins l'$hyp et les int&eacute;r&ecirc;ts.</p>\n";
 	//
 		// Societe immobiliere
-		$body .= getTitle("Soci&eacute;t&eacute; immobili&egrave;re");
+		$body .= $page->bodyHelper->titleAnchor("Soci&eacute;t&eacute; immobili&egrave;re");
 
 		$body .= "<p>Pas fiscalement avantageux: la SI est soumise aux imp&ocirc;ts sur le b&eacute;n&eacute;fice et sur le capital;\n";
 		$body .= "les actionnaires sont en plus soumis aux imp&ocirc;ts sur le revenu et sur la fortune (dont les actions).</p>\n";
@@ -2095,7 +2092,7 @@ if($page->UserIsAdmin()) {
 		$body .= "sur la SI et sur les actionnaires.</p>\n";
 	//
 		// Achat/vente
-		$body .= getTitle("Achat / vente");
+		$body .= $page->bodyHelper->titleAnchor("Achat / vente");
 
 		$body .= "<p>Droits de mutation: quand $proprio change, donc l'acheteur paye.</p>\n";
 
@@ -2111,7 +2108,7 @@ if($page->UserIsAdmin()) {
 		$body .= "Lors de la vente du nouveau bien, les dur&eacute;es d'occupation sont alors cumul&eacute;es pour le calcul de l'imp&ocirc;t.</p>\n";
 //
 	// Experiences
-	$body .= getTitle("Exp&eacute;riences partag&eacute;es", 2);
+	$body .= $page->bodyHelper->titleAnchor("Exp&eacute;riences partag&eacute;es", 2);
 	$body .= "<div>\n";
 
 	$body .= "<ul>\n";

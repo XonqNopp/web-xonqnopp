@@ -1,9 +1,9 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
 $tv_title = "TV";
 $tv = array();
@@ -50,12 +50,10 @@ $page_title = "Quand j'&eacute;tais petit...";
 	$misc[] = "En voiture, si on on n'avait pas de carte et que notre destination n'&eacute;tait pas indiqu&eacute;e sur les panneaux, on &eacute;tait perdu.";
 	$misc[] = "Il fallait l&eacute;cher les timbres pour les coller sur les enveloppes.";
 
-$page->CSS_ppJump();
 
-$body = "";
-$body .= $page->GoHome();
-$body .= $page->SetTitle($page_title);
-$page->HotBooty();
+$body = $page->bodyHelper->goHome();
+$body .= $page->htmlHelper->setTitle($page_title);
+$page->htmlHelper->hotBooty();
 
 //$body .= "<div class=\"the_body\">\n";
 	// TV
@@ -110,6 +108,6 @@ $page->HotBooty();
 //$body .= "</div>\n";
 
 /*** Printing ***/
-$page->show($body);
+echo $body;
 unset($page);
 ?>

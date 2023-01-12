@@ -1,18 +1,30 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
-$page = new PhPage($rootPath);
-$page->InitDB();
-$page->js_Form();
-//$page->initHTML();
-//$page->LogLevelUp(6);
+require("{$funcpath}/logging.php");
 
-use stdClass;
+$page = new PhPage($rootPath);
+
+require("$funcpath/form_fields.php");
+use FieldAttributes;
+global $theTextInput;
+global $theSelectInput;
+global $theDateInput;
+global $theTimeInput;
+
+
+$page->dbHelper->init();
+
+$page->htmlHelper->jsForm();
+
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
+
 
 
 function displaySQLtime($page, $item) {
-	return $page->minutesDisplay(
+	return $page->timeHelper->minutesDisplay(
 		$item->sSEP
 		+ $item->sMEP
 		+ $item->sMP
@@ -31,7 +43,7 @@ function familyTime($page, $who) {
 	 * Returns:
 	 *     DB object
 	 */
-	$dbQuery = $page->DB_QueryManage("SELECT SUM(SP_SEP) AS `sSEP`,SUM(SP_MEP) AS `sMEP`,SUM(MP) AS `sMP`,`notes` FROM `PilotLogbook` WHERE `notes` LIKE '%#$who%'");
+	$dbQuery = $page->dbHelper->queryManage("SELECT SUM(SP_SEP) AS `sSEP`,SUM(SP_MEP) AS `sMEP`,SUM(MP) AS `sMP`,`notes` FROM `PilotLogbook` WHERE `notes` LIKE '%#$who%'");
 	$dbObj = $dbQuery->fetch_object();
 	$dbQuery->close();
 
@@ -52,7 +64,7 @@ function familyVisited($page, $who) {
 	 */
 	$visited = array();
 
-	$dbQuery = $page->DB_QueryManage("SELECT DISTINCT `start_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `start_ad` <> 'note' and `notes` LIKE '%#$who%' UNION SELECT DISTINCT `stop_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' AND `notes` LIKE '%#$who%' ORDER BY `airfield`");
+	$dbQuery = $page->dbHelper->queryManage("SELECT DISTINCT `start_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `start_ad` <> 'note' and `notes` LIKE '%#$who%' UNION SELECT DISTINCT `stop_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' AND `notes` LIKE '%#$who%' ORDER BY `airfield`");
 
 	while($dbObj = $dbQuery->fetch_object()) {
 		$visited[] = $dbObj->airfield;
@@ -86,12 +98,12 @@ function familyVisitedSingle($airfield, $familyArray, $display) {
 }
 
 
-$page->CSS_ppJump();
+$logger = $theLogger;
 
 $body = "";
 $deleted = "";
-$SPMP_list = array("SP_SEP" => "SP SEP", "SP_MEP" => "SP MEP", "MP" => "MP");
-$function_list = array("PIC" => "PIC", "copi" => "copi", "dual" => "dual", "instructor" => "instructor");
+$SPMP_list = $page->utilsHelper->arraySequential2Associative(array("SP SEP", "SP MEP", "MP"));
+$function_list = $page->utilsHelper->arraySequential2Associative(array("PIC", "copi", "dual", "instructor"));
 $formsize = 3;
 $AD_list = array("LSGE", "LSGS", "note");
 $type_list = array();
@@ -104,7 +116,7 @@ $defaults["AD"] = "";
 
 $DueDay = "30";
 $DueMonth = 9;
-$DueYear = $page->GetNow()->year;
+$DueYear = $page->timeHelper->getNow()->year;
 
 	// setting default values
 	$FORM_date = "";
@@ -134,37 +146,36 @@ $DueYear = $page->GetNow()->year;
 	$SQL_instructor_time = 0;
 	$FORM_notes = "";
 
-$UserIsAdmin = $page->UserIsAdmin();
-//
+$UserIsAdmin = $page->loginHelper->userIsAdmin();
+
 if($UserIsAdmin) {
 	if(isset($_POST["add"])) {
 		/*** FORM values ***/
-		$FORM_year = sprintf("%04d", $_POST["date_year"]);
-		$FORM_month = sprintf("%02d", $_POST["date_month"]);
-		$FORM_day = sprintf("%02d", $_POST["date_day"]);
-		$FORM_date = "$FORM_year-$FORM_month-$FORM_day";
-		//
-		$FORM_start_time_hour = $_POST["start_time_hour"];
-		$FORM_start_time_minute = $_POST["start_time_minute"];
-		$FORM_start_time = sprintf("%02d", $FORM_start_time_hour) . ":" . sprintf("%02d", $FORM_start_time_minute) . ":00";
-		//
-		$FORM_stop_time_hour = $_POST["stop_time_hour"];
-		$FORM_stop_time_minute = $_POST["stop_time_minute"];
-		$FORM_stop_time = sprintf("%02d", $FORM_stop_time_hour) . ":" . sprintf("%02d", $FORM_stop_time_minute) . ":00";
-		//
-		$delta = ($FORM_stop_time_hour * 60 + $FORM_stop_time_minute) - ($FORM_start_time_hour * 60 + $FORM_start_time_minute);
+		$FORM_date = $_POST["date"];
+
+		$FORM_start_time = $_POST["start_time"] . ":00";
+		$FORM_stop_time = $_POST["stop_time"] . ":00";
+
+		function timeStr2minutes($page, $timeStr) {
+			$timeObj = $page->timeHelper->str2time($timeStr);
+
+			return $timeObj->hour * 60 + $timeObj->minute;
+		}
+
+		$delta = timeStr2minutes($page, $FORM_stop_time) - timeStr2minutes($page, $FORM_start_time);
 		if($delta < 0) {
 			$delta += (24 * 60);
 		}
-		//
-		$FORM_start_ad = $page->field2SQL($_POST["start_ad"]);
-		$FORM_stop_ad = $page->field2SQL($_POST["stop_ad"]);
+
+		$FORM_start_ad = $page->dbText->field2SQL($_POST["start_ad"]);
+		$FORM_stop_ad = $page->dbText->field2SQL($_POST["stop_ad"]);
 		if($FORM_stop_ad == "") {
 			$FORM_stop_ad = $FORM_start_ad;
 		}
-		$FORM_aircraft = $page->field2SQL($_POST["aircraft"]);
-		$FORM_identification = $page->field2SQL($_POST["identification"]);
+		$FORM_aircraft = $page->dbText->field2SQL($_POST["aircraft"]);
+		$FORM_identification = $page->dbText->field2SQL($_POST["identification"]);
 		$FORM_SPMP = $_POST["SPMP"];
+
 		switch($_POST["SPMP"]) {
 		case "SP_SEP":
 			$SQL_SP_SEP = $delta;
@@ -176,17 +187,18 @@ if($UserIsAdmin) {
 			$SQL_MP = $delta;
 			break;
 		default:
-			$page->FatalError("If this message is displayed, you are trying to introduce malicious content to this website");
+			$page->logger->fatal("If this message is displayed, you are trying to introduce malicious content to this website");
 			break;
 		}
 
-		$FORM_PIC = $page->field2SQL($_POST["PIC"]);
-		$FORM_landings_day = (int)$page->field2SQL($_POST["landings_day"]);
-		$FORM_landings_night = (int)$page->field2SQL($_POST["landings_night"]);
-		$FORM_night_time = (int)$page->field2SQL($_POST["night_time"]);
-		$FORM_IFR_time = (int)$page->field2SQL($_POST["IFR_time"]);
+		$FORM_PIC = $page->dbText->field2SQL($_POST["PIC"]);
+		$FORM_landings_day = (int)$page->dbText->field2SQL($_POST["landings_day"]);
+		$FORM_landings_night = (int)$page->dbText->field2SQL($_POST["landings_night"]);
+		$FORM_night_time = (int)$page->dbText->field2SQL($_POST["night_time"]);
+		$FORM_IFR_time = (int)$page->dbText->field2SQL($_POST["IFR_time"]);
 		if($FORM_night_time > $delta || $FORM_IFR_time > $delta) {
-			$page->ln_3(3, "Night and IFR conditions cannot exceed global time, setting max");
+			$logger->info("Night and IFR conditions cannot exceed global time, setting max");
+
 			if($FORM_night_time > $delta) {
 				$FORM_night_time = $delta;
 			}
@@ -194,7 +206,9 @@ if($UserIsAdmin) {
 				$FORM_IFR_time = $delta;
 			}
 		}
+
 		$FORM_function = $_POST["function"];
+
 		switch($_POST["function"]) {
 		case "PIC":
 			$FORM_PIC_time = true;
@@ -213,17 +227,19 @@ if($UserIsAdmin) {
 			$SQL_instructor_time = $delta;
 			break;
 		default:
-			$page->FatalError("If this message is displayed, you are trying to introduce malicious content to this website");
+			$page->logger->fatal("If this message is displayed, you are trying to introduce malicious content to this website");
 			break;
 		}
-		$FORM_notes = $page->field2SQL($_POST["notes"]);
-		$insert = $page->DB_QueryPrepare("INSERT INTO " . $page->ddb->DBname . " . `PilotLogbook` (`id`, `date`, `start_time`, `stop_time`, `start_ad`, `stop_ad`, `aircraft`, `identification`, `SP_SEP`, `SP_MEP`, `MP`, `PIC`, `landings_day`, `landings_night`, `night_time`, `IFR_time`, `PIC_time`, `copi_time`, `dual_time`, `instructor_time`, `notes`) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+
+		$FORM_notes = $page->dbText->field2SQL($_POST["notes"]);
+		$insert = $page->dbHelper->queryPrepare("INSERT INTO `{$page->dbHelper->dbName}` . `PilotLogbook` (`id`, `date`, `start_time`, `stop_time`, `start_ad`, `stop_ad`, `aircraft`, `identification`, `SP_SEP`, `SP_MEP`, `MP`, `PIC`, `landings_day`, `landings_night`, `night_time`, `IFR_time`, `PIC_time`, `copi_time`, `dual_time`, `instructor_time`, `notes`) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
 		$insert->bind_param("sssssssiiisiiiiiiiis", $FORM_date, $FORM_start_time, $FORM_stop_time, $FORM_start_ad, $FORM_stop_ad, $FORM_aircraft, $FORM_identification, $SQL_SP_SEP, $SQL_SP_MEP, $SQL_MP, $FORM_PIC, $FORM_landings_day, $FORM_landings_night, $FORM_night_time, $FORM_IFR_time, $SQL_PIC_time, $SQL_copi_time, $SQL_dual_time, $SQL_instructor_time, $FORM_notes);
-		$page->DB_ExecuteManage($insert);
-		$page->HeaderLocation("logbook.php");
+		$page->dbHelper->executeManage($insert);
+		$page->htmlHelper->headerLocation("logbook.php");
+
 	} elseif(isset($_POST["delete"])) {
 		$id = $_POST["delete"];
-		$exq = $page->DB_QueryManage("SELECT * FROM `PilotLogbook` WHERE `id` = $id");
+		$exq = $page->dbHelper->queryManage("SELECT * FROM `PilotLogbook` WHERE `id` = $id");
 		$extry = $exq->fetch_object();
 		$exq->close();
 		$FORM_date            = $extry->date;
@@ -239,13 +255,17 @@ if($UserIsAdmin) {
 		$SP_MEP          = $extry->SP_MEP;
 		$MP              = $extry->MP;
 		$FORM_SPMP = "";
+
 		if($SP_SEP > 0) {
 			$FORM_SPMP = "SP_SEP";
+
 		} elseif($SP_MEP > 0) {
 			$FORM_SPMP = "SP_MEP";
+
 		} elseif($MP > 0) {
 			$FORM_SPMP = "MP";
 		}
+
 		$FORM_PIC             = $extry->PIC;
 		$FORM_landings_day    = $extry->landings_day;
 		$FORM_landings_night  = $extry->landings_night;
@@ -255,25 +275,31 @@ if($UserIsAdmin) {
 		$copi_time       = $extry->copi_time;
 		$dual_time       = $extry->dual_time;
 		$instructor_time = $extry->instructor_time;
+
 		if($PIC_time > 0) {
 			$FORM_function = "PIC";
+
 		} elseif($copi_time > 0) {
 			$FORM_function = "copi";
+
 		} elseif($dual_time > 0) {
 			$FORM_function = "dual";
+
 		} elseif($instructor_time > 0) {
 			$FORM_function = "instructor";
 		}
+
 		$FORM_notes           = $extry->notes;
-		//
+
 		$deleted = "\n<!-- Deleted No $id -->\n";
 		$deleted .= "<tr id=\"deleted\">\n";
-		//
+
 		if($start_ad == "note" && $stop_ad == "note") {
 			// make single td colspan with remarks+delete
 			$deleted .= "<td colspan=\"21\" style=\"text-align: center;\">\n";
 			$deleted .= $notes;
 			$deleted .= "</td>\n";
+
 		} else {
 			$deleted .= "<td>$FORM_date</td>\n";
 			$deleted .= "<td>$FORM_start_ad</td>\n";
@@ -282,38 +308,40 @@ if($UserIsAdmin) {
 			$deleted .= "<td>$FORM_stop_ad</td>\n";
 			$deleted .= "<td>$FORM_aircraft</td>\n";
 			$deleted .= "<td>$FORM_identification</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($SP_SEP) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($SP_MEP) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($MP) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($SP_SEP + $SP_MEP + $MP) . "</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($SP_SEP)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($SP_MEP)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($MP)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($SP_SEP + $SP_MEP + $MP)}</td>\n";
 			$deleted .= "<td>$FORM_PIC</td>\n";
 			$deleted .= "<td class=\"num\">" . sprintf("%d", $FORM_landings_day) . "</td>\n";
 			$deleted .= "<td class=\"num\">" . sprintf("%d", $FORM_landings_night) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($night_time) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($IFR_time) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($PIC_time) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($copi_time) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($dual_time) . "</td>\n";
-			$deleted .= "<td class=\"num\">" . $page->minutesDisplay($instructor_time) . "</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($night_time)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($IFR_time)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($PIC_time)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($copi_time)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($dual_time)}</td>\n";
+			$deleted .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($instructor_time)}</td>\n";
 			$deleted .= "<td>$FORM_notes</td>\n";
 		}
+
 		$deleted .= "<td>DELETED!</td>\n";
 		$deleted .= "</tr>\n";
-		$page->DB_QueryManage("DELETE FROM `" . $page->ddb->DBname . "` . `PilotLogbook` WHERE `PilotLogbook` . `id` = $id LIMIT 1;");
+		$page->dbHelper->queryManage("DELETE FROM `{$page->dbHelper->dbName}` . `PilotLogbook` WHERE `PilotLogbook` . `id` = $id LIMIT 1;");
 	}
 }
 
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body .= $page->bodyHelper->goHome("..");
 if($UserIsAdmin) {
-	$body .= $page->FormTag();
+	$body .= $page->formHelper->tag();
 }
 $body .= "<div class=\"std\">\n";
-$body .= $page->SetTitle("My Pilot Logbook");
-$page->HotBooty();
-//
-	//// run through DB to make body of table
+$body .= $page->htmlHelper->setTitle("My Pilot Logbook");
+$page->htmlHelper->hotBooty();
+
+$attrSize = new FieldAttributes();
+$attrSize->size = $formsize;
+
+	// run through DB to make body of table
 		/*** some vars to prepare ***/
 		$sum_SP_SEP = 0;
 		$sum_SP_MEP = 0;
@@ -331,7 +359,7 @@ $page->HotBooty();
 		/*** run DB ***/
 		$tbody = "";
 		$tbody .= "<tbody>\n";
-		$contents = $page->DB_QueryManage("SELECT * FROM `PilotLogbook` ORDER BY `date` DESC, `start_time` DESC");
+		$contents = $page->dbHelper->queryManage("SELECT * FROM `PilotLogbook` ORDER BY `date` DESC, `start_time` DESC");
 		if($contents->num_rows == 0) {
 			// colspan all saying nothing in DB
 			$tbody .= "<tr>\n";
@@ -436,24 +464,24 @@ $page->HotBooty();
 					$tbody .= "<td class=\"stop_ad\">$stop_ad</td>\n";
 					$tbody .= "<td class=\"aircraft\">$aircraft</td>\n";
 					$tbody .= "<td class=\"identification\">$identification</td>\n";
-					$tbody .= "<td class=\"SP_SEP num\">" . $page->minutesDisplay($SP_SEP) . "</td>\n";
-					$tbody .= "<td class=\"SP_MEP num\">" . $page->minutesDisplay($SP_MEP) . "</td>\n";
-					$tbody .= "<td class=\"MP num\">" . $page->minutesDisplay($MP) . "</td>\n";
-					$tbody .= "<td class=\"SP_MP num\">" . $page->minutesDisplay($SP_SEP + $SP_MEP + $MP) . "</td>\n";
+					$tbody .= "<td class=\"SP_SEP num\">{$page->timeHelper->minutesDisplay($SP_SEP)}</td>\n";
+					$tbody .= "<td class=\"SP_MEP num\">{$page->timeHelper->minutesDisplay($SP_MEP)}</td>\n";
+					$tbody .= "<td class=\"MP num\">{$page->timeHelper->minutesDisplay($MP)}</td>\n";
+					$tbody .= "<td class=\"SP_MP num\">{$page->timeHelper->minutesDisplay($SP_SEP + $SP_MEP + $MP)}</td>\n";
 					$tbody .= "<td class=\"PICname\">$PIC</td>\n";
 					$tbody .= "<td class=\"landings_day num\">" . sprintf("%d", $landings_day) . "</td>\n";
 					$tbody .= "<td class=\"landings_night num\">" . sprintf("%d", $landings_night) . "</td>\n";
-					$tbody .= "<td class=\"night num\">" . $page->minutesDisplay($night_time) . "</td>\n";
-					$tbody .= "<td class=\"IFR num\">" . $page->minutesDisplay($IFR_time) . "</td>\n";
-					$tbody .= "<td class=\"PIC num\">" . $page->minutesDisplay($PIC_time) . "</td>\n";
-					$tbody .= "<td class=\"copi num\">" . $page->minutesDisplay($copi_time) . "</td>\n";
-					$tbody .= "<td class=\"dual num\">" . $page->minutesDisplay($dual_time) . "</td>\n";
-					$tbody .= "<td class=\"instructor num\">" . $page->minutesDisplay($instructor_time) . "</td>\n";
+					$tbody .= "<td class=\"night num\">{$page->timeHelper->minutesDisplay($night_time)}</td>\n";
+					$tbody .= "<td class=\"IFR num\">{$page->timeHelper->minutesDisplay($IFR_time)}</td>\n";
+					$tbody .= "<td class=\"PIC num\">{$page->timeHelper->minutesDisplay($PIC_time)}</td>\n";
+					$tbody .= "<td class=\"copi num\">{$page->timeHelper->minutesDisplay($copi_time)}</td>\n";
+					$tbody .= "<td class=\"dual num\">{$page->timeHelper->minutesDisplay($dual_time)}</td>\n";
+					$tbody .= "<td class=\"instructor num\">{$page->timeHelper->minutesDisplay($instructor_time)}</td>\n";
 					$tbody .= "<td class=\"notes\">$notes</td>\n";
 				}
 				$tbody .= "<td>";
 				if($UserIsAdmin) {
-					$tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" onclick='return ConfirmErase(\"" . html_entity_decode($page->SQL2field($notes)) . "\")' />";
+					$tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" onclick='return ConfirmErase(\"" . html_entity_decode($page->dbText->sql2field($notes)) . "\")' />";
 				}
 				$tbody .= "</td>\n";
 				$tbody .= "</tr>\n";
@@ -507,19 +535,19 @@ $page->HotBooty();
 		$tsum = "";
 		$tsum .= "<tr>\n";
 		$tsum .= "<th colspan=\"7\"></th>\n";
-		$tsum .= "<th class=\"SP_SEP num\">SEP " . $page->minutesDisplay($sum_SP_SEP) . "</th>\n";
-		$tsum .= "<th class=\"SP_MEP num\">MEP " . $page->minutesDisplay($sum_SP_MEP) . "</th>\n";
-		$tsum .= "<th class=\"MP num\">MP " . $page->minutesDisplay($sum_MP)     . "</th>\n";
-		$tsum .= "<th class=\"SP_MP num\">" . $page->minutesDisplay($sum_SP_SEP + $sum_SP_MEP + $sum_MP) . "</th>\n";
+		$tsum .= "<th class=\"SP_SEP num\">SEP {$page->timeHelper->minutesDisplay($sum_SP_SEP)}</th>\n";
+		$tsum .= "<th class=\"SP_MEP num\">MEP {$page->timeHelper->minutesDisplay($sum_SP_MEP)}</th>\n";
+		$tsum .= "<th class=\"MP num\">MP {$page->timeHelper->minutesDisplay($sum_MP)}</th>\n";
+		$tsum .= "<th class=\"SP_MP num\">{$page->timeHelper->minutesDisplay($sum_SP_SEP + $sum_SP_MEP + $sum_MP)}</th>\n";
 		$tsum .= "<th></th>\n";
 		$tsum .= "<th class=\"landings_day num\">day $sum_landings_day</th>\n";
 		$tsum .= "<th class=\"landings_night num\">night $sum_landings_night</th>\n";
-		$tsum .= "<th class=\"night num\">night " . $page->minutesDisplay($sum_night) . "</th>\n";
-		$tsum .= "<th class=\"IFR num\">IFR " . $page->minutesDisplay($sum_IFR)   . "</th>\n";
-		$tsum .= "<th class=\"PIC num\">PIC " . $page->minutesDisplay($sum_PIC)   . "</th>\n";
-		$tsum .= "<th class=\"copi num\">copi " . $page->minutesDisplay($sum_copi)  . "</th>\n";
-		$tsum .= "<th class=\"dual num\">dual " . $page->minutesDisplay($sum_dual)  . "</th>\n";
-		$tsum .= "<th class=\"instructor num\">inst. " . $page->minutesDisplay($sum_instructor) . "</th>\n";
+		$tsum .= "<th class=\"night num\">night {$page->timeHelper->minutesDisplay($sum_night)}</th>\n";
+		$tsum .= "<th class=\"IFR num\">IFR {$page->timeHelper->minutesDisplay($sum_IFR)}</th>\n";
+		$tsum .= "<th class=\"PIC num\">PIC {$page->timeHelper->minutesDisplay($sum_PIC)}</th>\n";
+		$tsum .= "<th class=\"copi num\">copi {$page->timeHelper->minutesDisplay($sum_copi)}</th>\n";
+		$tsum .= "<th class=\"dual num\">dual {$page->timeHelper->minutesDisplay($sum_dual)}</th>\n";
+		$tsum .= "<th class=\"instructor num\">inst. {$page->timeHelper->minutesDisplay($sum_instructor)}</th>\n";
 		$tsum .= "<th colspan=\"2\"></th>\n";
 		$tsum .= "</tr>\n";
 	//
@@ -534,136 +562,97 @@ $page->HotBooty();
 			$FORM_identification = $defaults["ID"];
 		}
 	//
-		//// insert row...
+		// insert row...
 		$tinsert = "";
 		if($UserIsAdmin) {
-			//// ...only if allowed!
+			// ...only if allowed!
 			$tinsert .= "<tr>\n";
-				//// Date
-				$args = new stdClass();
-				$args->type = "Date";
-				$args->name = "date";
-				$args->value = $FORM_date;
-				$args->yearFirst = 2000;
-				$args->yearLast = 0;
-				$tinsert .= "<td class=\"date\">" . $page->FormField($args) . "</td>\n";
+				// Date
+				$attrDate = new FieldAttributes();
+				$attrDate->max = "now";
+				$tinsert .= "<td class=\"date\">";
+				$tinsert .= $theDateInput->get("date", $FORM_date, NULL, $attrDate);  // TODO
+				$tinsert .= "</td>\n";
 			//
-				//// start AD
-				$args = new stdClass();
-				$args->type = "text";
-				$args->name = "start_ad";
-				$args->value = $FORM_start_ad;
-				$args->size = $formsize;
-				$args->ListID = "AD";
-				$args->datalist = $AD_list;
-				$tinsert .= "<td class=\"start_ad\">" . $page->FormField($args) . "</td>\n";
+				// start AD
+				$tinsert .= "<td class=\"start_ad\">";
+				$tinsert .= $theTextInput->get("start_ad", $FORM_start_ad, NULL, $AD_list, $attrSize);
+				$tinsert .= "</td>\n";
 			//
-				//// start time
-				$args = new stdClass();
-				$args->type = "Time";
-				$args->name = "start_time";
-				$args->value = $FORM_start_time;
-				$args->doSecond = false;
-				$tinsert .= "<td class=\"start_time\">" . $page->FormField($args) . "</td>\n";
+				// time
+				$attrTime = new FieldAttributes();
+				$attrTime->max = "now";
+
+				$tinsert .= "<td class=\"start_time\">";
+				$tinsert .= $theTimeInput->get("start_time", $FORM_start_time, NULL, $attrTime);
+				$tinsert .= "</td>\n";
+
+				$tinsert .= "<td class=\"start_time\">";
+				$tinsert .= $theTimeInput->get("stop_time", $FORM_stop_time, NULL, $attrTime);
+				$tinsert .= "</td>\n";
 			//
-				//// stop time
-				$args = new stdClass();
-				$args->type = "Time";
-				$args->name = "stop_time";
-				$args->value = $FORM_stop_time;
-				$args->doSecond = false;
-				$tinsert .= "<td class=\"stop_time\">" . $page->FormField($args) . "</td>\n";
+				// stop AD
+				$tinsert .= "<td class=\"stop_ad\">";
+				$tinsert .= $theTextInput->get("stop_ad", $FORM_stop_ad, NULL, "start_ad_datalist", $attrSize);
+				$tinsert .= "</td>\n";
 			//
-				//// stop AD
-				$args = new stdClass();
-				$args->type = "text";
-				$args->name = "stop_ad";
-				$args->value = $FORM_stop_ad;
-				$args->size = $formsize;
-				$args->ListID = "AD";
-				$tinsert .= "<td class=\"stop_ad\">" . $page->FormField($args) . "</td>\n";
+				// aircraft type
+				$tinsert .= "<td class=\"aircraft\">";
+				$tinsert .= $theTextInput->get("aircraft", $FORM_aircraft, NULL, $type_list, $attrSize);
+				$tinsert .= "</td>\n";
 			//
-				//// aircraft type
-				$args = new stdClass();
-				$args->type = "text";
-				$args->name = "aircraft";
-				$args->value = $FORM_aircraft;
-				$args->size = $formsize;
-				$args->ListID = "type_list";
-				$args->datalist = $type_list;
-				$tinsert .= "<td class=\"aircraft\">" . $page->FormField($args) . "</td>\n";
+				// identification
+				$tinsert .= "<td class=\"identification\">";
+				$tinsert .= $theTextInput->get("identification", $FORM_identification, NULL, $ID_list, $attrSize);
+				$tinsert .= "</td>\n";
 			//
-				//// identification
-				$args = new stdClass();
-				$args->type = "text";
-				$args->name = "identification";
-				$args->value = $FORM_identification;
-				$args->size = $formsize;
-				$args->ListID = "ID_list";
-				$args->datalist = $ID_list;
-				$tinsert .= "<td class=\"identification\">" . $page->FormField($args) . "</td>\n";
-			//
-				//// SEP,MEP,MP
-				$args = new stdClass();
-				$args->type = "select";
-				$args->name = "SPMP";
-				$args->list = $SPMP_list;
-				$args->value = $FORM_SPMP;
-				$tinsert .= "<td class=\"SPMP\" colspan=\"3\">" . $page->FormField($args) . "</td>\n";
+				// SEP,MEP,MP
+				$tinsert .= "<td class=\"SPMP\" colspan=\"3\">";
+				$tinsert .= $theSelectInput->get("SPMP", $SPMP_list, $FORM_SPMP);
+				$tinsert .= "</td>\n";
+
 				$tinsert .= "<td class=\"SP_MP\"></td>\n";
 			//
-				//// PIC name
-				$args = new stdClass();
-				$args->type = "text";
-				$args->name = "PIC";
-				$args->value = $FORM_PIC;
-				$args->size = $formsize;
-				$args->ListID = "PIClist";
-				$args->datalist = $PIC_list;
-				$tinsert .= "<td class=\"PICname\">" . $page->FormField($args) . "</td>\n";
+				// PIC name
+				$tinsert .= "<td class=\"PICname\">";
+				$tinsert .= $theTextInput->get("PIC", $FORM_PIC, NULL, $PIC_list, $attrSize);
+				$tinsert .= "</td>\n";
 			//
-				//// landings day
-				$args = new stdClass();
-				$args->type = "number";
-				$args->name = "landings_day";
-				$args->value = $FORM_landings_day;
-				$args->css = "right";
-				$args->min = 0;
-				$tinsert .= "<td class=\"landings_day\">" . $page->FormField($args) . "</td>\n";
+			$attrMin0 = new FieldAttributes();
+			$attrMin0->min = 0;
+
+				// landings day
+				//$args->css = "right";  // TODO edit css to have this
+				$tinsert .= "<td class=\"landings_day\">";
+				$tinsert .= $theNumberInput->get("landings_day", $FORM_landings_day, NULL, $attrMin0);
+				$tinsert .= "</td>\n";
 			//
-				//// landings night
-				$args->name = "landings_night";
-				$args->value = $FORM_landings_night;
-				$tinsert .= "<td class=\"landings_night\">" . $page->FormField($args) . "</td>\n";
+				// landings night
+				$tinsert .= "<td class=\"landings_night\">";
+				$tinsert .= $theNumberInput->get("landings_night", $FORM_landings_night, NULL, $attrMin0);
+				$tinsert .= "</td>\n";
 			//
-				//// NVFR
-				$args->name = "night_time";
-				$args->value = $FORM_night_time;
-				$tinsert .= "<td class=\"night\">" . $page->FormField($args) . "</td>\n";
+				// NVFR
+				$tinsert .= "<td class=\"night\">";
+				$tinsert .= $theNumberInput->get("night_time", $FORM_night_time, NULL, $attrMin0);
+				$tinsert .= "</td>\n";
 			//
-				//// IFR
-				$args->name = "IFR_time";
-				$args->value = $FORM_IFR_time;
-				$tinsert .= "<td class=\"IFR\">" . $page->FormField($args) . "</td>\n";
+				// IFR
+				$tinsert .= "<td class=\"IFR\">";
+				$tinsert .= $theNumberInput->get("IFR_time", $FORM_IFR_time, NULL, $attrMin0);
+				$tinsert .= "</td>\n";
 			//
-				//// PIC,COPI,DUAL,INSTRUCTOR
-				$args = new stdClass();
-				$args->type = "select";
-				$args->name = "function";
-				$args->list = $function_list;
-				$args->value = $FORM_function;
-				$tinsert .= "<td class=\"function\" colspan=\"4\">" . $page->FormField($args) . "</td>\n";
+				// PIC,COPI,DUAL,INSTRUCTOR
+				$tinsert .= "<td class=\"function\" colspan=\"4\">";
+				$tinsert .= $theSelectInput->get("function", $function_list, $FORM_function);
+				$tinsert .= "</td>\n";
 			//
-				//// notes
-				$args = new stdClass();
-				$args->type = "text";
-				$args->name = "notes";
-				$args->value = $FORM_notes;
-				$args->size = 0;
-				$args->css = "";
-				$tinsert .= "<td class=\"notes\">" . $page->FormField($args) . "</td>\n";
+				// notes
+				$tinsert .= "<td class=\"notes\">";
+				$tinsert .= $theTextInput->get("notes", $FORM_notes);
+				$tinsert .= "</td>\n";
 			//
-				//// submit
+				// submit
 				$tinsert .= "<td><input type=\"submit\" name=\"add\" value=\"add\" onclick=\"SubmitForm()\"/></td>\n";
 			$tinsert .= "</tr>\n";
 		}
@@ -675,30 +664,30 @@ $page->HotBooty();
 		$tab .= $tinsert;
 		$tab .= $tsum;
 		$tab .= $tbody;
-//
-//
+
+
 $body .= "<div>\n";
 $body .= "<p>All times are local time.</p>\n";
 $body .= "<p class=\"pl\">Licence number CH.FCL.47359&nbsp;-&nbsp;Initially issued on 2014-09-15</p>\n";
 $body .= "<p class=\"pl\">Medical number CH-REF-17156</p>\n";
 $body .= "</div>\n";
-//
+
 $queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP`, SUM(MP) AS `sMP`, SUM(night_time) AS `sNight`, SUM(landings_day) AS `sLD`, SUM(landings_night) AS `sLN` FROM `PilotLogbook`";
 
 	// Time (total, last year+month) and familiy time
-	$total_db = $page->DB_QueryManage($queryTimeLandings);
+	$total_db = $page->dbHelper->queryManage($queryTimeLandings);
 	$total_item = $total_db->fetch_object();
 	$total_db->close();
 
-	$pic_db = $page->DB_QueryManage("$queryTimeLandings WHERE `PIC` = '" . $page->miscInit->lastName . "'");
+	$pic_db = $page->dbHelper->queryManage("$queryTimeLandings WHERE `PIC` = '" . $page->miscInit->lastName . "'");
 	$pic_item = $pic_db->fetch_object();
 	$pic_db->close();
 
-	$year_db  = $page->DB_QueryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 365");
+	$year_db  = $page->dbHelper->queryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 365");
 	$year_item = $year_db->fetch_object();
 	$year_db->close();
 
-	$three_db = $page->DB_QueryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 90");
+	$three_db = $page->dbHelper->queryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 90");
 	$three_item = $three_db->fetch_object();
 	$three_db->close();
 
@@ -710,11 +699,11 @@ $queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP
 	$DueMonth         = sprintf("%02d", $DueMonth);
 	$DueDayMinusOne = "01";
 
-	$revalid_db = $page->DB_QueryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay'");
+	$revalid_db = $page->dbHelper->queryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay'");
 	$revalid_item = $revalid_db->fetch_object();
 	$revalid_db->close();
 
-	$revalidPIC_db = $page->DB_QueryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay' AND `PIC` = '" . $page->miscInit->lastName . "'");
+	$revalidPIC_db = $page->dbHelper->queryManage("$queryTimeLandings WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' AND `date` <= '$DueYear-$DueMonth-$DueDay' AND `PIC` = '" . $page->miscInit->lastName . "'");
 	$revalidPIC_item = $revalidPIC_db->fetch_object();
 	$revalidPIC_db->close();
 //
@@ -725,13 +714,12 @@ $queryTimeLandings = "SELECT `date`, SUM(SP_SEP) AS `sSEP`, SUM(SP_MEP) AS `sMEP
 	$Kayra_item = familyTime($page, "Kayra");
 	$Alicia_item = familyTime($page, "Alicia");
 
-$today = $page->GetNow();
-$today = $today->date;
-//
+$today = $page->timeHelper->getNow()->date;
+
 	// Table summary of visited fields (displayed later)
 	$visited = "";
 		// DB
-		$visited_db = $page->DB_QueryManage("SELECT DISTINCT `start_ad` AS `airfield` FROM `PilotLogbook` WHERE `start_ad` <> 'note' UNION SELECT DISTINCT `stop_ad` AS `airfield` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' ORDER BY `airfield`");
+		$visited_db = $page->dbHelper->queryManage("SELECT DISTINCT `start_ad` AS `airfield` FROM `PilotLogbook` WHERE `start_ad` <> 'note' UNION SELECT DISTINCT `stop_ad` AS `airfield` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' ORDER BY `airfield`");
 
 		$visitedFamily = array();
 		$visitedFamily["AL"] = familyVisited($page, "AnneLaure");
@@ -815,25 +803,25 @@ $today = $today->date;
 		//// All plane types
 		$body .= "<tr class=\"odd\">\n";
 		$body .= "<td><b>All types</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($total_item->sSEP + $total_item->sMEP + $total_item->sMP) . "</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . ($total_item->sLD + $total_item->sLN) . "</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP) . "</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . ($year_item->sLD + $year_item->sLN) . "</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP) . "</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . ($three_item->sLD + $sLN) . "</b></td>\n";
-		$body .= "<td class=\"num\"><b>" . $page->minutesDisplay($three_item->sNight) . "</b></td>\n";
+		$body .= "<td class=\"num\"><b>{$page->timeHelper->minutesDisplay($total_item->sSEP + $total_item->sMEP + $total_item->sMP)}</b></td>\n";
+		$body .= "<td class=\"num\"><b>{($total_item->sLD + $total_item->sLN)}</b></td>\n";
+		$body .= "<td class=\"num\"><b>{$page->timeHelper->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP)}</b></td>\n";
+		$body .= "<td class=\"num\"><b>{($year_item->sLD + $year_item->sLN)}</b></td>\n";
+		$body .= "<td class=\"num\"><b>{$page->timeHelper->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP)}</b></td>\n";
+		$body .= "<td class=\"num\"><b>{($three_item->sLD + $sLN)}</b></td>\n";
+		$body .= "<td class=\"num\"><b>{$page->timeHelper->minutesDisplay($three_item->sNight)}</b></td>\n";
 		$body .= "<td class=\"num\"><b>$sLN</b></td>\n";
 		$body .= "</tr>\n";
 	//
-	$airplanes_db = $page->DB_QueryManage("SELECT DISTINCT `aircraft` FROM `PilotLogbook` ORDER BY `aircraft` ASC");
+	$airplanes_db = $page->dbHelper->queryManage("SELECT DISTINCT `aircraft` FROM `PilotLogbook` ORDER BY `aircraft` ASC");
 	$onetwo = 1;
 	while($plane_item = $airplanes_db->fetch_object()) {
 		$plane = $plane_item->aircraft;
 		if($plane != "none" && $plane != "") {
 			$onetwo++;
-			$total_db = $page->DB_QueryManage("$queryTimeLandings WHERE `aircraft` = '$plane'");
-			$year_db  = $page->DB_QueryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 365");
-			$three_db = $page->DB_QueryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 90");
+			$total_db = $page->dbHelper->queryManage("$queryTimeLandings WHERE `aircraft` = '$plane'");
+			$year_db  = $page->dbHelper->queryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 365");
+			$three_db = $page->dbHelper->queryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 90");
 			$total_item = $total_db->fetch_object();
 			$total_db->close();
 			$year_item = $year_db->fetch_object();
@@ -849,13 +837,13 @@ $today = $today->date;
 			}
 			$body .= "\">\n";
 			$body .= "<td><b>$plane</b></td>\n";
-			$body .= "<td class=\"num\">" . $page->minutesDisplay($total_item->sSEP + $total_item->sMEP + $total_item->sMP) . "</td>\n";
-			$body .= "<td class=\"num\">" . ($total_item->sLD + $total_item->sLN) . "</td>\n";
-			$body .= "<td class=\"num\">" . $page->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP) . "</td>\n";
-			$body .= "<td class=\"num\">" . ($year_item->sLD + $year_item->sLN) . "</td>\n";
-			$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP) . "</td>\n";
-			$body .= "<td class=\"num\">" . ($three_item->sLD + $sLN) . "</td>\n";
-			$body .= "<td class=\"num\">" . $page->minutesDisplay($three_item->sNight) . "</td>\n";
+			$body .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($total_item->sSEP + $total_item->sMEP + $total_item->sMP)}</td>\n";
+			$body .= "<td class=\"num\">{($total_item->sLD + $total_item->sLN)}</td>\n";
+			$body .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($year_item->sSEP + $year_item->sMEP + $year_item->sMP)}</td>\n";
+			$body .= "<td class=\"num\">{($year_item->sLD + $year_item->sLN)}</td>\n";
+			$body .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($three_item->sSEP + $three_item->sMEP + $three_item->sMP)}</td>\n";
+			$body .= "<td class=\"num\">{($three_item->sLD + $sLN)}</td>\n";
+			$body .= "<td class=\"num\">{$page->timeHelper->minutesDisplay($three_item->sNight)}</td>\n";
 			$body .= "<td class=\"num\">$sLN</td>\n";
 			$body .= "</tr>\n";
 		}
@@ -878,10 +866,10 @@ $today = $today->date;
 	}
 
 	$body .= "</div>\n";
-//
+
 $body .= "</div>\n";
-//
-//
+
+
 $body .= "<div class=\"table\">\n";
 $body .= "<h2>Logbook</h2>\n";
 $body .= "<p>Sorted in antechronological order: most recent comes first.</p>\n";
@@ -892,11 +880,11 @@ $body .= "<table>\n";
 $body .= $tab;
 $body .= "</table>\n";
 $body .= "</div>\n";
-//
+
 if($UserIsAdmin) {
 	$body .= "</form>\n";
 }
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

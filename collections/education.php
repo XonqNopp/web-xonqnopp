@@ -1,26 +1,21 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->initDB();
-//// debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
-//// CSS paths
-$page->CSS_ppJump();
-//$page->CSS_ppWing();
-//// init body
-$body = "";
+//$page->dbHelper->init();
+// debug
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
+// CSS paths
+//$page->cssHelper->dirUpWing();
 
 
-//// GoHome
-$gohome = new stdClass();
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
-//// Set title and hot booty
-$body .= $page->SetTitle("&Eacute;ducation positive");// before HotBooty
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
+
+// Set title and hot booty
+$body .= $page->htmlHelper->setTitle("&Eacute;ducation positive");// before HotBooty
+$page->htmlHelper->hotBooty();
 
 $body .= "<p>Petit r&eacute;sum&eacute; <b>subjectif</b> de:\n";
 $body .= "<i>Mon p'tit cahier d'&Eacute;ducation positive</i>,\n";
@@ -916,6 +911,6 @@ $body .= "</ul></div>\n";
 
 echo $body;
 
-//// Finish
+// Finish
 unset($page);
 ?>

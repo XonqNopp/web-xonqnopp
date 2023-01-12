@@ -1,13 +1,22 @@
 <?php
+require("/functions/logging.php");
+require("/functions/utils.php");
+
 use stdClass;
 use SimpleXMLElement;
 
-function fetch_ISBN(PhPage $page, $type, $isbn) {
-	$page->ln_3(6, "fetch_ISBN($type, $isbn)", "LOCAL");
+function fetch_ISBN($type, $isbn) {
+	global $theLogger;
+
+	$theLogger->trace("fetch_ISBN($type, $isbn)", "LOCAL");
+
 	$infos = new stdClass();
 	$key = "UMXZQZA8";
 	$fullurl = "http://isbndb.com/api/v2/xml/$key/books?q=$isbn";
-	$xml = new SimpleXMLElement($page->RIP_curl($fullurl));
+
+	global $theUtilsHelper;
+	$xml = new SimpleXMLElement($theUtilsHelper->ripCurl($fullurl));
+
 	$data = $xml->data[0];
 	$infos->isbn      = $isbn;
 	$infos->author    = "";
@@ -16,7 +25,8 @@ function fetch_ISBN(PhPage $page, $type, $isbn) {
 	$infos->tome      = "";
 	$infos->publisher = "";
 	if($xml->result_count > 0) {
-		$page->ln_3(5, "fetch_ISBN found result", "LOCAL");
+		$theLogger->debug("fetch_ISBN found result", "LOCAL");
+
 		foreach($data->author_data as $a) {
 			if($infos->author != "") {
 				$infos->author .= ", ";

@@ -91,57 +91,6 @@ div.book_info_summary {
 }
 
 
-
-
-div.book_new_isbn {
-	padding: 7pt 2cm;
-}
-
-div.book_new_title {
-	padding: 7pt 2cm;
-}
-
-div.book_new_author {
-	padding: 7pt 2cm;
-}
-
-div.book_new_serie {
-	padding: 7pt 2cm;
-}
-
-div.book_new_number {
-	padding: 7pt 2cm;
-}
-
-div.book_new_publisher {
-	padding: 7pt 2cm;
-}
-
-div.book_new_date {
-	padding: 7pt 2cm;
-}
-
-div.book_new_summary {
-	padding: 7pt 3cm;
-}
-
-div.book_new_language {
-	padding: 7pt 2cm;
-}
-
-div.book_new_cat {
-	padding: 7pt 2cm;
-}
-
-div.book_new_valbut {
-	padding: 7pt 2cm;
-	margin-bottom: 2cm;
-}
-
-
-
-
-
 table.book_serie_table {
 	margin-left: 2cm;
 }
@@ -165,5 +114,3 @@ td.book_serie_table_author {
 td.bor1 a {
 	color : #ff6600;
 }
-
-

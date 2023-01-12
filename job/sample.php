@@ -2,7 +2,7 @@
 // TODO redo this page with goal at 42h/w and 5w holidays
 // TODO then compute 1w holliday, 1h/w, -10%/w
 // TODO keep from-to, but default from==to (change link in other page)
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
@@ -22,15 +22,12 @@ if($from == 0 || $to == 0) {
 }
 $step =   2;
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Sample of salary");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("Sample of salary");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div>\n";
 $body .= "<ul>\n";
@@ -70,6 +67,6 @@ for($i = $from; $i <= $to; $i += $step) {
 $body .= "</table>\n";
 $body .= "</div>\n";
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

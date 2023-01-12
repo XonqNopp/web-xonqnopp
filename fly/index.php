@@ -1,49 +1,41 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
-//$page->initDB();
+//$page->logger->levelUp(6);
+//$page->dbHelper->init();
 require("preparations.php");
-use stdClass;
 
-$args = new stdClass();
-$args->redirect = "";
-$page->LoginCookie($args);
+//$page->cssHelper->dirUpWing();// cannot because it screws my display (but why?)
 
-$page->CSS_ppJump();
-//$page->CSS_ppWing();// cannot because it screws my display (but why?)
+$body = $page->bodyHelper->goHome("..");
 
-$body = "";
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Fly!");
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle("Fly!");
+$page->htmlHelper->hotBooty();
 
-$body .= "<div class=\"csstab64_table\" style=\"margin-bottom: 2em;\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
+$body .= $page->tableHelper->open();
+$body .= $page->tableHelper->rowOpen();
 	// PAX
-	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
-	$body .= "<a href=\"PAX.php?language=francais\">Informations pour mes passagers</a>\n";
-	$body .= "</div>\n";
+	$body .= $page->tableHelper->cellOpen("flyTitle");
+	$body .= "<a href=\"pax.php?language=francais\">Informations pour mes passagers</a>\n";
+	$body .= $page->tableHelper->cellClose();
 
 	// logbook
-	$body .= "<div class=\"csstab64_cell flyTitle\">\n";
+	$body .= $page->tableHelper->cellOpen("flyTitle");
 	$body .= "<a href=\"logbook.php\">My flight logbook</a>\n";
-	$body .= "</div>\n";
-$body .= "</div>\n";
-$body .= "</div>\n";
+	$body .= $page->tableHelper->cellClose();
 
+$body .= $page->tableHelper->rowClose();
+$body .= $page->tableHelper->close();
 
-$body .= "<div class=\"csstab64_table left\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
-	$body .= "<div class=\"csstab64_cell half\">\n";
+$body .= "<div></div>\n";  // some space
+
+$body .= $page->tableHelper->open("left");
+$body .= $page->tableHelper->rowOpen();
+	$body .= $page->tableHelper->cellOpen("half");
 		$body .= "<ul>\n";
-		// nav
-		$body .= "<li><a href=\"NavList.php\">my navigations</a></li>\n";
-		// PDF
+		$body .= "<li><a href=\"nav/index.php\">my navigations</a></li>\n";
 		$body .= "<li><a href=\"pdf\">my PDF/checklists</a></li>\n";
 		$body .= "<li><a href=\"computer.php\">computer</a></li>\n";
 		$body .= "</ul>\n";
@@ -70,16 +62,15 @@ $body .= "<div class=\"csstab64_row\">\n";
 		$body .= "<li><a target=\"_blank\" href=\"http://www.flightradar24.com/\">FlightRadar24</a></li>\n";
 		$body .= "<li><a target=\"_blank\" href=\"http://planefinder.net/\">PlaneFinder</a></li>\n";
 		$body .= "</ul>\n";
-	// Closing div
-	$body .= "</div>\n";
+	$body .= $page->tableHelper->cellClose();
 //
-	$body .= "<div class=\"csstab64_cell half\">\n";
-	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
-	$body .= "</div>\n";
+	$body .= $page->tableHelper->cellOpen("half");
+	$body .= commonPreparations($page->loginHelper->userIsAdmin(), $page->miscInit);
+	$body .= $page->tableHelper->cellClose();
 
-$body .= "</div>\n";
-$body .= "</div>\n";
+$body .= $page->tableHelper->rowClose();
+$body .= $page->tableHelper->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

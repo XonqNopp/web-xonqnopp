@@ -1,20 +1,16 @@
 <?php
-require("../functions/classPage.php");
+require("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$gohome = new stdClass();
-$gohome->page = "preparation";
-$gohome->rootpage = "..";
-$body .= $page->GoHome($gohome);
-$body .= $page->SetTitle("Stuff to have ready at interview");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome("..", "preparation.php");
+
+$body .= $page->htmlHelper->setTitle("Stuff to have ready at interview");
+$page->htmlHelper->hotBooty();
 
 $body .= "<ul>\n";
 $body .= "<li>What I do in my current position...</li>\n";
@@ -89,7 +85,7 @@ $body .= "</ul>\n";
 
 $body .= "<div><a href=\"http://www.kaspersky.com/recruitment-scheme/job-interview\" title=\"Prepare for an interview\">Prepare for an interview</a></div>\n";
 
-if($page->UserIsAdmin()) {
+if($page->loginHelper->userIsAdmin()) {
 	$body .= "<h2>ME</h2>\n";
 	$body .= "<p>Experimental physicist specialized in plasma physics and hydrodynamics, my experience brought me basics R&amp;D project management skills. I like learning and discovering new knowledges, and automate computer procedures with scripts.</p>\n";
 	$body .= "<p>Specialties:</p>\n";
@@ -101,6 +97,6 @@ if($page->UserIsAdmin()) {
 }
 
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>

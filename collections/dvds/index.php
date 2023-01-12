@@ -1,11 +1,11 @@
 <?php
-require("../../functions/classPage.php");
+require("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->dbHelper->init();
 
-require("${funcpath}_local/borrowback.php");
+require("{$funcpath}_local/borrowback.php");
 
 //require("$funcpath/fetch_from_imdb.php");
 //$body .= fetch_IMDB("http://www.imdb.fr/title/tt0112864/");
@@ -20,23 +20,18 @@ if(isset($_GET["back"])) {
 	borrow_back($page, "dvds", $_GET["back"], $backId);
 }
 
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$GI = $page->UserIsAdmin();
+$GI = $page->loginHelper->userIsAdmin();
 
-$getcount = $page->DB_QueryManage("SELECT COUNT(*) AS `the_count` FROM `dvds`");
+$getcount = $page->dbHelper->queryManage("SELECT COUNT(*) AS `the_count` FROM `dvds`");
 $fetch_count = $getcount->fetch_object();
 $dvd_count = $fetch_count->the_count;
 $getcount->close();
 
-$body = "";
-
-$args = new stdClass();
-$args->page = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("My $dvd_count DVDs");
-$page->HotBooty();
+$body = $page->bodyHelper->goHome(NULL, "..");
+$body .= $page->htmlHelper->setTitle("My $dvd_count DVDs");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div class=\"wide\">\n";
 $body .= "<div class=\"lhead\">\n";
@@ -56,23 +51,23 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 //// Display
-$dvds = $page->DB_QueryManage("SELECT *, " . $page->DB_SortAlpha("title") . " FROM `dvds` WHERE `category` <> 'tvserie' AND `title` <> '' ORDER BY " . $page->DB_OrderAlpha("title"));
-$series = $page->DB_QueryManage("SELECT *, " . $page->DB_SortAlpha("serie") . ", " . $page->DB_SortAlpha("title") . " FROM `dvds` WHERE `category` = 'tvserie' OR `serie` <> '' ORDER BY " . $page->DB_OrderAlpha("serie") . ", `number` ASC, " . $page->DB_OrderAlpha("title"));
-$series_count = $page->DB_QueryManage("SELECT COUNT(DISTINCT(serie)) AS `sc` FROM `dvds`");
+$dvds = $page->dbHelper->queryManage("SELECT *, " . $page->dbHelper->sortAlpha("title") . " FROM `dvds` WHERE `category` <> 'tvserie' AND `title` <> '' ORDER BY " . $page->dbHelper->orderAlpha("title"));
+$series = $page->dbHelper->queryManage("SELECT *, " . $page->dbHelper->sortAlpha("serie") . ", " . $page->dbHelper->sortAlpha("title") . " FROM `dvds` WHERE `category` = 'tvserie' OR `serie` <> '' ORDER BY " . $page->dbHelper->orderAlpha("serie") . ", `number` ASC, " . $page->dbHelper->orderAlpha("title"));
+$series_count = $page->dbHelper->queryManage("SELECT COUNT(DISTINCT(serie)) AS `sc` FROM `dvds`");
 $sc = $series_count->fetch_object();
 $series_count->close();
 $N = $sc->sc - 1.0;
 if($dvds->num_rows == 0) {
 	$body .= "Sorry, no result to display...";
 } else {
-	//// Results
+	// Results
 	if($series->num_rows > 0) {
-		//// Series
+		// Series
 		$body .= "<!--    SERIES   -->\n";
 		$body .= "<h3 class=\"dvd_display\">Series</h3>\n";
-		$body .= "<div class=\"csstab64_table dvd_display_table_serie\">\n";
-		$body .= "<div class=\"csstab64_row\">\n";
-		$body .= "<div class=\"csstab64_cell\">\n";
+		$body .= $page->tableHelper->open("dvd_display_table_serie");
+		$body .= $page->tableHelper->rowOpen();
+		$body .= $page->tableHelper->cellOpen();
 		$old_serie = "";
 		$serie_width = 3;
 		$serie_index = 0;
@@ -83,8 +78,8 @@ if($dvds->num_rows == 0) {
 				$serie_index++;
 				if($serie_index > $N / $serie_width) {
 					$serie_index = 0;
-					$body .= "</div>\n";
-					$body .= "<div class=\"csstab64_cell\">\n";
+					$body .= $page->tableHelper->cellClose();
+					$body .= $page->tableHelper->cellOpen();
 				}
 				$body .= "<div class=\"dvd_display_table_serie_item\">\n";
 				$id = $volume->id;
@@ -92,27 +87,27 @@ if($dvds->num_rows == 0) {
 				$body .= "</div>\n";
 			}
 		}
-		$body .= "</div>\n";
-		$body .= "</div>\n";
-		$body .= "</div>\n";
-		////
+		$body .= $page->tableHelper->cellClose();
+		$body .= $page->tableHelper->rowClose();
+		$body .= $page->tableHelper->close();
+
 		$body .= "<!--    DVDs     -->\n";
 		$body .= "<h3 class=\"dvd_display\">DVDs</h3>\n";
 	}
 	//// Individual DVDs (including those in series)
 	$N = $dvds->num_rows;
 	$dvd_width = 2;
-	$body .= "<div class=\"csstab64_table dvd_display_table\">\n";
-	$body .= "<div class=\"csstab64_row\">\n";
-	$body .= "<div class=\"csstab64_cell dvd_display_table_cell\">\n";
+	$body .= $page->tableHelper->open("dvd_display_table");
+	$body .= $page->tableHelper->rowOpen();
+	$body .= $page->tableHelper->cellOpen("dvd_display_table_cell");
 	$dvd_index = 0;
 	while($dvd = $dvds->fetch_object()) {
 		$dvd_index++;
 
 		if($dvd_index > $N * 1.0 / $dvd_width) {
 			$dvd_index = 0;
-			$body .= "</div>\n";
-			$body .= "<div class=\"csstab64_cell dvd_display_table_cell\">\n";
+			$body .= $page->tableHelper->cellClose();
+			$body .= $page->tableHelper->cellOpen("dvd_display_table_cell");
 		}
 
 		$id = $dvd->id;
@@ -144,13 +139,13 @@ if($dvds->num_rows == 0) {
 		$body .= "</div>\n";
 	}
 
-	$body .= "</div>\n";
-	$body .= "</div>\n";
-	$body .= "</div>\n";
+	$body .= $page->tableHelper->cellClose();
+	$body .= $page->tableHelper->rowClose();
+	$body .= $page->tableHelper->close();
 }
 $dvds->close();
 $series->close();
 
-$page->show($body);
+echo $body;
 unset($page);
 ?>
