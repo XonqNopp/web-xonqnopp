@@ -5,19 +5,9 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 $page->initDB();
 
-require("${funcpath}_local/borrowback.php");
-
-// Borrowed item came home
-if(isset($_GET["back"])) {
-	$backId = NULL;
-	if(isset($_GET["id"])) {
-		$backId = $_GET["id"];
-	}
-	borrow_back($page, "books", $_GET["back"], $backId);
-}
-
 $page->CSS_ppJump(2);
 $page->CSS_ppWing();
+
 
 $body = "";
 $args = new stdClass();
@@ -76,19 +66,21 @@ while($books->fetch()) {
 	}
 	$body .= "<tr class=\"book_serie_table\" id=\"b$id\">\n";
 	$body .= "<td class=\"book_serie_edit\">\n";
+
 	if($page->UserIsAdmin()) {
 		$body .= "<div class=\"InB EditBorrow\">\n";
 		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
 		$body .= "&nbsp;\n";
 		if($borrowed) {
-			$body .= "<a href=\"serie_display.php?id=$id&back\" title=\"back\">back</a>\n";
-			$body .= "&nbsp;-&nbsp;\n";
 			$body .= "<a href=\"../missings/index.php?view=books$id#books$id\" title=\"who\">who";
+
 		} else {
 			$body .= "<a href=\"../missings/insert.php?db=books&amp;id=$id\" title=\"borrow\">borrow</a>\n";
 		}
+
 		$body .= "</div>\n";
 	}
+
 	$body .= "</td>\n";
 	$body .= "<td class=\"book_serie_table_number\">$number</td>\n";
 	$body .= "<td class=\"$csstitle\">\n";

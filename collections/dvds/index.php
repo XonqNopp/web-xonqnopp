@@ -108,36 +108,42 @@ if($dvds->num_rows == 0) {
 	$dvd_index = 0;
 	while($dvd = $dvds->fetch_object()) {
 		$dvd_index++;
+
 		if($dvd_index > $N * 1.0 / $dvd_width) {
 			$dvd_index = 0;
 			$body .= "</div>\n";
 			$body .= "<div class=\"csstab64_cell dvd_display_table_cell\">\n";
 		}
+
 		$id = $dvd->id;
 		$title = $dvd->title;
 		$body .= "<div id=\"dvd$id\" class=\"flushleft";
 		if($dvd->borrowed) {
 			$body .= " away";
 		}
+
 		$body .= "\">\n";
+
 		if($GI) {
 			$body .= "<div class=\"InB EditBorrow\">\n";
 			$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
 			$body .= "&nbsp;\n";
 			if($dvd->borrowed) {
-				$body .= "<a href=\"index.php?back=$id\" title=\"back\">back</a>\n";
-				$body .= "&nbsp;-&nbsp;";
 				$body .= "<a href=\"../missings/index.php?view=dvds$id#dvds$id\" title=\"who\">who";
+
 			} else {
 				$body .= "<a href=\"../missings/insert.php?db=dvds&amp;id=$id\" title=\"borrow\">borrow</a>\n";
 			}
+
 			$body .= "</div>\n";
 		}
+
 		$body .= "<div class=\"InB MainBook\">\n";
 		$body .= "<a href=\"display.php?id=$id\" title=\"$title\">$title</a>\n";
 		$body .= "</div>\n";
 		$body .= "</div>\n";
 	}
+
 	$body .= "</div>\n";
 	$body .= "</div>\n";
 	$body .= "</div>\n";

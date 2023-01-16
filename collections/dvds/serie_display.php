@@ -7,21 +7,11 @@ $page = new PhPage($rootPath);
 //$page->initHTML();
 $page->initDB();
 
-require("${funcpath}_local/borrowback.php");
-
-// Borrowed item came home
-if(isset($_GET["back"])) {
-	$backId = NULL;
-	if(isset($_GET["id"])) {
-		$backId = $_GET["id"];
-	}
-	borrow_back($page, "dvds", $_GET["back"], $backId);
-}
-
 $page->CSS_ppJump(2);
 $page->CSS_ppWing();
 
 $GI = $page->UserIsAdmin();
+
 
 $body = "";
 $args = new stdClass();
@@ -79,32 +69,34 @@ while($dvds->fetch()) {
 		$csstitle .= " away";
 	}
 	$body .= "<tr class=\"dvd_serie_table\">\n";
+
 	// Edit
 	$body .= "<td class=\"dvd_serie_table_edit\">\n";
 	if($GI) {
 		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
 	}
 	$body .= "</td>\n";
+
 	// Borrow
 	$body .= "<td class=\"dvd_serie_borrow\">\n";
 	if($GI) {
-		$body .= "<a href=\"";
 		if($borrowed) {
-			$body .= "serie_display.php?id=$serie_id&amp;back=$id\" title=\"back\">back";
-			$body .= "&nbsp;-&nbsp;\n";
-			$body .= "<a href=\"../missings/index.php?view=dvds$id#dvds$id\" title=\"who\">who";
+			$body .= "<a href=\"../missings/index.php?view=dvds$id#dvds$id\" title=\"who\">who</a>\n";
+
 		} else {
-			$body .= "../missings/insert.php?db=dvds&amp;id=$id\" title=\"borrow\">borrow";
+			$body .= "<a href=\"../missings/insert.php?db=dvds&amp;id=$id\" title=\"borrow\">borrow</a>\n";
 		}
-		$body .= "</a>\n";
 	}
+
 	$body .= "</td>\n";
+
 	// Number
 	if($number != "" && $number != "0") {
 		$body .= "<td class=\"dvd_serie_table_number\">$number</td>\n";
 	} else {
 		$body .= "<td class=\"dvd_serie_table_number\"></td>\n";
 	}
+
 	// Title
 	$body .= "<td class=\"$csstitle\">\n";
 	$body .= "<a id=\"b$id\" class=\"dvd_serie_display_title\"";

@@ -113,31 +113,37 @@ if($books->num_rows == 0) {
 			$author = $book->author;
 			$csscell = "flushleft";
 			$body .= "<div id=\"book$id\" class=\"flushleft";
+
 			if($book->borrowed) {
 				$body .= " away";
 			}
+
 			$body .= "\">\n";
+
 			if($GI) {
 				$body .= "<div class=\"InB EditBorrow BookCell\">\n";
 				$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
 				$body .= "&nbsp;\n";
 				if($book->borrowed) {
-					$body .= "<a href=\"index.php?back=$id\" title=\"back\">back</a>\n";
-					$body .= "&nbsp;-&nbsp;";
 					$body .= "<a href=\"../missings/index.php?view=books$id#books$id\" title=\"who\">who";
+
 				} else {
 					$body .= "<a href=\"../missings/insert.php?db=books&amp;id=$id\" title=\"borrow\">borrow</a>\n";
 				}
+
 				$body .= "</div>\n";
 			}
+
 			$body .= "<div class=\"InB MainBook BookCell\">\n";
 			$body .= "<a href=\"display.php?id=$id\" title=\"$title\">$title</a>\n";
+
 			if($author != "") {
 				$body .= "&nbsp;-&nbsp;\n";
 				$body .= "<span class=\"author_link\">\n";
 				$body .= "<a href=\"author.php?id=$id\" title=\"$author\">$author</a>";
 				$body .= "</span>\n";
 			}
+
 			$body .= "</div>\n";
 			$body .= "</div>\n";
 		}

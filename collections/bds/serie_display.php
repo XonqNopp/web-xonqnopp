@@ -85,41 +85,46 @@ if($display_serie->num_rows == 0) {
 	$body .= "<div class=\"bd_serie_table\">\n";
 	$body .= "<table class=\"bd_serie_table\">\n";
 	while($display_serie->fetch()) {
+		$isbor = "";
 		if($borrowed == "1") {
 			$isbor = " away";
-		} else {
-			$isbor = "";
 		}
 		$body .= "<tr class=\"bd_serie_table$isbor\">\n";
-		//// Edit'n'Borrow
+
+		// Edit'n'Borrow
 		$body .= "<td class=\"bd_serie_edit twenty\">\n";
+
 		if($GI) {
 			$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
 			$body .= "&nbsp;\n";
+
 			if($borrowed) {
-				$body .= "<a href=\"serie_display.php?id=$serie_id&amp;back=$id\" title=\"back\">back</a>\n";
-				$body .= "&nbsp;\n";
 				$body .= "<a href=\"../missings/index.php?view=bds$id#bds$id\" title=\"who\">who</a>\n";
+
 			} else {
 				$body .= "<a href=\"../missings/insert.php?db=bds&amp;id=$id\" title=\"borrow\">borrow</a>\n";
 			}
 		}
+
 		$body .= "</td>\n";
-		//// Tome
+
+		// Tome
 		$body .= "<td class=\"bd_serie_table_tome ten\">\n";
 		if($tome > 0) {
 			$body .= "$tome\n";
 		}
 		$body .= "</td>\n";
-		//// Title
+
+		// Title
 		$body .= "<td id=\"bd$id\" class=\"bd_serie_table_title\">\n";
 		$body .= "$title\n";
 		$body .= "</td>\n";
-		//// author
+
+		// author
 		$body .= "<td class=\"bd_serie_table_author\">\n";
 		$body .= "$author\n";
 		$body .= "</td>\n";
-		//
+
 		$body .= "</tr>\n";
 	}
 	$body .= "</table>\n";
