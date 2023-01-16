@@ -5,17 +5,8 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 $page->initDB();
 
-require("${funcpath}_local/borrowback.php");
 $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "??" => "other");
 
-// Borrowed item came home
-if(isset($_GET["back"])) {
-	$backId = NULL;
-	if(isset($_GET["id"])) {
-		$backId = $_GET["id"];
-	}
-	borrow_back($page, "dvds", $_GET["back"], $backId);
-}
 
 $body = "";
 
@@ -79,27 +70,27 @@ if($query->num_rows == 0) {
 	// Print
 	$body .= "<h1$isbor>$page_title</h1>\n";
 	$body .= "<div class=\"wide\">\n";
+
 	// L head
 	$body .= "<div class=\"lhead\">\n";
 	if($page->UserIsAdmin()) {
 		// Edit
 		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a><br />\n";
-		// Propose to borrow or give back
-		$body .= "<a href=\"";
+
+		// Propose to borrow
 		if($borrowed == 1) {
-			// Back
-			$body .= "display.php?id=$id&amp;back\" title=\"back\">back</a>";
-			$body .= "&nbsp;-&nbsp;";
-			$body .= "<a href=\"../missings/index.php?view=dvds$id#dvds$id\" title=\"who\">who";
+			$body .= "<a href=\"../missings/index.php?view=dvds$id#dvds$id\" title=\"who\">who</a>\n";
+
 		} else {
-			// Borrow
-			$body .= "../missings/insert.php?db=dvds&amp;id=$id\" title=\"borrow\">borrow";
+			$body .= "<a href=\"../missings/insert.php?db=dvds&amp;id=$id\" title=\"borrow\">borrow</a>\n";
 		}
-		$body .= "</a>\n";
 	}
+
 	$body .= "</div>\n";
+
 	$body .= "<div class=\"chead\">\n";
 	$body .= "</div>\n";
+
 	// R head
 	$body .= "<div class=\"rhead\">\n";
 	$body .= "<a href=\"../missings/index.php?view=dvds\" title=\"Missing DVDs\">Missing DVDs</a>\n";
