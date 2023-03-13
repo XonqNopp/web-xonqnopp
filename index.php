@@ -115,7 +115,7 @@ $page->HotBooty();
 		$randbody        = $randquot->quote;
 		$randbook        = $randquot->place;
 		$inter = " ";
-		if(substr($randfirstauthor, -1) == "'") {
+		if($randfirstauthor === NULL || substr($randfirstauthor, -1) == "'") {
 			$inter = "";
 		}
 		$randauthor = "$randfirstauthor$inter$randlastauthor";
@@ -171,7 +171,7 @@ $body .= "</div>\n";
 $body .= "</div>\n";
 
 	// External links
-	$body .= "<div><a href=\"links.php\" title=\"$links\">$links</a></div>\n";
+	$body .= "<div><a href=\"/links.php\" title=\"$links\">$links</a></div>\n";
 
 // Login/Logout
 $logPage = "login";
