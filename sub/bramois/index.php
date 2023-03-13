@@ -171,7 +171,7 @@ $page->HotBooty();
 
 		$body .= "<li><a target=\"_blank\" href=\"https://www.camptocamp.org/waypoints/116027/fr/bramois\">Grimpe dans les gorges de la Borgne</a>.</li>\n";
 
-		$body .= "<li>En hiver, on profite de ce promener dans les vergers au Nord du village pour avoir plus de Soleil.</li>\n";
+		$body .= "<li>En hiver, on profite de se promener dans les vergers au Nord du village pour avoir plus de Soleil.</li>\n";
 
 		$body .= "</ul></div>\n";
 //
