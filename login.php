@@ -3,7 +3,7 @@ require("functions/classPage.php");
 $funcpath = "functions";
 $page = new PhPage();
 //$page->LogLevelUp(6);
-$page->CSS_ppJump();
+//$page->CSS_ppJump();
 
 $page->LoginCookie();
 
