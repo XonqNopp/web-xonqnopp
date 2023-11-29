@@ -32,7 +32,7 @@ $title = "LSGE: Ecuvillens";
 	$infos .= "<li><a target=\"_blank\" href=\"http://www.fribourg-voltige.ch/Activlites.htm\">Fribourg voltige</a></li>\n";
 //
 	// Webcam airport
-	$webcamAirport = "<a href=\"http://www.aerodrome-ecuvillens.ch/index.php?page=meteo_webcam.htm\" target=\"_blank\">\n";
+	$webcamAirport = "<a href=\"http://www.aerodrome-ecuvillens.ch/index.php?page=./meteo_webcam_2021.htm\" target=\"_blank\">\n";
 	$webcamAirport .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy27.jpg\" />\n";
 	$webcamAirport .= "<br />\n";
 	$webcamAirport .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy09.jpg\" />\n";
