@@ -9,10 +9,10 @@ $title = "LSGS: Sion";
 
 
 	// Infos
-	$infos = "<li><a target=\"_blank\" href=\"http://www.resair.ch/LSGS-GVM/index.asp\">LSGS-GVM resair</a>";
-	if($page->loginHelper->userIsAdmin()) {
-		$infos .= ":&nbsp;<tt>{$page->miscInit->lsgsLogin}</tt>";
-	}
+	$infos = "<li><a target=\"_blank\" href=\"http://app.aviator.club/\">LSGS plane reservation</a>";
+	// if($page->loginHelper->userIsAdmin()) {
+	// 	$infos .= ":&nbsp;<tt>{$page->miscInit->lsgsLogin}</tt>";
+	// }
 	$infos .= "</li>\n";
 
 	$infos .= "<li><a target=\"_blank\" href=\"http://gvm-sion.ch/\">GVM Sion</a>";
