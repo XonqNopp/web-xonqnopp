@@ -9,7 +9,7 @@ $title = "LSGS: Sion";
 
 
 	// Infos
-	$infos = "<li><a target=\"_blank\" href=\"http://app.aviator.club/\">LSGS plane reservation</a>";
+	$infos = "<li><a target=\"_blank\" href=\"http://app.aviator.club/\">LSGS app</a>";
 	// if($page->loginHelper->userIsAdmin()) {
 	// 	$infos .= ":&nbsp;<tt>{$page->miscInit->lsgsLogin}</tt>";
 	// }

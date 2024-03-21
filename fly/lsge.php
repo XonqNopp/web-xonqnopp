@@ -10,7 +10,7 @@ $title = "LSGE: Ecuvillens";
 
 
 	// Infos
-	$infos = "<li><a target=\"_blank\" href=\"http://lsge.airmanager.ch\">LSGE plane reservation</a></li>\n";
+	$infos = "<li><a target=\"_blank\" href=\"http://lsge.airmanager.ch\">LSGE AirManager</a></li>\n";
 
 	//$infos .= "<li><a target=\"_blank\" href=\"http://lsge-flights.azurewebsites.net/LSGE_Login.aspx\">LSGE avis</a>";
 	//if($page->loginHelper->userIsAdmin()) {
