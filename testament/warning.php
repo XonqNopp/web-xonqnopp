@@ -74,10 +74,14 @@ function testamentDisplay($page) {
 	$duedate->close();
 
 	if(!$testamentOK || isset($_SESSION["testamentOK"])) {
-		return;
+                    $content = "<div class=\"index_testament\">\n";
+                    $content .= "<a href=\"testament/index.php\" title=\"Mon testament...\">Mon testament...</a>\n";
+                    $content .= "</div>\n";
+		return $content;
 	}
 
 	$_SESSION["testamentOK"] = true;
 	$page->htmlHelper->headerLocation("testament/index.php");
+	return "";
 }
 ?>

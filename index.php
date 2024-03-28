@@ -1,14 +1,14 @@
 <?php
 require("functions/page_helper.php");
 $page = new PhPage();
-//$page->checkWww();
-//$page->logger->levelUp(6);
+//$page->checkWww();  // TODO what now?
+//$page->logLevelUp(6);
 $page->dbHelper->init();
 
 	// Checking for testament
 	require("testament/warning.php");
 	testamentWarning($page);
-	testamentDisplay($page);
+	$testament = testamentDisplay($page);
 //
 	/*** Prepare text ***/
 	$fly = "Fly";
@@ -19,7 +19,6 @@ $page->dbHelper->init();
 		$randhead = "Une citation au hasard parmi les ";
 		$recettes = "Recettes";
 		$collections = "Mes collections";
-		$testament = "Mon testament...";
 	} else {
 		$title = "Welcome to Xonq Nopp&#039;s website!!";
 		$links = "Some other links...";
@@ -27,7 +26,6 @@ $page->dbHelper->init();
 		$randhead = "A random quotation among the ";
 		$recettes = "Recipes (french only)";
 		$collections = "My collections";
-		$testament = "My testament...";
 	}
 //
 $body = "";
@@ -36,13 +34,8 @@ $body .= $page->languageHelper->languages();
 $body .= $page->htmlHelper->setTitle($title, "main");
 $page->htmlHelper->hotBooty();
 
-	/*** Testament ***/
-	if($testamentOK) {
-		$body .= "<div class=\"index_testament\">\n";
-		$body .= "<a href=\"testament/index.php\" title=\"$testament\">$testament</a>\n";
-		$body .= "</div>\n";
-	}
-//
+$body .= $testament;
+
 	/*** QUOTATIONS ***/
 		// DB management
 			// Count
@@ -55,6 +48,7 @@ $page->htmlHelper->hotBooty();
 	//
 		// To screen
 		$body .= "<div class=\"idxquot\">\n";
+		$randid          = $randquot->id;
 		$randlastauthor  = $randquot->authorlast;
 		$randfirstauthor = $randquot->authorfirst;
 		$randbody        = $randquot->quote;
