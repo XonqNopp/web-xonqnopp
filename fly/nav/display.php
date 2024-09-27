@@ -1019,7 +1019,7 @@ class Aircraft {
         $kStrings["UnusableFuel"] = "Unusable fuel";
         $kStrings["ZeroFuel"] = "0-fuel";
         $kStrings["TakeOff"] = "T-off";
-        $kStrings["htmlTooHeavy"] = "<b>TOO HEAVY!!</b>";
+        $kStrings["htmlTooHeavy"] = "<b style=\"background-color: red;\">TOO HEAVY!!</b>";
         $kStrings["latexTooHeavy"] = "\\textbf{TOO HEAVY!!}";
 //
 

@@ -607,7 +607,7 @@ $queryTimeLandings .= "FROM `PilotLogbook`";
      * Get total flight time of a family member.
      *
      * Args:
-     *     who (str): matching hashtag in DB
+     *     who (string): matching hashtag in DB
      *
      * Returns:
      *     DB object
@@ -647,7 +647,7 @@ $today = $page->timeHelper->getNow()->date;
          * Get visited airfield of family member.
          *
          * Args:
-         *     who (str): matching hashtag in DB
+         *     who (string): matching hashtag in DB
          *
          * Returns:
          *     array of visited fields
@@ -672,9 +672,9 @@ $today = $page->timeHelper->getNow()->date;
          * Make text for visited table with family member.
          *
          * Args:
-         *     * *airfield* (str)
-         *     * *familyArray* (array)
-         *     * *display* (str): the text to display
+         *     airfield (string)
+         *     familyArray (array)
+         *     display (string): the text to display
          *
          * Returns:
          *     string for single member

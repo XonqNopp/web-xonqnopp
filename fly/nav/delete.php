@@ -26,7 +26,7 @@ $page->htmlHelper->jsForm();
 if(isset($_POST["erase"])) {
     $navID = $_POST["navID"];
 
-    $page->bobbyTable->queryDelete("NavWaypoints", $navID);
+    $page->bobbyTable->queryDelete("NavWaypoints", $navID, "NavID", 100);
 
     deleteNavPdfFile($navID);
 

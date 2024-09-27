@@ -28,7 +28,7 @@ $page->htmlHelper->jsForm();
  * Make a DB query to select something with matching NavID
  *
  * Args:
- *     query (str)
+ *     query (string)
  *     sqlData (DbDataArray): to use type and value of NavID
  *
  * Returns:
@@ -205,7 +205,7 @@ $page_title .= " for $navName (#{$sqlData->get('NavID')})";
 $body = $page->bodyBuilder->goHome("..", "display.php?id={$sqlData->get('NavID')}");
 $body .= $page->htmlHelper->setTitle($page_title);// before HotBooty
 $page->htmlHelper->hotBooty();
-//
+
     // form
     $body .= "<div>\n";
     $body .= $page->formHelper->tag();

@@ -6,11 +6,6 @@
     }
 
 
-    div.quarter {
-        width: 29%;
-    }
-
-
     div.third {
         width: 30%;
     }
@@ -18,16 +13,6 @@
 
     img.width {
         max-width: 500px;
-    }
-
-
-    img.height {
-        max-height: 100px;
-    }
-
-
-    img.fullwidth {
-        max-width: 100%;
     }
 
 

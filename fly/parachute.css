@@ -8,11 +8,6 @@ div.csstab64_table img {
 }
 
 
-div.left {
-    text-align: left;
-}
-
-
 div.links {
     padding: 0.5em 0.2em;
 }
@@ -23,94 +18,7 @@ div.links div {
 }
 
 
-img.height {
-    max-width: 100%;
-}
-
-
-div.flyTitle {
-    font-weight: 700;
-    font-size: 18pt;
-    text-align: center;
-    margin-bottom: 2em;
-}
-
-
-p.pl {
-    font-size: 0.7em;
-    line-height: 0.7em;
-}
-
-
 td, th {
     padding: 0.5em;
     white-space: nowrap;
-}
-
-
-tfoot th {
-    border-top: solid 2px;
-    border-bottom: solid 2px;
-}
-
-
-tfoot td {
-    border-top: none;
-    border-bottom: none;
-    border-left: none;
-}
-
-
-th.start_ad, td.start_ad,
-th.stop_time, td.stop_time,
-th.aircraft, td.aircraft,
-th.SP_SEP, td.SP_SEP,
-th.SP_MEP, td.SP_MEP,
-th.MP, td.MP,
-th.landings_day, td.landings_day,
-th.night, td.night,
-th.PIC, td.PIC,
-th.copi, td.copi,
-th.dual, td.dual {
-    border-right: none;
-}
-
-
-td.fullnote {
-    text-align: left;
-    border: solid 2px;
-    color: white;
-    border-color: #777;
-    background-color: #777;
-}
-
-
-#deleted {
-    color: #900;
-    background-color: lightyellow;
-}
-
-
-.right input {
-    text-align: right;
-}
-
-
-div.PAX {
-    padding: 1em;
-}
-
-
-/** TODO IWASHERE move to correct file **/
-div.FuelCons,
-div.FuelUnit,
-div.DryMass,
-div.DryMassUnit,
-div.DryMoment,
-div.DryMomentUnit,
-div.PowerManifold,
-div.PowerManifoldUnit,
-div.windTC,
-div.windSpeed {
-    display: inline-block;
 }
