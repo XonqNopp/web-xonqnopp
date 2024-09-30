@@ -1,8 +1,10 @@
 <?php
 require_once("../../functions/page_helper.php");
 $rootPath = "../..";
-$funcpath = "$rootPath/functions";
+//$funcpath = "$rootPath/functions";
+
 require_once("common.php");
+
 $page = new PhPage($rootPath);
 $page->bobbyTable->init();
 //$page->htmlHelper->init();
@@ -71,12 +73,11 @@ if($GI) {
     $body .= "Template:\n";
     $body .= $page->bodyBuilder->anchor("display.php?id=0", "refresh");
 
-    $navTemplate = "files/nav_template";
-    $body .= "- " . $page->bodyBuilder->anchor("$navTemplate.tex", "TeX");
+    $body .= "- " . $page->bodyBuilder->anchor("$kTemplateFilename.tex", "TeX");
 
-    $pdfTemplate = "$navTemplate.pdf";
+    $pdfTemplate = "$kTemplateFilename.pdf";
     if(file_exists("$pdfTemplate")) {
-        $body .= "- " . $page->bodyBuilder->anchor("$navTemplate.pdf", "PDF");
+        $body .= "- " . $page->bodyBuilder->anchor($pdfTemplate, "PDF");
     }
 
     $body .= "</div><!-- lhead -->\n";

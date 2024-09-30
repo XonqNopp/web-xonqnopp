@@ -1,4 +1,5 @@
 <?php
+$kTemplateFilename = "files/nav_template";
 $kArmless = 1234570000;  // use this magic value when arm is not available
 $kRearStationsNum = 2;
 $kLuggageStationsNum = 4;

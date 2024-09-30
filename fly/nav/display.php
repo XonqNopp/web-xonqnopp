@@ -1401,7 +1401,7 @@ class Aircraft {
             $latex2left .= "    \\item[(\\textbullet)] {$kStrings["TOD4"]}\n";
             $latex2left .= "\\end{itemize}\n";
             $latex2left .= "% }}}\n";
-            $latex2left .= "}\n";
+            $latex2left .= "}  % Large\n";
             $latex2left .= "\\vspace{11mm}\n";
             return $latex2left;
         }
@@ -1415,6 +1415,7 @@ class Aircraft {
             $latex2right .= "\\vspace*{6mm}\n";
             $latex2right .= "\\end{minipage}\n";
             $latex2right .= "\\begin{minipage}{0.42\\textwidth}\n";
+            $latex2right .= "\\vspace{-7mm}\n";
             $latex2right .= "% {$kStrings["THwind"]} {{{\n";
             $latex2right .= "{\n";
             $latex2right .= $kStrings["THwind"] . ":\n";
@@ -1441,8 +1442,7 @@ class Aircraft {
 
             $latexend = "";
             $latexend .= "\\vspace{-2mm}\n";
-            $latexend .= "{\n";
-            $latexend .= "\\small\n";
+            $latexend .= "{\\small\n";
             $latexend .= "$1\\ \\textrm{{$kStrings["USG"]}} = {$kFuelUnits["USG"]}\\ l$\n";
             $latexend .= "\\hspace{17mm}\n";
             $latexend .= "$1\\ l\\ \\textrm{{$kStrings["Avgas"]}} = {$kFuelTypes["AVGAS"]}\\ kg$\n";
@@ -1450,8 +1450,7 @@ class Aircraft {
             $latexend .= "$1\\ \\textrm{{$kStrings["ImpG"]}} = {$kFuelUnits["ImpG"]}\\ l$\n";
             $latexend .= "\\hspace{17mm}\n";
             $latexend .= "$1\\ \\textrm{{$kStrings["USG"]} {$kStrings["Avgas"]}} = $usgAvgas2lbs$ lbs\n";
-            $latexend .= "}\n";
-            $latexend .= "}\n";
+            $latexend .= "}  % small\n";
             $latexend .= "% }}}\n";
             $latexend .= "\\end{minipage}\n";
             $latexend .= "\\end{document}\n";
@@ -1636,6 +1635,7 @@ class Aircraft {
 
             if($rowArgs->wpNum == $kWaypoints->wayBack->start) {
                 // TODO why do we make an extra empty row for wayBack->start?
+                die("what");  // TODO IWASHERE is this used?
                 $htmlRow .= $page->butler->rowClose();
                 $htmlRow .= $page->butler->rowOpen(array("class" => "WP{$rowArgs->wpNum}"));
             }
@@ -2579,7 +2579,14 @@ class Aircraft {
             $unusablesCount = count($gcData->fuelUnusables);
             for ($i = 0; $i < $unusablesCount; ++$i) {
                 $tank = $finalFuel->tanks[$i];
-                $latexGC .= latexGcEntry($gcData->fuelUnusables[$i], "UnusableFuel", "#" . ($i + 1) . "={$tank->unusable}{$tank->fuelUnit}");
+
+                $label = "#" . ($i + 1);
+                if($tank->unusable > 0) {
+                    // If we do the template, we do not want to display this (empty) value
+                    $label .= "={$tank->unusable}{$tank->fuelUnit}";
+                }
+
+                $latexGC .= latexGcEntry($gcData->fuelUnusables[$i], "UnusableFuel", $label);
             }
             $latexGC .= "\\hline\n";
 
@@ -2624,7 +2631,14 @@ class Aircraft {
             $quantitiesCount = count($gcData->fuelQuantities);
             for ($i = 0; $i < $quantitiesCount; ++$i) {
                 $tank = $finalFuel->tanks[$i];
-                $latexGC .= latexGcEntry($gcData->fuelQuantities[$i], "Fuel", "#" . ($i + 1) . "={$tank->quantity}+{$tank->unusable}{$tank->fuelUnit}");
+
+                $label = "#" . ($i + 1);
+                if($tank->quantity > 0) {
+                    // If we do the template, we do not want to display this (empty) value
+                    $label .= "={$tank->quantity}+{$tank->unusable}{$tank->fuelUnit}";
+                }
+
+                $latexGC .= latexGcEntry($gcData->fuelUnusables[$i], "Fuel", $label);
             }
             $latexGC .= "\\hline\n";
 
@@ -2661,6 +2675,7 @@ class Aircraft {
                 $latexGC .= "\\hline\n";
                 $latexGC .= "\\end{tabular}\n";
                 $latexGC .= "\\end{center}\n";
+                $latexGC .= "}  % Large\n";
             return $latexGC;
         }
 //
@@ -2669,28 +2684,19 @@ class Aircraft {
     // nav details
     $navid = $_GET["id"];
     if($navid == 0) {
-        $filename = "files/nav_template";  // TODO IWASHERE move to common and use in index.php
-        $latexfile = fopen("$filename.tex", "w") or die("Cannot write file $filename.tex");
+        $latexfile = fopen("$kTemplateFilename.tex", "w") or die("Cannot write file $kTemplateFilename.tex");
 
         $row = LaTeXfirstRow(NULL);
         $noFuel = new FuelRequirements();
 
+        // Set no-arm to stations we want (not all, only pick some of each)
         $gcData->front->arm = $kNoArm;
         $gcData->rears[0]->arm = $kNoArm;
-        $gcData->rears[1]->arm = $kNoArm;
         $gcData->luggages[0]->arm = $kNoArm;
-        $gcData->luggages[1]->arm = $kNoArm;
-        $gcData->luggages[2]->arm = $kNoArm;
-        $gcData->luggages[3]->arm = $kNoArm;
-        // TODO IWASHERE remove display of quantity as it is empty
         $gcData->fuelUnusables[0]->arm = $kNoArm;
         $gcData->fuelUnusables[1]->arm = $kNoArm;
-        $gcData->fuelUnusables[2]->arm = $kNoArm;
-        $gcData->fuelUnusables[3]->arm = $kNoArm;
         $gcData->fuelQuantities[0]->arm = $kNoArm;
         $gcData->fuelQuantities[1]->arm = $kNoArm;
-        $gcData->fuelQuantities[2]->arm = $kNoArm;
-        $gcData->fuelQuantities[3]->arm = $kNoArm;
 
         fwrite(
             $latexfile,
@@ -2821,7 +2827,7 @@ if($plane->sqlID > 0) {
     if($gcData->armUnit    == "") {$gcData->armUnit    = "?";}
     if($gcData->momentUnit == "") {$gcData->momentUnit = "?";}
     if($theoricFuel->unit == "") {$theoricFuel->unit = "?";}
-    if($theoricFuel->type == "") {$theoricFuel->type = "AVGAS";}  // TODO restore "?" when filled
+    if($theoricFuel->type == "") {$theoricFuel->type = "?";}
 
     function raiseErrorIfArmlessHasMass($gcField, $errorText) {
         global $kArmless;
