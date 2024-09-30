@@ -8,14 +8,14 @@ require_once("common.php");
 
 $docVersion = "2024-10-01";  // TODO before merging
 // TODO remove &eacute from latex
-// TODO align cell num right
-// TODO borders (must for summary rows)
 
 $page = new PhPage($rootPath);
 $page->bobbyTable->init();
+
 // debug
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
+
 // CSS
 $page->cssHelper->dirUpWing();
 
@@ -24,6 +24,7 @@ $isAdmin = $page->loginHelper->userIsAdmin();
 $body = "";
 
 $kDefaultPrecision = 3;
+$kNoArm = 1230000000;  // magic value to use when we want armless but still display
 
 
 // Aircraft data used to compute nav
@@ -990,7 +991,7 @@ class Aircraft {
         $kStrings["Fuel"] = "Fuel";
         $kStrings["fuel"] = "fuel";
         $kStrings["time"] = "time";
-        $kStrings["FuelPerHour"] = "Fuel per hour:";
+        $kStrings["FuelConsumption"] = "Fuel consumption:";
         $kStrings["NoWind"] = "No wind";
         $kStrings["Trip"] = "Trip";
         $kStrings["Alternate"] = "Alternate";
@@ -2093,7 +2094,7 @@ class Aircraft {
             $htmlFuel = "";
 
             $htmlFuel .= "<div class=\"fuel\">\n";
-            $htmlFuel .= "<p><b>{$kStrings["FuelPerHour"]}</b> ";
+            $htmlFuel .= "<p><b>{$kStrings["FuelConsumption"]}</b> ";
             $htmlFuel .= ($theoricFuel->consumption > 0) ? $theoricFuel->consumption : "?";
             $htmlFuel .= " {$theoricFuel->unit}/h</p>\n";
             $htmlFuel .= $page->butler->tableOpen(array("class" => "no_border"));
@@ -2180,7 +2181,7 @@ class Aircraft {
                 $latexfuel .= "% {$kStrings["Fuel"]} {{{\n";
                 $latexfuel .= "\\begin{center}\n";
                 $latexfuel .= "\\Large\n";
-                $latexfuel .= "\\textbf{{$kStrings["FuelPerHour"]}}\n";
+                $latexfuel .= "\\textbf{{$kStrings["FuelConsumption"]}}\n";
                 $latexfuel .= "{$consumption} {$unit}/h\\\\[9mm]\n";
                 $latexfuel .= "%\n";
             //
@@ -2274,34 +2275,6 @@ class Aircraft {
             $htmlStr .= $page->butler->rowClose();
 
             return $htmlStr;
-        }
-    //
-        // LaTeX GC entry
-        function latexGcEntry($gcDataField, $stringId, $extraString="") {
-            global $kArmless;
-            global $kDefaultPrecision;
-            global $kStrings;
-
-            if($gcDataField->getArm() == $kArmless) {
-                return "";
-            }
-
-            $latexStr = "";
-
-            $latexStr .= $kStrings[$stringId];
-            if($extraString != "") {
-                $latexStr .= " $extraString";
-            }
-
-            $latexStr .= " & {$gcDataField->mass} ";
-            $latexStr .= $gcDataField->isMassTooMuch() ? $kStrings["latexTooHeavy"] : "";
-
-            $latexStr .= " & {$gcDataField->getArm()}";
-
-            $latexStr .= " & " . round($gcDataField->getMoment(), $kDefaultPrecision);
-
-            $latexStr .= "\\\\\\hline\n";
-            return html2latex($latexStr);
         }
     //
         /**
@@ -2505,6 +2478,39 @@ class Aircraft {
             return $htmlGC;
         }
     //
+        // LaTeX GC entry
+        function latexGcEntry($gcDataField, $stringId, $extraString="") {
+            global $kArmless;
+            global $kNoArm;
+            global $kDefaultPrecision;
+            global $kStrings;
+
+            if($gcDataField->getArm() == $kArmless) {
+                return "";
+            }
+
+            $latexStr = "";
+
+            $latexStr .= $kStrings[$stringId];
+            if($extraString != "") {
+                $latexStr .= " $extraString";
+            }
+
+            if($gcDataField->getArm() == $kNoArm) {
+                return html2latex($latexStr . "&&&\\\\\\hline\n");
+            }
+
+            $latexStr .= " & {$gcDataField->mass} ";
+            $latexStr .= $gcDataField->isMassTooMuch() ? $kStrings["latexTooHeavy"] : "";
+
+            $latexStr .= " & {$gcDataField->getArm()}";
+
+            $latexStr .= " & " . round($gcDataField->getMoment(), $kDefaultPrecision);
+
+            $latexStr .= "\\\\\\hline\n";
+            return html2latex($latexStr);
+        }
+    //
         /**
          * LaTeX GC
          *
@@ -2663,23 +2669,40 @@ class Aircraft {
     // nav details
     $navid = $_GET["id"];
     if($navid == 0) {
-        $filename = "nav/navTemplate";
-        $latexfile = fopen("$filename.tex", "w") or die(" Cannot write file $filename.tex");
+        $filename = "files/nav_template";  // TODO IWASHERE move to common and use in index.php
+        $latexfile = fopen("$filename.tex", "w") or die("Cannot write file $filename.tex");
 
         $row = LaTeXfirstRow(NULL);
-        $rows += $row->inc;
+        $noFuel = new FuelRequirements();
+
+        $gcData->front->arm = $kNoArm;
+        $gcData->rears[0]->arm = $kNoArm;
+        $gcData->rears[1]->arm = $kNoArm;
+        $gcData->luggages[0]->arm = $kNoArm;
+        $gcData->luggages[1]->arm = $kNoArm;
+        $gcData->luggages[2]->arm = $kNoArm;
+        $gcData->luggages[3]->arm = $kNoArm;
+        // TODO IWASHERE remove display of quantity as it is empty
+        $gcData->fuelUnusables[0]->arm = $kNoArm;
+        $gcData->fuelUnusables[1]->arm = $kNoArm;
+        $gcData->fuelUnusables[2]->arm = $kNoArm;
+        $gcData->fuelUnusables[3]->arm = $kNoArm;
+        $gcData->fuelQuantities[0]->arm = $kNoArm;
+        $gcData->fuelQuantities[1]->arm = $kNoArm;
+        $gcData->fuelQuantities[2]->arm = $kNoArm;
+        $gcData->fuelQuantities[3]->arm = $kNoArm;
 
         fwrite(
             $latexfile,
 
             LaTeXheader($docVersion, $plane)
-            . $row->contents
-            . LaTeXfinish1(0, $rows, $maxRow)
+            . $row->latexcontent
+            . LaTeXfinish1(0, $row->inc, $maxRow)
             . LaTeXheaderEnd()
             . LaTeX2left()  // beginning of second page
             . LaTeXfuel(new FuelRequirements(), new FuelRequirements())
             . LaTeX2right()  // change to 2nd column
-            . LaTeXGC($gcData)
+            . LaTeXGC($gcData, $noFuel)
             . LaTeXend()
         );
 

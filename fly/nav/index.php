@@ -70,15 +70,24 @@ if($GI) {
     $body .= "<div class=\"lhead\">\n";
     $body .= "Template:\n";
     $body .= $page->bodyBuilder->anchor("display.php?id=0", "refresh");
-    $body .= "- " . $page->bodyBuilder->anchor("nav/navTemplate.tex", "TeX");
-    $body .= "- " . $page->bodyBuilder->anchor("pdf/navTemplate.pdf", "PDF");
-    $body .= "</div>\n";
-    $body .= "<div class=\"chead\">\n";
-    $body .= "</div>\n";
+
+    $navTemplate = "files/nav_template";
+    $body .= "- " . $page->bodyBuilder->anchor("$navTemplate.tex", "TeX");
+
+    $pdfTemplate = "$navTemplate.pdf";
+    if(file_exists("$pdfTemplate")) {
+        $body .= "- " . $page->bodyBuilder->anchor("$navTemplate.pdf", "PDF");
+    }
+
+    $body .= "</div><!-- lhead -->\n";
+
+    $body .= "<div class=\"chead\"></div>\n";
+
     $body .= "<div class=\"rhead\">\n";
     $body .= $page->bodyBuilder->anchor("insert.php", "new nav");
-    $body .= "</div>\n";
-    $body .= "</div>\n";
+    $body .= "</div><!-- rhead -->\n";
+
+    $body .= "</div><!-- wide -->\n";
 }
 
 $body .= $page->waitress->tableOpen(array(), false);
