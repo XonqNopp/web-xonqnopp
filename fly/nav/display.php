@@ -982,7 +982,7 @@ class Aircraft {
 
         // TOD
         $kStrings["TopOfDescent"] = "TOD";
-        $kStrings["TOD1"] = "120kts (2NM/min) 500 ft/min (children -12: 300) 3deg makes descent rate = speed x5";
+        $kStrings["TOD1"] = "120kts (2NM/min) 500 ft/min (children -12: 300)<br/>3deg makes descent rate = speed x5";
         $kStrings["TOD2"] = "1NM attitude change";
         $kStrings["TOD3"] = "2NM speed decrease";
         $kStrings["TOD4"] = "2NM approach check (if needed)";
@@ -1381,55 +1381,58 @@ class Aircraft {
             // beginning of second page
             global $kStrings;
 
-            $latex2left = "";
+            $contents = "";
 
-            $latex2left .= "\\clearpage\n";
-            $latex2left .= "\\fancyhf{}\n";
-            $latex2left .= "\\renewcommand{\\headrulewidth}{0pt}\n";
-            $latex2left .= "%\n";
-            $latex2left .= "\\noindent\n";
-            $latex2left .= "%\n";
-            $latex2left .= "\\begin{minipage}{0.57\\textwidth}\n";
-            $latex2left .= "{\\Large\n";
-            $latex2left .= "% {$kStrings["TopOfDescent"]} {{{\n";
-            $latex2left .= "\\textbf{{$kStrings["TopOfDescent"]}:}\n";
-            $latex2left .= "\\begin{itemize}\n";
-            $latex2left .= "\\renewcommand*{\\labelitemi}{\\phantom{(}\\textbullet\\phantom{)}}\n";
-            $latex2left .= "    \\item {$kStrings["TOD1"]}\n";
-            $latex2left .= "    \\item {$kStrings["TOD2"]}\n";
-            $latex2left .= "    \\item {$kStrings["TOD3"]}\n";
-            $latex2left .= "    \\item[(\\textbullet)] {$kStrings["TOD4"]}\n";
-            $latex2left .= "\\end{itemize}\n";
-            $latex2left .= "% }}}\n";
-            $latex2left .= "}  % Large\n";
-            $latex2left .= "\\vspace{11mm}\n";
-            return $latex2left;
+            $contents .= "\\clearpage\n";
+            $contents .= "\\fancyhf{}\n";
+            $contents .= "\\renewcommand{\\headrulewidth}{0pt}\n";
+            $contents .= "\\noindent\n";
+            $contents .= "\\begin{minipage}{0.49\\textwidth}\n";
+
+            $contents .= "{\\Large\n";
+            $contents .= "% {$kStrings["TopOfDescent"]} {{{\n";
+            $contents .= "\\textbf{{$kStrings["TopOfDescent"]}:}\n";
+            $contents .= "\\begin{itemize}\n";
+            $tod1 = preg_replace("/<br\/>/", "\\\\\\", $kStrings["TOD1"]);
+            $contents .= "    \\item {$tod1}\n";
+            $contents .= "    \\item {$kStrings["TOD2"]}\n";
+            $contents .= "    \\item {$kStrings["TOD3"]}\n";
+            $contents .= "    \\item ({$kStrings["TOD4"]})\n";
+            $contents .= "\\end{itemize}\n";
+            $contents .= "% }}}\n";
+            $contents .= "}  % Large\n";
+
+            return $contents;
         }
     //
         // LaTeX 2nd page right column
         function LaTeX2right() {
             // change to 2nd column
-            global $kStrings;
+            //global $kStrings;
 
-            $latex2right = "";
-            $latex2right .= "\\vspace*{6mm}\n";
-            $latex2right .= "\\end{minipage}\n";
-            $latex2right .= "\\begin{minipage}{0.42\\textwidth}\n";
-            $latex2right .= "\\vspace{-7mm}\n";
-            $latex2right .= "% {$kStrings["THwind"]} {{{\n";
-            $latex2right .= "{\n";
-            $latex2right .= $kStrings["THwind"] . ":\n";
-            $latex2right .= "\\begin{enumerate}\n";
-            $latex2right .= "\\item $\\alpha_1 = (360 + \\textrm{TC} - \\textrm{WH}) \\% 360^{\\circ}$ and $\\textrm{sign} = 1$\n";
-            $latex2right .= "\\item if $\\alpha_1 > 180: \\alpha_1 = (360 + \\textrm{WH} - \\textrm{TC}) \\% 360^{\\circ}$ and $\\textrm{sign} = -1$\n";
-            $latex2right .= "\\item $\\alpha_2 = \\arcsin \\left( \\frac{\\textrm{WS}}{\\textrm{TS}} \\cdot \\sin \\alpha_1 \\right)$\n";
-            $latex2right .= "\\item $\\alpha_3 = 180 - (\\alpha_1 + \\alpha_2)$\n";
-            $latex2right .= "\\item $\\textrm{TH} = \\textrm{TC} + \\textrm{sign} \\cdot \\alpha_2$\n";
-            $latex2right .= "\\item $\\textrm{GS} = \\frac{\\sin \\alpha_3}{\\sin \\alpha_1} \\cdot \\textrm{TS}$\n";
-            $latex2right .= "\\end{enumerate}\n";
-            $latex2right .= "}\n";
-            $latex2right .= "% }}}\n";
-            return $latex2right;
+            $contents = "\\vspace*{6mm}\n";
+            $contents .= "\\end{minipage}\n";
+
+            $contents .= "\\begin{minipage}{0.50\\textwidth}\n";
+            $contents .= "\\vspace{-7mm}\n";
+
+            // Disable this: not useful during flight and not enough space on paper
+            //$contents .= "% {$kStrings["THwind"]} {{{\n";
+            //$contents .= "{\n";
+            //$contents .= $kStrings["THwind"] . ":\n";
+            //$contents .= "\\begin{enumerate}\n";
+            //$contents .= "\\item $\\alpha_1 = (360 + \\textrm{TC} - \\textrm{WH}) \\% 360^{\\circ}$ and $\\textrm{sign} = 1$\n";
+            //$contents .= "\\item if $\\alpha_1 > 180: \\alpha_1 = (360 + \\textrm{WH} - \\textrm{TC}) \\% 360^{\\circ}$ and $\\textrm{sign} = -1$\n";
+            //$contents .= "\\item $\\alpha_2 = \\arcsin \\left( \\frac{\\textrm{WS}}{\\textrm{TS}} \\cdot \\sin \\alpha_1 \\right)$\n";
+            //$contents .= "\\item $\\alpha_3 = 180 - (\\alpha_1 + \\alpha_2)$\n";
+            //$contents .= "\\item $\\textrm{TH} = \\textrm{TC} + \\textrm{sign} \\cdot \\alpha_2$\n";
+            //$contents .= "\\item $\\textrm{GS} = \\frac{\\sin \\alpha_3}{\\sin \\alpha_1} \\cdot \\textrm{TS}$\n";
+            //$contents .= "\\end{enumerate}\n";
+            //$contents .= "}\n";
+
+
+            $contents .= "% }}}\n";
+            return $contents;
         }
     //
         // LaTeX end
@@ -1633,15 +1636,7 @@ class Aircraft {
             }
             $htmlRow .= $page->butler->cellClose();
 
-            if($rowArgs->wpNum == $kWaypoints->wayBack->start) {
-                // TODO why do we make an extra empty row for wayBack->start?
-                die("what");  // TODO IWASHERE is this used?
-                $htmlRow .= $page->butler->rowClose();
-                $htmlRow .= $page->butler->rowOpen(array("class" => "WP{$rowArgs->wpNum}"));
-            }
-
             $htmlRow .= $page->butler->rowClose();
-
             return $htmlRow;
         }
     //
@@ -2337,7 +2332,7 @@ class Aircraft {
                 $htmlGC .= $page->butler->rowOpen();
                 $htmlGC .= $page->butler->cell("{$kStrings["Luggage"]} total mass");
                 $htmlGC .= $page->butler->cell(
-                    "Luggages mass {$gcData->luggageTotalMass->mass} too heavy, exceeds {$gcData->luggageTotalMass->maxMass}",
+                    "Too heavy {$gcData->luggageTotalMass->mass} &gt; {$gcData->luggageTotalMass->maxMass}",
                     array("colspan" => 3, "style" => $redBG)
                 );
                 $htmlGC .= $page->butler->rowClose();
@@ -2571,8 +2566,8 @@ class Aircraft {
             if($gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
                 $latexGC .= "{$kStrings["Luggage"]} total mass";
                 $latexGC .= "& \\multicolumn{3}{c|}{";
-                $latexGC .= "{$redCell} Luggages mass {$gcData->luggageTotalMass->mass} too heavy, exceeds {$gcData->luggageTotalMass->maxMass}";
-                $latexGC .= "}\\hline\n";
+                $latexGC .= "{$redCell} Too heavy {$gcData->luggageTotalMass->mass} > {$gcData->luggageTotalMass->maxMass}";
+                $latexGC .= "}\\\\\\hline\n";
             }
 
             // unusable fuels...
@@ -2835,6 +2830,7 @@ if($plane->sqlID > 0) {
         if($gcField->arm == $kArmless && $gcField->mass > 0) {
             $page->logger->fatal("Armless has mass: $errorText");  // TODO why error log not working?
         }
+        // TODO IWASHERE finish TODOs
     }
 
     raiseErrorIfArmlessHasMass($gcData->rears[0], "rears[0]");
