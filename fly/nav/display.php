@@ -2828,9 +2828,8 @@ if($plane->sqlID > 0) {
         global $kArmless;
         global $page;
         if($gcField->arm == $kArmless && $gcField->mass > 0) {
-            $page->logger->fatal("Armless has mass: $errorText");  // TODO why error log not working?
+            $page->logger->error("Armless has mass: $errorText");
         }
-        // TODO IWASHERE finish TODOs
     }
 
     raiseErrorIfArmlessHasMass($gcData->rears[0], "rears[0]");
@@ -3144,6 +3143,7 @@ $page->butler->crossCheckEnable();
         // finish latex content 1st page with empty rows
         $latexcontent .= LaTeXfinish1($wpNum, $rows, $maxRow - (int)$roundTrip);  // round-trip uses more rows
         // TODO check if round trip rows are all accounted
+        // TODO IWASHERE finish TODOs
     $latexfuel = LaTeXfuel($theoricFuel, $realFuel);
     $latexGC = LaTeXGC($gcData, $finalFuel);
 
