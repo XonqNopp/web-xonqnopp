@@ -314,7 +314,7 @@ $page->htmlHelper->hotBooty();
     $reqAttr = new FieldAttributes(true);
 
     $noDivEmptyEmbedder = new FieldEmbedder();
-    $noDivEmptyEmbedder->bDiv = false;
+    $noDivEmptyEmbedder->hasDiv = false;
 
         // fields
             // id
@@ -350,7 +350,7 @@ $page->htmlHelper->hotBooty();
             $attrSpeed->min = 0;
 
             $embedderSpeed = new FieldEmbedder(NULL, "kts");
-            $embedderSpeed->bDiv = false;
+            $embedderSpeed->hasDiv = false;
 
             $embedderSpeed->title = "planning";
             $body .= $page->waitress->cell(
@@ -375,15 +375,15 @@ $page->htmlHelper->hotBooty();
             $body .= $page->waitress->cell("<b>Dry empty:</b>");
 
             $emptyEmbedder = new FieldEmbedder();
-            $emptyEmbedder->bDiv = false;
+            $emptyEmbedder->hasDiv = false;
 
                 // Dry empty mass
                 $body .= $page->waitress->cellOpen();
 
                 $emptyEmbedder->title = "mass";
-                $attrMaxMass->bRequired = true;
+                $attrMaxMass->isRequired = true;
                 $body .= $theNumberInput->get("DryEmptyMass", $sqlData, NULL, $attrMaxMass, $emptyEmbedder);
-                $attrMaxMass->bRequired = false;
+                $attrMaxMass->isRequired = false;
 
                 $body .= $theSelectInput->get(
                     "MassUnit",
@@ -429,7 +429,7 @@ $page->htmlHelper->hotBooty();
             //
                 // Timestamp of measures
                 $timestampEmbedder = new FieldEmbedder();
-                $timestampEmbedder->bDiv = false;
+                $timestampEmbedder->hasDiv = false;
                 $timestampEmbedder->title = "Timestamp of measures";
                 $attrTimestamp = new FieldAttributes(true);
                 $attrTimestamp->max = "now";
@@ -446,12 +446,12 @@ $page->htmlHelper->hotBooty();
             $body .= $page->waitress->rowOpen();
             $body .= $page->waitress->cell("<b>Maximum mass:</b>");
 
-                $attrMaxMass->bRequired = true;
+                $attrMaxMass->isRequired = true;
                 $body .= $page->waitress->cell(
                     $theNumberInput->get("MTOW", $sqlData, "Take-Off", $attrMaxMass)
                 );
             //
-                $attrMaxMass->bRequired = false;
+                $attrMaxMass->isRequired = false;
                 $body .= $page->waitress->cell(
                     $theNumberInput->get("MLDGW", $sqlData, "Landing (optional)", $attrMaxMass)
                 );
@@ -482,7 +482,7 @@ $page->htmlHelper->hotBooty();
         $attrArm->step = $DEFAULT_STEP;
 
         $noDivEmbedder = new FieldEmbedder();
-        $noDivEmbedder->bDiv = false;
+        $noDivEmbedder->hasDiv = false;
 
             // Front+Rear arms
             $body .= "<$hSubtitle>Front and rear arms</$hSubtitle>\n";
@@ -505,7 +505,7 @@ $page->htmlHelper->hotBooty();
             );
             $body .= $page->waitress->rowClose();
 
-            $attrArm->bRequired = false;
+            $attrArm->isRequired = false;
 
                 // Rear arms
                 for($rearIndex = 0; $rearIndex < $kRearStationsNum; ++$rearIndex) {
@@ -579,13 +579,13 @@ $page->htmlHelper->hotBooty();
                 $attrQuantity->min = 0;
                 $attrQuantity->step = 1;
 
-                $attrArm->bRequired = true;  // first is required
+                $attrArm->isRequired = true;  // first is required
 
                 for($fuelIndex = 0; $fuelIndex < $kFuelTanksNum; ++$fuelIndex) {
                     $body .= $page->waitress->rowOpen();
 
                     $station = "#" . ($fuelIndex + 1);
-                    if($attrArm->bRequired) {
+                    if($attrArm->isRequired) {
                         $station .= " (required)";
                     }
                     $body .= $page->waitress->cell($station, array("class" => "bo"));
@@ -612,8 +612,8 @@ $page->htmlHelper->hotBooty();
 
                     $body .= $page->waitress->rowClose();
 
-                    $attrArm->bRequired = false;  // only first is required
-                    $attrQuantity->bRequired = false;  // only first is required
+                    $attrArm->isRequired = false;  // only first is required
+                    $attrQuantity->isRequired = false;  // only first is required
                 }
 
                 $body .= $page->waitress->tableClose();

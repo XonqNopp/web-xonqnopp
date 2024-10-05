@@ -487,9 +487,9 @@ $attrSize->size = $formsize;
                 $tinsert .= $page->butler->cell($theDateInput->get("date", $formDate, NULL, $attrDate), array("class" => "date"));
             //
                 // start AD
-                $attrSize->bRequired = true;
+                $attrSize->isRequired = true;
                 $tinsert .= $page->butler->cell($theTextInput->get("start_ad", $formAdStart, NULL, $adList, $attrSize), array("class" => "start_ad"));
-                $attrSize->bRequired = false;
+                $attrSize->isRequired = false;
             //
                 // time
                 $attrTime = new FieldAttributes(true);
@@ -499,7 +499,7 @@ $attrSize->size = $formsize;
 
             $tinsert .= $page->butler->cell($theTextInput->get("stop_ad", $formAdStop, NULL, "start_ad_datalist", $attrSize), array("class" => "stop_ad"));
 
-            $attrSize->bRequired = true;
+            $attrSize->isRequired = true;
 
             $tinsert .= $page->butler->cell($theTextInput->get("aircraft", $formAircraft, NULL, $typeList, $attrSize), array("class" => "aircraft"));
             $tinsert .= $page->butler->cell($theTextInput->get("identification", $formIdentification, NULL, $idList, $attrSize), array("class" => "identification"));

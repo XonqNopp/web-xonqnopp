@@ -139,7 +139,7 @@ $body .= "<div class=\"quotationinput\">\n";
     /*** quote ***/
     $attr = new FieldAttributes(true, true);
     $embedder = new FieldEmbedder("Citation");
-    $embedder->bDiv = false;
+    $embedder->hasDiv = false;
     $body .= $theTextarea->get("quote", $quote, 7, 70, "Citation", $attr, $embedder);
 //
 $body .= "</div>\n";

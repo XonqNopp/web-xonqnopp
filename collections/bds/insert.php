@@ -133,7 +133,7 @@ if(isset($_POST["erase"])) {
         }
 
         $embedder = new FieldEmbedder("Serie");
-        $embedder->bDiv = false;
+        $embedder->hasDiv = false;
         $body .= $theSelectInput->get("serie_id", $selectargs, $serie_id, "", NULL, NULL, $embedder);
 
         $body .= "&nbsp;-&nbsp;";

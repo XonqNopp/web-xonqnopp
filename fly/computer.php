@@ -155,7 +155,7 @@ $body .= $page->formHelper->tag();
         // -> pressure altitude
         $pa = pressureAltitude($alt, $qnh);
         $paAttr = new FieldAttributes();
-        $paAttr->bDisabled = true;
+        $paAttr->isDisabled = true;
         $paEmbedder = new FieldEmbedder("Pressure altitude", "ft&nbsp;");
         $body .= $theTextInput->get("pa", $pa, NULL, NULL, $paAttr, $paEmbedder);
     //
@@ -168,7 +168,7 @@ $body .= $page->formHelper->tag();
     //
         // -> density altitude
         $daAttr = new FieldAttributes();
-        $daAttr->bDisabled = true;
+        $daAttr->isDisabled = true;
         $daEmbedder = new FieldEmbedder("Density altitude", "ft&nbsp;");
         $body .= $theTextInput->get("DA", densityAltitude($pa, $oat), NULL, NULL, $daAttr, $daEmbedder);
 
@@ -201,7 +201,7 @@ $embedderHdg = new FieldEmbedder("MC", "deg");
     $body .= $theNumberInput->get("temperature[]", $temperature, NULL, NULL, $embedderTemperature);
 //
     // windHeading
-    $attrHdg->bAutofocus = true;
+    $attrHdg->hasAutofocus = true;
     $embedderHdg->title = "wind hdg";
     $body .= $theNumberInput->get("windHeading[]", $windHeading, NULL, $attrHdg, $embedderHdg);
 //
