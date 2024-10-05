@@ -1772,25 +1772,25 @@ class Aircraft {
             // Prepare string
             $htmlRow = $page->butler->rowOpen(array("class" => "summary"));
 
-            if($rowArgs->isAdmin) { $htmlRow .= $page->butler->cell(); }
+            if($rowArgs->isAdmin) { $htmlRow .= $page->butler->cell("", array("class" => "unavailable")); }
 
-            $htmlRow .= $page->butler->cell("", array("class" => "WP"));
-            $htmlRow .= $page->butler->cell("", array("class" => "TC"));
-            $htmlRow .= $page->butler->cell();
+            $htmlRow .= $page->butler->cell("", array("class" => "WP unavailable"));
+            $htmlRow .= $page->butler->cell("", array("class" => "TC unavailable"));
+            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
 
             $htmlRow .= $page->butler->cell($distance, array("class" => "distance sum num"));
 
-            $htmlRow .= $page->butler->cell();
+            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
 
             $htmlRow .= $page->butler->cell($theoricEeTime, array("class" => "EET sum num"));
 
-            $htmlRow .= $page->butler->cell("", array("colspan" => 2, "class" => "wind"));
-            $htmlRow .= $page->butler->cell();
-            $htmlRow .= $page->butler->cell();
+            $htmlRow .= $page->butler->cell("", array("colspan" => 2, "class" => "wind unavailable"));
+            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
 
             $htmlRow .= $page->butler->cell($realEeTime, array("class" => "EET sum num"));
 
-            $htmlRow .= $page->butler->cell();
+            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
             $htmlRow .= $page->butler->cell();
             $htmlRow .= $page->butler->cell();
             $htmlRow .= $page->butler->rowClose();
@@ -2023,7 +2023,22 @@ class Aircraft {
             $latexcontent = "";
 
             $latexcontent .= "\\hhline{----=-=----=---}\n";
-            $latexcontent .= "&&&& {$distance} && {$theoricEeTime} &&&&& {$realEeTime} &&&\\\\";
+            $latexcontent .= "\\DarkGray ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& {$distance} ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& {$theoricEeTime} ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "& {$realEeTime} ";
+            $latexcontent .= "& \\DarkGray ";
+            $latexcontent .= "&";
+            $latexcontent .= "&";
+            $latexcontent .= "\\\\";
 
             if($rowArgs->wpNum == $kWaypoints->alternate->last) {
                 $latexcontent .= "\\hline\n";

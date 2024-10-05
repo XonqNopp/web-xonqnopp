@@ -59,7 +59,7 @@ if(isset($_POST["submit"])) {
         $id = $_POST["id"];
     }
 
-    $name = $page->dbText->field2SQL($_POST["name"]);
+    $name = $page->dbText->field2sql($_POST["name"]);
 
     if($name == "") {
         $error = "Cannot use empty string for borrower name";

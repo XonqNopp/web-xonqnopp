@@ -73,8 +73,8 @@ if(isset($_POST["erase"])) {
         $comment = $_POST["comment"];
     }
 } elseif(isset($_POST["submit"])) {
-    $name = $page->dbText->field2SQL($_POST["name"]);
-    $location = $page->dbText->field2SQL($_POST["location"]);
+    $name = $page->dbText->field2sql($_POST["name"]);
+    $location = $page->dbText->field2sql($_POST["location"]);
     //$car_time = $_POST["car_time"];
     //$train_time = $_POST["train_time"];
     $fields = "";
@@ -85,15 +85,15 @@ if(isset($_POST["erase"])) {
     if(isset($_POST["physicist"])) {
         $physicist = implode(",", $_POST["physicist"]);
     }
-    $contact = $page->dbText->field2SQL($_POST["contact"]);
-    $HR = $page->dbText->field2SQL($_POST["HR"]);
+    $contact = $page->dbText->field2sql($_POST["contact"]);
+    $HR = $page->dbText->field2sql($_POST["HR"]);
     $people = $_POST["people"];
     $peopleCH = $_POST["peopleCH"];
     $peopleRD = $_POST["peopleRD"];
-    $competitors = $page->dbText->field2SQL($_POST["competitors"]);
-    $website = $page->dbText->field2SQL($_POST["website"]);
+    $competitors = $page->dbText->field2sql($_POST["competitors"]);
+    $website = $page->dbText->field2sql($_POST["website"]);
     $ranking = $_POST["ranking"];
-    $comment = $page->dbText->txtarea2SQL($_POST["comment"]);
+    $comment = $page->dbText->txtarea2sql($_POST["comment"]);
 
     if(isset($_POST["id"])) {
         // update

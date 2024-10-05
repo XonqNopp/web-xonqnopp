@@ -48,9 +48,9 @@ if(isset($_POST["title"])) {
         if(isset($_POST["id"])) {
             $id = $_POST["id"];
         }
-        $title = $page->dbText->field2SQL($_POST["title"]);
-        $director = $page->dbText->field2SQL($_POST["director"]);
-        $actors = $page->dbText->field2SQL($_POST["actors"]);
+        $title = $page->dbText->field2sql($_POST["title"]);
+        $director = $page->dbText->field2sql($_POST["director"]);
+        $actors = $page->dbText->field2sql($_POST["actors"]);
         if($_POST["languages"] != "") {
             $languages = implode(",",$_POST["languages"]);
         }
@@ -58,9 +58,9 @@ if(isset($_POST["title"])) {
             $subtitles = implode(",",$_POST["subtitles"]);
         }
         $duration = $_POST["duration"];
-        $serie = $page->dbText->field2SQL($_POST["serie"]);
-        $number = $page->dbText->field2SQL($_POST["number"]);
-        $summary = $page->dbText->paragraph2SQL($_POST["summary"]);
+        $serie = $page->dbText->field2sql($_POST["serie"]);
+        $number = $page->dbText->field2sql($_POST["number"]);
+        $summary = $page->dbText->paragraph2sql($_POST["summary"]);
         $burnt = $is_it[$_POST["burnt"]];
         $format = $_POST["format"];
         $category = $_POST["category"];

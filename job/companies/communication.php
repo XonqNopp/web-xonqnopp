@@ -46,11 +46,11 @@ if(isset($_POST["erase"])) {
 } elseif(isset($_POST["submit"])) {
     $company = $_POST["company"];
     $timestamp = $_POST["timestamp"];
-    $who = $page->dbText->field2SQL($_POST["who"]);
+    $who = $page->dbText->field2sql($_POST["who"]);
     $media = $_POST["media"];
     $way = $_POST["way"];
     $kind = $_POST["kind"];
-    $content = $page->dbText->txtarea2SQL($_POST["content"]);
+    $content = $page->dbText->txtarea2sql($_POST["content"]);
 
     if(isset($_POST["id"])) {
         // update

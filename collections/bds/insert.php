@@ -45,9 +45,9 @@ if(isset($_POST["erase"])) {
         $id = $_POST["id"];
     }
     $serie_id  = $_POST["serie_id"];
-    $tome      = $page->dbText->field2SQL($_POST["tome"]);
-    $title     = $page->dbText->field2SQL($_POST["title"]);
-    $author    = $page->dbText->field2SQL($_POST["author"]);
+    $tome      = $page->dbText->field2sql($_POST["tome"]);
+    $title     = $page->dbText->field2sql($_POST["title"]);
+    $author    = $page->dbText->field2sql($_POST["author"]);
 
     $query = null;
 
@@ -158,7 +158,7 @@ if(isset($_POST["erase"])) {
         $erasetxt = "";
 
         if($title != "") {
-            $erasetxt = $page->dbText->field2SQL($title) . " (";
+            $erasetxt = $page->dbText->field2sql($title) . " (";
         }
 
         $erasetxt .= $serie_title;

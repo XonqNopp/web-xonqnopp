@@ -43,10 +43,10 @@ foreach($kCategories as $dog) {
             $id = $_POST["id"];
         }
 
-        $quote = $page->dbText->paragraph2SQL($_POST["quote"]);
-        $authorlast = $page->dbText->field2SQL($_POST["authorlast"]);
-        $authorfirst = $page->dbText->field2SQL($_POST["authorfirst"]);
-        $place = $page->dbText->field2SQL($_POST["place"]);
+        $quote = $page->dbText->paragraph2sql($_POST["quote"]);
+        $authorlast = $page->dbText->field2sql($_POST["authorlast"]);
+        $authorfirst = $page->dbText->field2sql($_POST["authorfirst"]);
+        $place = $page->dbText->field2sql($_POST["place"]);
         $fav = $_POST["fav"];
 
         if(isset($_POST["cats"])) {

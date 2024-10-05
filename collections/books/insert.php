@@ -45,16 +45,16 @@ if(isset($_POST["title"])) {
         if(isset($_POST["id"])) {
             $id = $_POST["id"];
         }
-        $isbn = $page->dbText->field2SQL($_POST["isbn"]);
-        $title = $page->dbText->field2SQL($_POST["title"]);
-        $author = $page->dbText->field2SQL($_POST["author"]);
-        $serie = $page->dbText->field2SQL($_POST["serie"]);
-        $number = $page->dbText->field2SQL($_POST["number"]);
-        $publisher = $page->dbText->field2SQL($_POST["publisher"]);
-        $date = $page->dbText->field2SQL($_POST["date"]);
+        $isbn = $page->dbText->field2sql($_POST["isbn"]);
+        $title = $page->dbText->field2sql($_POST["title"]);
+        $author = $page->dbText->field2sql($_POST["author"]);
+        $serie = $page->dbText->field2sql($_POST["serie"]);
+        $number = $page->dbText->field2sql($_POST["number"]);
+        $publisher = $page->dbText->field2sql($_POST["publisher"]);
+        $date = $page->dbText->field2sql($_POST["date"]);
         $language = $_POST["language"];
         $category = $_POST["category"];
-        $summary = $page->dbText->txtarea2SQL($_POST["summary"]);
+        $summary = $page->dbText->txtarea2sql($_POST["summary"]);
         $query = "";
         if($id > 0) {
             $query = $page->bobbyTable->queryPrepare("UPDATE `{$page->bobbyTable->dbName}` . `books` SET `isbn` = ?, `title` = ?, `author` = ?, `serie` = ?, `number` = ?, `publisher` = ?, `date` = ?, `language` = ?, `category` = ?, `summary` = ? WHERE `books` . `id` = ? LIMIT 1;");
