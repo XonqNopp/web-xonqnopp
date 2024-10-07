@@ -6,7 +6,7 @@ $funcpath = "$rootPath/functions";
 require_once("common.php");
 
 
-$docVersion = "2024-10-01";  // TODO before merging
+$docVersion = "2024-10-05";  // TODO before merging
 // TODO remove &eacute from latex
 
 $page = new PhPage($rootPath);
@@ -1457,7 +1457,6 @@ class Aircraft {
             $latexend .= "% }}}\n";
             $latexend .= "\\end{minipage}\n";
             $latexend .= "\\end{document}\n";
-            $latexend .= "%\n";
             return $latexend;
         }
     //
@@ -1614,7 +1613,7 @@ class Aircraft {
                 $htmlRow .= $page->butler->cellOpen(array("class" => "edit"));
 
                 if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                    $htmlRow .= $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint}");
+                    $htmlRow .= $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint} ({$rowArgs->wpNum})");
                 }
 
                 $htmlRow .= $page->butler->cellClose();
@@ -1676,7 +1675,7 @@ class Aircraft {
 
             if($rowArgs->isAdmin) {
                 $htmlRow .= $page->butler->cell(
-                    $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit"),
+                    $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint} ({$rowArgs->wpNum})"),
                     array("class" => "edit")
                 );
             }
@@ -3157,7 +3156,6 @@ $page->butler->crossCheckEnable();
     $latexcontent .= $latexRows;
         // finish latex content 1st page with empty rows
         $latexcontent .= LaTeXfinish1($wpNum, $rows, $maxRow - (int)$roundTrip);  // round-trip uses more rows
-        // TODO check if round trip rows are all accounted
         // TODO IWASHERE finish TODOs
     $latexfuel = LaTeXfuel($theoricFuel, $realFuel);
     $latexGC = LaTeXGC($gcData, $finalFuel);

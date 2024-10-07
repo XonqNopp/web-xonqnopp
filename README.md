@@ -3,13 +3,11 @@
 This is my personal website
 
 
-# TODO
+## TODO
 
 * test with mobile (small width but also different keyboard/input method)
 * Cleanup CSS
-* CSS number input right-align
 * CSS mobile remove/decrease margin/padding of body
-* [fly/nav] remove tex and PDF when deleting a nav
 * [jobs/companies] pictures too small in mobile 64em width
 * [collections/borrow] should redirect to same page without ?back=id when done to prevent user errors
 * Check crypted vars all used

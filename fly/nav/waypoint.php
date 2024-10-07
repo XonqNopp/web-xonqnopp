@@ -108,7 +108,8 @@ if(isset($_POST["erase"])) {
 
         $query .= " `$field` = ?";
         $params .= $sqlData->fields[$field]->type;
-        $bindParams[] = $sqlData->get($field);
+        $bindParams[] = $sqlData->get($field);  // TODO IWASHERE not sure escape is done correctly
+        // TODO should we do getHtml and getInput?
     }
     if(isset($_POST["id"])) {
         // Update

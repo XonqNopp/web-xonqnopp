@@ -64,6 +64,7 @@ if(isset($_POST["erase"])) {
     if($tot == 0) {
         $page->bobbyTable->queryDelete($kDefaultTable, $id);
         deleteNavPdfFile($id);
+        deleteNavFile($id, "tex");
         $page->htmlHelper->headerLocation();
 
     } else {

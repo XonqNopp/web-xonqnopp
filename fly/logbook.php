@@ -286,9 +286,6 @@ $page->htmlHelper->hotBooty();
 
 $page->butler->crossCheckDisable();  // we will do tables in several variables
 
-$attrSize = new FieldAttributes();
-$attrSize->size = $formsize;
-
     // run through DB to make body of table
         // head of table
         $thead = "";
@@ -480,6 +477,10 @@ $attrSize->size = $formsize;
         $tinsert = "";
         if($userIsAdmin) {
             // ...only if allowed!
+            $attrText = new FieldAttributes();
+            $attrText->size = $formsize;
+            $attrText->autocapitalize = "characters";
+
             $tinsert .= $page->butler->rowOpen();
                 // Date
                 $attrDate = new FieldAttributes(true);
@@ -487,9 +488,9 @@ $attrSize->size = $formsize;
                 $tinsert .= $page->butler->cell($theDateInput->get("date", $formDate, NULL, $attrDate), array("class" => "date"));
             //
                 // start AD
-                $attrSize->isRequired = true;
-                $tinsert .= $page->butler->cell($theTextInput->get("start_ad", $formAdStart, NULL, $adList, $attrSize), array("class" => "start_ad"));
-                $attrSize->isRequired = false;
+                $attrText->isRequired = true;
+                $tinsert .= $page->butler->cell($theTextInput->get("start_ad", $formAdStart, NULL, $adList, $attrText), array("class" => "start_ad"));
+                $attrText->isRequired = false;
             //
                 // time
                 $attrTime = new FieldAttributes(true);
@@ -497,17 +498,18 @@ $attrSize->size = $formsize;
                 $tinsert .= $page->butler->cell($theTimeInput->get("start_time", $formTimeStart, NULL, $attrTime), array("class" => "start_time"));
                 $tinsert .= $page->butler->cell($theTimeInput->get("stop_time", $formTimeStop, NULL, $attrTime), array("class" => "start_time"));
 
-            $tinsert .= $page->butler->cell($theTextInput->get("stop_ad", $formAdStop, NULL, "start_ad_datalist", $attrSize), array("class" => "stop_ad"));
+            $tinsert .= $page->butler->cell($theTextInput->get("stop_ad", $formAdStop, NULL, "start_ad_datalist", $attrText), array("class" => "stop_ad"));
 
-            $attrSize->isRequired = true;
+            $attrText->isRequired = true;
 
-            $tinsert .= $page->butler->cell($theTextInput->get("aircraft", $formAircraft, NULL, $typeList, $attrSize), array("class" => "aircraft"));
-            $tinsert .= $page->butler->cell($theTextInput->get("identification", $formIdentification, NULL, $idList, $attrSize), array("class" => "identification"));
+            $tinsert .= $page->butler->cell($theTextInput->get("aircraft", $formAircraft, NULL, $typeList, $attrText), array("class" => "aircraft"));
+            $tinsert .= $page->butler->cell($theTextInput->get("identification", $formIdentification, NULL, $idList, $attrText), array("class" => "identification"));
 
                 // SEP,MEP,MP
                 $tinsert .= $page->butler->cell($theSelectInput->get("SPMP", $spmpList, $formSpmp), array("class" => "SPMP", "colspan" => 4));
 
-            $tinsert .= $page->butler->cell($theTextInput->get("PIC", $formPic, NULL, $picList, $attrSize), array("class" => "PICname"));
+            $attrText->autocapitalize = "words";
+            $tinsert .= $page->butler->cell($theTextInput->get("PIC", $formPic, NULL, $picList, $attrText), array("class" => "PICname"));
 
             $attrMin0 = new FieldAttributes(true);
             $attrMin0->min = 0;

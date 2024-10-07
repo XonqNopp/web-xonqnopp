@@ -13,13 +13,18 @@ function getNavFilename($navId) {
 }
 
 
-function deleteNavPdfFile($navId) {
-    $filename = getNavFilename($navId);
-    if(!file_exists("$filename.pdf")) {
+function deleteNavFile($navId, $fileExt) {
+    $filename = getNavFilename($navId) . "." . $fileExt;
+    if(!file_exists($filename)) {
         return;
     }
 
-    unlink("$filename.pdf");
+    unlink($filename);
+}
+
+
+function deleteNavPdfFile($navId) {
+    deleteNavFile($navId, "pdf");
 }
 
 
