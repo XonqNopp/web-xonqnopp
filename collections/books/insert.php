@@ -45,13 +45,13 @@ if(isset($_POST["title"])) {
         if(isset($_POST["id"])) {
             $id = $_POST["id"];
         }
-        $isbn = $page->dbText->field2sql($_POST["isbn"]);
-        $title = $page->dbText->field2sql($_POST["title"]);
-        $author = $page->dbText->field2sql($_POST["author"]);
-        $serie = $page->dbText->field2sql($_POST["serie"]);
-        $number = $page->dbText->field2sql($_POST["number"]);
-        $publisher = $page->dbText->field2sql($_POST["publisher"]);
-        $date = $page->dbText->field2sql($_POST["date"]);
+        $isbn = $page->dbText->input2sql($_POST["isbn"]);
+        $title = $page->dbText->input2sql($_POST["title"]);
+        $author = $page->dbText->input2sql($_POST["author"]);
+        $serie = $page->dbText->input2sql($_POST["serie"]);
+        $number = $page->dbText->input2sql($_POST["number"]);
+        $publisher = $page->dbText->input2sql($_POST["publisher"]);
+        $date = $page->dbText->input2sql($_POST["date"]);
         $language = $_POST["language"];
         $category = $_POST["category"];
         $summary = $page->dbText->txtarea2sql($_POST["summary"]);
@@ -122,12 +122,12 @@ if($id > 0) {
     $query->bind_result($id, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
     $query->fetch();
     $query->close();
-    $author    = $page->dbText->sql2field($author);
-    $title     = $page->dbText->sql2field($title);
-    $serie     = $page->dbText->sql2field($serie);
-    $number    = $page->dbText->sql2field($number);
-    $publisher = $page->dbText->sql2field($publisher);
-    $date      = $page->dbText->sql2field($date);
+    $author    = $page->dbText->sql2input($author);
+    $title     = $page->dbText->sql2input($title);
+    $serie     = $page->dbText->sql2input($serie);
+    $number    = $page->dbText->sql2input($number);
+    $publisher = $page->dbText->sql2input($publisher);
+    $date      = $page->dbText->sql2input($date);
     $summary = $page->dbText->sql2txtarea($summary);
     if($date == "0000-00-00") {
         $date = "";

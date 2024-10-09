@@ -44,10 +44,10 @@ if(isset($_POST["erase"])) {
     if(isset($_POST["id"]) && $_POST["id"] > 0) {
         $id = $_POST["id"];
     }
-    $name = $page->dbText->field2sql($_POST["name"]);
+    $name = $page->dbText->input2sql($_POST["name"]);
     $thumb = "";
     $type = $_POST["type"];
-    $Nalbums = $page->dbText->field2sql($_POST["Nalbums"]);
+    $Nalbums = $page->dbText->input2sql($_POST["Nalbums"]);
     $query = "";
     if($id > 0) {
         $query = $page->bobbyTable->queryPrepare("UPDATE `{$page->bobbyTable->dbName}` . `bd_series` SET `name` = ?, `thumb` = ?, `type` = ?, `Nalbums` = ? WHERE `bd_series` . `id` = ? LIMIT 1;");

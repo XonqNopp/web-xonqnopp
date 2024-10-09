@@ -168,7 +168,7 @@ $body .= $people == "" ? "" : "<li><b>Number of employees:</b> $people</li>\n";
 $body .= $competitors == "" ? "" : "<li><b>Competitors:</b> $competitors</li>\n";
 if($website != "") {
     $body .= "<li><b>Website:</b> ";
-    $body .= $page->dbText->sql2url($website);
+    $body .= $page->dbText->sql2htmlUrl($website);
     $body .= "</li>\n";
 }
 $body .= $userIsAdmin ? "<li><b>Personal ranking:</b> $ranking</li>\n" : "";
@@ -219,7 +219,7 @@ function getCommunications($companyId) {
         $body .= $page->waitress->cell("$who\n", array("class" => "who"));
         $body .= $page->waitress->cell($page->bodyBuilder->img("$media.png", $media), array("class" => "media"));
         $body .= $page->waitress->cell($page->bodyBuilder->img("$kind.png", $kind), array("class" => "kind"));
-        $body .= $page->waitress->cell($page->dbText->sql2url($content) . "\n", array("class" => "content"));
+        $body .= $page->waitress->cell($page->dbText->sql2htmlUrl($content) . "\n", array("class" => "content"));
 
         $body .= $page->waitress->rowClose();
     }

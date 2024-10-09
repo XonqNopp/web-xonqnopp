@@ -48,9 +48,9 @@ if(isset($_POST["title"])) {
         if(isset($_POST["id"])) {
             $id = $_POST["id"];
         }
-        $title = $page->dbText->field2sql($_POST["title"]);
-        $director = $page->dbText->field2sql($_POST["director"]);
-        $actors = $page->dbText->field2sql($_POST["actors"]);
+        $title = $page->dbText->input2sql($_POST["title"]);
+        $director = $page->dbText->input2sql($_POST["director"]);
+        $actors = $page->dbText->input2sql($_POST["actors"]);
         if($_POST["languages"] != "") {
             $languages = implode(",",$_POST["languages"]);
         }
@@ -58,8 +58,8 @@ if(isset($_POST["title"])) {
             $subtitles = implode(",",$_POST["subtitles"]);
         }
         $duration = $_POST["duration"];
-        $serie = $page->dbText->field2sql($_POST["serie"]);
-        $number = $page->dbText->field2sql($_POST["number"]);
+        $serie = $page->dbText->input2sql($_POST["serie"]);
+        $number = $page->dbText->input2sql($_POST["number"]);
         $summary = $page->dbText->paragraph2sql($_POST["summary"]);
         $burnt = $is_it[$_POST["burnt"]];
         $format = $_POST["format"];
@@ -112,16 +112,16 @@ if(isset($_GET["id"]) || isset($_POST["id"])) {
     $query->bind_result($id, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
     $query->fetch();
     $query->close();
-    $title    = $page->dbText->sql2field($title);
-    $director = $page->dbText->sql2field($director);
-    $actors   = $page->dbText->sql2field($actors);
+    $title    = $page->dbText->sql2input($title);
+    $director = $page->dbText->sql2input($director);
+    $actors   = $page->dbText->sql2input($actors);
     $languages = explode(",", $languages);
     $subtitles = explode(",", $subtitles);
     if($duration == 0) {
         $duration = "";
     }
-    $serie   = $page->dbText->sql2field($serie);
-    $number  = $page->dbText->sql2field($number);
+    $serie   = $page->dbText->sql2input($serie);
+    $number  = $page->dbText->sql2input($number);
     if($number == 0) {
         $number = "";
     }

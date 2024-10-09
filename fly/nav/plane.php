@@ -159,7 +159,7 @@ if(isset($_POST["erase"])) {
     }
 
     // Remove char escaping
-    $sqlData->sql2field();
+    $sqlData->sql2input();
 
     // Reset strings without escaping for later input fields
     $sqlData->set("PlaneType");
@@ -188,7 +188,7 @@ if(isset($_POST["erase"])) {
     $page_title = "Edit infos for " . $sqlData->get("PlaneID");
 
     // Remove char escaping
-    $sqlData->sql2field();
+    $sqlData->sql2input();
 
     // Reset strings without escaping for later input fields
     $sqlData->set("PlaneType");
@@ -275,7 +275,7 @@ if(isset($_POST["erase"])) {
     $theplane->close();
 
     // Remove char escaping
-    $sqlData->sql2field();
+    $sqlData->sql2input();
 
     foreach($armFields as $arm) {
         if($sqlData->get($arm) == $kArmless) {

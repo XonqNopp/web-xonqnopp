@@ -96,8 +96,8 @@ if($userIsAdmin) {
             $formTimeStop = substr($formTimeStop, 0, 5);
         }
 
-        $formAdStart = $page->dbText->field2sql($_POST["start_ad"]);
-        $formAdStop = $page->dbText->field2sql($_POST["stop_ad"]);
+        $formAdStart = $page->dbText->input2sql($_POST["start_ad"]);
+        $formAdStop = $page->dbText->input2sql($_POST["stop_ad"]);
         if($formAdStop == "") {
             $formAdStop = $formAdStart;
         }
@@ -107,8 +107,8 @@ if($userIsAdmin) {
             $formTimeStop = $formTimeStart;
         }
 
-        $formAircraft = $page->dbText->field2sql($_POST["aircraft"]);
-        $formIdentification = $page->dbText->field2sql($_POST["identification"]);
+        $formAircraft = $page->dbText->input2sql($_POST["aircraft"]);
+        $formIdentification = $page->dbText->input2sql($_POST["identification"]);
         $formSpmp = $_POST["SPMP"];
 
         function timeStr2minutes($timeStr) {
@@ -137,11 +137,11 @@ if($userIsAdmin) {
                 break;
         }
 
-        $formPic = $page->dbText->field2sql($_POST["PIC"]);
-        $formLandingsDay = (int)$page->dbText->field2sql($_POST["landings_day"]);
-        $formLandingsNight = (int)$page->dbText->field2sql($_POST["landings_night"]);
-        $formOpsTimeNight = (int)$page->dbText->field2sql($_POST["night_time"]);
-        $formOpsTimeIfr = (int)$page->dbText->field2sql($_POST["IFR_time"]);
+        $formPic = $page->dbText->input2sql($_POST["PIC"]);
+        $formLandingsDay = (int)$page->dbText->input2sql($_POST["landings_day"]);
+        $formLandingsNight = (int)$page->dbText->input2sql($_POST["landings_night"]);
+        $formOpsTimeNight = (int)$page->dbText->input2sql($_POST["night_time"]);
+        $formOpsTimeIfr = (int)$page->dbText->input2sql($_POST["IFR_time"]);
         if($formOpsTimeNight > $delta || $formOpsTimeIfr > $delta) {
             $logger->info("Night and IFR conditions cannot exceed global time, setting max");
 
@@ -173,7 +173,7 @@ if($userIsAdmin) {
             break;
         }
 
-        $formNotes = $page->dbText->field2sql($_POST["notes"]);
+        $formNotes = $page->dbText->input2sql($_POST["notes"]);
         $insert = $page->bobbyTable->queryPrepare("INSERT INTO `{$page->bobbyTable->dbName}` . `PilotLogbook` (`id`, `date`, `start_time`, `stop_time`, `start_ad`, `stop_ad`, `aircraft`, `identification`, `SP_SEP`, `SP_MEP`, `MP`, `PIC`, `landings_day`, `landings_night`, `night_time`, `IFR_time`, `PIC_time`, `copi_time`, `dual_time`, `instructor_time`, `notes`) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         $insert->bind_param("sssssssiiisiiiiiiiis", $formDate, $formTimeStart, $formTimeStop, $formAdStart, $formAdStop, $formAircraft, $formIdentification, $sqlSpSep, $sqlSpMep, $sqlMp, $formPic, $formLandingsDay, $formLandingsNight, $formOpsTimeNight, $formOpsTimeIfr, $sqlFunctionTimePic, $sqlFunctionTimeCopi, $sqlFunctionTimeDual, $sqlFunctionTimeInstructor, $formNotes);
         $page->bobbyTable->executeManage($insert);
@@ -439,7 +439,8 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                 }
                 $tbody .= $page->butler->cellOpen();
                 if($userIsAdmin) {
-                    $tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" onclick='return ConfirmErase(\"" . html_entity_decode($page->dbText->sql2field($notes)) . "\")' />";
+                    $tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" ";
+                    $tbody .= "onclick='return ConfirmErase(\"" . html_entity_decode($page->dbText->sql2input($notes)) . "\")' />";
                 }
                 $tbody .= $page->butler->cellClose();
                 $tbody .= $page->butler->rowClose();

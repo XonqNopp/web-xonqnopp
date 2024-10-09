@@ -50,7 +50,7 @@ $body = "";
         $back .= $page->waitress->cell("$who\n", array("class" => "who"));
         $back .= $page->waitress->cell($page->bodyBuilder->img("$media.png", $media), array("class" => "media"));
         $back .= $page->waitress->cell($page->bodyBuilder->img("$kind.png", $kind), array("class" => "kind"));
-        $back .= $page->waitress->cell($page->dbText->sql2url($content) . "\n", array("class" => "content"));
+        $back .= $page->waitress->cell($page->dbText->sql2htmlUrl($content) . "\n", array("class" => "content"));
 
         $back .= $page->waitress->rowClose();
         return $back;

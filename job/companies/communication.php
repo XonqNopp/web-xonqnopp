@@ -46,7 +46,7 @@ if(isset($_POST["erase"])) {
 } elseif(isset($_POST["submit"])) {
     $company = $_POST["company"];
     $timestamp = $_POST["timestamp"];
-    $who = $page->dbText->field2sql($_POST["who"]);
+    $who = $page->dbText->input2sql($_POST["who"]);
     $media = $_POST["media"];
     $way = $_POST["way"];
     $kind = $_POST["kind"];
@@ -82,7 +82,7 @@ if(isset($_POST["erase"])) {
     $SQL->bind_result($id, $company, $timestamp, $who, $media, $way, $kind, $content);
     $SQL->fetch();
     $SQL->close();
-    $who = $page->dbText->sql2field($who);
+    $who = $page->dbText->sql2input($who);
     $content = $page->dbText->sql2txtarea($content);
     $sql = $page->bobbyTable->idManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
     $sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);

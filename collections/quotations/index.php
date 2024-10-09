@@ -90,7 +90,7 @@ function getQuery() {
     /*
     $keyword = "";
     if(isset($_POST["keyword"])) {
-        $keyword = $page->dbText->field2sql($_POST["keyword"]);
+        $keyword = $page->dbText->input2sql($_POST["keyword"]);
     }
     if($keyword != "") {
         $query .= "(";
