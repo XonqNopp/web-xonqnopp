@@ -93,8 +93,8 @@ if(isset($_POST["erase"])) {
         if($tome == 0 || $tome == "0") {
             $tome = "";
         }
-        $title     = $page->dbText->sql2input($title);
-        $author    = $page->dbText->sql2input($author);
+        $title     = $page->dbText->sql2html($title);
+        $author    = $page->dbText->sql2html($author);
         $page_title = $serie_title;
         if($page_title == "") {
             $page_title = $title;

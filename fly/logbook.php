@@ -440,7 +440,7 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                 $tbody .= $page->butler->cellOpen();
                 if($userIsAdmin) {
                     $tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" ";
-                    $tbody .= "onclick='return ConfirmErase(\"" . html_entity_decode($page->dbText->sql2input($notes)) . "\")' />";
+                    $tbody .= "onclick='return ConfirmErase(\"" . html_entity_decode($page->dbText->sql2html($notes)) . "\")' />";
                 }
                 $tbody .= $page->butler->cellClose();
                 $tbody .= $page->butler->rowClose();

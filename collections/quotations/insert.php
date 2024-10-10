@@ -43,7 +43,7 @@ foreach($kCategories as $dog) {
             $id = $_POST["id"];
         }
 
-        $quote = $page->dbText->paragraph2sql($_POST["quote"]);
+        $quote = $page->dbText->inputTextareaParagraph2sql($_POST["quote"]);
         $authorlast = $page->dbText->input2sql($_POST["authorlast"]);
         $authorfirst = $page->dbText->input2sql($_POST["authorfirst"]);
         $place = $page->dbText->input2sql($_POST["place"]);
@@ -102,10 +102,10 @@ if(isset($_GET["id"])) {
     $result->bind_result($id, $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports);
     $result->fetch();
     $result->close();
-    $quote = $page->dbText->sql2paragraph($quote);
-    $authorfirst = $page->dbText->sql2input($authorfirst);
-    $authorlast = $page->dbText->sql2input($authorlast);
-    $place = $page->dbText->sql2input($place);
+    $quote = $page->dbText->sql2htmlTextareaParagraph($quote);
+    $authorfirst = $page->dbText->sql2html($authorfirst);
+    $authorlast = $page->dbText->sql2html($authorlast);
+    $place = $page->dbText->sql2html($place);
     //foreach($kCategories as $dog) {
         //eval("$$dog = \$entry->$dog;");
     //}

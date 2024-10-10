@@ -54,7 +54,7 @@ if(isset($_POST["title"])) {
         $date = $page->dbText->input2sql($_POST["date"]);
         $language = $_POST["language"];
         $category = $_POST["category"];
-        $summary = $page->dbText->txtarea2sql($_POST["summary"]);
+        $summary = $page->dbText->inputTextarea2sql($_POST["summary"]);
         $query = "";
         if($id > 0) {
             $query = $page->bobbyTable->queryPrepare("UPDATE `{$page->bobbyTable->dbName}` . `books` SET `isbn` = ?, `title` = ?, `author` = ?, `serie` = ?, `number` = ?, `publisher` = ?, `date` = ?, `language` = ?, `category` = ?, `summary` = ? WHERE `books` . `id` = ? LIMIT 1;");
@@ -122,13 +122,13 @@ if($id > 0) {
     $query->bind_result($id, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
     $query->fetch();
     $query->close();
-    $author    = $page->dbText->sql2input($author);
-    $title     = $page->dbText->sql2input($title);
-    $serie     = $page->dbText->sql2input($serie);
-    $number    = $page->dbText->sql2input($number);
-    $publisher = $page->dbText->sql2input($publisher);
-    $date      = $page->dbText->sql2input($date);
-    $summary = $page->dbText->sql2txtarea($summary);
+    $author    = $page->dbText->sql2html($author);
+    $title     = $page->dbText->sql2html($title);
+    $serie     = $page->dbText->sql2html($serie);
+    $number    = $page->dbText->sql2html($number);
+    $publisher = $page->dbText->sql2html($publisher);
+    $date      = $page->dbText->sql2html($date);
+    $summary = $page->dbText->sql2htmlTextarea($summary);
     if($date == "0000-00-00") {
         $date = "";
     }

@@ -60,7 +60,7 @@ if(isset($_POST["title"])) {
         $duration = $_POST["duration"];
         $serie = $page->dbText->input2sql($_POST["serie"]);
         $number = $page->dbText->input2sql($_POST["number"]);
-        $summary = $page->dbText->paragraph2sql($_POST["summary"]);
+        $summary = $page->dbText->inputTextareaParagraph2sql($_POST["summary"]);
         $burnt = $is_it[$_POST["burnt"]];
         $format = $_POST["format"];
         $category = $_POST["category"];
@@ -112,20 +112,20 @@ if(isset($_GET["id"]) || isset($_POST["id"])) {
     $query->bind_result($id, $title, $director, $actors, $languages, $subtitles, $duration, $serie, $number, $category, $summary, $burnt, $format, $borrowed);
     $query->fetch();
     $query->close();
-    $title    = $page->dbText->sql2input($title);
-    $director = $page->dbText->sql2input($director);
-    $actors   = $page->dbText->sql2input($actors);
+    $title    = $page->dbText->sql2html($title);
+    $director = $page->dbText->sql2html($director);
+    $actors   = $page->dbText->sql2html($actors);
     $languages = explode(",", $languages);
     $subtitles = explode(",", $subtitles);
     if($duration == 0) {
         $duration = "";
     }
-    $serie   = $page->dbText->sql2input($serie);
-    $number  = $page->dbText->sql2input($number);
+    $serie   = $page->dbText->sql2html($serie);
+    $number  = $page->dbText->sql2html($number);
     if($number == 0) {
         $number = "";
     }
-    $summary = $page->dbText->sql2paragraph($summary);
+    $summary = $page->dbText->sql2htmlTextareaParagraph($summary);
 
     // Some infos to display
     $GHargs->page = "display";

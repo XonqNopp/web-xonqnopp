@@ -122,7 +122,7 @@ if(isset($_POST["erase"])) {
     $page_title = "Edit navigation " . $sqlData->get("name");
 }
 
-$sqlData->sql2input();
+$sqlData->applySql2html();
 
 $body = $page->bodyBuilder->goHome("..");
 $body .= $page->htmlHelper->setTitle($page_title);// before HotBooty

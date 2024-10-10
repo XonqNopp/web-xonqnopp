@@ -93,7 +93,7 @@ if(isset($_POST["erase"])) {
     $competitors = $page->dbText->input2sql($_POST["competitors"]);
     $website = $page->dbText->input2sql($_POST["website"]);
     $ranking = $_POST["ranking"];
-    $comment = $page->dbText->txtarea2sql($_POST["comment"]);
+    $comment = $page->dbText->inputTextarea2sql($_POST["comment"]);
 
     if(isset($_POST["id"])) {
         // update
@@ -123,8 +123,8 @@ if(isset($_POST["erase"])) {
     $SQL->fetch();
     $SQL->close();
     $page_title = "Edit $name";
-    $name = $page->dbText->sql2input($name);
-    $location = $page->dbText->sql2input($location);
+    $name = $page->dbText->sql2html($name);
+    $location = $page->dbText->sql2html($location);
 
     if($car_time === NULL) {
         $car_time = "";
@@ -139,8 +139,8 @@ if(isset($_POST["erase"])) {
 
     $fields = explode(",", $fields);
     $physicist = explode(",", $physicist);
-    $contact = $page->dbText->sql2input($contact);
-    $HR = $page->dbText->sql2input($HR);
+    $contact = $page->dbText->sql2html($contact);
+    $HR = $page->dbText->sql2html($HR);
     /*** temporary because new fields ***/
     if($peopleCH === NULL) {
         $peopleCH = "";
@@ -149,9 +149,9 @@ if(isset($_POST["erase"])) {
         $peopleRD = "";
     }
     /******/
-    $competitors = $page->dbText->sql2input($competitors);
-    $website = $page->dbText->sql2input($website);
-    $comment = $page->dbText->sql2txtarea($comment);
+    $competitors = $page->dbText->sql2html($competitors);
+    $website = $page->dbText->sql2html($website);
+    $comment = $page->dbText->sql2htmlTextarea($comment);
 }
 
 
