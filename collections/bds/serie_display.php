@@ -4,6 +4,8 @@ $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 require_once("{$funcpath}_local/borrowback.php");
 
+// TODO borrowed items CSS not working
+
 $page = new PhPage($rootPath);
 
 //$page->htmlHelper->init();
@@ -121,16 +123,15 @@ function getBody($serieId) {
 
     $body .= "<div class=\"wide\">\n";
     $body .= "<div class=\"lhead\">\n";
-    $body .= $page->bodyBuilder->anchor("search.php", "Search");  // TODO search available???
-    $body .= "</div>\n";
-    $body .= "<div class=\"chead\">\n";
-    $body .= "</div>\n";
+    //$body .= $page->bodyBuilder->anchor("search.php", "Search");
+    $body .= "</div><!-- lhead -->\n";
+    $body .= "<div class=\"chead\"></div>\n";
     // Propose to add a new
     $body .= "<div class=\"rhead\">\n";
     $body .= rHead($isGI, $serieId);
-    $body .= "</div>\n";
+    $body .= "</div><!-- rhead -->\n";
 
-    $body .= "</div>\n";
+    $body .= "</div><!-- wide -->\n";
 
 
     // Fetch all from this serie

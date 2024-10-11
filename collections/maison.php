@@ -113,6 +113,7 @@ if($page->loginHelper->userIsAdmin()) {
 }
 
     // Links
+// TODO check all links
     $body .= "<div class=\"framed\">\n";
 
     $body .= "<div style=\"font-weight: 700\">Liens utiles:</div>\n";

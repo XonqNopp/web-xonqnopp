@@ -21,6 +21,9 @@ $page->htmlHelper->jsForm();
 //$page->logger->levelUp(6);
 
 
+// TODO check fields size on mobile
+// TODO reset fields for notes to not add unwanted time/landings
+// TODO add summary when 3-month expires
 
 function displaySQLtime($item) {
     global $page;

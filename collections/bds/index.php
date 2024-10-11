@@ -61,7 +61,7 @@ function getBody() {
     $seriesPerColumn = $nSeries * 1.0 / $seriesWidth;
 
     $body .= "<div class=\"bd_display_table\">\n";
-    $body .= $page->waitress->tableOpen();
+    $body .= $page->waitress->tableOpen(array(), false);
     $body .= $page->waitress->rowOpen();
     $body .= $page->waitress->cellOpen(array("class" => "stem_cell"));
     $check = 0;

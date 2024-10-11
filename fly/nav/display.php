@@ -6,7 +6,16 @@ $funcpath = "$rootPath/functions";
 require_once("common.php");
 
 
-$docVersion = "2024-10-10";
+$docVersion = "2024-10-10";  // TODO update before merging
+// TODO max fuel: put minus overflow and highlight if not possible (based on usable)
+// TODO add note about GSx5 for TOD
+// TODO imporve display of formula for TH with wind (both HTML+LaTeX)
+// TODO Move fuel/h in table (first cell?)
+//     \multicolumn{4}{r}{\bf Fuel per hour:} & \multicolumn{2}{r}{value} & \multicolumn{1}{l}{unit}\\\hhline{~------}
+// TODO Change fuel headers to NoWind, Wind
+// TODO Change nav.tex header to all multicolumn{2} or single line with same settings as table below
+// TODO no wind(MH) if visual
+// TODO Improve bind_ SQL stuff on multiple lines, with $params and $values
 
 $page = new PhPage($rootPath);
 $page->bobbyTable->init();

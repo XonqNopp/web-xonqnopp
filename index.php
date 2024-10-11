@@ -70,8 +70,8 @@ $body .= $page->waitress->tableOpen(array(), false);
 $body .= $page->waitress->rowOpen();
 
     $body .= $page->waitress->cellOpen();
-    $body .= "<ul>\n";
     $body .= "My pages:\n";
+    $body .= "<ul>\n";
 
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("fly/index.php", "Fly");
@@ -91,8 +91,13 @@ $body .= $page->waitress->rowOpen();
     $body .= "- " . $page->bodyBuilder->anchor("collections/quotations/index.php", "citations");
     $body .= "</li>\n";
 
-    $body .= $page->bodyBuilder->liAnchor("job/index.php", "job");
+    $body .= "<li>\n";
+    $body .= $page->bodyBuilder->anchor("job/index.php", "job");
+    $body .= ": " . $page->bodyBuilder->anchor("job/companies/index.php", "companies");
+    $body .= "</li>\n";
+
     $body .= $page->bodyBuilder->liAnchor("sub/backup/exams/choose.php?which=m", "exams");
+
     $body .= "</ul>\n";
     $body .= $page->waitress->cellClose();
 //

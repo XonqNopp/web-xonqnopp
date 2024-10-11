@@ -8,6 +8,8 @@ $page->bobbyTable->init();
 //$page->logger->levelUp(6);
 $body = "";
 
+// TODO pictures too small in mobile 64em width
+
 $page->cssHelper->dirUpWing(2);
 $userIsAdmin = $page->loginHelper->userIsAdmin();
 

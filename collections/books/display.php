@@ -1,5 +1,4 @@
 <?php
-// TODO SetTitle
 require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";

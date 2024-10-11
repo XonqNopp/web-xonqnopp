@@ -5,6 +5,9 @@ $rootPath = "../..";
 
 require_once("common.php");
 
+// TODO display max range with full fuel minus 1h
+// TODO display dry timestamp on plane list
+
 $page = new PhPage($rootPath);
 $page->bobbyTable->init();
 //$page->htmlHelper->init();
