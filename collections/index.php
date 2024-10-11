@@ -17,68 +17,54 @@ $body .= "<div>\n";
     $body .= "<ul>\n";
         // BD
         $getcount = $page->bobbyTable->queryManage("SELECT COUNT(*) AS `the_count` FROM `bds`");
-        $fetch_count = $getcount->fetch_object();
-        $bd_count = $fetch_count->the_count;
+        $fetchCount = $getcount->fetch_object();
+        $bdCount = $fetchCount->the_count;
         $getcount->close();
+
         $getcount = $page->bobbyTable->queryManage("SELECT COUNT(*) AS `the_count` FROM `bd_series`");
-        $fetch_count = $getcount->fetch_object();
-        $serie_count = $fetch_count->the_count;
+        $fetchCount = $getcount->fetch_object();
+        $serieCount = $fetchCount->the_count;
         $getcount->close();
+
         $body .= "<li>\n";
-        $body .= $page->bodyBuilder->anchor("bds/index.php", "BDs");
-        if($bd_count > 0) {
-            $body .= "&nbsp;<span class=\"leb\">($serie_count s&eacute;ries, $bd_count BDs)</span>\n";
-        }
+        $body .= "$bdCount " . $page->bodyBuilder->anchor("bds/index.php", "BDs");
+        $body .= " ($serieCount s&eacute;ries)";
         if($userIsAdmin) {
-            $body .= "&nbsp;new ";
-            $body .= $page->bodyBuilder->anchor("bds/insert.php", "BD", "Add a new BD");
-            $body .= "/";
-            $body .= $page->bodyBuilder->anchor("bds/serie_insert.php", "serie", "Add a BD serie");
-            $body .= "\n";
+            $body .= " - new " . $page->bodyBuilder->anchor("bds/insert.php", "BD", "Add a new BD");
+            $body .= "/ " . $page->bodyBuilder->anchor("bds/serie_insert.php", "serie", "Add a BD serie");
         }
         $body .= "</li>\n";
     //
         // Missing
         $getcount = $page->bobbyTable->queryManage("SELECT COUNT(*) AS `the_count` FROM `missings`");
-        $fetch_count = $getcount->fetch_object();
-        $missing_count = $fetch_count->the_count;
+        $fetchCount = $getcount->fetch_object();
+        $missingCount = $fetchCount->the_count;
         $getcount->close();
         $body .= "<li>\n";
-        $body .= $page->bodyBuilder->anchor("missings/index.php", "missing");
-        if($missing_count > 0) {
-            $body .= "&nbsp;<span class=\"leb\">($missing_count)</span>\n";
-        }
+        $body .= "$missingCount " . $page->bodyBuilder->anchor("missings/index.php", "missing");
         $body .= "</li>\n";
     //
         // Borrower
         $getcount = $page->bobbyTable->queryManage("SELECT COUNT(*) AS `the_count` FROM `borrowers`");
-        $fetch_count = $getcount->fetch_object();
-        $borrower_count = $fetch_count->the_count;
+        $fetchCount = $getcount->fetch_object();
+        $borrowerCount = $fetchCount->the_count;
         $getcount->close();
         $body .= "<li>\n";
-        $body .= $page->bodyBuilder->anchor("borrowers/index.php", "borrowers");
-        if($borrower_count > 0) {
-            $body .= "&nbsp;<span class=\"leb\">($borrower_count)</span>\n";
-        }
+        $body .= "$borrowerCount " . $page->bodyBuilder->anchor("borrowers/index.php", "borrowers");
         if($userIsAdmin) {
-            $body .= "&nbsp;";
-            $body .= $page->bodyBuilder->anchor("borrowers/insert.php", "new", "Add a borrower");
+            $body .= " - " . $page->bodyBuilder->anchor("borrowers/insert.php", "new", "Add a borrower");
         }
         $body .= "</li>\n";
     //
         // Quotations
         $getcount = $page->bobbyTable->queryManage("SELECT COUNT(*) AS `the_count` FROM `quotations`");
-        $fetch_count = $getcount->fetch_object();
-        $quote_count = $fetch_count->the_count;
+        $fetchCount = $getcount->fetch_object();
+        $quoteCount = $fetchCount->the_count;
         $getcount->close();
         $body .= "<li>\n";
-        $body .= $page->bodyBuilder->anchor("quotations/index.php", "Citations (FR)");
-        if($quote_count > 0) {
-            $body .= "&nbsp;<span class=\"leb\">($quote_count)</span>\n";
-        }
+        $body .= "$quoteCount " . $page->bodyBuilder->anchor("quotations/index.php", "Citations (FR)");
         if($userIsAdmin) {
-            $body .= "&nbsp;";
-            $body .= $page->bodyBuilder->anchor("quotations/insert.php", "new", "Ajouter une citation");
+            $body .= " - " . $page->bodyBuilder->anchor("quotations/insert.php", "new", "Ajouter une citation");
         }
         $body .= "</li>\n";
     //
