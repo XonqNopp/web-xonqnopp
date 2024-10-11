@@ -576,8 +576,6 @@ $queryTimeLandings .= "FROM `PilotLogbook`";
     $threeItem = $threeDb->fetch_object();
     $threeDb->close();
 
-    $threeItem = $yearItem; // TODO remove this line and fix code
-
     $sLN = $threeItem->sLN + 0;
 //
     // revalidation
@@ -775,7 +773,7 @@ $today = $page->timeHelper->getNow()->date;
         $landingsTotal = $totalItem->sLD + $totalItem->sLN;
         $landingsYear = $yearItem->sLD + $yearItem->sLN;
         $landingsThree = $threeItem->sLD + $sLN;
-        $body .= $page->butler->rowOpen(array("class" => "odd"));  // TODO sure?
+        $body .= $page->butler->rowOpen();
         $body .= $page->butler->cell("<b>All types</b>");
         $body .= $page->butler->cell("<b>{$page->timeHelper->minutesDisplay($totalItem->sSEP + $totalItem->sMEP + $totalItem->sMP)}</b>", array("class" => "num"));
         $body .= $page->butler->cell("<b>$landingsTotal</b>", array("class" => "num"));

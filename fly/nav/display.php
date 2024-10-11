@@ -6,8 +6,7 @@ $funcpath = "$rootPath/functions";
 require_once("common.php");
 
 
-$docVersion = "2024-10-05";  // TODO before merging
-// TODO remove &eacute from latex
+$docVersion = "2024-10-10";
 
 $page = new PhPage($rootPath);
 $page->bobbyTable->init();
@@ -3156,7 +3155,6 @@ $page->butler->crossCheckEnable();
     $latexcontent .= $latexRows;
         // finish latex content 1st page with empty rows
         $latexcontent .= LaTeXfinish1($wpNum, $rows, $maxRow - (int)$roundTrip);  // round-trip uses more rows
-        // TODO IWASHERE finish TODOs
     $latexfuel = LaTeXfuel($theoricFuel, $realFuel);
     $latexGC = LaTeXGC($gcData, $finalFuel);
 

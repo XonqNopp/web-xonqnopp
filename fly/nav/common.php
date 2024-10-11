@@ -101,9 +101,10 @@ function deleteNavPdfFile($navId) {
         public function getNext($waypoint) {
             if($waypoint == $this->wayOut->last || $waypoint == $this->wayBack->last) {
                 return $this->alternate->start;
+            }
 
-            } elseif($waypoint == $this->alternate->last) {
-                return $this->wayOut->last - 1;
+            if($waypoint == $this->alternate->last) {
+                return -1;
             }
 
             return $waypoint + 1;

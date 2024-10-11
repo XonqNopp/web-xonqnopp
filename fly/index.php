@@ -61,11 +61,10 @@ $body .= $page->waitress->rowOpen();
         $body .= $page->bodyBuilder->liAnchor("http://www.flightradar24.com/", "FlightRadar24.com");
         $body .= $page->bodyBuilder->liAnchor("http://planefinder.net/", "PlaneFinder.net");
         $body .= "</ul>\n";
-        // TODO move unused links somewhere else (bottom?)
     $body .= $page->waitress->cellClose();
 //
     $body .= $page->waitress->cell(
-        commonPreparations($page, $page->loginHelper->userIsAdmin(), $page->miscInit),  // TODO miscInit???
+        commonPreparations($page, $page->loginHelper->userIsAdmin(), $page->miscInit, $page),  // TODO miscInit???
         array("class" => "half")
     );
 

@@ -108,8 +108,7 @@ if(isset($_POST["erase"])) {
 
         $query .= " `$field` = ?";
         $params .= $sqlData->fields[$field]->type;
-        $bindParams[] = $sqlData->get($field);  // TODO IWASHERE not sure escape is done correctly
-        // TODO should we do getHtml and getInput?
+        $bindParams[] = $sqlData->get($field);
     }
     if(isset($_POST["id"])) {
         // Update
@@ -180,13 +179,9 @@ if(isset($_POST["erase"])) {
 
     $queryEnd = " FROM `$TABLE` WHERE `NavID` = ?";
 
-    // TODO can we already ask max even if no matching?
-    $sumWP = dbSelectNavID("SELECT COUNT(*) AS `tot`" . $queryEnd, $sqlData);
-
-    if($sumWP > 0) {
-        $oldWP = dbSelectNavID("SELECT MAX(`WPnum`) AS `oldWP`" . $queryEnd, $sqlData);
+    $oldWP = dbSelectNavID("SELECT MAX(`WPnum`) AS `oldWP`" . $queryEnd, $sqlData);
+    if($oldWP !== NULL) {
         $sqlData->set("WPnum", $kWaypoints->getNext($oldWP));
-
     } else {
         $sqlData->set("waypoint", "LSGE");
         $sqlData->set("WPnum", 0);

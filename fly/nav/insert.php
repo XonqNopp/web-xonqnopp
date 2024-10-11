@@ -180,7 +180,10 @@ $page->htmlHelper->hotBooty();
 
             $embedMass = new FieldEmbedder("", "kg");
 
-            for($rearIndex = 0; $rearIndex <= 1; ++$rearIndex) {
+            $numRears = 2;
+            $numLuggages = 4;
+
+            for($rearIndex = 0; $rearIndex < $numRears; ++$rearIndex) {
                 $body .= $page->waitress->cell(
                     $theNumberInput->get("Rear{$rearIndex}Mass", $sqlData, NULL, $attrMass, $embedMass)
                 );
@@ -195,12 +198,11 @@ $page->htmlHelper->hotBooty();
 
             $body .= $page->waitress->cell("<b>Luggage masses (optional):</b>\n");
 
-            for($luggageIndex = 0; $luggageIndex <= 3; ++$luggageIndex) {
+            for($luggageIndex = 0; $luggageIndex < $numLuggages; ++$luggageIndex) {
                 $body .= $page->waitress->cell(
                     $theNumberInput->get("Luggage{$luggageIndex}Mass", $sqlData, NULL, $attrMass, $embedMass)
                 );
             }
-            // TODO finish???
 
             $body .= $page->waitress->rowClose();
             $body .= $page->waitress->tableClose();

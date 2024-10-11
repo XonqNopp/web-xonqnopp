@@ -1,4 +1,5 @@
 <?php
+// TODO IWASHERE only take $page
 function commonPreparations($page, $userIsAdmin) {
     $metar = $page->bodyBuilder->liAnchor(
         "http://www.meteosuisse.admin.ch/home/service-et-publications/conseil-et-service/previsions-aeronautiques-meteorologie-aeronautique/metar-taf.html",
@@ -14,7 +15,7 @@ function commonPreparations($page, $userIsAdmin) {
 
     $skybriefing = "<li>";
     $skybriefing .= $page->bodyBuilder->anchor("https://www.skybriefing.com/portal/", "SkyBriefing");
-    if($userIsAdmin) {
+    if($page->loginHelper->userIsAdmin()) {
         $skybriefing .= "<br /><tt>Pilotes@sion.ch</tt><br /><tt>1950Sion</tt>";
     }
     $skybriefing .= "</li>\n";
