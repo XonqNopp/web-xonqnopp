@@ -64,7 +64,7 @@ $body .= $page->waitress->rowOpen();
     $body .= $page->waitress->cellClose();
 //
     $body .= $page->waitress->cell(
-        commonPreparations($page, $page->loginHelper->userIsAdmin(), $page->miscInit, $page),  // TODO miscInit???
+        commonPreparations($page),
         array("class" => "half")
     );
 

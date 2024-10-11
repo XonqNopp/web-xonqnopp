@@ -47,7 +47,7 @@ function homebase($page, $title, $infos, $webcamAirport, $wunderground, $webcamA
         );
         $body .= $page->waitress->cellClose();
 
-    $body .= $page->waitress->cell(commonPreparations($page, $page->loginHelper->userIsAdmin()), array("class" => "third left"));
+    $body .= $page->waitress->cell(commonPreparations($page), array("class" => "third left"));
 
     $body .= $page->waitress->rowClose();
     $body .= $page->waitress->tableClose();

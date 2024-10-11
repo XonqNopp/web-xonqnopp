@@ -1,6 +1,5 @@
 <?php
-// TODO IWASHERE only take $page
-function commonPreparations($page, $userIsAdmin) {
+function commonPreparations($page) {
     $metar = $page->bodyBuilder->liAnchor(
         "http://www.meteosuisse.admin.ch/home/service-et-publications/conseil-et-service/previsions-aeronautiques-meteorologie-aeronautique/metar-taf.html",
         "METAR CH"
