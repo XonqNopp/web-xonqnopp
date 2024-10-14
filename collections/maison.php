@@ -111,14 +111,14 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= "<li>Offres $hyp: SwissLife, Raiffeisen Belfaux, Credit Suisse Sonova, HypothekenZentrum VZ, DL MoneyPark</li>\n";
     $body .= "</ul></div>\n";
 }
+// TODO anchor title CSS not working
 
     // Links
-// TODO check all links
     $body .= "<div class=\"framed\">\n";
 
     $body .= "<div style=\"font-weight: 700\">Liens utiles:</div>\n";
 
-    $body .= $page->waitress->tableOpen();
+    $body .= $page->waitress->tableOpen(array(), false);
     $body .= $page->waitress->rowOpen();
 
     $body .= $page->waitress->cellOpen();
@@ -129,16 +129,14 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= getLink("http://hausinfo.ch", True);
     $body .= getLink("http://ubs.com", True);
     $body .= getLink("http://amiante-info.ch", True);
-    $body .= getLink("http://ch-radon.ch", True);
-    $body .= getLink("http://focore.ch", True);
-    $body .= getLink("http://pac.ch", True);
+    $body .= getLink("https://www.fws.ch/fr/", True);
     $body .= getLink("http://baubio.ch", True);
     $body .= getLink("http://eco-energie.ch", True);
-    $body .= getLink("http://gaz-naturel.ch", True);
-    $body .= getLink("http://cecb.ch", True);
     $body .= $page->waitress->cellClose();
 
     $body .= $page->waitress->cellOpen();
+    $body .= getLink("http://gaz-naturel.ch", True);
+    $body .= getLink("http://cecb.ch", True);
     $body .= getLink("http://swissolar.ch", True);
     $body .= getLink("http://minergie.ch", True);
     $body .= getLink("http://leprogrammebatiments.ch", True);
@@ -146,25 +144,14 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= getLink("http://cifi.ch", True);
     $body .= getLink("http://uspi.ch", True);
     $body .= getLink("http://sia.ch", True);
-    $body .= getLink("http://uts.ch", True);
-    $body .= getLink("http://lieudevie.ch", True);
-    $body .= getLink("http://lignum.ch", True);
-    $body .= getLink("http://cedotec.ch", True);
-    $body .= getLink("http://maison-et-bois.com", True);
-    //$body .= getLink("http://lecourrierdubois.be", True);
-    //$body .= getLink("http://schweizerholzbau.ch", True);
     $body .= $page->waitress->cellClose();
 
     $body .= $page->waitress->cellOpen();
-    //$body .= getLink("http://journal-suisse-du-bois.ch", True);
+    $body .= getLink("http://lieudevie.ch", True);
+    $body .= getLink("http://lignum.ch", True);
+    $body .= getLink("http://cedotec.ch", True);
     $body .= getLink("http://salonbois.ch", True);
-    $body .= getLink("http://domespace.wixsite.com/domespace", True);
-    $body .= getLink("http://aber.ch", True);
     $body .= getLink("http://lamaisonnature.ch", True);
-    //$body .= getLink("http://aseg.ch", True);
-    $body .= getLink("http://forumconstruire.ch", True);
-    $body .= getLink("http://bauteilclick.com", True);
-    $body .= getLink("http://vd.ch/boume", True);
     $body .= getLink("http://registre-foncier.ch", True);
     $body .= getLink("http://infomaison.ch", True);
     $body .= $page->waitress->cellClose();
