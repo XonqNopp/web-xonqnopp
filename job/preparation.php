@@ -1,37 +1,29 @@
 <?php
-/*** Created: Tue 2014-08-05 16:43:49 CEST
- ***
- *** TODO:
- ***
- ***/
-require("../functions/classPage.php");
+require_once("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-//$page->LogLevelUp(6);
+//$page->logger->levelUp(6);
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Useful stuff before changing of position");
-$page->HotBooty();
+$body = $page->bodyBuilder->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("Useful stuff before changing of position");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div><ul>\n";
-$body .= "<li><a href=\"questions.php\">Interview questions</a></li>\n";
-$body .= "<li><a href=\"resignation.php\">How to write a resignation letter</a></li>\n";
-$body .= "<li><a href=\"interview.php\">Stuff to have ready at the interview</a></li>\n";
-$body .= "<li><a href=\"sample.php?from=85&amp;to=105\">Sample of salary</a></li>\n";
+$body .= $page->bodyBuilder->liAnchor("questions.php", "Interview questions");
+$body .= $page->bodyBuilder->liAnchor("resignation.php", "How to write a resignation letter");
+$body .= $page->bodyBuilder->liAnchor("interview.php", "Stuff to have ready at the interview");
+$body .= $page->bodyBuilder->liAnchor("sample.php?from=100&amp;to=150", "Sample of salary");
 $body .= "</ul></div>\n";
 $body .= "<p>\n";
-$body .= "<a href=\"https://medium.com/@GarinEtch/how-i-landed-5-dream-jobs-in-one-month-by-giving-away-my-best-ideas-486a35f00ead\">send your ideas to people</a>\n";
+$body .= $page->bodyBuilder->anchor("https://medium.com/@GarinEtch/how-i-landed-5-dream-jobs-in-one-month-by-giving-away-my-best-ideas-486a35f00ead", "send your ideas to people");
 $body .= "</p>\n";
 
 $body .= "<p>\n";
-$body .= "<a href=\"http://www.travailler-en-suisse.ch/emploi-suisse/offres-emploi-suisse/grandes-entreprises-multinationales\">travailler en Suisse</a>\n";
+$body .= $page->bodyBuilder->anchor("http://www.travailler-en-suisse.ch/emploi-suisse/offres-emploi-suisse/grandes-entreprises-multinationales", "travailler en Suisse");
 $body .= "</p>\n";
 
 $body .= "<div>According to career center at EPFL:\n";
@@ -53,6 +45,5 @@ $body .= "<li>On your resume, put at the beginning 3 key points you want the rec
 $body .= "</ul>\n";
 $body .= "</div>\n";
 
-$page->show($body);
-unset($page);
+echo $body;
 ?>

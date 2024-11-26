@@ -1,41 +1,36 @@
 <?php
-/*** Created: Wed 2014-08-13 11:46:15 CEST
- ***
- *** TODO:
- * redo this page with goal at 42h/w and 5w holidays
- * then compute 1w holliday, 1h/w, -10%/w
- * keep from-to, but default from==to (change link in other page)
- ***
- ***/
-require("../functions/classPage.php");
+require_once("../functions/page_helper.php");
 $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 
-$hoursweek = 42;
-$salarymonths = 13;
-$holidays = 4;
-//$from =  75;
-//$to   = 100;
-if(!isset($_GET["from"]) || !isset($_GET["to"])) {
-	exit;
+$hoursweek = 40;  // [h]
+$salarymonths = 12;  // [nb salary]
+$holidays = 5;  // [week]
+
+if(!isset($_GET["from"])) {
+    exit;
 }
+
 $from = $_GET["from"];
-$to   = $_GET["to"];
-if($from == 0 || $to == 0) {
-	exit;
+$to = $from;
+
+if(isset($_GET["to"])) {
+    $to = $_GET["to"];
 }
+
+if($from == 0 || $to == 0) {
+    exit;
+}
+
 $step =   2;
 
-$page->CSS_ppJump();
-$page->CSS_ppWing();
+$page->cssHelper->dirUpWing();
 
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
-$body .= $page->SetTitle("Sample of salary");
-$page->HotBooty();
+$body = $page->bodyBuilder->goHome("..");
+
+$body .= $page->htmlHelper->setTitle("Sample of salary");
+$page->htmlHelper->hotBooty();
 
 $body .= "<div>\n";
 $body .= "<ul>\n";
@@ -45,36 +40,59 @@ $body .= "<li>weeks of holidays: $holidays</li>\n";
 $body .= "<li>number of salaries per year: $salarymonths</li>\n";
 $body .= "</ul>\n";
 $body .= "</div>\n";
+
 $body .= "<div class=\"sample_table\">\n";
-$body .= "<table>\n";
-$body .= "<tr>\n";
-$body .= "<th>year</th>\n";
-$body .= "<th>month</th>\n";
-$body .= "<th>week</th>\n";
-$body .= "</tr>\n";
+$body .= $page->butler->tableOpen();
 
-$onetwo = 0;
-$bronx  = "";
-for($i = $from; $i <= $to; $i += $step) {
-	$onetwo++;
-	$year  = $i * 1000;
-	$month = round($year / 13);
-	//$week  = round($year / 48);
-	$week  = round($month / 4);
-	if($onetwo % 2) {
-		$bronx = "odd";
-	} else {
-		$bronx = "even";
-	}
-	$body .= "<tr class=\"$bronx\">\n";
-	$body .= "<td>$year.-</td>\n";
-	$body .= "<td>$month.-</td>\n";
-	$body .= "<td>$week.-</td>\n";
-	$body .= "</tr>\n";
+$body .= $page->butler->rowOpen();
+$body .= $page->butler->headerCell("100%", array("colspan" => 3));
+$body .= $page->butler->headerCell("90%", array("colspan" => 3));
+$body .= $page->butler->headerCell("80%", array("colspan" => 3));
+$body .= $page->butler->headerCell("70%", array("colspan" => 3));
+$body .= $page->butler->rowClose();
+
+$body .= $page->butler->rowOpen();
+
+for($iter = 0; $iter < 4; $iter++) {
+    $body .= $page->butler->headerCell("year");
+    $body .= $page->butler->headerCell("month");
+    $body .= $page->butler->headerCell("week");
 }
-$body .= "</table>\n";
-$body .= "</div>\n";
 
-$page->show($body);
-unset($page);
+$body .= $page->butler->rowClose();
+
+
+function getMonth($year) {
+    global $salarymonths;
+    return round($year / $salarymonths);
+}
+
+
+function getWeek($month) {
+    return round($month / 4);
+}
+
+
+for($i = $from; $i <= $to; $i += $step) {
+    $year  = $i * 1000;
+    $month = getMonth($year);
+    $week  = round($month / 4);
+
+    $body .= $page->butler->rowOpen();
+
+    for($rate = 1.0; $rate > 0.7; $rate -= 0.1) {
+        $thisYear = $rate * $year;
+        $thisMonth = getMonth($thisYear);
+
+        $body .= $page->butler->cell("$thisYear.-");
+        $body .= $page->butler->cell("$thisMonth.-");
+        $body .= $page->butler->cell(getWeek($thisMonth) . ".-");
+    }
+
+    $body .= $page->butler->rowClose();
+}
+$body .= $page->butler->tableClose();
+$body .= "</div><!-- sample_table -->\n";
+
+echo $body;
 ?>

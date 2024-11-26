@@ -1,105 +1,54 @@
 <?php
-require("../functions/classPage.php");
-$rootPath = "..";
-$funcpath = "$rootPath/functions";
-require("preparations.php");
-$page = new PhPage($rootPath);
-//$page->initDB();
-//// debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
-//// CSS paths
-$page->CSS_ppJump();
-//$page->CSS_ppWing();
-//// init body
-$body = "";
+require_once("../functions/page_helper.php");
 
+$page = new PhPage("..");
+
+require_once("homebase.php");
 
 //$skybriefingLogin .= "<tt>lsge0927@hotmail.com</tt><br /><tt>LSge0927</tt>";
 
+$title = "LSGE: Ecuvillens";
+$smallTt = "<tt class=\"smaller\">";
 
-//// GoHome
-$gohome = new stdClass();
-$body .= $page->GoHome($gohome);
-//// Set title and hot booty
-$body .= $page->SetTitle("LSGE: Ecuvillens");// before HotBooty
-$page->HotBooty();
 
-$body .= "<div class=\"csstab64_table links\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
+    // Infos
+    $infos = "<li>\n";
+    $infos .= $page->bodyBuilder->anchor("http://lsge.airmanager.ch", "LSGE AirManager");
+    if($page->loginHelper->userIsAdmin()) {
+        $infos .= "<br />{$smallTt}{$page->miscInit->fly->lsge}</tt>";
+        $infos .= "<br />{$smallTt}{$page->miscInit->fly->clearance}</tt>";
+    }
+    $infos .= "</li>\n";
 
-	// Infos & webcam
-	$body .= "<div class=\"csstab64_cell third\">\n";
-		// Infos
-		$body .= "<div>\n";
-		$body .= "<ul>\n";
+    $infos .= $page->bodyBuilder->liAnchor("http://gvme.ch/", "GVM Ecuvillens");
 
-		$body .= "<li><a target=\"_blank\" href=\"http://www.resnet.ch/LSGE/index.asp\">LSGE resair</a></li>\n";
+    if($page->loginHelper->userIsAdmin()) {
+        $infos .= "<li>Code cl&eacute;: {$page->miscInit->fly->lsgeKey}</li>\n";
+    }
 
-		$body .= "<li><a target=\"_blank\" href=\"http://lsge-flights.azurewebsites.net/LSGE_Login.aspx\">LSGE avis</a>";
-		if($page->UserIsAdmin()) {
-			$body .= ": Guest - " . $page->miscInit->lsgeAvis;
-		}
-		$body .= "</li>\n";
+    $infos .= "<li>Bern ATIS:<br />\n";
+    $infos .= "125.130MHz<br />\n";
+    $infos .= $page->bodyBuilder->tel("+41224174076");
+    $infos .= "</li>\n";
 
-		$body .= "<li><a target=\"_blank\" href=\"http://gvme.ch/\">GVME</a></li>\n";
-
-		if($page->UserIsAdmin()) {
-			$body .= "<li>Code cl&eacute;: " . $page->miscInit->lsgeKey . "</li>\n";
-		}
-
-		$body .= "<li>Bern ATIS:<br />\n";
-		$body .= "125.130MHz<br />\n";
-		$body .= "<a href=\"tel:+41224174076\">+41&nbsp;22&nbsp;417&nbsp;40&nbsp;76</a></li>\n";
-
-		$body .= "<li><a target=\"_blank\" href=\"http://www.fribourg-voltige.ch/Activlites.htm\">Fribourg voltige</a></li>\n";
-
-		$body .= "</ul>\n";
-		$body .= "</div>\n";
-	//
-		// LSGE webcam
-		$body .= "<div>\n";
-		$body .= "<a href=\"http://www.aerodrome-ecuvillens.ch/index.php?page=meteo_webcam.htm\" target=\"_blank\">\n";
-		$body .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy28.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSGE\" alt=\"LSGE\" src=\"http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy10.jpg\" />\n";
-		$body .= "</a>\n";
-		$body .= "</div>\n";
-	$body .= "</div>\n";
+    $infos .= $page->bodyBuilder->liAnchor("http://www.fribourg-voltige.ch/", "Fribourg voltige");
 //
-	// Weather station
-	$station = "IFREIBUR2";
-	$body .= "<div class=\"csstab64_cell third\">\n";
-	$body .= "<a target=\"_blank\" href=\"https://www.wunderground.com/dashboard/pws/$station\">\n";
-	$body .= "<img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=$station&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" />\n";
-	$body .= "</a>\n";
-	$body .= "</div>\n";
+    // Webcam airport
+    $webcamAirportImg = $page->bodyBuilder->img("http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy27.jpg", "LSGE webcam 27", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("http://www.aerodrome-ecuvillens.ch/webcam/webcam_rwy09.jpg", "LSGE webcam 09", "width");
+    $webcamAirport = $page->bodyBuilder->anchor("http://www.aerodrome-ecuvillens.ch/index.php?page=./meteo_webcam_2021.htm", $webcamAirportImg, "LSGE webcam");
+
 //
-	// Common
-	$body .= "<div class=\"csstab64_cell third left\">\n";
-	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
-	$body .= "</div>\n";
+    // Webcam area
+    $webcamArea = $page->bodyBuilder->anchor(
+        "https://montgibloux.roundshot.com/",
+        "WebCam Gibloux 4348ft - La Berra 5600ft 6NM - Bulle 3NM - Mol&eacute;son 6600ft 8NM"
+    );
 
-$body .= "</div>\n";
-$body .= "</div>\n";
-
-	// webcam
-	$body .= "<div class=\"wide\">\n";
-
-	$body .= "<a target=\"_blank\" href=\"https://montgibloux.roundshot.com/\">\n";
-	$body .= "WebCam Gibloux 4000ft\n";
-	$body .= "- La Berra 5600ft 6NM\n";
-	$body .= "- Bulle 3NM\n";
-	$body .= "- Mol&eacute;son 6600ft 8NM\n";
-	$body .= "</a>\n";
-
-	$body .= "</div>\n";
-
-// Do not have text glued at bottom
-$body .= "<div>&nbsp;</div>\n";
+    $webcamArea .= "<br/>\n";
+    $webcamArea .= "Depuis LSGE: Neyruz 1.5km, Arconciel 3.5km (SVFR), Villars-sur-Glane 5.0km (VFR), Gibloux 8.3km (CAVOK).\n";
 
 
-//// Finish
-echo $body;
-unset($page);
+echo homebase($page, $title, $infos, $webcamAirport, $webcamArea);
 ?>

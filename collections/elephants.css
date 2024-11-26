@@ -1,0 +1,49 @@
+div.elephant_query {
+    cursor: pointer;
+}
+
+
+div.elephant {
+    display: none;
+    margin-left: 3cm;
+    font-style: italic;
+    padding: 0.8cm 0cm;
+}
+
+
+div.upsidedown {
+    transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    padding-top: 2em;
+}
+
+
+@media only screen and (min-width:64em) {
+
+    div.elephant {
+        display: block;
+        margin-left: 6em;
+        font-style: italic;
+        padding: 1.5em 0;
+    }
+
+
+    div.elephant_table {
+        padding-left: 1.7cm;
+        margin: auto;
+        width: 70%;
+    }
+
+
+    div.elephant_query {
+        padding: 0.5mm 0mm;
+    }
+
+
+    div.upsidedown {
+        display: none;
+    }
+
+}  /** @media only screen and min-width:64em **/

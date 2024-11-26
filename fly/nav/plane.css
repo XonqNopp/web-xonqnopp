@@ -1,0 +1,12 @@
+div.FuelCons,
+div.FuelUnit,
+div.DryMass,
+div.DryMassUnit,
+div.DryMoment,
+div.DryMomentUnit,
+div.PowerManifold,
+div.PowerManifoldUnit,
+div.windTC,
+div.windSpeed {
+    display: inline-block;
+}

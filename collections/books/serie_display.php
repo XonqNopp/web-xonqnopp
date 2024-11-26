@@ -1,38 +1,29 @@
 <?php
-require("../../functions/classPage.php");
+require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->initDB();
+$page->bobbyTable->init();
 
-require("${funcpath}_local/borrowback.php");
+$page->cssHelper->dirUpWing();
 
-// Borrowed item came home
-borrow_back($page, "books");
-
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
-
-$body = "";
-$args = new stdClass();
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyBuilder->goHome("..");
 
 // Find which serie we are dealing with
 $serie_id = $_GET["id"];
 $serie = "";
-$findserie = $page->DB_IdManage("SELECT * FROM `books` WHERE `id` = ?", $serie_id);
+$findserie = $page->bobbyTable->idManage("SELECT * FROM `books` WHERE `id` = ?", $serie_id);
 $findserie->store_result();
 if($findserie->num_rows == 0) {
-	$page->HeaderLocation();
+    $page->htmlHelper->headerLocation();
 }
 $findserie->bind_result($serie_id, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
 $findserie->fetch();
 $findserie->close();
 // Title
-$body .= $page->SetTitle("$serie (books)");
+$body .= $page->htmlHelper->setTitle("$serie (books)");
 
-$page->HotBooty();
+$page->htmlHelper->hotBooty();
 
 
 $body .= "<div class=\"wide\">\n";
@@ -41,62 +32,58 @@ $body .= "</div>\n";
 $body .= "<div class=\"chead\">\n";
 $body .= "</div>\n";
 $body .= "<div class=\"rhead\">\n";
-$body .= "<a href=\"../missings/index.php?view=books\" title=\"Missing books\">Missing books</a>\n";
-if($page->UserIsAdmin()) {
-	// Propose to add a new if authorized
-	$body .= "<br />\n";
-	$body .= "<a href=\"insert.php\" title=\"New book\">New book</a><br />\n";
-	$body .= "<a href=\"../insert_isbn.php?book\" title=\"New ISBN\">New ISBN</a>\n";
+$body .= $page->bodyBuilder->anchor("../missings/index.php?view=books", "Missing books");
+if($page->loginHelper->userIsAdmin()) {
+    // Propose to add a new if authorized
+    $body .= "<br />\n";
+    $body .= $page->bodyBuilder->anchor("insert.php", "New book");
 }
 $body .= "</div>\n";
 $body .= "</div>\n";
 
 // Fetch all from this serie
 $sql_serie = $serie;
-$books = $page->DB_QueryPrepare("SELECT * FROM `books` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
+$books = $page->bobbyTable->queryPrepare("SELECT * FROM `books` WHERE `serie` = ? ORDER BY `number` ASC, `title` ASC");
 $books->bind_param("s", $sql_serie);
-$page->DB_ExecuteManage($books);
+$page->bobbyTable->executeManage($books);
 $books->store_result();
 if($books->num_rows == 0) {
-	$page->HeaderLocation();
+    $page->htmlHelper->headerLocation();
 }
 $books->bind_result($id, $isbn, $author, $title, $serie, $number, $publisher, $date, $language, $category, $summary, $borrowed);
 $body .= "<div class=\"book_serie_table\">\n";
-$body .= "<table class=\"book_serie_table\">\n";
+$body .= $page->butler->tableOpen(array("class" => "book_serie_table"));
 while($books->fetch()) {
-	$csstitle = "book_serie_table_title";
-	if($borrowed) {
-		$csstitle .= " away";
-	}
-	$body .= "<tr class=\"book_serie_table\" id=\"b$id\">\n";
-	$body .= "<td class=\"book_serie_edit\">\n";
-	if($page->UserIsAdmin()) {
-		$body .= "<div class=\"InB EditBorrow\">\n";
-		$body .= "<a href=\"insert.php?id=$id\" title=\"edit\">edit</a>\n";
-		$body .= "&nbsp;\n";
-		if($borrowed) {
-			$body .= "<a href=\"serie_display.php?id=$id&back\" title=\"back\">back</a>\n";
-			$body .= "&nbsp;-&nbsp;\n";
-			$body .= "<a href=\"../missings/index.php?view=books$id#books$id\" title=\"who\">who";
-		} else {
-			$body .= "<a href=\"../missings/insert.php?db=books&amp;id=$id\" title=\"borrow\">borrow</a>\n";
-		}
-		$body .= "</div>\n";
-	}
-	$body .= "</td>\n";
-	$body .= "<td class=\"book_serie_table_number\">$number</td>\n";
-	$body .= "<td class=\"$csstitle\">\n";
-	$body .= "<a href=\"display.php?id=$id\" title=\"$title\">$title</a>\n";
-	$body .= "</td>\n";
-	$body .= "<td class=\"book_serie_table_author\">\n";
-	$body .= "<a href=\"author.php?id=$id\" title=\"$author\">$author</a>\n";
-	$body .= "</td>\n";
-	$body .= "</tr>\n";
+    $csstitle = "book_serie_table_title";
+    if($borrowed) {
+        $csstitle .= " away";
+    }
+    $body .= $page->butler->rowOpen(array("class" => "book_serie_table", "b$id"));
+
+    $body .= $page->butler->cellOpen(array("class" => "book_serie_edit"));
+    if($page->loginHelper->userIsAdmin()) {
+        $body .= "<div class=\"InB EditBorrow\">\n";
+        $body .= $page->bodyBuilder->anchor("insert.php?id=$id", "edit");
+        $body .= "&nbsp;\n";
+        if($borrowed) {
+            $body .= $page->bodyBuilder->anchor("../missings/index.php?view=books$id#books$id", "who");
+
+        } else {
+            $body .= $page->bodyBuilder->anchor("../missings/insert.php?db=books&amp;id=$id", "borrow");
+        }
+
+        $body .= "</div>\n";
+    }
+    $body .= $page->butler->cellClose();
+
+    $body .= $page->butler->cell($number, array("class" => "book_serie_table_number"));
+    $body .= $page->butler->cell($page->bodyBuilder->anchor("display.php?id=$id", $title), array("class" => $csstitle));
+
+    $body .= $page->butler->rowClose();
 }
-$body .= "</table>\n";
-$body .= "</div>\n";
+$body .= $page->butler->tableClose();
+$body .= "</div><!-- book_serie_table -->\n";
 $books->close();
 
-$page->show($body);
-unset($page);
+echo $body;
 ?>

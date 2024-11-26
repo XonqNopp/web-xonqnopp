@@ -1,28 +1,8 @@
 body {
-	text-align: justify;
+    text-align: justify;
 }
 
-div.framed {
-	border: solid 2px;
-	padding: 0.5em;
-	margin: 0.5em;
-}
 
 table {
-	border: none;
+    border: none;
 }
-
-a.titleAnchor {
-	visibility: hidden;
-	color: #888;
-}
-
-h2:hover > a.titleAnchor,
-h3:hover > a.titleAnchor,
-h4:hover > a.titleAnchor,
-h5:hover > a.titleAnchor,
-h6:hover > a.titleAnchor,
-a.titleAnchor:hover {
-	visibility: visible;
-}
-

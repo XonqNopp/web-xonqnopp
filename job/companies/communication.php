@@ -1,27 +1,29 @@
 <?php
-/*** Created: Wed 2015-01-14 20:43:36 CET
- * TODO:
- *
- */
-require("../../functions/classPage.php");
+require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
-require("dicts.php");
+require_once("dicts.php");
 $page = new PhPage($rootPath);
-$page->NotAllowed();
-$page->initDB();
-//$page->LogLevelUp(6);
-$body = "";
-$page->CSS_ppJump(2);
-$page->CSS_ppWing(2);
-$page->js_Form();
+$page->loginHelper->notAllowed();
+$page->bobbyTable->init();
 
-$now = $page->GetNow();
+require_once("$funcpath/form_fields.php");
+global $theHiddenInput;
+global $theTextInput;
+global $theSelectInput;
+global $theDatetimeInput;
+global $theTextarea;
+
+
+//$page->logger->levelUp(6);
+$body = "";
+$page->cssHelper->dirUpWing(2);
+$page->htmlHelper->jsForm();
 
 $id = 0;
 $company = 0;
 $name = "";
-$timestamp = $now->timestamp;
+$timestamp = $page->timeHelper->getNow()->timestamp;
 $who = "";
 $media = "";
 $way = "";
@@ -33,145 +35,120 @@ $page_title = "";
 
 
 if(isset($_POST["erase"])) {
-	$id = $_POST["id"];
-	$company = $_POST["company"];
-	$query = "DELETE FROM `" . $page->ddb->DBname . "`.`comco` WHERE `comco`.`id` = ? LIMIT 1;";
-	$sql = $page->DB_QueryPrepare($query);
-	$sql->bind_param("i", $id);
-	$page->DB_ExecuteManage($sql);
-	$page->HeaderLocation("display.php?id=$company");
+    $id = $_POST["id"];
+    $company = $_POST["company"];
+    $query = "DELETE FROM `{$page->bobbyTable->dbName}`.`comco` WHERE `comco`.`id` = ? LIMIT 1;";
+    $sql = $page->bobbyTable->queryPrepare($query);
+    $sql->bind_param("i", $id);
+    $page->bobbyTable->executeManage($sql);
+    $page->htmlHelper->headerLocation("display.php?id=$company");
+
 } elseif(isset($_POST["submit"])) {
-	$company = $_POST["company"];
-	$timestamp = $_POST["timestamp"];
-	$who = $page->field2SQL($_POST["who"]);
-	$media = $_POST["media"];
-	$way = $_POST["way"];
-	$kind = $_POST["kind"];
-	$content = $page->txtarea2SQL($_POST["content"]);
-	if(isset($_POST["id"])) {
-		//// update
-		$id = $_POST["id"];
-		$query = "UPDATE `" . $page->ddb->DBname . "`.`comco` SET `timestamp` = ?, `who` = ?, `media` = ?, `way` = ?, `kind` = ?, `content` = ? WHERE `comco`.`id` = ? LIMIT 1;";
-		$sql = $page->DB_QueryPrepare($query);
-		$sql->bind_param("ssssssi", $timestamp, $who, $media, $way, $kind, $content, $id);
-		$page->DB_ExecuteManage($sql);
-	} else {
-		//// insert
-		$query = "INSERT INTO `" . $page->ddb->DBname . "`.`comco` (`company`, `timestamp`, `who`, `media`, `way`, `kind`, `content`) VALUES(?, ?, ?, ?, ?, ?, ?);";
-		$sql = $page->DB_QueryPrepare($query);
-		$sql->bind_param("issssss", $company, $timestamp, $who, $media, $way, $kind, $content);
-		$page->DB_ExecuteManage($sql);
-		$id = $sql->insert_id;
-	}
-	$page->HeaderLocation("display.php?id=$company");
-	$sql = $page->DB_IdManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
-	$sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);
-	$sql->fetch();
-	$sql->close();
-	$page_title = "Edit #$id for $name";
+    $company = $_POST["company"];
+    $timestamp = $_POST["timestamp"];
+    $who = $page->dbText->input2sql($_POST["who"]);
+    $media = $_POST["media"];
+    $way = $_POST["way"];
+    $kind = $_POST["kind"];
+    $content = $page->dbText->inputTextarea2sql($_POST["content"]);
+
+    if(isset($_POST["id"])) {
+        // update
+        $id = $_POST["id"];
+        $query = "UPDATE `{$page->bobbyTable->dbName}`.`comco` SET `timestamp` = ?, `who` = ?, `media` = ?, `way` = ?, `kind` = ?, `content` = ? WHERE `comco`.`id` = ? LIMIT 1;";
+        $sql = $page->bobbyTable->queryPrepare($query);
+        $sql->bind_param("ssssssi", $timestamp, $who, $media, $way, $kind, $content, $id);
+        $page->bobbyTable->executeManage($sql);
+
+    } else {
+        // insert
+        $query = "INSERT INTO `{$page->bobbyTable->dbName}`.`comco` (`company`, `timestamp`, `who`, `media`, `way`, `kind`, `content`) VALUES(?, ?, ?, ?, ?, ?, ?);";
+        $sql = $page->bobbyTable->queryPrepare($query);
+        $sql->bind_param("issssss", $company, $timestamp, $who, $media, $way, $kind, $content);
+        $page->bobbyTable->executeManage($sql);
+        $id = $sql->insert_id;
+    }
+
+    $page->htmlHelper->headerLocation("display.php?id=$company");
+    $sql = $page->bobbyTable->idManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
+    $sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);
+    $sql->fetch();
+    $sql->close();
+    $page_title = "Edit #$id for $name";
+
 } elseif(isset($_GET["id"])) {
-	$id = $_GET["id"];
-	$SQL = $page->DB_IdManage("SELECT * FROM `comco` WHERE `id` = ?", $id);
-	$SQL->bind_result($id, $company, $timestamp, $who, $media, $way, $kind, $content);
-	$SQL->fetch();
-	$SQL->close();
-	$who = $page->SQL2field($who);
-	$content = $page->SQL2txtarea($content);
-	$sql = $page->DB_IdManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
-	$sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);
-	$sql->fetch();
-	$sql->close();
-	$page_title = "Edit #$id for $name";
+    $id = $_GET["id"];
+    $SQL = $page->bobbyTable->idManage("SELECT * FROM `comco` WHERE `id` = ?", $id);
+    $SQL->bind_result($id, $company, $timestamp, $who, $media, $way, $kind, $content);
+    $SQL->fetch();
+    $SQL->close();
+    $who = $page->dbText->sql2html($who);
+    $content = $page->dbText->sql2htmlTextarea($content);
+    $sql = $page->bobbyTable->idManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
+    $sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);
+    $sql->fetch();
+    $sql->close();
+    $page_title = "Edit #$id for $name";
+
 } elseif(isset($_GET["new"])) {
-	$company = $_GET["new"];
-	$sql = $page->DB_IdManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
-	$sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);
-	$sql->fetch();
-	$sql->close();
-	$page_title = "Insert new communication for $name";
+    $company = $_GET["new"];
+    $sql = $page->bobbyTable->idManage("SELECT * FROM `companies` WHERE `id` = ?", $company);
+    $sql->bind_result($company, $name, $colo, $coca, $cotr, $cofi, $coph, $coco, $cohr, $copep, $copch, $coprd, $coom, $cow, $cora, $coo);
+    $sql->fetch();
+    $sql->close();
+    $page_title = "Insert new communication for $name";
 }
 
 if($company == 0) {
-	$page->HeaderLocation();
+    $page->htmlHelper->headerLocation();
 }
 
 
-$gohome = new stdClass();
-$body .= $page->GoHome($gohome);
-$body .= $page->SetTitle($page_title);// before HotBooty
-$page->HotBooty();
+$body .= $page->bodyBuilder->goHome();
+$body .= $page->htmlHelper->setTitle($page_title);// before HotBooty
+$page->htmlHelper->hotBooty();
 
-$body .= $page->FormTag();
+$body .= $page->formHelper->tag();
 //
-	//// id
-	$args = new stdClass();
-	$args->type = "hidden";
-	$args->name = "id";
-	$args->value = $id;
-	if($id > 0) {
-		$body .= $page->FormField($args);
-	}
+if($id > 0) {
+    $body .= $theHiddenInput->get("id", $id);
+}
+
+$body .= $theHiddenInput->get("company", $company);
+
+$attr = new FieldAttributes(true, true);
+$body .= $theDatetimeInput->get("timestamp", $timestamp, "Timestamp", $attr);
+
+$body .= $theTextInput->get("who", $who, "Who");
+
+    // media
+    $mediaList = $page->utilsHelper->arraySequential2Associative(array(
+        "mail",
+        "website",
+        "linkedin",
+        "phone",
+        "meeting",
+    ));
+    $body .= $theSelectInput->get("media", $mediaList, $media, "Media");
 //
-	//// company
-	$args->type = "hidden";
-	$args->name = "company";
-	$args->value = $company;
-	$body .= $page->FormField($args);
+    // way
+    $ways = array("FromMe" => "from me", "ToMe" => "to me");
+    $body .= $theSelectInput->get("way", $ways, $way, "Way");
 //
-	//// timestamp
-	$args->type = "datetime";
-	$args->title = "Timestamp";
-	$args->name = "timestamp";
-	$args->value = $timestamp;
-	$args->autofocus = true;
-	$args->required = true;
-	$body .= $page->FormField($args);
-//
-	//// who
-	$args->type = "text";
-	$args->title = "Who";
-	$args->name = "who";
-	$args->value = $who;
-	$args->autofocus = false;
-	$args->required = false;
-	$body .= $page->FormField($args);
-//
-	//// media
-	$args->type = "select";
-	$args->title = "Media";
-	$args->name = "media";
-	$args->value = $media;
-	$args->list = media();
-	$body .= $page->FormField($args);
-//
-	//// way
-	$args->type = "select";
-	$args->title = "Way";
-	$args->name = "way";
-	$args->value = $way;
-	$args->list = array("FromMe" => "from me", "ToMe" => "to me");
-	$body .= $page->FormField($args);
-//
-	//// kind
-	$args->type = "select";
-	$args->title = "Kind";
-	$args->name = "kind";
-	$args->value = $kind;
-	$args->list = kind();
-	$body .= $page->FormField($args);
-//
-	//// content
-	$args->type = "textarea";
-	$args->title = "Content";
-	$args->name = "content";
-	$args->value = $content;
-	$body .= $page->FormField($args);
-//
-$butt = new stdClass();
-$butt->CloseTag = true;
-$body .= $page->SubButt($id > 0, "la communication #$id avec $company", $butt);
+    // kind
+    $kinds = $page->utilsHelper->arraySequential2Associative(array(
+        "application",
+        "offer",
+        "ideas",
+        "conversation",
+        "misc",
+    ));
+    $body .= $theSelectInput->get("kind", $kinds, $kind, "Kind");
+
+$body .= $theTextarea->get("content", $content, NULL, NULL, "Content");
+
+$body .= $page->formHelper->subButt($id > 0, "la communication #$id avec $name");
 
 
-$page->show($body);
-unset($page);
+echo $body;
 ?>

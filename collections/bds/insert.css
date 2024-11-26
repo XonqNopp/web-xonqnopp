@@ -1,0 +1,11 @@
+div.isbn,
+div.serie,
+div.tome,
+div.title,
+div.author,
+div.publisher,
+div.date,
+div.SubButt
+{
+    padding: 7pt 1cm;
+}

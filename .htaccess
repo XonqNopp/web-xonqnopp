@@ -1,26 +1,59 @@
 # Setting the index page
-DirectoryIndex index.php
-
-# No one should look in the content of the directory
-Options -Indexes
-
-# Redirect on error
-ErrorDocument 404 /functions/deadlink.php
+DirectoryIndex index.php index.html
 
 Options +FollowSymLinks
-
-RewriteEngine on
-
-# Force HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule (.*) https://xonqnopp.ch/$1 [R=301,L]
-
-# Remove leading WWW
-RewriteCond %{HTTP_HOST} ^www.xonqnopp.ch [NC]
-RewriteRule ^(.*)$ http://xonqnopp.ch/$1 [R=301,L]
+# No one should look in the content of the directory
+Options -Indexes
 
 # Preventing this file to be read
 <Files .htaccess>
 order allow,deny
 deny from all
 </Files>
+
+# Redirect on error
+ErrorDocument 404 /functions/deadlink.php
+
+
+RewriteEngine on
+
+# FIRST: subdomains {{{
+# Fly (without using index) {{{
+RewriteCond %{HTTP_HOST} ^fly\.xonqnopp\.ch [NC]
+RewriteRule ^(francais|english)$ https://xonqnopp.ch/fly/pax.php?language=$1 [L,R=301]
+RewriteRule ^regles$ https://xonqnopp.ch/fly/pax.php?language=francais#instructions [L,NE,R=301]
+RewriteRule ^rules$ https://xonqnopp.ch/fly/pax.php?language=english#instructions [L,NE,R=301]
+
+RewriteCond %{HTTP_HOST} ^fly\.xonqnopp\.ch [NC]
+RewriteRule ^ https://xonqnopp.ch/fly/pax.php [L,R=301]
+# }}}
+
+# BD {{{
+RewriteCond %{HTTP_HOST} ^bd\.xonqnopp\.ch [NC]
+RewriteRule ^ https://xonqnopp.ch/collections/bds/ [L,R=301]
+# }}}
+
+# Recettes {{{
+RewriteCond %{HTTP_HOST} ^recettes\.xonqnopp\.ch [NC]
+RewriteRule ^(.*)$ https://xonqnopp.ch/recettes/$1 [L]
+# }}}
+
+# SUB directory (AFTER all custom subdomains) {{{
+RewriteCond %{HTTP_HOST} ^(.*)\.xonqnopp\.ch [NC]
+RewriteCond %{DOCUMENT_ROOT}/sub/%1/ -d
+RewriteCond %1::%{REQUEST_URI} !^(.*?)::/\1/?
+RewriteRule "^(.*)$" "https://xonqnopp.ch/sub/%1/$1" [P]
+# }}}
+# }}}
+
+# LAST: https and www, otherwise subdomains do not work {{{
+# Force HTTPS {{{
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://xonqnopp.ch/$1 [R=301,L]
+# }}}
+
+# Remove leading WWW {{{
+RewriteCond %{HTTP_HOST} ^www\.xonqnopp\.ch [NC]
+RewriteRule (.*) https://xonqnopp.ch/$1 [R=301,L]
+# }}}
+# }}}

@@ -1,0 +1,58 @@
+p.pl {
+    font-size: 0.7em;
+    line-height: 0.7em;
+}
+
+
+th.start_ad, td.start_ad,
+th.stop_time, td.stop_time,
+th.aircraft, td.aircraft,
+th.SP_SEP, td.SP_SEP,
+th.SP_MEP, td.SP_MEP,
+th.MP, td.MP,
+th.landings_day, td.landings_day,
+th.night, td.night,
+th.PIC, td.PIC,
+th.copi, td.copi,
+th.dual, td.dual {
+    border-right: none;
+}
+
+
+td.fullnote {
+    text-align: left;
+    border: solid 2px;
+    color: white;
+    border-color: #777;
+    background-color: #777;
+}
+
+
+#deleted {
+    color: #900;
+    background-color: lightyellow;
+}
+
+
+td.notes {
+    max-width: 20em;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+
+input#notes {
+    width: 13em;
+}
+
+
+@media only screen and (min-width:64em) {
+    td.notes {
+        max-width: 66em;
+    }
+
+
+    input#notes {
+        width: 50em;
+    }
+}  /** @media only screen and min-width:64em **/

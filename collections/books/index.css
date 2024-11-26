@@ -1,0 +1,38 @@
+h3.book_display {
+    margin-left: 40mm;
+}
+
+
+table.book_display_table {
+    width: 100%;
+}
+
+
+td.book_display_table {
+    width: 45%;
+}
+
+
+table.book_display_table_serie {
+    text-align: center;
+}
+
+
+td.book_display_table_serie {
+    width: 30%;
+}
+
+
+.flushleft {
+    text-align: left;
+}
+
+
+.MainBook {
+    max-width: 80%;
+}
+
+
+.BookCell {
+    vertical-align: middle;
+}

@@ -1,27 +1,29 @@
 <?php
-/*** Created: Thu 2014-08-07 15:05:59 CEST
- ***
- *** TODO:
- ***
- ***/
-require("../../functions/classPage.php");
+require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->NotAllowed();
+$page->loginHelper->notAllowed();
 
-//$page->initHTML();
-//$page->LogLevelUp(6);
+//$page->htmlHelper->init();
+//$page->logger->levelUp(6);
 
-$page->initDB();
-$page->CSS_ppJump(2);
-$page->CSS_ppWing();
-$page->js_Form();
+require_once("$funcpath/form_fields.php");
+global $theTextInput;
+global $theSelectInput;
+global $theCheckboxInput;
+global $theTextarea;
+
+
+$page->bobbyTable->init();
+$page->cssHelper->dirUpWing();
+$page->htmlHelper->jsForm();
+
 $page_title = "Insert a new quote";
-$body = "";
 
-require("categories.php");
-$cats = GetCats();
+
+require_once("categories.php");
+global $kCategories;
 
 $id = 0;
 $quote = "";
@@ -30,188 +32,143 @@ $authorlast = "";
 $place = "";
 $favs = array("no", "yes");
 $fav = 0;
-foreach($cats as $dog) {
-	eval("$$dog = 0;");
+foreach($kCategories as $dog) {
+    eval("$$dog = 0;");
 }
 
 
-	/*** DB ***/
-	if(isset($_POST["submit"])) {
-		if(isset($_POST["id"])) {
-			$id = $_POST["id"];
-		}
-		$quote = $page->paragraph2SQL($_POST["quote"]);
-		$authorlast = $page->field2SQL($_POST["authorlast"]);
-		$authorfirst = $page->field2SQL($_POST["authorfirst"]);
-		$place = $page->field2SQL($_POST["place"]);
-		$fav = $_POST["fav"];
-		foreach($cats as $dog) {
-			if(in_array($dog, $_POST["cats"])) {
-				$$dog = 1;
-			}
-		}
-		if($id > 0) {
-			$query = "UPDATE `" . $page->ddb->DBname . "` . `quotations` SET `quote` = ?, `authorlast` = ?, `authorfirst` = ?, `place` = ?, `fav` = ?";
-			foreach($cats as $dog) {
-				$query .= ", `$dog` = ?";
-			}
-			$query .= " WHERE `quotations` . `id` = ? LIMIT 1;";
-			$sql = $page->DB_QueryPrepare($query);
-			$sql->bind_param("ssssiiiiiiiiiiiiiiiiiii", $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports, $id);
-			$page->DB_ExecuteManage($sql);
-		} else {
-			$query = "INSERT INTO `" . $page->ddb->DBname . "` . `quotations` (`id`, `quote`, `authorlast`, `authorfirst`, `place`, `fav`";
-			$qmarks = "";
-			foreach($cats as $dog) {
-				$query .= ", `$dog`";
-				$qmarks .= ", ?";
-			}
-			$query .= ") VALUES(NULL, ?, ?, ?, ?, ?$qmarks);";
-			$sql = $page->DB_QueryPrepare($query);
-			$sql->bind_param("ssssiiiiiiiiiiiiiiiiii", $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports);
-			$page->DB_ExecuteManage($sql);
-			$id = $sql->insert_id;
-		}
-		$page->HeaderLocation("index.php#c$id");
-	} elseif(isset($_POST["erase"])) {
-		$id = $_POST["id"];
-		$query = "DELETE FROM `" . $page->ddb->DBname . "` . `quotations` WHERE `quotations` . `id` = ? LIMIT 1;";
-		$sql = $page->DB_QueryPrepare($query);
-		$sql->bind_param("i", $id);
-		$page->DB_ExecuteManage($sql);
-		$page->HeaderLocation();
-		exit;
-	}
-//
+    /*** DB ***/
+    if(isset($_POST["submit"])) {
+        if(isset($_POST["id"])) {
+            $id = $_POST["id"];
+        }
+
+        $quote = $page->dbText->inputTextareaParagraph2sql($_POST["quote"]);
+        $authorlast = $page->dbText->input2sql($_POST["authorlast"]);
+        $authorfirst = $page->dbText->input2sql($_POST["authorfirst"]);
+        $place = $page->dbText->input2sql($_POST["place"]);
+        $fav = $_POST["fav"];
+
+        if(isset($_POST["cats"])) {
+            foreach($kCategories as $dog) {
+                if(in_array($dog, $_POST["cats"])) {
+                    $$dog = 1;
+                }
+            }
+        }
+
+        if($id > 0) {
+            $query = "UPDATE `{$page->bobbyTable->dbName}` . `quotations` SET `quote` = ?, `authorlast` = ?, `authorfirst` = ?, `place` = ?, `fav` = ?";
+            foreach($kCategories as $dog) {
+                $query .= ", `$dog` = ?";
+            }
+            $query .= " WHERE `quotations` . `id` = ? LIMIT 1;";
+            $sql = $page->bobbyTable->queryPrepare($query);
+            $sql->bind_param("ssssiiiiiiiiiiiiiiiiiii", $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports, $id);
+            $page->bobbyTable->executeManage($sql);
+        } else {
+            $query = "INSERT INTO `{$page->bobbyTable->dbName}` . `quotations` (`id`, `quote`, `authorlast`, `authorfirst`, `place`, `fav`";
+            $qmarks = "";
+            foreach($kCategories as $dog) {
+                $query .= ", `$dog`";
+                $qmarks .= ", ?";
+            }
+            $query .= ") VALUES(NULL, ?, ?, ?, ?, ?$qmarks);";
+            $sql = $page->bobbyTable->queryPrepare($query);
+            $sql->bind_param("ssssiiiiiiiiiiiiiiiiii", $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports);
+            $page->bobbyTable->executeManage($sql);
+            $id = $sql->insert_id;
+        }
+        $page->htmlHelper->headerLocation("index.php#c$id");
+    } elseif(isset($_POST["erase"])) {
+        $id = $_POST["id"];
+        $query = "DELETE FROM `{$page->bobbyTable->dbName}` . `quotations` WHERE `quotations` . `id` = ? LIMIT 1;";
+        $sql = $page->bobbyTable->queryPrepare($query);
+        $sql->bind_param("i", $id);
+        $page->bobbyTable->executeManage($sql);
+        $page->htmlHelper->headerLocation();
+        exit;
+    }
+
 if(isset($_GET["id"])) {
-	$id = $_GET["id"];
-	$query = "SELECT * FROM `quotations` WHERE `id` = ? LIMIT 1;";
-	$result = $page->DB_IdManage($query, $id);
-	$result->store_result();
-	if($result->num_rows == 0) {
-		$result->close();
-		exit("bad id");
-	}
-	$result->bind_result($id, $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports);
-	$result->fetch();
-	$result->close();
-	$quote = $page->SQL2paragraph($quote);
-	$authorfirst = $page->SQL2field($authorfirst);
-	$authorlast = $page->SQL2field($authorlast);
-	$place = $page->SQL2field($place);
-	//foreach($cats as $dog) {
-		//eval("$$dog = \$entry->$dog;");
-	//}
-	$page_title = "Edit quote #$id";
+    $id = $_GET["id"];
+    $query = "SELECT * FROM `quotations` WHERE `id` = ? LIMIT 1;";
+    $result = $page->bobbyTable->idManage($query, $id);
+    $result->store_result();
+    if($result->num_rows == 0) {
+        $result->close();
+        exit("bad id");
+    }
+    $result->bind_result($id, $quote, $authorlast, $authorfirst, $place, $fav, $amour, $argent, $cuisine, $environnement, $EPFL, $humour, $informatique, $litterature, $medecine, $militaire, $musique, $philosophie, $politique, $religions, $sciences, $sexe, $sports);
+    $result->fetch();
+    $result->close();
+    $quote = $page->dbText->sql2htmlTextareaParagraph($quote);
+    $authorfirst = $page->dbText->sql2html($authorfirst);
+    $authorlast = $page->dbText->sql2html($authorlast);
+    $place = $page->dbText->sql2html($place);
+    //foreach($kCategories as $dog) {
+        //eval("$$dog = \$entry->$dog;");
+    //}
+    $page_title = "Edit quote #$id";
 } else {
-	if(isset($_GET["al"])) {
-		$authorlast = $_GET["al"];
-	}
-	if(isset($_GET["af"])) {
-		$authorfirst = $_GET["af"];
-	}
+    if(isset($_GET["al"])) {
+        $authorlast = $_GET["al"];
+    }
+    if(isset($_GET["af"])) {
+        $authorfirst = $_GET["af"];
+    }
 }
 
-$args = new stdClass();
+$goUp = "index.php";
 if($id > 0) {
-	$args->id = $id;
+    $goUp .= "?id=$id";
 }
-$args->rootpage = "..";
-$body .= $page->GoHome($args);
+$body = $page->bodyBuilder->goHome("..", $goUp);
 
-$body .= $page->SetTitle($page_title);
-$page->HotBooty();
+$body .= $page->htmlHelper->setTitle($page_title);
+$page->htmlHelper->hotBooty();
 
-$body .= $page->FormTag();
+$body .= $page->formHelper->tag();
 
 $body .= "<div class=\"quotationinput\">\n";
-	/*** ID ***/
-	if($id > 0) {
-		$args = new stdClass();
-		$args->type = "hidden";
-		$args->name = "id";
-		$args->value = $id;
-		$body .= $page->FormField($args);
-	}
+    /*** ID ***/
+    if($id > 0) {
+        $body .= $theHiddenInput->get("id", $id);
+    }
 //
-	/*** quote ***/
-	$args = new stdClass();
-	$args->type = "textarea";
-	$args->required = true;
-	$args->autofocus = true;
-	$args->rows =  7;
-	$args->cols = 70;
-	$args->title = "Citation";
-	$args->name = "quote";
-	$args->value = $quote;
-	$args->div = false;
-	$body .= $page->FormField($args);
+    /*** quote ***/
+    $attr = new FieldAttributes(true, true);
+    $embedder = new FieldEmbedder("Citation");
+    $embedder->hasDiv = false;
+    $body .= $theTextarea->get("quote", $quote, 7, 70, "Citation", $attr, $embedder);
 //
 $body .= "</div>\n";
-	/*** Author ***/
-	$body .= "<div class=\"authorinput\">Author:</div>\n";
-		/*** First name ***/
-		$args = new stdClass();
-		$args->type = "text";
-		$args->title = "First";
-		$args->name = "authorfirst";
-		$args->value = $authorfirst;
-		$args->css = "authorinput_first";
-		$args->colon = false;
-		$body .= $page->FormField($args);
-	//
-		/*** Last name ***/
-		$args->title = "Last";
-		$args->name = "authorlast";
-		$args->value = $authorlast;
-		$args->css = "authorinput_last";
-		$body .= $page->FormField($args);
-	//
-//
-	/*** Place ***/
-	$args->title = "Oeuvre";
-	$args->name = "place";
-	$args->value = $place;
-	$args->colon = true;
-	$args->css = "placeinput";
-	$body .= $page->FormField($args);
-//
-	/*** fav ***/
-	$args = new stdClass();
-	$args->title = "Favorite";
-	$args->name = "fav";
-	$args->type = "select";
-	$args->list = $favs;
-	$args->value = $favs[$fav];
-	$args->css = "favinput";
-	//$args->vlist = true;
-	$body .= $page->FormField($args);
-//
-	/*** cats ***/
-	$args = new stdClass();
-	$args->title = "Categories";
-	$args->name = "cats";
-	$args->type = "checkbox";
-	$args->css = "catsinput";
-	$args->list = array();
-	$args->value = array();
-	foreach($cats as $dog) {
-		$args->list[$dog] = $dog;
-		if($$dog) {
-			$args->value[] = $dog;
-		}
-	}
-	$args->vlist = true;
-	$body .= $page->FormField($args);
-//
-// buttons
-$args = new stdClass();
-$args->CloseTag = true;
-if($id > 0) {
-	$args->cancelURL = "index.php#c$id";
-}
-$body .= $page->SubButt($id > 0, "la citation #$id", $args);
+    /*** Author ***/
+    $body .= "<div class=\"authorinput\">Author name:</div>\n";
+    $body .= $theTextInput->get("authorfirst", $authorfirst, "First");
+    $body .= $theTextInput->get("authorlast", $authorlast, "Last");
 
-$page->show($body);
-unset($page);
+$body .= $theTextInput->get("place", $place, "Oeuvre");
+$body .= $theSelectInput->get("fav", $favs, $fav, "Favorite");
+
+    /*** cats ***/
+    $cats = array();
+    $values = array();
+    foreach($kCategories as $dog) {
+        $cats[$dog] = $dog;  // associative array
+
+        if($$dog) {
+            $values[] = $dog;
+        }
+    }
+    $body .= $theCheckboxInput->get("cats", $cats, $values, "Categories", true);
+
+// buttons
+$cancelUrl = null;
+if($id > 0) {
+    $cancelUrl = "index.php#c$id";
+}
+$body .= $page->formHelper->subButt($id > 0, "la citation #$id", $cancelUrl);
+
+echo $body;
 ?>

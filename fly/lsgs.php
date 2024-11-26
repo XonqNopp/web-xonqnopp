@@ -1,111 +1,66 @@
 <?php
-require("../functions/classPage.php");
-$rootPath = "..";
-$funcpath = "$rootPath/functions";
-require("preparations.php");
-$page = new PhPage($rootPath);
-//$page->initDB();
-//// debug
-//$page->initHTML();
-//$page->LogLevelUp(6);
-//// CSS paths
-$page->CSS_ppJump();
-//$page->CSS_ppWing();
-//// init body
-$body = "";
+require_once("../functions/page_helper.php");
+
+$page = new PhPage("..");
+
+require_once("homebase.php");
+
+$title = "LSGS: Sion";
+$smallTt = "<tt class=\"smaller\">";
 
 
+    // Infos
+    $infos = "<li>\n";
+    $infos .= $page->bodyBuilder->anchor("http://app.aviator.club/", "LSGS app");
+    if($page->loginHelper->userIsAdmin()) {
+        $infos .= "<br />{$smallTt}{$page->miscInit->fly->lsgs}</tt>";
+        $infos .= "<br />{$smallTt}{$page->miscInit->fly->clearance}</tt>";
+    }
+    $infos .= "</li>\n";
 
-//// GoHome
-$gohome = new stdClass();
-$body .= $page->GoHome($gohome);
-//// Set title and hot booty
-$body .= $page->SetTitle("LSGS: Sion");// before HotBooty
-$page->HotBooty();
+    $infos .= "<li>";
+    $infos .= $page->bodyBuilder->anchor("http://gvm-sion.ch/", "GVM Sion");
+    if($page->loginHelper->userIsAdmin()) {
+        $infos .= "&nbsp;{$smallTt}{$page->miscInit->fly->lsgsDoor}</tt>";
+    }
+    $infos .= "</li>\n";
 
-$body .= "<div class=\"csstab64_table links\">\n";
-$body .= "<div class=\"csstab64_row\">\n";
+    $infos .= "<li>Sion handling:<br />\n";
+    $infos .= "131.475MHz<br />\n";
+    $infos .= $page->bodyBuilder->tel("+41273290600");
+    $infos .= "</li>\n";
 
-	// Infos & webcam
-	$body .= "<div class=\"csstab64_cell third\">\n";
-		// Infos
-		$body .= "<div>\n";
-		$body .= "<ul>\n";
-		$body .= "<li><a target=\"_blank\" href=\"http://www.resnet.ch/LSGS-GVM/index.asp\">LSGS-GVM resair</a>";
-		if($page->UserIsAdmin()) {
-			$body .= ":&nbsp;<tt>" . $page->miscInit->lsgsLogin . "</tt>";
-		}
-		$body .= "</li>\n";
+    $infos .= "<li>Sion ATIS:<br />\n";
+    $infos .= "130.630MHz<br />\n";
+    $infos .= $page->bodyBuilder->tel("+41224174080");
+    $infos .= "</li>\n";
 
-		$body .= "<li><a target=\"_blank\" href=\"http://gvm-sion.ch/\">GVM Sion</a>";
-		if($page->UserIsAdmin()) {
-			$body .= ":&nbsp;<tt>" . $page->miscInit->lsgsDoor . "</tt>";
-		}
-		$body .= "</li>\n";
-
-		$body .= "<li>Sion handling:<br />\n";
-		$body .= "131.475MHz<br />\n";
-		$body .= "<a href=\"tel:+41273290600\">+41&nbsp;27&nbsp;329&nbsp;06&nbsp;00</a></li>\n";
-
-		$body .= "<li>Sion ATIS:<br />\n";
-		$body .= "130.630MHz<br />\n";
-		$body .= "<a href=\"tel:+41224174080\">+41&nbsp;22&nbsp;417&nbsp;40&nbsp;80</a></li>\n";
-
-		$body .= "<li>\n";
-		$body .= "<a target=\"_blank\" href=\"http://fgo.ch\">LSTA Raron</a>\n";
-		$body .= "&nbsp;-&nbsp;\n";
-		$body .= "<a target=\"_blank\" href=\"https://fgo.ch/clubdesk/www?p=1000002\">PPR</a>\n";
-		$body .= "</li>\n";
-		$body .= "</ul>\n";
-		$body .= "</div>\n";
-	//
-		// webcam
-		$body .= "<div>\n";
-		$body .= "<a href=\"https://www.air-zermatt.ch/wordpress/en/webcam/\" target=\"_blank\">\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Richtung_Goms.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Heliport2.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Heliport1.jpg\" />\n";
-		$body .= "<br />\n";
-		$body .= "<img class=\"width\" title=\"LSTA\" alt=\"LSTA\" src=\"https://www.air-zermatt.ch/webcam/Richtung_Sion.jpg\" />\n";
-		$body .= "</a>\n";
-		$body .= "</div>\n";
-	$body .= "</div>\n";
+    $infos .= "<li>\n";
+    $infos .= $page->bodyBuilder->anchor("http://fgo.ch", "LSTA Raron");
+    $infos .= "&nbsp;-&nbsp;\n";
+    $infos .= $page->bodyBuilder->anchor("https://fgo.flightforms.ch/", "PPR");
+    $infos .= "</li>\n";
 //
-	// Weather station
-	$station = "IVALAISS15";
-	$body .= "<div class=\"csstab64_cell third\">\n";
-	$body .= "<a target=\"_blank\" href=\"https://www.wunderground.com/dashboard/pws/$station\">\n";
-	$body .= "<img class=\"width\" src=\"http://www.wunderground.com/cgi-bin/wxStationGraphAll?ID=$station&amp;type=3&amp;width=500&amp;showsolarradiation=1&amp;showtemp=1&amp;showpressure=1&amp;showwind=1&amp;showwinddir=1&amp;showrain=1\" alt=\"weather station\" />\n";
-	$body .= "</a>\n";
-	$body .= "</div>\n";
+    // Webcam airport
+    $webcamAirportImg = $page->bodyBuilder->img("https://meteo-oberwallis.ch/webcam/raron/flugplatz.php", "LSTA Webcam", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Richtung_Goms.jpg", "LSER Webcam Richtung Goms", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Heliport2.jpg", "LSER Webcam Heliport2", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Heliport1.jpg", "LSER Webcam Heliport1", "width");
+    $webcamAirportImg .= "<br />\n";
+    $webcamAirportImg .= $page->bodyBuilder->img("https://www.air-zermatt.ch/webcam/Richtung_Sion.jpg", "LSER Webcam Richtung Sion", "width");
+    $webcamAirport = $page->bodyBuilder->anchor("https://www.air-zermatt.ch/en/general-information/services/webcams", $webcamAirportImg, "LSER Webcams");
 //
-	// Common
-	$body .= "<div class=\"csstab64_cell third left\">\n";
-	$body .= commonPreparations($page->UserIsAdmin(), $page->miscInit);
-	$body .= "</div>\n";
+    // Webcam area
+    $webcamArea = $page->bodyBuilder->anchor("https://sionairport.roundshot.com/", "Webcam Sion airport");
+    $webcamArea .= "<br />\n";
 
-$body .= "</div>\n";
-$body .= "</div>\n";
-
-	// webcam
-	$body .= "<div class=\"wide\">\n";
-
-	$body .= "<a target=\"_blank\" href=\"https://sionairport.roundshot.com/\">WebCam Sion airport</a>\n";
-	$body .= "<br />\n";
-
-	$body .= "Veysonnaz 4200ft:\n";
-	$body .= "<br />\n";
-	$body .= "<img src=\"https://www.caboulis.ch/sion.jpg\" alt=\"WebCam Veysonnaz\" />\n";
-
-	$body .= "</div>\n";
-
-// Do not have text glued at bottom
-$body .= "<div>&nbsp;</div>\n";
+    $webcamArea .= "Veysonnaz 4200ft:\n";
+    $webcamArea .= "<br />\n";
+    $webcamArea .= "<img src=\"https://www.caboulis.ch/sion.jpg\" alt=\"WebCam Veysonnaz\" />\n";
 
 
-//// Finish
-echo $body;
-unset($page);
+echo homebase($page, $title, $infos, $webcamAirport, $webcamArea);
 ?>
