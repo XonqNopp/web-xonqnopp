@@ -195,7 +195,7 @@ function getCompanies() {
         $subval = $subtot->bus;
 
         $body .= "<div id=\"c$comId\">\n";
-        $body .= $page->bodyBuilder->anchor("insert.php?id=$comId", "edit");
+        $body .= $page->bodyBuilder->anchor("insert.php?id=$comId", "edit", NULL, "edit");
         $body .= "&nbsp;\n";
 
         $body .= "<span class=\"co$rank\">\n";
