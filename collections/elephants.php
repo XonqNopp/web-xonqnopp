@@ -8,7 +8,7 @@ $page = new PhPage($rootPath);
 
 $page->cssHelper->push("index");
 
-$body = $page->bodyBuilder->goHome();
+$body = $page->bodyBuilder->goHome("..");
 $body .= $page->htmlHelper->setTitle("Les &eacute;l&eacute;phants");
 $page->htmlHelper->hotBooty();
 
