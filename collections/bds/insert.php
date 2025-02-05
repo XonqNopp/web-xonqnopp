@@ -142,7 +142,8 @@ if(isset($_POST["erase"])) {
 
     $attrSize = new FieldAttributes();
 
-    $body .= $theNumberInput->get("tome", $tome, "Tome");
+    $autofocus = new FieldAttributes(false, true);
+    $body .= $theNumberInput->get("tome", $tome, "Tome", $autofocus);
     $attrSize->size = 50;
     $body .= $theTextInput->get("title", $title, "Title", NULL, $attrSize);
     $attrSize->size = 40;
