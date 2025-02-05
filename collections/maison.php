@@ -1005,7 +1005,7 @@ if($page->loginHelper->userIsAdmin()) {
         $body .= $page->bodyBuilder->titleAnchor("Ventes aux ench&egrave;res", 3);
         $body .= "<div>\n";
 
-        $body .= "<p>Il y a plusieurs biens $aa vendre aux ench&egrave;res chaque semaine, souvent $aa des prix {$interessant}s car ne couvrant que la dette.\n";
+        $body .= "<p>Il y a plusieurs biens $aa vendre aux ench&egrave;res chaque semaine, souvent $aa des prix int&eacute;ressants car ne couvrant que la dette.\n";
         $body .= "Consulter les offices cantonaux, voir " . getLink("http://poursuite-faillite-offic.ch") . ".\n";
         $body .= "<b>Attention</b> $aa $etre bien pr&eacute;par&eacute; car $apres le coup de marteau, il n'est plus possible de se r&eacute;tracter.</p>\n";
 

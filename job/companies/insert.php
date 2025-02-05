@@ -178,7 +178,7 @@ $attrMin0->min = 0;
 //$body .= $theNumberInput->get("car_time", $car_time, "Travel time by car", $attrMin0);
 //$body .= $theNumberInput->get("train_time", $train_time, "Travel time by train", $attrMin0);
 
-$body .= $page->waitress->tableOpen();
+$body .= $page->waitress->tableOpen(array(), false);
 $body .= $page->waitress->rowOpen();
 
 $fieldsEmbedder = new FieldEmbedder("Fields of work");

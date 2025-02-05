@@ -30,8 +30,7 @@ if(isset($_SESSION["testamentwarning"]) && $_SESSION["testamentwarning"]) {
             $randquot = $randsql->fetch_object();
             $randsql->close();
     //
-        // To screen
-        $body .= "<div class=\"idxquot\">\n";
+        // Display
         $randid          = $randquot->id;
         $randlastauthor  = $randquot->authorlast;
         $randfirstauthor = $randquot->authorfirst;
@@ -64,6 +63,7 @@ $body .= $page->waitress->rowOpen();
     $body .= ": " . $page->bodyBuilder->anchor("fly/pax.php", "PAX");
     $body .= "- " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
     $body .= "- " . $page->bodyBuilder->anchor("fly/nav/index.php", "nav");
+    $body .= "- " . $page->bodyBuilder->anchor("fly/pdf/", "pdf");
     $body .= "- " . $page->bodyBuilder->anchor("fly/lsge.php", "LSGE");
     $body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
     $body .= "</li>\n";
@@ -73,7 +73,9 @@ $body .= $page->waitress->rowOpen();
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("collections/index.php", "Collections");
     $body .= ": " . $page->bodyBuilder->anchor("collections/bds/index.php", "BDs");
-    $body .= "- " . $page->bodyBuilder->anchor("collections/bds/insert.php", "new BD");
+    if($page->loginHelper->userIsAdmin()) {
+        $body .= "- " . $page->bodyBuilder->anchor("collections/bds/insert.php", "new BD");
+    }
     $body .= "- " . $page->bodyBuilder->anchor("collections/quotations/index.php", "citations");
     $body .= "</li>\n";
 
@@ -103,10 +105,10 @@ $body .= $page->waitress->tableClose();
 
 
 if($page->loginHelper->userIsAdmin()) {
-    $body .= "<div>\n";
+    $body .= "<div><!--T-->\n";
     $body .= $page->bodyBuilder->anchor("testament/index.php", "T");
     $body .= $page->bodyBuilder->anchor("testament/reset.php", "R");
-    $body .= "</div>\n";
+    $body .= "</div><!--T-->\n";
 }
 
 
