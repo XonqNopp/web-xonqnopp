@@ -510,7 +510,7 @@ $page->htmlHelper->hotBooty();
                 // Rear arms
                 for($rearIndex = 0; $rearIndex < $kRearStationsNum; ++$rearIndex) {
                     $body .= $page->waitress->rowOpen();
-                    $body .= $page->waitress->cell("Rear #{$rearIndex}", array("class" => "bo"));
+                    $body .= $page->waitress->cell("Rear #" . ($rearIndex + 1), array("class" => "bo"));
                     $body .= cellOptionalArm("Rear{$rearIndex}Arm", $sqlData, $attrArm, $noDivEmbedder);
 
                     $body .= $page->waitress->cell(
