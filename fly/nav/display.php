@@ -722,7 +722,7 @@ class Aircraft {
 
                 if($tank->allOrNothing) {
                     // Fill tank to max even if we need less
-                    $tank->quantity = $tank->totalCapacity;
+                    $tank->quantity = $usable;
                     $quantity -= $usable;
 
                     // Return the leftover
@@ -740,7 +740,7 @@ class Aircraft {
                 }
 
                 // Fill tank to max
-                $tank->quantity = $tank->totalCapacity;
+                $tank->quantity = $usable;
                 $quantity -= $usable;
 
                 // Return the leftover
@@ -1505,7 +1505,7 @@ class Aircraft {
                         continue;
                     }
 
-                    $htmlHead .= "#$i={$gcData->rears[$i]->mass}";
+                    $htmlHead .= "#" . ($i + 1) . "={$gcData->rears[$i]->mass}";
                     if($gcData->rears[$i]->isMassTooMuch()) {
                         $htmlHead .= " {$kStrings['htmlTooHeavy']}";
                     }
@@ -1523,7 +1523,7 @@ class Aircraft {
                         continue;
                     }
 
-                    $htmlHead .= "#$i={$gcData->luggages[$i]->mass} kg";
+                    $htmlHead .= "#" . ($i + 1) . "={$gcData->luggages[$i]->mass} kg";
                     if($gcData->luggages[$i]->isMassTooMuch()) {
                         $htmlHead .= " {$kStrings['htmlTooHeavy']}";
                     }
@@ -1531,7 +1531,7 @@ class Aircraft {
 
                 }
                 $htmlHead = substr($htmlHead, 0, -3);  // remove trailing separator
-                if($gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
+                if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
                     $htmlHead .= " <span style=\"background-color: red;\">Luggages mass {$gcData->luggageTotalMass->mass} {$kStrings['TooHeavy']}, exceeds {$gcData->luggageTotalMass->maxMass}</span>";
                 }
                 $htmlHead .= "</li>\n";
@@ -2192,14 +2192,14 @@ class Aircraft {
                 // Begin table
                 $latexfuel .= "\\begin{tabular}{|l||r@{ :}c|r||r@{ :}c|r|}\n";
                 $latexfuel .= "\\hline\n";
-                $latexfuel .= "\\textbf{Fuel}\n";
+                $latexfuel .= "\\multicolumn{1}{|c|}{}\n";
                 $latexfuel .= "& \\multicolumn{6}{c|}{\\textbf{{$kStrings["FuelConsumption"]}} {$consumption} {$unit}/h}\n";
-                $latexfuel .= "\\\\\\hline\n";
-                $latexfuel .= "\\multicolumn{1}{c|}{}\n";
+                $latexfuel .= "\\\\\\hhline{~------}\n";
+                $latexfuel .= "\\multicolumn{1}{|c|}{\\textbf{Fuel}}\n";
                 $latexfuel .= "& \\multicolumn{3}{c||}{{$kStrings["NoWind"]}}\n";
                 $latexfuel .= "& \\multicolumn{3}{c|}{{$kStrings["Wind"]}}\n";
                 $latexfuel .= "\\\\\\hhline{~------}\n";
-                $latexfuel .= "\\multicolumn{1}{c|}{}\n";
+                $latexfuel .= "\\multicolumn{1}{|c|}{}\n";
                 $latexfuel .= "& \\multicolumn{2}{c|}{{$kStrings["time"]}}\n";
                 $latexfuel .= "& {$kStrings["fuel"]} [{$theoricFuel->unit}]\n";
                 $latexfuel .= "& \\multicolumn{2}{c|}{{$kStrings["time"]}}\n";
@@ -2338,7 +2338,7 @@ class Aircraft {
                 $htmlGC .= htmlGcEntry($gcData->luggages[$i], "Luggage", "#" . ($i + 1));
             }
             // luggage total mass
-            if($gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
+            if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
                 $htmlGC .= $page->butler->rowOpen();
                 $htmlGC .= $page->butler->cell("{$kStrings["Luggage"]} total mass");
                 $htmlGC .= $page->butler->cell(
@@ -2423,7 +2423,7 @@ class Aircraft {
             $quantitiesCount = count($gcData->fuelQuantities);
             for ($i = 0; $i < $quantitiesCount; ++$i) {
                 $tank = $finalFuel->tanks[$i];
-                $htmlGC .= htmlGcEntry($gcData->fuelQuantities[$i], "Fuel", "#" . ($i + 1) . "={$tank->quantity}+{$tank->unusable}{$tank->fuelUnit}");
+                $htmlGC .= htmlGcEntry($gcData->fuelQuantities[$i], "Fuel", "#" . ($i + 1) . "=<b>{$tank->quantity}</b>+{$tank->unusable}{$tank->fuelUnit}");
             }
 
                 // Take-off
@@ -2584,7 +2584,7 @@ class Aircraft {
                 $latexGC .= latexGcEntry($gcData->luggages[$i], "Luggage", "#" . ($i + 1));
             }
             // luggage total mass
-            if($gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
+            if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
                 $latexGC .= "{$kStrings["Luggage"]} total mass";
                 $latexGC .= "& \\multicolumn{3}{c|}{";
                 $latexGC .= "{$redCell} {$kStrings['TooHeavy']} {$gcData->luggageTotalMass->mass} > {$gcData->luggageTotalMass->maxMass}";
@@ -2659,7 +2659,7 @@ class Aircraft {
                 $label = "#" . ($i + 1);
                 if($tank->quantity > 0) {
                     // If we do the template, we do not want to display this (empty) value
-                    $label .= "={$tank->quantity}+{$tank->unusable}{$tank->fuelUnit}";
+                    $label .= "=\\textbf{{$tank->quantity}}+{$tank->unusable}{$tank->fuelUnit}";
                 }
 
                 $latexGC .= latexGcEntry($gcData->fuelUnusables[$i], "Fuel", $label);
