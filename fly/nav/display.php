@@ -179,6 +179,8 @@ class Aircraft {
         //
             /**
              * Singleton to hold all information required to compute the gravity center and the mass.
+             *
+             * @SuppressWarnings(PHPMD.TooManyFields)
              */
             class GcData {
                 public $massUnit = "?";  // Mass unit
@@ -191,6 +193,7 @@ class Aircraft {
                 public $gcBoundaries = NULL;  // boundaries of GC
 
                 public $dryEmpty = NULL;  // data of dry+empty plane
+                public $dryEmptyTimestamp = NULL;  // timestamp of dry+empty measurement
 
                 public $front = NULL;  // data for front row
                 public $rears = NULL;  // dynamic array
@@ -1011,7 +1014,7 @@ class Aircraft {
         $kStrings["Mass"] = "Mass";
         $kStrings["Arm"] = "Arm";
         $kStrings["Moment"] = "Moment";
-        $kStrings["Empty"] = "Empty";
+        $kStrings["DryEmpty"] = "Dry+Empty";
         $kStrings["Front"] = "Front";
         $kStrings["Rear"] = "Rear";
         $kStrings["Luggage"] = "Luggage";
@@ -2318,7 +2321,13 @@ class Aircraft {
             //
                 // empty
                 $htmlGC .= $page->butler->rowOpen();
-                $htmlGC .= $page->butler->cell($kStrings["Empty"]);
+
+                $dryEmpty = $kStrings["DryEmpty"];
+                if($gcData->dryEmptyTimestamp !== NULL && $gcData->dryEmptyTimestamp != "") {
+                    $dryEmpty .= " ({$gcData->dryEmptyTimestamp})";
+                }
+                $htmlGC .= $page->butler->cell($dryEmpty);
+
                 $htmlGC .= $page->butler->cell(($gcData->dryEmpty->mass > 0) ? $gcData->dryEmpty->mass : "", array("class" => "mass num"));
                 $htmlGC .= $page->butler->cell("", array("class" => "unavailable"));
                 $htmlGC .= $page->butler->cell(($gcData->dryEmpty->getMoment() > 0) ? $gcData->dryEmpty->getMoment() : "", array("class" => "moment num"));
@@ -2572,7 +2581,12 @@ class Aircraft {
                 $latexGC .= "\\\\\\hhline{-===}\n";
             //
                 // empty
-                $latexGC .= $kStrings["Empty"] . "   &";
+                $dryEmpty = $kStrings["DryEmpty"];
+                if($gcData->dryEmptyTimestamp !== NULL && $gcData->dryEmptyTimestamp != "") {
+                    $dryEmpty .= " ({$gcData->dryEmptyTimestamp})";
+                }
+                $latexGC .= "$dryEmpty   &";
+
                 $latexGC .= ($gcData->dryEmpty->mass > 0) ? " {$gcData->dryEmpty->mass} " : "";
                 $latexGC .= "& \\DarkGray &";
                 $latexGC .= ($gcData->dryEmpty->getMoment() > 0) ? " {$gcData->dryEmpty->getMoment()}" : "";
@@ -2815,7 +2829,7 @@ if($plane->sqlID > 0) {
         $gcData->armUnit,
         $gcData->momentUnit,
 
-        $DryEmptyTimestamp,
+        $gcData->dryEmptyTimestamp,
         $gcData->dryEmpty->mass,
         $gcData->dryEmpty->moment,
 
