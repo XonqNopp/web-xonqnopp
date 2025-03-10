@@ -2423,7 +2423,15 @@ class Aircraft {
             $quantitiesCount = count($gcData->fuelQuantities);
             for ($i = 0; $i < $quantitiesCount; ++$i) {
                 $tank = $finalFuel->tanks[$i];
-                $htmlGC .= htmlGcEntry($gcData->fuelQuantities[$i], "Fuel", "#" . ($i + 1) . "=<b>{$tank->quantity}</b>+{$tank->unusable}{$tank->fuelUnit}");
+
+                $label = "#" . ($i + 1);
+                $label .= "=<b>{$tank->quantity}</b>+{$tank->unusable}{$tank->fuelUnit}";
+
+                $htmlGC .= htmlGcEntry(
+                    $gcData->fuelQuantities[$i],
+                    "Fuel",
+                    $label
+                );
             }
 
                 // Take-off
@@ -2662,7 +2670,11 @@ class Aircraft {
                     $label .= "=\\textbf{{$tank->quantity}}+{$tank->unusable}{$tank->fuelUnit}";
                 }
 
-                $latexGC .= latexGcEntry($gcData->fuelUnusables[$i], "Fuel", $label);
+                $latexGC .= latexGcEntry(
+                    $gcData->fuelQuantities[$i],
+                    "Fuel",
+                    $label
+                );
             }
             $latexGC .= "\\hline\n";
 
