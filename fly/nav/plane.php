@@ -14,7 +14,6 @@ global $theDateInput;
 
 
 $page = new PhPage($rootPath);
-$page->loginHelper->notAllowed();
 $page->bobbyTable->init();
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
@@ -111,6 +110,8 @@ $TABLE = "aircrafts";
 
 
 if(isset($_POST["erase"]) || isset($_POST["submit"])) {
+    $page->loginHelper->notAllowed();
+
     $sqlData->setDataValuesFromPost($page);
 
     foreach($armFields as $arm) {
@@ -308,10 +309,19 @@ $body .= $page->htmlHelper->setTitle($page_title);// before HotBooty
 $page->htmlHelper->hotBooty();
 
     // form
-    $body .= "<div>\n";
-    $body .= $page->formHelper->tag();
+    $body .= "<div><!-- form -->\n";
+
+    if($page->loginHelper->userIsAdmin()) {
+        $body .= $page->formHelper->tag();
+    }
+
+    $disabled = !$page->loginHelper->userIsAdmin();
+
+    $disabledAttr = new FieldAttributes();
+    $disabledAttr->isDisabled = $disabled;
 
     $reqAttr = new FieldAttributes(true);
+    $reqAttr->isDisabled = $disabled;
 
     $noDivEmptyEmbedder = new FieldEmbedder();
     $noDivEmptyEmbedder->hasDiv = false;
@@ -329,6 +339,8 @@ $page->htmlHelper->hotBooty();
 
                 // type
                 $attr = new FieldAttributes(true, true);
+                $attr->isDisabled = $disabled;
+
                 $body .= $page->waitress->cell(
                     $theTextInput->get("PlaneType", $sqlData, "type", NULL, $attr)
                 );
@@ -347,6 +359,7 @@ $page->htmlHelper->hotBooty();
             $body .= $page->waitress->cell("<b>Speed:</b>");
 
             $attrSpeed = new FieldAttributes(true);
+            $attrSpeed->isDisabled = $disabled;
             $attrSpeed->min = 0;
 
             $embedderSpeed = new FieldEmbedder(NULL, "kts");
@@ -366,6 +379,7 @@ $page->htmlHelper->hotBooty();
             $body .= $page->waitress->tableClose();
 
         $attrMaxMass = new FieldAttributes();
+        $attrMaxMass->isDisabled = $disabled;
         $attrMaxMass->step = 0.1;
         $attrMaxMass->min = 0;
 
@@ -390,7 +404,7 @@ $page->htmlHelper->hotBooty();
                     $page->utilsHelper->arraySequential2Associative(arrayKeysWithoutEmptyString($kMassUnits)),
                     $sqlData,
                     "",
-                    NULL,
+                    $disabledAttr,
                     $noDivEmptyEmbedder
                 );
 
@@ -412,6 +426,7 @@ $page->htmlHelper->hotBooty();
 
                 $emptyEmbedder->title = "moment";
                 $attrEmptyMoment = new FieldAttributes(true);
+                $attrEmptyMoment->isDisabled = $disabled;
                 $attrEmptyMoment->min = 0;
                 $attrEmptyMoment->step = $DEFAULT_STEP;
                 $body .= $theNumberInput->get("DryEmptyMoment", $sqlData, NULL, $attrEmptyMoment, $emptyEmbedder);
@@ -421,7 +436,7 @@ $page->htmlHelper->hotBooty();
                     $page->utilsHelper->arraySequential2Associative(arrayKeysWithoutEmptyString($kMomentUnits)),
                     $sqlData,
                     "",
-                    NULL,
+                    $disabledAttr,
                     $noDivEmptyEmbedder
                 );
 
@@ -432,6 +447,7 @@ $page->htmlHelper->hotBooty();
                 $timestampEmbedder->hasDiv = false;
                 $timestampEmbedder->title = "Timestamp of measures";
                 $attrTimestamp = new FieldAttributes(true);
+                $attrTimestamp->isDisabled = $disabled;
                 $attrTimestamp->max = "now";
 
                 $body .= $page->waitress->cell(
@@ -465,6 +481,7 @@ $page->htmlHelper->hotBooty();
             $body .= $page->waitress->cell("<b>Gravity center boundaries:</b>");
 
             $attrGC = new FieldAttributes(true);
+            $attrGC->isDisabled = $disabled;
             $attrGC->step = $DEFAULT_STEP;
 
             $body .= $page->waitress->cell(
@@ -479,6 +496,7 @@ $page->htmlHelper->hotBooty();
             $body .= $page->waitress->tableClose();
 
         $attrArm = new FieldAttributes(true);
+        $attrArm->isDisabled = $disabled;
         $attrArm->step = $DEFAULT_STEP;
 
         $noDivEmbedder = new FieldEmbedder();
@@ -519,7 +537,6 @@ $page->htmlHelper->hotBooty();
                     $body .= $page->waitress->rowClose();
                 }
 
-                $body .= $page->waitress->rowClose();
                 $body .= $page->waitress->tableClose();
         //
             // Luggage stations
@@ -576,6 +593,7 @@ $page->htmlHelper->hotBooty();
                     $body .= $page->waitress->rowClose();
 
                 $attrQuantity = new FieldAttributes(true);
+                $attrQuantity->isDisabled = $disabled;
                 $attrQuantity->min = 0;
                 $attrQuantity->step = 1;
 
@@ -605,7 +623,7 @@ $page->htmlHelper->hotBooty();
                             array("no", "yes"),
                             $sqlData,
                             "",
-                            NULL,
+                            $disabledAttr,
                             $noDivEmptyEmbedder
                         )
                     );
@@ -624,6 +642,7 @@ $page->htmlHelper->hotBooty();
 
                     // FuelCons
                     $attr = new FieldAttributes(true);
+                    $attr->isDisabled = $disabled;
                     $attr->min = 0;
 
                     $body .= $theNumberInput->get("FuelCons", $sqlData, "Fuel per hour", $attr, $noDivEmbedder);
@@ -635,7 +654,7 @@ $page->htmlHelper->hotBooty();
                         $page->utilsHelper->arraySequential2Associative(arrayKeysWithoutEmptyString($kFuelUnits)),
                         $sqlData,
                         "",
-                        NULL,
+                        $disabledAttr,
                         $noDivEmbedder
                     );
                 //
@@ -645,16 +664,18 @@ $page->htmlHelper->hotBooty();
                         $page->utilsHelper->arraySequential2Associative(arrayKeysWithoutEmptyString($kFuelTypes)),
                         $sqlData,
                         "",
-                        NULL,
+                        $disabledAttr,
                         $noDivEmbedder
                     );
 
-                $body .= "</div>\n";
-    //
-        // buttons
+                $body .= "</div><!-- consumption -->\n";
+
+    if($page->loginHelper->userIsAdmin()) {
+        // buttons (only if admin)
         $body .= $page->formHelper->subButt($sqlData->get("id") > 0, $sqlData->get("PlaneID"));
-    //
-    $body .= "</div>\n";
+    }
+
+    $body .= "</div><!-- form -->\n";
 
 echo $body;
 ?>

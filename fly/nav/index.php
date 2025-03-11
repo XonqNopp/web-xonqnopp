@@ -59,11 +59,9 @@ $page->htmlHelper->hotBooty();
         $AllPlanes[$id] = $p->PlaneID;
 
         $bp .= "<div class=\"onePlane\">\n";
-        if($GI) {
-            $bp .= "<span class=\"edit\">\n";
-            $bp .= $page->bodyBuilder->anchor("plane.php?id=$id", "edit", "edit {$p->PlaneID}");
-            $bp .= "</span>\n";
-        }
+        $bp .= "<span class=\"edit\">\n";
+        $bp .= $page->bodyBuilder->anchor("plane.php?id=$id", "edit", "edit {$p->PlaneID}");
+        $bp .= "</span>\n";
         $bp .= "{$p->PlaneID}: {$p->PlaneType}";
         $bp .= " {$p->PlanningSpeed}kts";
         $bp .= " payload={$payload}kg";
