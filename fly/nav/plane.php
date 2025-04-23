@@ -380,7 +380,7 @@ $page->htmlHelper->hotBooty();
 
         $attrMaxMass = new FieldAttributes();
         $attrMaxMass->isDisabled = $disabled;
-        $attrMaxMass->step = 0.1;
+        $attrMaxMass->step = 0.01;
         $attrMaxMass->min = 0;
 
             // Dry empty
