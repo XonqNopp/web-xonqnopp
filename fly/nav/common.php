@@ -110,6 +110,14 @@ function deleteNavPdfFile($navId) {
             return $waypoint + 1;
         }
 
+        public function isStart($waypoint) {
+            return (
+                $waypoint == $this->wayOut->start
+                || $waypoint == $this->wayBack->start
+                || $waypoint == $this->alternate->start
+            );
+        }
+
         public function isLast($waypoint) {
             return (
                 $waypoint == $this->wayOut->last
@@ -119,11 +127,7 @@ function deleteNavPdfFile($navId) {
         }
 
         public function isStartLast($waypoint) {
-            return (
-                $this->isLast($waypoint)
-                || $waypoint == $this->wayOut->start
-                || $waypoint == $this->wayBack->start
-            );
+            return $this->isStart($waypoint) || $this->isLast($waypoint);
         }
     }
 
