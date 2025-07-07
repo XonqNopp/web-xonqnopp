@@ -235,6 +235,7 @@ function liachm($args, $description) {
         $body .= $page->bodyBuilder->liAnchor("https://www.pfyn-finges.ch/fr/", "Bois de Pfyn/Finges");
         $body .= liachm("resolution=2.62&E=2595916&N=1120647", "le long du Rh&ocirc;ne");
         $body .= liachm("resolution=1&E=2580504&N=1114586", "Saillon: t&ecirc;te des g&eacute;ants, passerelle &agrave; Farinet (pas &agrave; la m&ecirc;me altitude)");
+        $body .= $page->bodyBuilder->liAnchor("https://www.noble-contree.ch/fr/obabao-2457.html", "Obabao, jeux de l'oie g&eacute;ant, Venth&ocirc;ne");
         $body .= "</ul></div>\n";
     //
         $body .= "<h3>Int&eacute;rieur</h3>\n";
