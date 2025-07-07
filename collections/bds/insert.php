@@ -87,7 +87,7 @@ if(isset($_POST["erase"])) {
         $query->fetch();
         $query->close();
         $serie_query = $page->bobbyTable->idManage("SELECT * FROM `bd_series` WHERE `id` = ?", $serie_id);
-        $serie_query->bind_result($serie_id, $serie_title, $serie_thumb, $serie_type, $serie_N);
+        $serie_query->bind_result($serie_id, $serie_title, $serie_editor, $serie_type, $serie_N);
         $serie_query->fetch();
         $serie_query->close();
         if($tome == 0 || $tome == "0") {

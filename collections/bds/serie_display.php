@@ -34,9 +34,10 @@ function getSerieDetails($serieId) {
 
     $result = new stdClass();
     $result->serie = "";
+    $result->editor = "";
     $result->nAlbums = NULL;
 
-    $findserie = $page->bobbyTable->idManage("SELECT `name`, `Nalbums` FROM `bd_series` WHERE `id` = ?", $serieId);
+    $findserie = $page->bobbyTable->idManage("SELECT `name`, `editor`, `Nalbums` FROM `bd_series` WHERE `id` = ?", $serieId);
     $findserie->store_result();
     if($findserie->num_rows == 0) {
         $findserie->close();
@@ -44,7 +45,7 @@ function getSerieDetails($serieId) {
         return;
     }
 
-    $findserie->bind_result($result->serie, $result->nAlbums);
+    $findserie->bind_result($result->serie, $result->editor, $result->nAlbums);
     $findserie->fetch();
     $findserie->close();
 
@@ -90,11 +91,11 @@ function rHead($isGI, $serieId) {
         return $body;
     }
 
-    $body .= "<br />\n";
+    $body .= "<br>\n";
     if($serieId > 1) {
-        $body .= $page->bodyBuilder->anchor("serie_insert.php?id=$serieId", "Edit BD serie") . "<br />\n";
+        $body .= $page->bodyBuilder->anchor("serie_insert.php?id=$serieId", "Edit BD serie") . "<br>\n";
     }
-    $body .= $page->bodyBuilder->anchor("insert.php?serie_id=$serieId", "Add a BD") . "<br />\n";
+    $body .= $page->bodyBuilder->anchor("insert.php?serie_id=$serieId", "Add a BD") . "<br>\n";
     $body .= $page->bodyBuilder->anchor("serie_insert.php", "Add a BD serie");
 
     return $body;
@@ -111,9 +112,14 @@ function getBody($serieId) {
     // Find serie
     $serieDetails = getSerieDetails($serieId);
     $serie = $serieDetails->serie;
+    $editor = $serieDetails->editor;
     $nAlbums = $serieDetails->nAlbums;
 
-    $pageTitle = getPageTitle($serie);
+    $title = $serie;
+    if($editor != "") {
+        $title .= " [$editor]";
+    }
+    $pageTitle = getPageTitle($title);
 
     $body .= $page->bodyBuilder->goHome("..");
     $body .= $page->htmlHelper->setTitle($pageTitle);

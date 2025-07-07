@@ -15,15 +15,13 @@ global $theNumberInput;
 // if get_id is given, edit serie id
 // else insert new serie
 
-// if update
-// insert/update info, move thumb file to (bds/)thumbs/[serie name]_[serie id].[ext]
 
 /*** default empty values ***/
 $id = 0;
-$thumb = "";
 $name = "";
+$editor = "";
 $type = "BD";
-$N = "";
+$nAlbums = "";
 
 
 if(isset($_POST["erase"])) {
@@ -45,16 +43,16 @@ if(isset($_POST["erase"])) {
         $id = $_POST["id"];
     }
     $name = $page->dbText->input2sql($_POST["name"]);
-    $thumb = "";
+    $editor = $page->dbText->input2sql($_POST["editor"]);
     $type = $_POST["type"];
     $Nalbums = $page->dbText->input2sql($_POST["Nalbums"]);
     $query = "";
     if($id > 0) {
-        $query = $page->bobbyTable->queryPrepare("UPDATE `{$page->bobbyTable->dbName}` . `bd_series` SET `name` = ?, `thumb` = ?, `type` = ?, `Nalbums` = ? WHERE `bd_series` . `id` = ? LIMIT 1;");
-        $query->bind_param("sssii", $name, $thumb, $type, $Nalbums, $id);
+        $query = $page->bobbyTable->queryPrepare("UPDATE `{$page->bobbyTable->dbName}` . `bd_series` SET `name` = ?, `editor` = ?, `type` = ?, `Nalbums` = ? WHERE `bd_series` . `id` = ? LIMIT 1;");
+        $query->bind_param("sssii", $name, $editor, $type, $Nalbums, $id);
     } else {
-        $query = $page->bobbyTable->queryPrepare("INSERT INTO `{$page->bobbyTable->dbName}` . `bd_series` (`id`, `name`, `thumb`, `type`, `Nalbums`) VALUES(NULL, ?, ?, ?, ?);");
-        $query->bind_param("sssi", $name, $thumb, $type, $Nalbums);
+        $query = $page->bobbyTable->queryPrepare("INSERT INTO `{$page->bobbyTable->dbName}` . `bd_series` (`id`, `name`, `editor`, `type`, `Nalbums`) VALUES(NULL, ?, ?, ?, ?);");
+        $query->bind_param("sssi", $name, $editor, $type, $Nalbums);
     }
     $page->bobbyTable->executeManage($query);
     //
@@ -84,10 +82,10 @@ if(isset($_GET["id"])) {
     $serie = $page->bobbyTable->idManage("SELECT * FROM `bd_series` WHERE `id` = ?", $id);
     $serie->store_result();
     if($serie->num_rows > 0) {
-        $serie->bind_result($id, $name, $thumb, $type, $N);
+        $serie->bind_result($id, $name, $editor, $type, $nAlbums);
         $serie->fetch();
-        if($N == 0) {
-            $N = "";
+        if($nAlbums == 0) {
+            $nAlbums = "";
         }
 
         $page_title = "Edit BD serie \"$name\"";
@@ -105,17 +103,22 @@ $body .= $page->formHelper->tag();
     if($id > 0) {
         $body .= $theHiddenInput->get("id", $id);
     }
-
+//
     // Serie name
     $nameAttr = new FieldAttributes(true, true);
     $nameAttr->size = 50;
     $body .= $theTextInput->get("name", $name, "Name", NULL, $nameAttr);
 //
+    // Serie editor
+    $editorAttr = new FieldAttributes();
+    $editorAttr->size = 50;
+    $body .= $theTextInput->get("editor", $editor, "Editeur", NULL, $editorAttr);
+//
     // type
     $types = $page->utilsHelper->arraySequential2Associative(array("BD", "manga", "comics", "other"));
     $body .= $theSelectInput->get("type", $types, $type, "Type");
 
-$body .= $theNumberInput->get("Nalbums", $N, "Number of albums");
+$body .= $theNumberInput->get("Nalbums", $nAlbums, "Number of albums");
 
 
 // Buttons
