@@ -9,9 +9,9 @@ function commonPreparations($page) {
     $skybriefing .= " - " . $page->bodyBuilder->anchor("https://www.skybriefing.com/portal/fr/evfr-manual-gen", "eVFR manual");
 
     if($page->loginHelper->userIsAdmin()) {
-        $smallTt = "<tt class=\"smaller\">";
+        $smallTt = "<span class=\"tt smaller\">";
         foreach($page->miscInit->fly->skybriefing as $email => $pw) {
-            $skybriefing .= "<br />{$smallTt}{$email}</tt>&nbsp;-&nbsp;{$smallTt}{$pw}</tt>\n";
+            $skybriefing .= "<br>{$smallTt}{$email}</span>&nbsp;-&nbsp;{$smallTt}{$pw}</span>\n";
         }
     }
     $skybriefing .= "</li>\n";

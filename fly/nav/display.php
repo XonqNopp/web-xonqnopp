@@ -2014,6 +2014,7 @@ class Aircraft {
                 }
 
                 $htmlFuelTanks .= $page->butler->tableClose();
+                $htmlFuelTanks .= "</div><!-- fueltanks -->\n";
 
                 return $htmlFuelTanks;
             }

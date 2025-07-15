@@ -10,7 +10,7 @@ $page->cssHelper->push("index");
 
 $body = $page->bodyBuilder->goHome("..");
 $body .= $page->htmlHelper->setTitle("Les &eacute;l&eacute;phants");
-$page->htmlHelper->hotBooty();
+$page->htmlHelper->hotBooty("fr");
 
     /*** contents ***/
     $querries = array(

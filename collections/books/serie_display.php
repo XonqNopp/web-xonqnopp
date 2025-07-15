@@ -35,7 +35,7 @@ $body .= "<div class=\"rhead\">\n";
 $body .= $page->bodyBuilder->anchor("../missings/index.php?view=books", "Missing books");
 if($page->loginHelper->userIsAdmin()) {
     // Propose to add a new if authorized
-    $body .= "<br />\n";
+    $body .= "<br>\n";
     $body .= $page->bodyBuilder->anchor("insert.php", "New book");
 }
 $body .= "</div>\n";

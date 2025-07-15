@@ -23,7 +23,7 @@ $body = $page->bodyBuilder->goHome("..");
 
 // Set title and hot booty
 $body .= $page->htmlHelper->setTitle("Calculateur d'hypotheque");  // before HotBooty
-$page->htmlHelper->hotBooty();
+$page->htmlHelper->hotBooty("fr");
 
 
     // Data
@@ -57,7 +57,6 @@ $body .= "<p><b>Note:</b> les revenus et charges sont annuels.</p>\n";
     // buttons
     $body .= $page->formHelper->subButt(False, NULL, "file", true, "Calculer");
 
-    $body .= "</form>\n";
     $body .= "</div>\n";
 
 if ($revenu == 0 && $cash == 0 && $lpp == 0) {

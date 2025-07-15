@@ -14,9 +14,10 @@ $page->cssHelper->dirUpWing();
 $aref = "http://www.aerodrome-ecuvillens.ch/index.php?page=meteo_webcam.htm";
 $gmaps = "http://maps.google.ch/?f=d&amp;daddr=aerodrome+ecuvillens";
 $HourlyRate = 150;
-$IBAN = "<tt>CH38&nbsp;0027&nbsp;2272&nbsp;3046&nbsp;8440&nbsp;R</tt>";
+$IBAN = "<span class=\"tt\">CH38&nbsp;0027&nbsp;2272&nbsp;3046&nbsp;8440&nbsp;R</span>";
 $albumURL = "https://en.wikipedia.org/wiki/User:Xonqnopp/Photos/Flights";
-$ig = "instagram " . $page->bodyBuilder->anchor("https://www.instagram.com/xonqnopp/", "<tt>@xonqnopp</tt>");
+$instagram = "xonqnopp";
+$ig = "instagram " . $page->bodyBuilder->anchor("https://www.instagram.com/$instagram/", "<span class=\"tt\">@$instagram</span>", "@$instagram");
 
 $contents = "";
 
@@ -42,12 +43,12 @@ if($page->logopedist->checkSessionLang("francais")) {
         $contents .= $page->bodyBuilder->anchor($gmaps, "Ecuvillens") . " (PAS Gruy&egrave;re/Epagny!)\n";
         $contents .= "ou Sion.\n";
         $contents .= "<li>M&eacute;t&eacute;o est d&eacute;t&eacute;rminante donc d&eacute;cision de partir le jour m&ecirc;me.</li>\n";
-        $contents .= "<li>CHF&nbsp;$HourlyRate.-/h par personne (&agrave; r&eacute;gler apr&egrave;s le vol):</li>\n";
+        $contents .= "<li>CHF&nbsp;$HourlyRate.-/h par personne (&agrave; r&eacute;gler apr&egrave;s le vol):\n";
         $contents .= "<ul>\n";
         $contents .= "<li>Twint</li>\n";
         $contents .= "<li>IBAN $IBAN</li>\n";
         $contents .= "<li>si n&eacute;cessaire cash mais je pr&eacute;f&egrave;re pas</li>\n";
-        $contents .= "</ul>\n";
+        $contents .= "</ul></li>\n";
         $contents .= "</ul>\n";
         $contents .= "</div>\n";
 
@@ -120,12 +121,12 @@ if($page->logopedist->checkSessionLang("francais")) {
         $contents .= $page->bodyBuilder->anchor($gmaps, "Ecuvillens") . " (NOT Gruy&egrave;re/Epagny!)\n";
         $contents .= "or Sion.\n";
         $contents .= "<li>Weather is most important decision factor thus decision is taken only at the departure time.</li>\n";
-        $contents .= "<li>CHF&nbsp;$HourlyRate.-/h per person (please pay after the flight)</li>\n";
+        $contents .= "<li>CHF&nbsp;$HourlyRate.-/h per person (please pay after the flight)\n";
         $contents .= "<ul>\n";
         $contents .= "<li>Twint</li>\n";
         $contents .= "<li>IBAN $IBAN</li>\n";
         $contents .= "<li>if necessary cash possible but I'd rather not</li>\n";
-        $contents .= "</ul>\n";
+        $contents .= "</ul></li>\n";
         $contents .= "</ul>\n";
         $contents .= "</div>\n";
 

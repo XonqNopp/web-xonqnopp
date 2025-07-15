@@ -2,7 +2,7 @@
 require_once("functions/page_helper.php");
 $funcpath = "functions";
 $page = new PhPage();
-$page->logger->levelUp(6);
+//$page->logger->levelUp(6);
 
 
 $redirect = "index.php";
@@ -20,7 +20,7 @@ $page->htmlHelper->hotBooty();
 $body .= "<form action=\"$redirect\" method=\"post\">\n";
 
 $body .= "<div style=\"padding: 3mm;\">";
-$body .= "Password&nbsp;: <input type=\"password\" name=\"loginPW\" value=\"\" autofocus=\"autofocus\"/>";
+$body .= "Password&nbsp;: <input type=\"password\" name=\"loginPW\" value=\"\" autofocus=\"autofocus\">";
 $body .= "</div>\n";
 
 $body .= "<div id=\"mew\">\n";
@@ -31,7 +31,7 @@ $body .= "</select>\n";
 $body .= "</div><!-- mew -->\n";
 
 $body .= "<div style=\"padding: 3mm;\">";
-$body .= "<input type=\"submit\" name=\"enter\" value=\"Enter\" />";
+$body .= "<input type=\"submit\" name=\"enter\" value=\"Enter\">";
 $body .= "</div>\n";
 
 $body .= "</form>\n";

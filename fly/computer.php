@@ -201,7 +201,6 @@ $embedderHdg = new FieldEmbedder("MC", "deg");
     $body .= $theNumberInput->get("temperature[]", $temperature, NULL, NULL, $embedderTemperature);
 //
     // windHeading
-    $attrHdg->hasAutofocus = true;
     $embedderHdg->title = "wind hdg";
     $body .= $theNumberInput->get("windHeading[]", $windHeading, NULL, $attrHdg, $embedderHdg);
 //

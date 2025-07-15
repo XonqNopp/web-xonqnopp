@@ -161,7 +161,9 @@ $body .= $theSelectInput->get("fav", $favs, $fav, "Favorite");
             $values[] = $dog;
         }
     }
-    $body .= $theCheckboxInput->get("cats", $cats, $values, "Categories", true);
+    $catsEmbedder = new FieldEmbedder();
+    $catsEmbedder->hasLabel = false;
+    $body .= $theCheckboxInput->get("cats", $cats, $values, "Categories", true, true, NULL, $catsEmbedder);
 
 // buttons
 $cancelUrl = null;

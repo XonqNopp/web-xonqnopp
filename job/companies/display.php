@@ -81,8 +81,8 @@ $body .= "<div class=\"chead\">\n";
 $body .= "</div>\n";
 $body .= "<div class=\"rhead\">\n";
 if($userIsAdmin) {
-    $body .= $page->bodyBuilder->anchor("insert.php?id=$companyId", "edit") . "<br />\n";
-    $body .= $page->bodyBuilder->anchor("insert.php", "new") . "<br />\n";
+    $body .= $page->bodyBuilder->anchor("insert.php?id=$companyId", "edit") . "<br>\n";
+    $body .= $page->bodyBuilder->anchor("insert.php", "new") . "<br>\n";
     $body .= $page->bodyBuilder->anchor("interactions.php", "interactions");
 }
 $body .= "</div>\n";
@@ -155,7 +155,7 @@ $body .= $physicist == "" ? "" : "<li><b>What would a physicist do by them:</b> 
 if($contact != "") {
     $li = preg_replace("/ /", "+", $contact);
     $li = $page->bodyBuilder->anchor("https://www.linkedin.com/vsearch/p?type=all&amp;keywords=$li&amp;f_N=F,S");
-    $contact = "$li$contact</a>";
+    $contact = "$li$contact";
     $body .= "<li><b>Contact person inside:</b> $contact</li>\n";
 }
 $body .= $HR == "" ? "" : "<li><b>HR person:</b> $HR</li>\n";

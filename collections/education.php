@@ -16,7 +16,7 @@ $body = $page->bodyBuilder->goHome("..");
 
 // Set title and hot booty
 $body .= $page->htmlHelper->setTitle("&Eacute;ducation positive");// before HotBooty
-$page->htmlHelper->hotBooty();
+$page->htmlHelper->hotBooty("fr");
 
 $body .= "<p>Petit r&eacute;sum&eacute; <b>subjectif</b> de:\n";
 $body .= "<i>Mon p'tit cahier d'&Eacute;ducation positive</i>,\n";
@@ -36,7 +36,7 @@ $body .= "<!-- H3 Communication -->\n";
 $body .= "<h3>Communication</h3>\n";
 $body .= "<div><ol>\n";
     $body .= "<li>On communique <b>toujours</b>! 7% verbal, 38% para-verbal, 55% non-verbal.</li>\n";
-    $body .= "<li>Chaque personne a <b>sa propre</b> vision du monde:<br/>\n";
+    $body .= "<li>Chaque personne a <b>sa propre</b> vision du monde:<br>\n";
     $body .= "soi - humeur - croyances - valeurs - &eacute;ducation - culture - ... - monde</li>\n";
     $body .= "<li>Chaque comportement a une intention positive</li>\n";
 $body .= "</ol></div>\n";
@@ -172,14 +172,14 @@ $body .= "</div><!-- tablebottom -->\n";
 $body .= "<!-- H3 Cles de l'educ -->\n";
 $body .= "<h3>Cl&eacute;s de l'&eacute;ducation positive</h3>\n";
 $body .= "<div><ul>\n";
-    $body .= "<li>&ecirc;tre  l'&eacute;coute des &eacute;motions (les siennes avant celles des autres), savoir les exprimer</li>\n";
+    $body .= "<li>&ecirc;tre &agrave; l'&eacute;coute des &eacute;motions (les siennes avant celles des autres), savoir les exprimer</li>\n";
 
     $body .= "<li>beaucoup d'amour:\n";
     $body .= "<i>c'est lorsqu'ils semblent le m&eacute;riter le moins que nos enfants ont le plus besoin d'amour et d'attention.</i>\n";
     $body .= "(Aletha Solter)\n";
-    $body .= "<div class=\"framed\">\n";
-        $body .= "C&acirc;lins, bisous etc. sont du carburant, pas une r&eacute;compense!</li>\n";
-    $body .= "</div>\n";
+    $body .= "<li class=\"framed\">\n";
+        $body .= "C&acirc;lins, bisous etc. sont du carburant, pas une r&eacute;compense!\n";
+    $body .= "</li>\n";
 
     $body .= "<li>Ne pas tout accepter: une main ferme et tendre dans un gant de velour.\n";
     $body .= "Donner du sens aux r&egrave;gles par un recadrage bienveillant mais ferme.</li>\n";
@@ -376,16 +376,18 @@ $body .= "<div><ul>\n";
     $body .= "<li>du papier &agrave; froisser</li>\n";
     $body .= "<li>gribouiller avec un gros feutre ou d&eacute;crire la col&egrave;re puis chiffoner et jeter le papier</li>\n";
     $body .= "<li>ballon de baudruche: on souffle la col&egrave;re dedans et on vide par la fen&ecirc;tre</li>\n";
-    $body .= "<li id=\"valises\">valises &agrave; contrari&eacute;t&eacute; (sophrologie):</li>\n";
+    $body .= "<li id=\"valises\">valises &agrave; contrari&eacute;t&eacute; (sophrologie):\n";
     $body .= "<ul>\n";
         $body .= "<li>on se met debout</li>\n";
         $body .= "<li>on imagine des valises (forme, couleur...)</li>\n";
-    $body .= "<li>on met dans les valises les choses dont l'enfant veut s'all&eacute;ger, cec qui le met en col&egrave;re\n";
+
+        $body .= "<li>on met dans les valises les choses dont l'enfant veut s'all&eacute;ger, cec qui le met en col&egrave;re\n";
         $body .= "(interdiction de mettre des personnes, plut&ocirc;t des attitudes, des ressentis...)</li>\n";
+
         $body .= "<li>sur une longue inspiration, on prend les valises, on l&egrave;ve les &eacute;paules</li>\n";
         $body .= "<li>on bloque la respiration, on baisse et rel&egrave;ve les &eacute;paules de 3 &agrave; 5 fois</li>\n";
         $body .= "<li>sur une expiration tonique par la bouche, on jette les valises par terre</li>\n";
-    $body .= "</ul>\n";
+    $body .= "</ul></li>\n";
     $body .= "<li>respirations synchronis&eacute;es (sophrologie): on prend une grande inspiration,\n";
     $body .= "on bloque et on contracte le plus de muscles possibles (visage, &eacute;paules, dos, torse, bras, poings, bas du\n";
     $body .= "corps),\n";
@@ -441,14 +443,14 @@ $body .= "<!-- H5 En cas de tristesse -->\n";
 $body .= "<h5>En cas de tristesse</h5>\n";
 $body .= "<div><ul>\n";
     $body .= "<li>Le circuit &eacute;nerg&eacute;tique: &agrave; faire 3 fois, exercer des pressions douces de quelques secondes sur\n";
-    $body .= "(dans l'ordre):</li>\n";
+    $body .= "(dans l'ordre):\n";
     $body .= "<ul>\n";
         $body .= "<li>la base ext&eacute;rieure de l'ongle du gros orteil droite</li>\n";
         $body .= "<li>en posant la main sur l'&eacute;paule gauche, au niveau du majeur</li>\n";
         $body .= "<li>l'int&eacute;rieur de l'avant-bras droit &agrave; 3 largeurs de doigts du poignet</li>\n";
         $body .= "<li>l'articulation pouce-index gauche</li>\n";
         $body .= "<li>sur le thorax &agrave; mi-chemin des mamelons</li>\n";
-    $body .= "</ul>\n";
+    $body .= "</ul></li>\n";
     $body .= "<li>Cahier positif: chaque soir, &eacute;crire/dessiner 3 &agrave; 5 choses positives de la journ&eacute;e. Cela aide\n";
     $body .= "&agrave; ouvrir le regard sur le positif</li>\n";
     $body .= "<li>La danse de la bougie: faire danser la flamme avec le souffle sans l'&eacute;teindre; &eacute;loigner la bougie\n";
@@ -506,7 +508,7 @@ $body .= "<div><ul>\n";
         $body .= "<li>Quelles parties de ton corps bougent quand tu respires?</li>\n";
         $body .= "<li>Ressens-tu une &eacute;motion particuli&egrave;re?</li>\n";
     $body .= "</ul>\n";
-    $body .= "(Faire une pause apr&egrave;s chaque question.)<br/>\n";
+    $body .= "(Faire une pause apr&egrave;s chaque question.)<br>\n";
     $body .= "Si on pratique cela r&eacute;guli&egrave;rement, &ccedil;a nous apprend &agrave; se connecter &agrave; nos ressentis\n";
     $body .= "et &agrave; nos besoins.\n";
     $body .= "C'est donc une aide pour revenir &agrave; soi et &agrave; ses propres besoins plut&ocirc;t que de se comparer.</li>\n";
@@ -759,9 +761,9 @@ $body .= "<div><ul>\n";
     $body .= "<li>&ecirc;tre affirmatif plut&ocirc;t que n&agrave;gatif</li>\n";
     $body .= "<li>proposer des choix/alternatives plut&ocirc;t qu'ordonner</li>\n";
     $body .= "<li>passer du temps de qualit&eacute; avec l'enfant</li>\n";
-    $body .= "<li>l'humour et le jeu permettent d'entrer dans l'univers de l'enfant:<br/>\n";
+    $body .= "<li>l'humour et le jeu permettent d'entrer dans l'univers de l'enfant:<br>\n";
     $body .= "\"Donner une tonalit&eacute; ludique &agrave; nos demandes invite au rire, &agrave; la l&eacute;gert&eacute;, et bien\n";
-    $body .= "souvent &agrave; l'ex&eacute;cution de la t&acirc;che demand&eacute;e.\"<br/>\n";
+    $body .= "souvent &agrave; l'ex&eacute;cution de la t&acirc;che demand&eacute;e.\"<br>\n";
     $body .= "Parler avec une dr&ocirc;le de voix, une langue imaginaire, en faisant l'idiot...\n";
     $body .= "Pas &agrave; chaque fois, mais briser la routine &agrave; l'aide du jeu pla&icirc;t &eacute;norm&eacute;ment aux\n";
     $body .= "enfants</li>\n";
@@ -778,14 +780,13 @@ $body .= "<p>Lorsque des conflits arrivent:</p>\n";
 $body .= "<div><ul>\n";
     $body .= "<li>Si besoin, s'isoler</li>\n";
     $body .= "<li>Faire de grandes et lentes respirations</li>\n";
-    $body .= "<li>Quand l'&eacute;motion est redevenue g&eacute;rable, se poser des questions:</li>\n";
+    $body .= "<li>Quand l'&eacute;motion est redevenue g&eacute;rable, se poser des questions:\n";
     $body .= "<ul>\n";
     $body .= "<li>qu'est-ce qui est si important pour moi dans cette situation? Clarifier les valeurs/besoins frustr&eacute;s</li>\n";
     $body .= "<li>quelle comp&eacute;tence manque &agrave; mon enfant pour changer de comportement? Gestion de la col&egrave;re?\n";
         $body .= "Li&eacute; &agrave; l'&acirc;ge?</li>\n";
-    $body .= "</ul>\n";
+    $body .= "</ul></li>\n";
     $body .= "<li>En fonction des r&eacute;ponses aux pr&eacute;c&eacute;dentes questions, pr&eacute;parer son i-message</li>\n";
-    $body .= "</ul>\n";
 $body .= "</ul></div>\n";
 
 $body .= "<p>Au quotidien, pour avoir une bonne relation avec l'enfant:</p>\n";
@@ -806,25 +807,25 @@ $body .= "<h3>Mettre en place l'&eacute;ducation positive en 4 semaines</h3>\n";
 $body .= "<!-- H4 Semaine 1 -->\n";
 $body .= "<h4>Semaine 1: observations</h4>\n";
 $body .= "<div class=\"checkbox\"><ul>\n";
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;clarifier les capacit&eacute;s du cerveau de l'enfant</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;clarifier les capacit&eacute;s du cerveau de l'enfant</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;observer mon comportement quand l'enfant exprime ses &eacute;motions;\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;observer mon comportement quand l'enfant exprime ses &eacute;motions;\n";
     $body .= "ai-je tendance &agrave; essayer de le calmer ou &agrave; accueillir son &eacute;motion? Suis-je &agrave; l'aise avec\n";
     $body .= "toutes ses &eacute;motions ou certaines g&eacute;n&egrave;rent plus de r&eacute;actionnel?</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;combien de temps de qualit&eacute; en semaine et le week-end est-ce que\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;combien de temps de qualit&eacute; en semaine et le week-end est-ce que\n";
     $body .= "je passe chaque jour avec les enfants?\n";
     $body .= "Est-ce que je fais des jeux avec eux?</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;s'il y a un conflit dans les besoins adulte-enfant, que se passe-t-il?\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;s'il y a un conflit dans les besoins adulte-enfant, que se passe-t-il?\n";
     $body .= "Dispute, punition...?</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;combien de temps je m'accorde &agrave; moi-m&ecirc;me chaque jour?\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;combien de temps je m'accorde &agrave; moi-m&ecirc;me chaque jour?\n";
     $body .= "Y aurait-il une activit&eacute; que je voudrais reprendre?</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;comment, quand, o&ugrave; et avec qui puis-je me d&eacute;tendre?</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;comment, quand, o&ugrave; et avec qui puis-je me d&eacute;tendre?</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;suis-je souvent agac&eacute; ou en col&egrave;re dans ma vie\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;suis-je souvent agac&eacute; ou en col&egrave;re dans ma vie\n";
     $body .= "familiale?</li>\n";
 $body .= "</ul></div>\n";
 
@@ -832,21 +833,21 @@ $body .= "</ul></div>\n";
 $body .= "<!-- H4 Semaine 2 -->\n";
 $body .= "<h4>Semaine 2: &eacute;coute</h4>\n";
 $body .= "<div class=\"checkbox\"><ul>\n";
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;durant un jour, lorsque l'enfant a un probl&egrave;me, l'&eacute;couter\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;durant un jour, lorsque l'enfant a un probl&egrave;me, l'&eacute;couter\n";
     $body .= "sans l'interrompre avec contact visuels et \"accus&eacute;s de r&eacute;ception\"</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;les jours suivants, quand l'enfant est d&eacute;bord&eacute;\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;les jours suivants, quand l'enfant est d&eacute;bord&eacute;\n";
     $body .= "&eacute;motionnellement, reformuler ce qu'il ressent</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;avoir beaucoup de contacts physiques (jeux, c&acirc;lins)</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;avoir beaucoup de contacts physiques (jeux, c&acirc;lins)</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;prendre conscience des situations qui me font r&eacute;agir\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;prendre conscience des situations qui me font r&eacute;agir\n";
     $body .= "&eacute;motionnellement en tenant compte de mes r&eacute;actions corporelles et de mes pens&eacute;es.</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;faire chaque jour quelque chose rien que pour moi (m&ecirc;me si c'est\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;faire chaque jour quelque chose rien que pour moi (m&ecirc;me si c'est\n";
     $body .= "seulement quelques minutes)</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;&ecirc;tre attentif &agrave; mes besoins de sommeil, de repos\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;&ecirc;tre attentif &agrave; mes besoins de sommeil, de repos\n";
      $body .= "et de partage</li>\n";
 $body .= "</ul></div>\n";
 
@@ -854,41 +855,41 @@ $body .= "</ul></div>\n";
 $body .= "<!-- H4 Semaine 3 -->\n";
 $body .= "<h4>Semaine 3: r&egrave;gles</h4>\n";
 $body .= "<div class=\"checkbox\"><ul>\n";
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;faire le point sur les r&egrave;gles de vie que l'on souhaite\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;faire le point sur les r&egrave;gles de vie que l'on souhaite\n";
     $body .= "transmettre aux enfants</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;si les enfants sont assez matures, faire un conseil de famille avec eux\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;si les enfants sont assez matures, faire un conseil de famille avec eux\n";
     $body .= "pour poser et discuter les r&egrave;gles ensemble</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;si les enfants sont trop jeunes, lorsque la situation se\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;si les enfants sont trop jeunes, lorsque la situation se\n";
     $body .= "pr&eacute;sente, formuler la r&egrave;gle (une &agrave; la fois)</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;quand le comportement de l'enfant est inacceptable, utiliser le\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;quand le comportement de l'enfant est inacceptable, utiliser le\n";
     $body .= "i-message pour le lui communiquer</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;valoriser les comportement souhaitables en d&eacute;crivant\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;valoriser les comportement souhaitables en d&eacute;crivant\n";
     $body .= "concr&egrave;tement et en exprimant mes &eacute;motions positives</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;cr&eacute;er des moments d'attention exclusive pour l'enfant</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;cr&eacute;er des moments d'attention exclusive pour l'enfant</li>\n";
 $body .= "</ul></div>\n";
 
 
 $body .= "<!-- H4 Semaine 4 -->\n";
 $body .= "<h4>Semaine 4: coop&eacute;ration</h4>\n";
 $body .= "<div class=\"checkbox\"><ul>\n";
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;utiliser des consignes affirmatives, &eacute;viter les \"ne pas\"</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;utiliser des consignes affirmatives, &eacute;viter les \"ne pas\"</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;proposer des choix/alternatives plut&ocirc;t que d'imposer</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;proposer des choix/alternatives plut&ocirc;t que d'imposer</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;utiliser l'humour, l'imaginaire, le jeu pour entrer en relation avec\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;utiliser l'humour, l'imaginaire, le jeu pour entrer en relation avec\n";
     $body .= "l'enfant</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;s'il refuse de coop&eacute;rer, &eacute;couter son probl&egrave;me</li>\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;s'il refuse de coop&eacute;rer, &eacute;couter son probl&egrave;me</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;pour la routine quotidienne, faire un tableau ou une affiche avec des\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;pour la routine quotidienne, faire un tableau ou une affiche avec des\n";
     $body .= "mots ou des pictogrammes</li>\n";
 
-    $body .= "<li><input type=\"checkbox\" name=\"e[]\" />&nbsp;si la non-coop&eacute;ration de l'enfant est en conflit avec mes\n";
+    $body .= "<li><input type=\"checkbox\" name=\"e[]\">&nbsp;si la non-coop&eacute;ration de l'enfant est en conflit avec mes\n";
     $body .= "besoins, utiliser le i-message pour le lui communiquer</li>\n";
 $body .= "</ul></div>\n";
 

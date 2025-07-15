@@ -65,7 +65,7 @@ $body .= $page->waitress->rowOpen();
     $body .= "- " . $page->bodyBuilder->anchor("fly/nav/index.php", "nav");
     $body .= "- " . $page->bodyBuilder->anchor("fly/pdf/", "pdf");
     $body .= "- " . $page->bodyBuilder->anchor("fly/lsge.php", "LSGE");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
+    //$body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
     $body .= "</li>\n";
 
     $body .= "<li>\n";

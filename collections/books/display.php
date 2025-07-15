@@ -62,9 +62,9 @@ if($query->num_rows == 0) {
     // Search
     // Propose to add a new if authorized
     if($page->loginHelper->userIsAdmin()) {
-        $body .= "<br />\n";
+        $body .= "<br>\n";
         // Add
-        $body .= $page->bodyBuilder->anchor("insert.php", "New book") . "<br />\n";
+        $body .= $page->bodyBuilder->anchor("insert.php", "New book") . "<br>\n";
         // Edit
         //$body .= $page->bodyBuilder->anchor("insert.php", "edit");
     }

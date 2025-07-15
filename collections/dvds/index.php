@@ -41,7 +41,7 @@ $body .= "</div>\n";
 $body .= "<div class=\"rhead\">\n";
 $body .= $page->bodyBuilder->anchor("../missings/index.php?view=dvds", "Missing DVDs");
 if($GI) {
-    $body .= "<br />\n";
+    $body .= "<br>\n";
     // Propose to add a new if authorized
     $body .= $page->bodyBuilder->anchor("insert.php", "New DVD");
 }

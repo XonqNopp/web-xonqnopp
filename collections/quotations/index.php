@@ -137,7 +137,7 @@ $body .= "<div id=\"navigation\">\n";
     $body .= "<div class=\"rhead\">\n";
     if($userIsAdmin) {
         $body .= $page->bodyBuilder->anchor("insert.php", "New quote", NULL, "blue");
-        $body .= "<br />\n";
+        $body .= "<br>\n";
     }
 
     if(isset($_GET["random"]) || isset($_GET["search"]) || isset($_POST["search"])) {
@@ -147,7 +147,7 @@ $body .= "<div id=\"navigation\">\n";
         // random
         $body .= $page->bodyBuilder->anchor("index.php?random", "hasard", NULL, "blue");
 
-    $body .= "<br />\n";
+    $body .= "<br>\n";
 
         // order
         $sorting = "";
@@ -183,17 +183,17 @@ $body .= "<div id=\"navigation\">\n";
         $body .= "<option value=\"quote\"" . ($sorting == "quote" ? $sl : "") . ">Citation</option>\n";
         $body .= "<option value=\"date\"" . ($sorting == "date" ? $sl : "") . ">Date d'ajout</option>\n";
         $body .= "</select>\n";
-        $body .= "<br />\n";
+        $body .= "<br>\n";
 
         $body .= "<input type=\"radio\" id=\"o_asc\" name=\"sc\" value=\"asc\"";
         if($ascDesc == "asc" || $ascDesc == "") {
             $body .= $ch;
         }
-        $body .= " /><label for=\"o_asc\">&nbsp;croissant</label><br />\n";
+        $body .= "><label for=\"o_asc\">&nbsp;croissant</label><br>\n";
         $body .= "<input type=\"radio\" id=\"o_dsc\" name=\"sc\" value=\"dsc\"" . ($ascDesc == "dsc" ? $ch : "");
-        $body .= " /><label for=\"o_dsc\">&nbsp;d&eacute;croissant</label><br />\n";
+        $body .= "><label for=\"o_dsc\">&nbsp;d&eacute;croissant</label><br>\n";
 
-        $body .= "<input type=\"submit\" value=\"Trier\" />\n";
+        $body .= "<input type=\"submit\" value=\"Trier\">\n";
 
         $body .= "</div><!-- sort -->\n";
 
@@ -208,20 +208,20 @@ $body .= "</div><!-- navigation -->\n";
         $checked = " checked=\"checked\"";
 
         $keyword = isset($_POST["keyword"]) ? $_POST["keyword"] : "";
-        $body .= "<input type=\"text\" name=\"keyword\" value=\"$keyword\" size=\"13\" /><br />\n";
+        $body .= "<input type=\"text\" name=\"keyword\" value=\"$keyword\" size=\"13\"><br>\n";
         $body .= "<input id=\"s_fav\" type=\"checkbox\" name=\"cats[]\" value=\"fav\"";
         if(in_array("fav", $_POST["cats"])) {
             $body .= $checked;
         }
-        $body .= " /><label for=\"s_fav\">Favourite</label><br />\n";
+        $body .= "><label for=\"s_fav\">Favourite</label><br>\n";
         foreach($kCategories as $dog) {
             $body .= "<input id=\"s_$dog\" type=\"checkbox\" name=\"cats[]\" value=\"$dog\"";
             if(in_array($dog, $_POST["cats"])) {
                 $body .= $checked;
             }
-            $body .= " /><label for=\"s_$dog\">$dog</label><br />\n";
+            $body .= "><label for=\"s_$dog\">$dog</label><br>\n";
         }
-        $body .= "<input type=\"submit\" name=\"search\" value=\"search\" />\n";
+        $body .= "<input type=\"submit\" name=\"search\" value=\"search\">\n";
         $body .= "</div>\n";
     }
 
@@ -271,7 +271,7 @@ function getBody($result) {
         }
 
         if($authorPrevious != $authorCurrent) {
-            $colspan = $userIsAdmin ? 3 : 1;
+            $colspan = $userIsAdmin ? 2 : 1;
             $body .= $page->butler->rowOpen();
             $body .= $page->butler->headerCellOpen(array("colspan" => $colspan));
 
@@ -303,7 +303,7 @@ function getBody($result) {
         if($userIsAdmin) {
             $body .= $page->butler->cellOpen(array("class" => "editbutton"));
             $body .= $page->bodyBuilder->anchor("insert.php?id=$quoteId", "edit");
-            $body .= "<br />\n";
+            $body .= "<br>\n";
             $body .= $page->bodyBuilder->anchor(
                 "index.php?NewFav=" . ($fav ? "-" : "") . "$quoteId#c$quoteId",
                 ($fav ? "un" : "") . "favorize"

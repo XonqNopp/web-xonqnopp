@@ -320,9 +320,6 @@ $page->htmlHelper->hotBooty();
     $disabledAttr = new FieldAttributes();
     $disabledAttr->isDisabled = $disabled;
 
-    $reqAttr = new FieldAttributes(true);
-    $reqAttr->isDisabled = $disabled;
-
     $noDivEmptyEmbedder = new FieldEmbedder();
     $noDivEmptyEmbedder->hasDiv = false;
 
@@ -346,8 +343,11 @@ $page->htmlHelper->hotBooty();
                 );
             //
                 // ID
+                $idAttr = new FieldAttributes(true);
+                $idAttr->isDisabled = $disabled;
+
                 $body .= $page->waitress->cell(
-                    $theTextInput->get("PlaneID", $sqlData, "ID", NULL, $reqAttr)
+                    $theTextInput->get("PlaneID", $sqlData, "ID", NULL, $idAttr)
                 );
 
             $body .= $page->waitress->rowClose();
@@ -411,13 +411,16 @@ $page->htmlHelper->hotBooty();
                 $body .= $page->waitress->cellClose();
             //
                 // Arm unit
+                $armUnitAttr = new FieldAttributes();
+                $armUnitAttr->isDisabled = $disabled;
+
                 $body .= $page->waitress->cell(
                     $theSelectInput->get(
                         "ArmUnit",
                         $page->utilsHelper->arraySequential2Associative(arrayKeysWithoutEmptyString($kArmUnits)),
                         $sqlData,
                         "Arm unit",
-                        $reqAttr,
+                        $armUnitAttr,
                     )
                 );
             //

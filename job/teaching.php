@@ -10,7 +10,7 @@ $page->cssHelper->dirUpWing();
 $body = $page->bodyBuilder->goHome("..");
 
 $body .= $page->htmlHelper->setTitle("Enseignement");
-$page->htmlHelper->hotBooty();
+$page->htmlHelper->hotBooty("fr");
 
     // General
     $body .= "<h2>G&eacute;n&eacute;ral</h2>\n";
@@ -68,7 +68,7 @@ $page->htmlHelper->hotBooty();
         $body .= "<p>Les disciplines enseignables au secondaire II sont les math&eacute;matiques, la physique, la chimie, la biologie, la g&eacute;ographie, l'informatique et les arts visuels (master en architecture).</p>\n";
 
         $body .= "<div>\n";
-        $body .= $page->bodyBuilder->img("formasciences_image02.png");
+        $body .= $page->bodyBuilder->img("formasciences_image02.png", "Cursus pour une discipline");
         $body .= "</div>\n";
     //
         // Deux disciplines enseignables
@@ -90,7 +90,7 @@ $page->htmlHelper->hotBooty();
         $body .= "<p>Le profil de formation correspondant est illustr&eacute; par le graphique ci-dessous.</p>\n";
 
         $body .= "<div>\n";
-        $body .= $page->bodyBuilder->img("formasciences_image01.png");
+        $body .= $page->bodyBuilder->img("formasciences_image01.png", "Cursus pour deux disciplines");
         $body .= "</div>\n";
 //
     // Complements de formation

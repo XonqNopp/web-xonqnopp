@@ -436,7 +436,7 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                 $tbody .= $page->butler->cellOpen();
                 if($userIsAdmin) {
                     $tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" ";
-                    $tbody .= "onclick='return ConfirmErase(\"" . html_entity_decode($page->dbText->sql2html($notes)) . "\")' />";
+                    $tbody .= "onclick=\"return ConfirmErase('" . addslashes(html_entity_decode($page->dbText->sql2html($notes))) . "')\">";
                 }
                 $tbody .= $page->butler->cellClose();
                 $tbody .= $page->butler->rowClose();
@@ -514,7 +514,6 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
 
             $attrMin0 = new FieldAttributes(true);
             $attrMin0->min = 0;
-            $attrMin0->size = 4;
 
                 // landings day
                 $tinsert .= $page->butler->cell($theNumberInput->get("landings_day", $formLandingsDay, NULL, $attrMin0), array("class" => "landings_day"));
@@ -529,7 +528,7 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
 
             $tinsert .= $page->butler->cell($theTextInput->get("notes", $formNotes), array("class" => "notes"));
 
-            $tinsert .= $page->butler->cell("<input type=\"submit\" name=\"add\" value=\"add\" onclick=\"SubmitForm()\"/>");
+            $tinsert .= $page->butler->cell("<input type=\"submit\" name=\"add\" value=\"add\" onclick=\"SubmitForm()\">");
             $tinsert .= $page->butler->rowClose();
         }
     //
@@ -752,9 +751,9 @@ $today = $page->timeHelper->getNow()->date;
         $body .= $page->butler->rowOpen();
         $body .= $page->butler->headerCell("Plane type", array("rowspan" => 2));
         $body .= $page->butler->headerCell("All times", array("colspan" => 2));
-        $body .= $page->butler->headerCell("Last 365 days<br />(1 year)", array("colspan" => 2));
-        $body .= $page->butler->headerCell("Last 90 days<br />(3 months)", array("colspan" => 2));
-        $body .= $page->butler->headerCell("Last 90 nights<br />(3 months)", array("colspan" => 2));
+        $body .= $page->butler->headerCell("Last 365 days<br>(1 year)", array("colspan" => 2));
+        $body .= $page->butler->headerCell("Last 90 days<br>(3 months)", array("colspan" => 2));
+        $body .= $page->butler->headerCell("Last 90 nights<br>(3 months)", array("colspan" => 2));
         $body .= $page->butler->rowClose();
         $body .= $page->butler->rowOpen();
         $body .= $page->butler->headerCell("hours");
