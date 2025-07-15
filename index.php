@@ -68,7 +68,10 @@ $body .= $page->waitress->rowOpen();
     $body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
     $body .= "</li>\n";
 
-    $body .= $page->bodyBuilder->liAnchor("recettes/index.html", "Recettes");
+    $body .= "<li>\n";
+    $body .= $page->bodyBuilder->anchor("recettes/index.html", "Recettes");
+    $body .= ": " . $page->bodyBuilder->anchor("recettes/cuisine/granola.html", "granola");
+    $body .= "</li>\n";
 
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("collections/index.php", "Collections");
