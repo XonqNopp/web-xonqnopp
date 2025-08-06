@@ -7,10 +7,6 @@ require_once("{$funcpath}/logging.php");
 $page = new PhPage($rootPath);
 
 require_once("$funcpath/form_fields.php");
-global $theTextInput;
-global $theSelectInput;
-global $theDateInput;
-global $theTimeInput;
 
 
 $page->bobbyTable->init();
@@ -21,7 +17,7 @@ $page->htmlHelper->jsForm();
 //$page->logger->levelUp(6);
 
 
-function displaySQLtime($item) {
+function displaySqlTime($item) {
     global $page;
 
     return $page->timeHelper->minutesDisplay(
@@ -32,26 +28,31 @@ function displaySQLtime($item) {
 }
 
 
-$logger = $theLogger;
+function displayThousands($value) {
+    $thousand = 1000;
 
-$body = "";
-$deleted = "";
-$spmpList = $page->utilsHelper->arraySequential2Associative(array("SP_SEP", "SP_MEP", "MP"));
-$functionList = $page->utilsHelper->arraySequential2Associative(array("PIC", "copi", "dual", "instructor"));
-$adList = array("LSGE", "LSGS", "note");
-$typeList = array();
-$idList = array();
-$picList = array($page->miscInit->lastName, "Berger", "Berchtold");
-$defaults = array();
-$defaults["type"] = "";
-$defaults["ID"] = "";
-$defaults["AD"] = "";
+    if($value < $thousand) {
+        return $value;
+    }
 
-$dueDay = "30";
-$dueMonth = 9;
-$dueYear = $page->timeHelper->getNow()->year;
+    $thousands = (int)($value / $thousand);
+    $remaining = sprintf("%03d", ((int)$value) % $thousand);
+    return "$thousands'$remaining";
+}
+
 
     // setting default values
+    $body = "";
+    $deleted = "";
+    $adList = array("LSGE", "LSGS", "note");
+    $typeList = array();
+    $idList = array();
+    $picList = array($page->miscInit->lastName, "Berger", "Berchtold");
+    $defaults = array();
+    $defaults["type"] = "";
+    $defaults["ID"] = "";
+    $defaults["AD"] = "";
+
     $formDate = "";
     $formTimeStart = "";
     $formTimeStop = "";
@@ -75,7 +76,7 @@ $dueYear = $page->timeHelper->getNow()->year;
     $sqlFunctionTimeInstructor = 0;
     $formNotes = "";
 
-$userIsAdmin = $page->loginHelper->userIsAdmin();
+    $userIsAdmin = $page->loginHelper->userIsAdmin();
 
 
 if($userIsAdmin) {
@@ -139,7 +140,7 @@ if($userIsAdmin) {
         }
 
         if($formOpsTimeNight > $delta || $formOpsTimeIfr > $delta) {
-            $logger->info("Night and IFR conditions cannot exceed global time, setting max");
+            $page->logger->info("Night and IFR conditions cannot exceed global time, setting max");
 
             if($formOpsTimeNight > $delta) {
                 $formOpsTimeNight = $delta;
@@ -276,7 +277,7 @@ $body .= $page->bodyBuilder->goHome("..");
 if($userIsAdmin) {
     $body .= $page->formHelper->tag();
 }
-$body .= "<div class=\"std\">\n";
+$body .= "<div class=\"introduction\">\n";
 $body .= $page->htmlHelper->setTitle("My Pilot Logbook");
 $page->htmlHelper->hotBooty();
 
@@ -284,45 +285,50 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
 
     // run through DB to make body of table
         // head of table
-        $thead = "";
-        $thead .= $page->butler->theadOpen();
-            // 1st line
-            $thead .= $page->butler->rowOpen();
-            $thead .= $page->butler->headerCell("date", array("class" => "date", "rowspan" => 2));
-            $thead .= $page->butler->headerCell("departure", array("colspan" => 2));
-            $thead .= $page->butler->headerCell("arrival", array("colspan" => 2));
-            $thead .= $page->butler->headerCell("aircraft", array("colspan" => 2));
-            $thead .= $page->butler->headerCell("total flight time", array("colspan" => 4));
-            $thead .= $page->butler->headerCell("name of PIC", array("class" => "PICname", "rowspan" => 2));
-            $thead .= $page->butler->headerCell("landings", array("colspan" => 2));
-            $thead .= $page->butler->headerCell("ops condition time", array("colspan" => 2));
-            $thead .= $page->butler->headerCell("pilot function time", array("colspan" => 4));
-            $thead .= $page->butler->headerCell("remarks", array("class" => "notes", "rowspan" => 2));
-            $thead .= $page->butler->headerCell("", array("rowspan" => 2));  // to prevent warning in validator
-            $thead .= $page->butler->rowClose();
-        //
-            // 2nd line
-            $thead .= $page->butler->rowOpen();
-            $thead .= $page->butler->headerCell("AD", array("class" => "start_ad"));
-            $thead .= $page->butler->headerCell("time", array("class" => "start_time"));
-            $thead .= $page->butler->headerCell("time", array("class" => "stop_time"));
-            $thead .= $page->butler->headerCell("AD", array("class" => "stop_ad"));
-            $thead .= $page->butler->headerCell("model", array("class" => "aircraft"));
-            $thead .= $page->butler->headerCell("registration", array("class" => "identification"));
-            $thead .= $page->butler->headerCell("SP SEP", array("class" => "SP_SEP"));
-            $thead .= $page->butler->headerCell("SP MEP", array("class" => "SP_MEP"));
-            $thead .= $page->butler->headerCell("MP", array("class" => "MP"));
-            $thead .= $page->butler->headerCell("total", array("class" => "SP_MP"));
-            $thead .= $page->butler->headerCell("day", array("class" => "landings_day"));
-            $thead .= $page->butler->headerCell("night", array("class" => "landings_night"));
-            $thead .= $page->butler->headerCell("night", array("class" => "night"));
-            $thead .= $page->butler->headerCell("IFR", array("class" => "IFR"));
-            $thead .= $page->butler->headerCell("PIC", array("class" => "PIC"));
-            $thead .= $page->butler->headerCell("copi", array("class" => "copi"));
-            $thead .= $page->butler->headerCell("dual", array("class" => "dual"));
-            $thead .= $page->butler->headerCell("instructor", array("class" => "instructor"));
-            $thead .= $page->butler->rowClose();
-        $thead .= $page->butler->theadClose();
+        function tableHead() {
+            global $page;
+
+            $thead = "";
+            $thead .= $page->butler->theadOpen();
+                // 1st line
+                $thead .= $page->butler->rowOpen();
+                $thead .= $page->butler->headerCell("date", array("class" => "date", "rowspan" => 2));
+                $thead .= $page->butler->headerCell("departure", array("colspan" => 2));
+                $thead .= $page->butler->headerCell("arrival", array("colspan" => 2));
+                $thead .= $page->butler->headerCell("aircraft", array("colspan" => 2));
+                $thead .= $page->butler->headerCell("total flight time", array("colspan" => 4));
+                $thead .= $page->butler->headerCell("name of PIC", array("class" => "PICname", "rowspan" => 2));
+                $thead .= $page->butler->headerCell("landings", array("colspan" => 2));
+                $thead .= $page->butler->headerCell("ops condition time", array("colspan" => 2));
+                $thead .= $page->butler->headerCell("pilot function time", array("colspan" => 4));
+                $thead .= $page->butler->headerCell("remarks", array("class" => "notes", "rowspan" => 2));
+                $thead .= $page->butler->headerCell("", array("rowspan" => 2));  // to prevent warning in validator
+                $thead .= $page->butler->rowClose();
+            //
+                // 2nd line
+                $thead .= $page->butler->rowOpen();
+                $thead .= $page->butler->headerCell("AD", array("class" => "start_ad"));
+                $thead .= $page->butler->headerCell("time", array("class" => "start_time"));
+                $thead .= $page->butler->headerCell("time", array("class" => "stop_time"));
+                $thead .= $page->butler->headerCell("AD", array("class" => "stop_ad"));
+                $thead .= $page->butler->headerCell("model", array("class" => "aircraft"));
+                $thead .= $page->butler->headerCell("registration", array("class" => "identification"));
+                $thead .= $page->butler->headerCell("SP SEP", array("class" => "SP_SEP"));
+                $thead .= $page->butler->headerCell("SP MEP", array("class" => "SP_MEP"));
+                $thead .= $page->butler->headerCell("MP", array("class" => "MP"));
+                $thead .= $page->butler->headerCell("total", array("class" => "SP_MP"));
+                $thead .= $page->butler->headerCell("day", array("class" => "landings_day"));
+                $thead .= $page->butler->headerCell("night", array("class" => "landings_night"));
+                $thead .= $page->butler->headerCell("night", array("class" => "night"));
+                $thead .= $page->butler->headerCell("IFR", array("class" => "IFR"));
+                $thead .= $page->butler->headerCell("PIC", array("class" => "PIC"));
+                $thead .= $page->butler->headerCell("copi", array("class" => "copi"));
+                $thead .= $page->butler->headerCell("dual", array("class" => "dual"));
+                $thead .= $page->butler->headerCell("instructor", array("class" => "instructor"));
+                $thead .= $page->butler->rowClose();
+            $thead .= $page->butler->theadClose();
+            return $thead;
+        }
     //
         // some vars to prepare
         $sumSpSep = 0;
@@ -337,38 +343,61 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
         $sumCopi = 0;
         $sumDual = 0;
         $sumInstructor = 0;
+
+        class Flight {
+            public $minutes;
+            public $pax;
+            public $freeSeats;
+
+            public function __construct($minutes, $pax=0, $freeSeats=0) {
+                $this->minutes = $minutes;
+                $this->pax = $pax;
+                $this->freeSeats = $freeSeats;
+            }
+        };
+
+        $stats = array("dual" => array(), "PIC" => array());
+        $maxPax = 3;
     //
         // run DB
         $tbody = "";
         $tbody .= $page->butler->tbodyOpen();
         $contents = $page->bobbyTable->queryManage("SELECT * FROM `PilotLogbook` ORDER BY `date` DESC, `start_time` DESC");
         if($contents->num_rows == 0) {
-            // colspan all saying nothing in DB
             $tbody .= $page->butler->row("Nothing found in DB", array(), array("colspan" => 22, "class" => "fullnote"));
         } else {
             while($entry = $contents->fetch_object()) {
-                $id = $entry->id;
-                $date = $entry->date;
-                $startTime = substr($entry->start_time, 0, 5);
-                $startAd = $entry->start_ad;
-                $stopAd = $entry->stop_ad;
-                $stopTime = substr($entry->stop_time, 0, 5);
-                $aircraft = $entry->aircraft;
-                $identification = $entry->identification;
-                $spSep = $entry->SP_SEP;
-                $spMep = $entry->SP_MEP;
-                $mp = $entry->MP;
-                $pic = $entry->PIC;
-                $landingsDay = $entry->landings_day;
-                $landingsNight = $entry->landings_night;
-                $nightTime = $entry->night_time;
-                $ifrTime = $entry->IFR_time;
-                $picTime = $entry->PIC_time;
-                $copiTime = $entry->copi_time;
-                $dualTime = $entry->dual_time;
-                $instructorTime = $entry->instructor_time;
-                $notes = $entry->notes;
-                //
+                    // Get values
+                    $id = $entry->id;
+                    $date = $entry->date;
+                    $startTime = substr($entry->start_time, 0, 5);
+                    $startAd = $entry->start_ad;
+                    $stopAd = $entry->stop_ad;
+                    $stopTime = substr($entry->stop_time, 0, 5);
+                    $aircraft = $entry->aircraft;
+                    $identification = $entry->identification;
+                    $spSep = $entry->SP_SEP;
+                    $spMep = $entry->SP_MEP;
+                    $mp = $entry->MP;
+                    $pic = $entry->PIC;
+                    $landingsDay = $entry->landings_day;
+                    $landingsNight = $entry->landings_night;
+                    $nightTime = $entry->night_time;
+                    $ifrTime = $entry->IFR_time;
+                    $picTime = $entry->PIC_time;
+                    $copiTime = $entry->copi_time;
+                    $dualTime = $entry->dual_time;
+                    $instructorTime = $entry->instructor_time;
+                    $notes = $entry->notes;
+
+                $adminCell = $page->butler->cell();
+                if($userIsAdmin) {
+                    $adminCell = $page->butler->cellOpen();
+                    $adminCell .= "<input type=\"submit\" name=\"delete\" value=\"$id\" ";
+                    $adminCell .= "onclick=\"return ConfirmErase('" . addslashes(html_entity_decode($page->dbText->sql2html($notes))) . "')\">";
+                    $adminCell .= $page->butler->cellClose();
+                }
+
                     // update data lists
                     if($stopAd != "" && $stopAd != "note") {
                         if(!in_array($stopAd, $adList)) { $adList[] = $stopAd; }
@@ -390,13 +419,18 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                     if($pic != "") {
                         if(!in_array($pic, $picList)) { $picList[] = $pic; }
                     }
-                //
+
                 $tbody .= "\n<!-- No $id -->\n";
                 if($startAd == "note" && $stopAd == "note") {
                     // make single td colspan with remarks+delete
                     $tbody .= $page->butler->rowOpen(array(), false);
                     $tbody .= $page->butler->cell($notes, array("colspan" => 21, "class" => "fullnote"));
-                } else {
+                    $tbody .= $adminCell;
+                    $tbody .= $page->butler->rowClose();
+                    continue;
+                }
+
+                    // Compute
                     $sumSpSep += $spSep;
                     $sumSpMep += $spMep;
                     $sumMp += $mp;
@@ -408,7 +442,35 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                     $sumCopi += $copiTime;
                     $sumDual += $dualTime;
                     $sumInstructor += $instructorTime;
+                //
+                    // stats
+                    if((int)substr($date, 0, 4) > 2010) {
+                        // Do not count IAP
+                        if($picTime > 0) {
+                            $pax = 0;
+                            $freeSeats = $maxPax;
+                            if(substr($notes, 0, 3) == "PAX") {
+                                $pax = (int)substr($notes, 3, 1);
+                                $freeSeats = $maxPax - $pax;
 
+                                if(in_array($identification, array("HB-KEX", "HB-KFQ")) && $freeSeats > 1) {
+                                    $freeSeats -= 1;
+                                }
+
+                                if($pax == 0) {
+                                    // family flight
+                                    $freeSeats = 0;
+                                }
+                            }
+                            $stats["PIC"][] = new Flight($picTime, $pax, $freeSeats);
+                        }
+
+                        if($dualTime > 0) {
+                            $stats["dual"][] = new Flight($dualTime);
+                        }
+                    }
+                //
+                    // display
                     $tbody .= $page->butler->rowOpen();
 
                     $tbody .= $page->butler->cell($date, array("class" => "date"));
@@ -432,48 +494,90 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                     $tbody .= $page->butler->cell($page->timeHelper->minutesDisplay($dualTime), array("class" => "dual num"));
                     $tbody .= $page->butler->cell($page->timeHelper->minutesDisplay($instructorTime), array("class" => "instructor num"));
                     $tbody .= $page->butler->cell($notes, array("class" => "notes"));
-                }
-                $tbody .= $page->butler->cellOpen();
-                if($userIsAdmin) {
-                    $tbody .= "<input type=\"submit\" name=\"delete\" value=\"$id\" ";
-                    $tbody .= "onclick=\"return ConfirmErase('" . addslashes(html_entity_decode($page->dbText->sql2html($notes))) . "')\">";
-                }
-                $tbody .= $page->butler->cellClose();
-                $tbody .= $page->butler->rowClose();
+
+                    $tbody .= $adminCell;
+                    $tbody .= $page->butler->rowClose();
             }
         }
         $contents->close();
         $tbody .= $page->butler->tbodyClose();
     //
-        // foot of table with sums
-        $tsum = "";
-        $tsum .= $page->butler->rowOpen();
-        $tsum .= $page->butler->headerCell("", array("colspan" => 7));
-        $tsum .= $page->butler->headerCell("SEP {$page->timeHelper->minutesDisplay($sumSpSep)}", array("class" => "SP_SEP num"));
-        $tsum .= $page->butler->headerCell("MEP {$page->timeHelper->minutesDisplay($sumSpMep)}", array("class" => "SP_MEP num"));
-        $tsum .= $page->butler->headerCell("MP {$page->timeHelper->minutesDisplay($sumMp)}", array("class" => "MP num"));
-        $tsum .= $page->butler->headerCell($page->timeHelper->minutesDisplay($sumSpSep + $sumSpMep + $sumMp), array("class" => "SP_MP num"));
-        $tsum .= $page->butler->headerCell();
-        $tsum .= $page->butler->headerCell("day $sumLandingsDay", array("class" => "landings_day num"));
-        $tsum .= $page->butler->headerCell("night $sumLandingsNight", array("class" => "landings_night num"));
-        $tsum .= $page->butler->headerCell("night {$page->timeHelper->minutesDisplay($sumOpsTimeNight)}", array("class" => "night num"));
-        $tsum .= $page->butler->headerCell("IFR {$page->timeHelper->minutesDisplay($sumOpsTimeIfr)}", array("class" => "IFR num"));
-        $tsum .= $page->butler->headerCell("PIC {$page->timeHelper->minutesDisplay($sumPic)}", array("class" => "PIC num"));
-        $tsum .= $page->butler->headerCell("copi {$page->timeHelper->minutesDisplay($sumCopi)}", array("class" => "copi num"));
-        $tsum .= $page->butler->headerCell("dual {$page->timeHelper->minutesDisplay($sumDual)}", array("class" => "dual num"));
-        $tsum .= $page->butler->headerCell("inst. {$page->timeHelper->minutesDisplay($sumInstructor)}", array("class" => "instructor num"));
-        $tsum .= $page->butler->headerCell("", array("colspan" => 2));
-        $tsum .= $page->butler->rowClose();
+        /**
+         * first line of table with sums
+         *
+         * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+         */
+        function tableSums($sumSpSep, $sumSpMep, $sumMp, $sumLandingsDay, $sumLandingsNight, $sumOpsTimeNight, $sumOpsTimeIfr, $sumPic, $sumCopi, $sumDual, $sumInstructor) {
+            global $page;
+
+            $tsum = "";
+            $tsum .= $page->butler->rowOpen();
+            $tsum .= $page->butler->headerCell("", array("colspan" => 7));
+            $tsum .= $page->butler->headerCell("SEP {$page->timeHelper->minutesDisplay($sumSpSep)}", array("class" => "SP_SEP num"));
+            $tsum .= $page->butler->headerCell("MEP {$page->timeHelper->minutesDisplay($sumSpMep)}", array("class" => "SP_MEP num"));
+            $tsum .= $page->butler->headerCell("MP {$page->timeHelper->minutesDisplay($sumMp)}", array("class" => "MP num"));
+            $tsum .= $page->butler->headerCell($page->timeHelper->minutesDisplay($sumSpSep + $sumSpMep + $sumMp), array("class" => "SP_MP num"));
+            $tsum .= $page->butler->headerCell();
+            $tsum .= $page->butler->headerCell("day $sumLandingsDay", array("class" => "landings_day num"));
+            $tsum .= $page->butler->headerCell("night $sumLandingsNight", array("class" => "landings_night num"));
+            $tsum .= $page->butler->headerCell("night {$page->timeHelper->minutesDisplay($sumOpsTimeNight)}", array("class" => "night num"));
+            $tsum .= $page->butler->headerCell("IFR {$page->timeHelper->minutesDisplay($sumOpsTimeIfr)}", array("class" => "IFR num"));
+            $tsum .= $page->butler->headerCell("PIC {$page->timeHelper->minutesDisplay($sumPic)}", array("class" => "PIC num"));
+            $tsum .= $page->butler->headerCell("copi {$page->timeHelper->minutesDisplay($sumCopi)}", array("class" => "copi num"));
+            $tsum .= $page->butler->headerCell("dual {$page->timeHelper->minutesDisplay($sumDual)}", array("class" => "dual num"));
+            $tsum .= $page->butler->headerCell("inst. {$page->timeHelper->minutesDisplay($sumInstructor)}", array("class" => "instructor num"));
+            $tsum .= $page->butler->headerCell("", array("colspan" => 2));
+            $tsum .= $page->butler->rowClose();
+            return $tsum;
+        }
     //
         // set default values which needed to go through DB
         if($formAdStart == "") { $formAdStart = $defaults["AD"]; }
         if($formAircraft == "") { $formAircraft = $defaults["type"]; }
         if($formIdentification == "") { $formIdentification = $defaults["ID"]; }
     //
-        // insert row...
-        $tinsert = "";
-        if($userIsAdmin) {
+        /**
+         * get the row for inserting a new entry
+         *
+         * @SuppressWarnings(PHPMD.MissingImport)
+         * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+         * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+         */
+        function tableInsert(
+            $date,
+            $adStart,
+            $adStop,
+            $adList,
+            $timeStart,
+            $timeStop,
+            $aircraft,
+            $typeList,
+            $identification,
+            $idList,
+            $spmp,
+            $pic,
+            $picList,
+            $landingsDay,
+            $landingsNight,
+            $opsTimeNight,
+            $opsTimeIfr,
+            $function,
+            $notes
+        ) {
+            global $page;
+
+            if(!$page->loginHelper->userIsAdmin()) {
+                return "";
+            }
             // ...only if allowed!
+
+            global $theTextInput;
+            global $theNumberInput;
+            global $theSelectInput;
+            global $theDateInput;
+            global $theTimeInput;
+
+            $tinsert = "";
             $attrText = new FieldAttributes();
             $attrText->size = 5;
             $attrText->autocapitalize = "characters";
@@ -482,362 +586,512 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                 // Date
                 $attrDate = new FieldAttributes(true);
                 $attrDate->max = "now";
-                $tinsert .= $page->butler->cell($theDateInput->get("date", $formDate, NULL, $attrDate), array("class" => "date"));
+                $tinsert .= $page->butler->cell($theDateInput->get("date", $date, NULL, $attrDate), array("class" => "date"));
             //
                 // start AD
                 $attrText->isRequired = true;
-                $tinsert .= $page->butler->cell($theTextInput->get("start_ad", $formAdStart, NULL, $adList, $attrText), array("class" => "start_ad"));
+
+                $tinsert .= $page->butler->cell(
+                    $theTextInput->get("start_ad", $adStart, NULL, $adList, $attrText),
+                    array("class" => "start_ad")
+                );
+
                 $attrText->isRequired = false;
             //
                 // time
                 $attrTime = new FieldAttributes(true);
 
-                $tinsert .= $page->butler->cell($theTimeInput->get("start_time", $formTimeStart, NULL, $attrTime), array("class" => "start_time"));
-                $tinsert .= $page->butler->cell($theTimeInput->get("stop_time", $formTimeStop, NULL, $attrTime), array("class" => "start_time"));
+                $tinsert .= $page->butler->cell($theTimeInput->get("start_time", $timeStart, NULL, $attrTime), array("class" => "start_time"));
+                $tinsert .= $page->butler->cell($theTimeInput->get("stop_time", $timeStop, NULL, $attrTime), array("class" => "start_time"));
 
-            $tinsert .= $page->butler->cell($theTextInput->get("stop_ad", $formAdStop, NULL, "start_ad_datalist", $attrText), array("class" => "stop_ad"));
+            $tinsert .= $page->butler->cell(
+                $theTextInput->get("stop_ad", $adStop, NULL, "start_ad_datalist", $attrText),
+                array("class" => "stop_ad")
+            );
 
             $attrText->isRequired = true;
 
             $attrText->size = 6;
-            $tinsert .= $page->butler->cell($theTextInput->get("aircraft", $formAircraft, NULL, $typeList, $attrText), array("class" => "aircraft"));
+            $tinsert .= $page->butler->cell(
+                $theTextInput->get("aircraft", $aircraft, NULL, $typeList, $attrText),
+                array("class" => "aircraft")
+            );
 
             $attrText->size = 7;
-            $tinsert .= $page->butler->cell($theTextInput->get("identification", $formIdentification, NULL, $idList, $attrText), array("class" => "identification"));
+            $tinsert .= $page->butler->cell(
+                $theTextInput->get("identification", $identification, NULL, $idList, $attrText),
+                array("class" => "identification")
+            );
 
                 // SEP,MEP,MP
-                $tinsert .= $page->butler->cell($theSelectInput->get("SPMP", $spmpList, $formSpmp), array("class" => "SPMP", "colspan" => 4));
+                $spmpList = $page->utilsHelper->arraySequential2Associative(array("SP_SEP", "SP_MEP", "MP"));
+                $tinsert .= $page->butler->cell(
+                    $theSelectInput->get("SPMP", $spmpList, $spmp),
+                    array("class" => "SPMP", "colspan" => 4)
+                );
 
             $attrText->size = 9;
             $attrText->autocapitalize = "words";
-            $tinsert .= $page->butler->cell($theTextInput->get("PIC", $formPic, NULL, $picList, $attrText), array("class" => "PICname"));
+            $tinsert .= $page->butler->cell(
+                $theTextInput->get("PIC", $pic, NULL, $picList, $attrText),
+                array("class" => "PICname")
+            );
 
             $attrMin0 = new FieldAttributes(true);
             $attrMin0->min = 0;
 
-                // landings day
-                $tinsert .= $page->butler->cell($theNumberInput->get("landings_day", $formLandingsDay, NULL, $attrMin0), array("class" => "landings_day"));
+            $tinsert .= $page->butler->cell(
+                $theNumberInput->get("landings_day", $landingsDay, NULL, $attrMin0),
+                array("class" => "landings_day")
+            );
 
-            $tinsert .= $page->butler->cell($theNumberInput->get("landings_night", $formLandingsNight, NULL, $attrMin0), array("class" => "landings_night"));
+            $tinsert .= $page->butler->cell(
+                $theNumberInput->get("landings_night", $landingsNight, NULL, $attrMin0),
+                array("class" => "landings_night")
+            );
 
-            $tinsert .= $page->butler->cell($theNumberInput->get("night_time", $formOpsTimeNight, NULL, $attrMin0), array("class" => "night"));
+            $tinsert .= $page->butler->cell(
+                $theNumberInput->get("night_time", $opsTimeNight, NULL, $attrMin0),
+                array("class" => "night")
+            );
 
-            $tinsert .= $page->butler->cell($theNumberInput->get("IFR_time", $formOpsTimeIfr, NULL, $attrMin0), array("class" => "IFR"));
+            $tinsert .= $page->butler->cell(
+                $theNumberInput->get("IFR_time", $opsTimeIfr, NULL, $attrMin0),
+                array("class" => "IFR")
+            );
 
-            $tinsert .= $page->butler->cell($theSelectInput->get("function", $functionList, $formFunction), array("class" => "function", "colspan" => 4));
+            $functionList = $page->utilsHelper->arraySequential2Associative(array("PIC", "copi", "dual", "instructor"));
+            $tinsert .= $page->butler->cell(
+                $theSelectInput->get("function", $functionList, $function),
+                array("class" => "function", "colspan" => 4)
+            );
 
-            $tinsert .= $page->butler->cell($theTextInput->get("notes", $formNotes), array("class" => "notes"));
+            $tinsert .= $page->butler->cell($theTextInput->get("notes", $notes), array("class" => "notes"));
 
             $tinsert .= $page->butler->cell("<input type=\"submit\" name=\"add\" value=\"add\" onclick=\"SubmitForm()\">");
             $tinsert .= $page->butler->rowClose();
+            return $tinsert;
         }
     //
         // build table
         $tab = "";
-        $tab .= $thead;
+        $tab .= tableHead();
         $tab .= $deleted;
-        $tab .= $tinsert;
-        $tab .= $tsum;
+
+        $tab .= tableInsert(
+            $formDate,
+            $formAdStart,
+            $formAdStop,
+            $adList,
+            $formTimeStart,
+            $formTimeStop,
+            $formAircraft,
+            $typeList,
+            $formIdentification,
+            $idList,
+            $formSpmp,
+            $formPic,
+            $picList,
+            $formLandingsDay,
+            $formLandingsNight,
+            $formOpsTimeNight,
+            $formOpsTimeIfr,
+            $formFunction,
+            $formNotes
+        );
+
+        $tab .= tableSums($sumSpSep, $sumSpMep, $sumMp, $sumLandingsDay, $sumLandingsNight, $sumOpsTimeNight, $sumOpsTimeIfr, $sumPic, $sumCopi, $sumDual, $sumInstructor);
         $tab .= $tbody;
 
 
-$body .= "<div>\n";
+$body .= "<div id=\"licenses\">\n";
 $body .= "<p>All times are local time.</p>\n";
 $body .= "<p class=\"pl\">Licence number CH.FCL.47359&nbsp;-&nbsp;Initially issued on 2014-09-15</p>\n";
 $body .= "<p class=\"pl\">Medical number CH-REF-17156</p>\n";
-$body .= "</div>\n";
+$body .= "</div><!-- licenses -->\n";
 
-$queryTimeLandings = "SELECT ";
-$queryTimeLandings .= "SUM(SP_SEP) AS `sSEP`, ";
-$queryTimeLandings .= "SUM(SP_MEP) AS `sMEP`, ";
-$queryTimeLandings .= "SUM(MP) AS `sMP`, ";
-$queryTimeLandings .= "SUM(night_time) AS `sNight`, ";
-$queryTimeLandings .= "SUM(landings_day) AS `sLD`, ";
-$queryTimeLandings .= "SUM(landings_night) AS `sLN` ";
-$queryTimeLandings .= "FROM `PilotLogbook`";
+    // summaries
+        // variables
+        $queryTimeLandings = "SELECT ";
+        $queryTimeLandings .= "SUM(SP_SEP) AS `sSEP`, ";
+        $queryTimeLandings .= "SUM(SP_MEP) AS `sMEP`, ";
+        $queryTimeLandings .= "SUM(MP) AS `sMP`, ";
+        $queryTimeLandings .= "SUM(night_time) AS `sNight`, ";
+        $queryTimeLandings .= "SUM(landings_day) AS `sLD`, ";
+        $queryTimeLandings .= "SUM(landings_night) AS `sLN` ";
+        $queryTimeLandings .= "FROM `PilotLogbook`";
 
-    // Time (total, last year+month)
-    $totalDb = $page->bobbyTable->queryManage($queryTimeLandings);
-    $totalItem = $totalDb->fetch_object();
-    $totalDb->close();
+        $queryPic = "`PIC` = '{$page->miscInit->lastName}'";
 
-    $picDb = $page->bobbyTable->queryManage("$queryTimeLandings WHERE `PIC` = '{$page->miscInit->lastName}'");
-    $picItem = $picDb->fetch_object();
-    $picDb->close();
+        $datediff1y = "DATEDIFF(CURDATE(),date) <= 365";
+        $datediff3m = "DATEDIFF(CURDATE(),date) <= 90";
 
-    $yearDb  = $page->bobbyTable->queryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 365");
-    $yearItem = $yearDb->fetch_object();
-    $yearDb->close();
-
-    $threeDb = $page->bobbyTable->queryManage("$queryTimeLandings WHERE DATEDIFF(CURDATE(),date) <= 90");
-    $threeItem = $threeDb->fetch_object();
-    $threeDb->close();
-
-    $sLN = $threeItem->sLN + 0;
-//
-    // revalidation
-    $DueYearMinusOne = $dueYear - 1;
-    $DueMonthMinusOne = sprintf("%02d", $dueMonth + 1);
-    $dueMonth         = sprintf("%02d", $dueMonth);
-    $DueDayMinusOne = "01";
-
-    $revalidDb = $page->bobbyTable->queryManage(
-        "$queryTimeLandings "
-        . "WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' "
-        . "AND `date` <= '$dueYear-$dueMonth-$dueDay'"
-    );
-
-    $revalidItem = $revalidDb->fetch_object();
-    $revalidDb->close();
-
-    $revalidPicDb = $page->bobbyTable->queryManage(
-        "$queryTimeLandings "
-        . "WHERE `date` >= '$DueYearMinusOne-$DueMonthMinusOne-$DueDayMinusOne' "
-        . "AND `date` <= '$dueYear-$dueMonth-$dueDay' "
-        . "AND `PIC` = '{$page->miscInit->lastName}'"
-    );
-
-    $revalidPicItem = $revalidPicDb->fetch_object();
-    $revalidPicDb->close();
-//
-    // Family
-    /**
-     * Get total flight time of a family member.
-     *
-     * Args:
-     *     who (string): matching hashtag in DB
-     *
-     * Returns:
-     *     DB object
-     */
-    function familyTime($who) {
-        global $page;
-
-        $dbQuery = $page->bobbyTable->queryManage(
-            "SELECT "
-            . "SUM(SP_SEP) AS `sSEP`, "
-            . "SUM(SP_MEP) AS `sMEP`, "
-            . "SUM(MP) AS `sMP` "
-            . "FROM `PilotLogbook` "
-            . "WHERE `notes` LIKE '%#$who%' "
-        );
-
-        $dbObj = $dbQuery->fetch_object();
-        $dbQuery->close();
-
-        return $dbObj;
-    }
-
-    $alItem = familyTime("AnneLaure");
-    $zoeItem = familyTime("Zoe");
-    $ludoItem = familyTime("Ludovic");
-    $kayraItem = familyTime("Kayra");
-    $aliciaItem = familyTime("Alicia");
-
-$today = $page->timeHelper->getNow()->date;
-
-    // Table summary of visited fields (displayed later)
-    $visited = "";
-        // DB
-        $visitedDb = $page->bobbyTable->queryManage("SELECT DISTINCT `start_ad` AS `airfield` FROM `PilotLogbook` WHERE `start_ad` <> 'note' UNION SELECT DISTINCT `stop_ad` AS `airfield` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' ORDER BY `airfield`");
-
-        /*
-         * Get visited airfield of family member.
-         *
-         * Args:
-         *     who (string): matching hashtag in DB
-         *
-         * Returns:
-         *     array of visited fields
-         */
-        function familyVisited($who) {
-            global $page;
-
-            $visited = array();
-
-            $dbQuery = $page->bobbyTable->queryManage("SELECT DISTINCT `start_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `start_ad` <> 'note' and `notes` LIKE '%#$who%' UNION SELECT DISTINCT `stop_ad` AS `airfield`, `notes` FROM `PilotLogbook` WHERE `stop_ad` <> 'note' AND `notes` LIKE '%#$who%' ORDER BY `airfield`");
-
-            while($dbObj = $dbQuery->fetch_object()) {
-                $visited[] = $dbObj->airfield;
-            }
-
-            $dbQuery->close();
-
-            return $visited;
-        }
-
-        /*
-         * Make text for visited table with family member.
-         *
-         * Args:
-         *     airfield (string)
-         *     familyArray (array)
-         *     display (string): the text to display
-         *
-         * Returns:
-         *     string for single member
-         */
-        function familyVisitedSingle($airfield, $familyArray, $display) {
-            $text = "";
-
-            if(in_array($airfield, $familyArray[$display])) {
-                $text .= " $display";
-            }
-
-            return $text;
-        }
-
-        $visitedFamily = array();
-        $visitedFamily["AL"] = familyVisited("AnneLaure");
-        $visitedFamily["Z"] = familyVisited("Zoe");
-        $visitedFamily["Lu"] = familyVisited("Ludovic");
-        $visitedFamily["K"] = familyVisited("Kayra");
-        $visitedFamily["Ali"] = familyVisited("Alicia");
+        $visitedQueryStart = "SELECT DISTINCT `start_ad` AS `airfield` FROM `PilotLogbook` WHERE `start_ad` <> 'note'";
+        $visitedQueryStop = "SELECT DISTINCT `stop_ad` AS `airfield` FROM `PilotLogbook` WHERE `stop_ad` <> 'note'";
+        $visitedQueryOrder = "ORDER BY `airfield`";
     //
-        // table
-        $visited .= "<h3>Visited fields</h3>\n";
-        $visited .= "<div>\n";
-        $visited .= "<select>\n";
+        // functions
+            function dbGetSummaryTime($querySuffix="") {
+                global $page;
+                global $queryTimeLandings;
 
-        while($visitedItem = $visitedDb->fetch_object()) {
-            $airfield = $visitedItem->airfield;
-
-            $visited .= "<option>$airfield";
-
-            if($userIsAdmin) {
-                $visitedFamilySingle = "";
-                $visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "AL");
-                $visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "Z");
-                $visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "Lu");
-
-                if($visitedFamilySingle != "") {
-                    $visited .= " -$visitedFamilySingle";
+                $query = $queryTimeLandings;
+                if($querySuffix != "") {
+                    $query .= " WHERE $querySuffix";
                 }
 
+                $dbQuery = $page->bobbyTable->queryManage($query);
+                $time = $dbQuery->fetch_object();
+                $dbQuery->close();
+                return $time;
+            }
+        //
+            function summaryTotal() {
+                global $page;
+                global $queryPic;
+
+                // revalidation
+                $dueDay = "30";
+                $dueMonth = 9;
+                $dueYear = $page->timeHelper->getNow()->year;
+
+                $dueYearMinusOne = $dueYear - 1;
+                $dueMonthMinusOne = sprintf("%02d", $dueMonth + 1);
+                $dueDayMinusOne = "01";
+
+                // formatting
+                $dueMonth = sprintf("%02d", $dueMonth);
+
+                $revalidQuerySuffix = "`date` >= '$dueYearMinusOne-$dueMonthMinusOne-$dueDayMinusOne' AND `date` <= '$dueYear-$dueMonth-$dueDay'";
+                $revalidItem = dbGetSummaryTime($revalidQuerySuffix);
+                $revalidPicItem = dbGetSummaryTime("$revalidQuerySuffix AND $queryPic");
+
+                $summary = "<p>";
+                if($dueYear % 2 == 0) {
+                    // MUST revalidate every even year
+                    $summary .= "<b>";
+                }
+                $summary .= "12 months preceeding $dueYear-$dueMonth-$dueDay:";
+                if($dueYear % 2 == 0) {
+                    // MUST revalidate every even year
+                    $summary .= "</b>";
+                }
+                $summary .= " ";
+                $summary .= displaySqlTime($revalidItem) . " (" . displaySqlTime($revalidPicItem) . " PIC)";
+                $summary .= " with " . ($revalidItem->sLD + $revalidItem->sLN) . " landings (" . ($revalidPicItem->sLD + $revalidPicItem->sLN) . " PIC)";
+                $summary .= "</p>\n";
+
+                return $summary;
+            }
+        //
+            function summaryAllTime($dbItem) {
+                global $page;
+                return $page->timeHelper->minutesDisplay($dbItem->sSEP + $dbItem->sMEP + $dbItem->sMP);
+            }
+        //
+            function summaryPlaneTime($plane) {
+                global $page;
+
+                global $datediff1y;
+                global $datediff3m;
+
+                $querySuffix = "";
+                $querySuffixAnd = "";
+                if($plane != "All types") {
+                    $querySuffix = "`aircraft` = '$plane'";
+                    $querySuffixAnd = "$querySuffix AND ";
+                }
+                $totalItem = dbGetSummaryTime($querySuffix);
+                $yearItem = dbGetSummaryTime("$querySuffixAnd$datediff1y");
+                $threeItem = dbGetSummaryTime("$querySuffixAnd$datediff3m");
+
+                $sLN = $threeItem->sLN + 0;
+
+                $landingsTotal = $totalItem->sLD + $totalItem->sLN;
+                $landingsYear = $yearItem->sLD + $yearItem->sLN;
+                $landingsThree = $threeItem->sLD + $sLN;
+
+                $summary = "";
+                $summary .= $page->butler->rowOpen();
+                $summary .= $page->butler->cell("$plane");
+                $summary .= $page->butler->cell(summaryAllTime($totalItem), array("class" => "num"));
+                $summary .= $page->butler->cell("$landingsTotal", array("class" => "num"));
+                $summary .= $page->butler->cell(summaryAllTime($yearItem), array("class" => "num"));
+                $summary .= $page->butler->cell("$landingsYear", array("class" => "num"));
+                $summary .= $page->butler->cell(summaryAllTime($threeItem), array("class" => "num"));
+                $summary .= $page->butler->cell("$landingsThree", array("class" => "num"));
+                $summary .= $page->butler->cell("{$page->timeHelper->minutesDisplay($threeItem->sNight)}", array("class" => "num"));
+                $summary .= $page->butler->cell("$sLN", array("class" => "num"));
+                $summary .= $page->butler->rowClose();
+                return $summary;
+            }
+        //
+            /*
+             * Get visited airfield of family member.
+             *
+             * Args:
+             *     who (string): matching hashtag in DB
+             *
+             * Returns:
+             *     array of visited fields
+             */
+            function familyVisited($who) {
+                global $page;
+                global $visitedQueryStart;
+                global $visitedQueryStop;
+                global $visitedQueryOrder;
+
+                $visited = array();
+
+                $familyMatch = "AND `notes` LIKE '%#$who%'";
+                $dbQuery = $page->bobbyTable->queryManage("$visitedQueryStart $familyMatch UNION $visitedQueryStop $familyMatch $visitedQueryOrder");
+
+                while($dbObj = $dbQuery->fetch_object()) {
+                    $visited[] = $dbObj->airfield;
+                }
+
+                $dbQuery->close();
+
+                return $visited;
+            }
+        //
+            /*
+             * Make text for visited table with family member.
+             *
+             * Args:
+             *     airfield (string)
+             *     familyArray (array)
+             *     display (string): the text to display
+             *
+             * Returns:
+             *     string for single member
+             */
+            function familyVisitedSingle($airfield, $familyArray, $display) {
+                $text = "";
+
+                if(in_array($airfield, $familyArray[$display])) {
+                    $text .= " $display";
+                }
+
+                return $text;
+            }
+        //
+            function visitedAirfields() {
+                global $page;
+                global $visitedQueryStart;
+                global $visitedQueryStop;
+                global $visitedQueryOrder;
+
+                $visited = "";
+
+                // DB
+                $visitedDb = $page->bobbyTable->queryManage("$visitedQueryStart UNION $visitedQueryStop $visitedQueryOrder");
+
+                $visitedFamily = array();
+                if($page->loginHelper->userIsAdmin()) {
+                    $visitedFamily["AL"] = familyVisited("AnneLaure");
+                    $visitedFamily["Z"] = familyVisited("Zoe");
+                    $visitedFamily["Lu"] = familyVisited("Ludovic");
+                    $visitedFamily["K"] = familyVisited("Kayra");
+                    $visitedFamily["Ali"] = familyVisited("Alicia");
+                }
+                // table
+                $visited .= "<h3>Visited fields</h3>\n";
+                $visited .= "<div id=\"visits\">\n";
+                $visited .= "<select>\n";
+
+                while($visitedItem = $visitedDb->fetch_object()) {
+                    $airfield = $visitedItem->airfield;
+
+                    $visited .= "<option>$airfield";
+
+                    if($page->loginHelper->userIsAdmin()) {
+                        $visitedFamilySingle = "";
+                        $visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "AL");
+                        $visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "Z");
+                        $visitedFamilySingle .= familyVisitedSingle($airfield, $visitedFamily, "Lu");
+
+                        if($visitedFamilySingle != "") {
+                            $visited .= " -$visitedFamilySingle";
+                        }
+
+                    }
+
+                    $visited .= "</option>\n";
+                }
+                $visitedDb->close();
+
+                $visited .= "</select>\n";
+                $visited .= "</div><!-- visits -->\n";
+                return $visited;
+            }
+        //
+            /**
+             * Get total flight time of a family member.
+             *
+             * Args:
+             *     who (string): matching hashtag in DB
+             *
+             * Returns:
+             *     string: time
+             */
+            function familyTime($who) {
+                global $page;
+
+                $dbQuery = $page->bobbyTable->queryManage(
+                    "SELECT "
+                    . "SUM(SP_SEP) AS `sSEP`, "
+                    . "SUM(SP_MEP) AS `sMEP`, "
+                    . "SUM(MP) AS `sMP` "
+                    . "FROM `PilotLogbook` "
+                    . "WHERE `notes` LIKE '%#$who%' "
+                );
+
+                $dbObj = $dbQuery->fetch_object();
+                $dbQuery->close();
+
+                return displaySqlTime($dbObj);
+            }
+    //
+    $today = $page->timeHelper->getNow()->date;
+
+        // Table summary for flight hours+landings
+        $body .= "<h2>Summary of my flight hours as of today $today</h2>\n";
+
+        $totalItem = displaySqlTime(dbGetSummaryTime());
+        $picItem = displaySqlTime(dbGetSummaryTime($queryPic));
+        $body .= "<p><b>Total flight hours:</b> $totalItem ($picItem PIC)</p>\n";
+
+        $body .= summaryTotal();
+
+        $body .= "<div id=\"summaryTable\">\n";
+        $body .= $page->butler->tableOpen();
+
+            // Head
+            $body .= $page->butler->rowOpen();
+            $body .= $page->butler->headerCell("Plane type", array("rowspan" => 2));
+            $body .= $page->butler->headerCell("All times", array("colspan" => 2));
+            $body .= $page->butler->headerCell("Last 365 days<br>(1 year)", array("colspan" => 2));
+            $body .= $page->butler->headerCell("Last 90 days<br>(3 months)", array("colspan" => 2));
+            $body .= $page->butler->headerCell("Last 90 nights<br>(3 months)", array("colspan" => 2));
+            $body .= $page->butler->rowClose();
+            $body .= $page->butler->rowOpen();
+            $body .= $page->butler->headerCell("hours");
+            $body .= $page->butler->headerCell("landings");
+            $body .= $page->butler->headerCell("hours");
+            $body .= $page->butler->headerCell("landings");
+            $body .= $page->butler->headerCell("hours");
+            $body .= $page->butler->headerCell("landings");
+            $body .= $page->butler->headerCell("hours");
+            $body .= $page->butler->headerCell("landings");
+            $body .= $page->butler->rowClose();
+
+        $body .= summaryPlaneTime("All types");
+
+        $airplanesDb = $page->bobbyTable->queryManage("SELECT DISTINCT `aircraft` FROM `PilotLogbook` ORDER BY `aircraft` ASC");
+        while($airplaneItem = $airplanesDb->fetch_object()) {
+            $plane = $airplaneItem->aircraft;
+            if($plane == "none" || $plane == "") {
+                continue;
             }
 
-            $visited .= "</option>\n";
+            $body .= summaryPlaneTime($plane);
         }
-        $visitedDb->close();
+        $airplanesDb->close();
+        $body .= $page->butler->tableClose();
 
-        $visited .= "</select>\n";
-        $visited .= "</div>\n";
-//
-    // Table summary for flight hours+landings
-    $body .= "<h2>Summary of my flight hours as of today $today</h2>\n";
+        if($userIsAdmin) {
+            $members = array(
+                "AnneLaure" => "Anne-Laure",
+                "Zoe" => "Zo&eacute;",
+                "Ludovic" => "Ludovic",
+                "Kayra" => "Kayra",
+                "Alicia" => "Alicia"
+            );
 
-    $body .= "<p><b>Total flight hours:</b> ";
-    $body .= displaySQLtime($totalItem);
-    $body .= " (" . displaySQLtime($picItem) . " PIC)";
-    $body .= "</p>\n";
+            $body .= "<h3>Family's flight hours:</h3>";
+            $body .= "<div id=\"family\">\n";
+            $body .= "<ul>\n";
+            foreach($members as $key => $value) {
+                $body .= "<li>$value: " . familyTime($key) . "</li>\n";
+            }
+            $body .= "</ul>\n";
+            $body .= "</div><!-- family -->\n";
 
-    $body .= "<p>";
-    if($dueYear % 2 == 0) {
-        // MUST revalidate every even year
-        $body .= "<b>";
-    }
-    $body .= "12 months preceeding $dueYear-$dueMonth-$dueDay:";
-    if($dueYear % 2 == 0) {
-        // MUST revalidate every even year
-        $body .= "</b>";
-    }
-    $body .= " ";
-    $body .= displaySQLtime($revalidItem) . " (" . displaySQLtime($revalidPicItem) . " PIC)";
-    $body .= " with " . ($revalidItem->sLD + $revalidItem->sLN) . " landings (" . ($revalidPicItem->sLD + $revalidPicItem->sLN) . " PIC)";
-    $body .= "</p>\n";
-    $body .= "<div>\n";
-    $body .= $page->butler->tableOpen();
-        //// Head
-        $body .= $page->butler->rowOpen();
-        $body .= $page->butler->headerCell("Plane type", array("rowspan" => 2));
-        $body .= $page->butler->headerCell("All times", array("colspan" => 2));
-        $body .= $page->butler->headerCell("Last 365 days<br>(1 year)", array("colspan" => 2));
-        $body .= $page->butler->headerCell("Last 90 days<br>(3 months)", array("colspan" => 2));
-        $body .= $page->butler->headerCell("Last 90 nights<br>(3 months)", array("colspan" => 2));
-        $body .= $page->butler->rowClose();
-        $body .= $page->butler->rowOpen();
-        $body .= $page->butler->headerCell("hours");
-        $body .= $page->butler->headerCell("landings");
-        $body .= $page->butler->headerCell("hours");
-        $body .= $page->butler->headerCell("landings");
-        $body .= $page->butler->headerCell("hours");
-        $body .= $page->butler->headerCell("landings");
-        $body .= $page->butler->headerCell("hours");
-        $body .= $page->butler->headerCell("landings");
-        $body .= $page->butler->rowClose();
+            $body .= visitedAirfields();
+        }
+
+        $body .= "</div><!-- summaryTable -->\n";
     //
-        // All plane types
-        $landingsTotal = $totalItem->sLD + $totalItem->sLN;
-        $landingsYear = $yearItem->sLD + $yearItem->sLN;
-        $landingsThree = $threeItem->sLD + $sLN;
-        $body .= $page->butler->rowOpen();
-        $body .= $page->butler->cell("<b>All types</b>");
-        $body .= $page->butler->cell("<b>{$page->timeHelper->minutesDisplay($totalItem->sSEP + $totalItem->sMEP + $totalItem->sMP)}</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>$landingsTotal</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>{$page->timeHelper->minutesDisplay($yearItem->sSEP + $yearItem->sMEP + $yearItem->sMP)}</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>$landingsYear</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>{$page->timeHelper->minutesDisplay($threeItem->sSEP + $threeItem->sMEP + $threeItem->sMP)}</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>$landingsThree</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>{$page->timeHelper->minutesDisplay($threeItem->sNight)}</b>", array("class" => "num"));
-        $body .= $page->butler->cell("<b>$sLN</b>", array("class" => "num"));
-        $body .= $page->butler->rowClose();
-
-    $airplanesDb = $page->bobbyTable->queryManage("SELECT DISTINCT `aircraft` FROM `PilotLogbook` ORDER BY `aircraft` ASC");
-    while($airplaneItem = $airplanesDb->fetch_object()) {
-        $plane = $airplaneItem->aircraft;
-        if($plane != "none" && $plane != "") {
-
-            $totalDb = $page->bobbyTable->queryManage("$queryTimeLandings WHERE `aircraft` = '$plane'");
-            $totalItem = $totalDb->fetch_object();
-            $totalDb->close();
-
-            $yearDb  = $page->bobbyTable->queryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 365");
-            $yearItem = $yearDb->fetch_object();
-            $yearDb->close();
-
-            $threeDb = $page->bobbyTable->queryManage("$queryTimeLandings WHERE `aircraft` = '$plane' AND DATEDIFF(CURDATE(),date) <= 90");
-            $threeItem = $threeDb->fetch_object();
-            $threeDb->close();
-
-            $sLN = $threeItem->sLN + 0;
-
-            $landingsTotal = $totalItem->sLD + $totalItem->sLN;
-            $landingsYear = $yearItem->sLD + $yearItem->sLN;
-            $landingsThree = $threeItem->sLD + $sLN;
-
-            $body .= $page->butler->rowOpen();
-            $body .= $page->butler->cell("<b>$plane</b>");
-            $body .= $page->butler->cell($page->timeHelper->minutesDisplay($totalItem->sSEP + $totalItem->sMEP + $totalItem->sMP), array("class" => "num"));
-            $body .= $page->butler->cell($landingsTotal, array("class" => "num"));
-            $body .= $page->butler->cell($page->timeHelper->minutesDisplay($yearItem->sSEP + $yearItem->sMEP + $yearItem->sMP), array("class" => "num"));
-            $body .= $page->butler->cell($landingsYear, array("class" => "num"));
-            $body .= $page->butler->cell($page->timeHelper->minutesDisplay($threeItem->sSEP + $threeItem->sMEP + $threeItem->sMP), array("class" => "num"));
-            $body .= $page->butler->cell($landingsThree, array("class" => "num"));
-            $body .= $page->butler->cell($page->timeHelper->minutesDisplay($threeItem->sNight), array("class" => "num"));
-            $body .= $page->butler->cell($sLN, array("class" => "num"));
-            $body .= $page->butler->rowClose();
+    function displayStats($stats) {
+        global $page;
+        if(!$page->loginHelper->userIsAdmin()) {
+            return "";
         }
+        $paxRate = 150 / 60;  // [CHF/min] what I ask my passengers
+        $planeRate = 400 / 60;  // [CHF/min] approximately what the plane costs me
+        $instructorRate = 100 / 60;  // [CHF/min] approximately what the instructor costs me
+
+        $numPic = count($stats["PIC"]);
+        $numDual = count($stats["dual"]);
+        $numTotal = $numPic + $numDual;
+
+        $minutesTotal = 0;
+        $minutesDual = 0;
+        foreach($stats["dual"] as $flight) {
+            $minutesDual += $flight->minutes;
+            $minutesTotal += $flight->minutes;
+        }
+
+        $numFreeSeats = 0;
+        $numPax = 0;
+
+        $minutesFreeSeats = 0;
+        $minutesPax = 0;
+
+        $minutesPic = 0;
+        foreach($stats["PIC"] as $flight) {
+            $minutesPic += $flight->minutes;
+            $minutesTotal += $flight->minutes;
+
+            $numPax += $flight->pax;
+            $numFreeSeats += $flight->freeSeats;
+
+            $minutesPax += ($flight->pax * $flight->minutes);
+            $minutesFreeSeats += ($flight->freeSeats * $flight->minutes);
+        }
+
+        $statBody = "";
+        $statBody .= "<h3>Passenger statistics</h3>\n";
+        $statBody .= "<div class=\"statistics\">\n";
+        $statBody .= "<ul>\n";
+        $statBody .= "<li>Number of flights: $numTotal";
+        $statBody .= " for a total of " . $page->timeHelper->minutesDisplay($minutesTotal) . "</li>\n";
+
+        $statBody .= "<li>Dual flights: $numDual";
+        $statBody .= " for a total of " . $page->timeHelper->minutesDisplay($minutesDual);
+        $statBody .= " or an approximate expense of CHF " . displayThousands((int)($minutesDual * ($planeRate + $instructorRate))) . "</li>\n";
+
+        $statBody .= "<li>PIC flights: $numPic";
+        $statBody .= " for a total of " . $page->timeHelper->minutesDisplay($minutesPic);
+        $statBody .= " or an approximate expense of CHF " . displayThousands((int)($minutesPic * $planeRate)) . "</li>\n";
+
+        $statBody .= "<li>Total number of passengers: $numPax";
+        $statBody .= " for a total PAX time of " . $page->timeHelper->minutesDisplay($minutesPax);
+        $statBody .= " or an approximate gain of CHF " . displayThousands((int)($minutesPax * $paxRate)) . "</li>\n";
+
+        $statBody .= "<li>Total number of free seats: $numFreeSeats";
+        $statBody .= " for a total time of " . $page->timeHelper->minutesDisplay($minutesFreeSeats);
+        $statBody .= " or an approximate loss of CHF " . displayThousands((int)($minutesFreeSeats * $paxRate)) . "</li>\n";
+
+        $statBody .= "</ul>\n";
+        $statBody .= "</div><!-- statistics -->\n";
+        return $statBody;
     }
-    $airplanesDb->close();
-    $body .= $page->butler->tableClose();
 
-    if($userIsAdmin) {
-        $body .= "<h3>Family's flight hours:</h3>";
-        $body .= "<div>\n";
-        $body .= "<ul>\n";
-        $body .= "<li>Anne-Laure: " . displaySQLtime($alItem) . "</li>\n";
-        $body .= "<li>Zo&eacute;: " . displaySQLtime($zoeItem) . "</li>\n";
-        $body .= "<li>Ludovic: " . displaySQLtime($ludoItem) . "</li>\n";
-        $body .= "<li>Kayra: " . displaySQLtime($kayraItem) . "</li>\n";
-        $body .= "<li>Alicia: " . displaySQLtime($aliciaItem) . "</li>\n";
-        $body .= "</ul>\n";
-        $body .= $visited;
-        $body .= "</div>\n";
-    }
+    $body .= displayStats($stats);
 
-    $body .= "</div>\n";
-
-$body .= "</div>\n";
+    $body .= "</div><!-- introduction -->\n";
 
 
 $body .= "<div class=\"table\">\n";
