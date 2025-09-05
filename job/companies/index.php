@@ -31,34 +31,10 @@ $userIsAdmin = $page->loginHelper->userIsAdmin();
         "jobs for brains (EPFL)" => "http://www.jobsforbrains.ch/quick_search.php?sel=last_vac",
         "ETH get hired" => "http://eth-gethired.ch/search/sector/27/academic/0",
         "jobs.ch" => "http://www.jobs.ch/en/service/ungelesene.php",
-        "ingjobs.ch" => "http://ingjobs.ch/fr/jobs/?"
-                        . "sort=date"
-                        . "&amp;category-ids[]=458"
-                        . "&amp;category-ids[]=459"
-                        . "&amp;category-ids[]=460"
-                        . "&amp;category-ids[]=461"
-                        . "&amp;category-ids[]=462"
-                        //. "&amp;region-ids[]=12"// AG SO
-                        . "&amp;region-ids[]=13"
-                        . "&amp;region-ids[]=8"
-                        . "&amp;region-ids[]=9"
-                        . "&amp;region-ids[]=10"
-                        ,
+        "ingjobs.ch" => "http://ingjobs.ch/fr/jobs/",
         "job together" => "http://www.jobtogether.com/", //jt/?page_id=7249",
         "myscience.ch" => "http://www.myscience.ch/jobs/search?d=Physics-Materials+Science",
-        "talendo" => "https://talendo.ch/de/jobs/search?"
-                     . "q=" //physics"
-                     . "&amp;filters[work_type_ids][]=2"
-                     . "&amp;filters[work_type_ids][]=1"
-                     . "&amp;filters[entry_level_ids][]=6"
-                     . "&amp;filters[region_ids][]=4"
-                     . "&amp;filters[region_ids][]=3"
-                     . "&amp;filters[region_ids][]=8"
-                     . "&amp;filters[region_ids][]=1"
-                     . "&amp;filters[region_ids][]=5"
-                     . "&amp;filters[category_ids][]=27"// F&E
-                     //. "&amp;filters[category_ids][]=31"// informatik
-                                    ,
+        "talendo" => "https://talendo.ch/fr/jobs/search",
         "work pool" => "http://www.workpool-jobs.ch/jobs/?w=physics&amp;s=datum+desc",
         "tcc" => "http://tcc-schweiz.ch/stellenportal/",
         "LinkedIn jobs" => "https://www.linkedin.com/job/home?trk=nav_responsive_sub_nav_jobs",
@@ -100,7 +76,7 @@ $body .= "<div class=\"chead\">\n";
 $body .= "</div>\n";
 $body .= "<div class=\"rhead\">\n";
 if($userIsAdmin) {
-    $body .= $page->bodyBuilder->anchor("insert.php", "new") . "<br />\n";
+    $body .= $page->bodyBuilder->anchor("insert.php", "new") . "<br>\n";
     $body .= $page->bodyBuilder->anchor("interactions.php", "interactions");
 }
 $body .= "</div>\n";
@@ -225,7 +201,7 @@ $body .= "<h2>Portals for scientific jobs in Switzerland</h2>\n";
         $body .= "    return true;\n";
         $body .= "}\n";
         $body .= "</script>\n";
-        $body .= "<input type=\"button\" onclick=\"return OpenUp()\" value=\"open all\" />\n";
+        $body .= "<input type=\"button\" onclick=\"return OpenUp()\" value=\"open all\">\n";
     $body .= "<ul>\n";
     foreach($portals as $title => $url) {
         $body .= $page->bodyBuilder->liAnchor($url, $title);

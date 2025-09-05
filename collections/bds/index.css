@@ -20,3 +20,8 @@ div.csstab64_cell {
 .bd_serie_item {
     margin-bottom: 0.2em;
 }
+
+
+.editor {
+    font-style: italic;
+}

@@ -41,7 +41,7 @@ function getMissingBD($borrowerId, $missingItem) {
         $title = "{$serieEntry->name} {$device->tome}";
 
         if($device->title != "") {
-            $title = "{$device->title}<br />($title)";
+            $title = "{$device->title}<br>($title)";
         }
     }
 

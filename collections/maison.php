@@ -77,7 +77,7 @@ $page = new PhPage($rootPath);
  */
 function getLink($url, $lineBreak=False) {
     global $page;
-    return $page->bodyBuilder->anchor($url) . ($lineBreak ? "<br />\n" : "");
+    return $page->bodyBuilder->anchor($url) . ($lineBreak ? "<br>\n" : "");
 }
 
 
@@ -98,7 +98,7 @@ $page->bodyBuilder->titleAnchorCountEnable();
 $body = $page->bodyBuilder->goHome("..");
 // Set title and hot booty
 $body .= $page->htmlHelper->setTitle("Je deviens $proprio");// before HotBooty
-$page->htmlHelper->hotBooty();
+$page->htmlHelper->hotBooty("fr");
 
 $body .= "<p>Petit r&eacute;sum&eacute; <b>subjectif</b> de:\n";
 $body .= "<i>Je deviens $proprio</i>,\n";
@@ -124,7 +124,7 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= getLink("http://fri.ch", True);
     $body .= getLink("http://vermoegenszentrum.ch", True);
     $body .= getLink("http://homegate.ch", True);
-    $body .= getLink("http://toutcomptefait.ch") . " -> calcul -> logement<br />\n";
+    $body .= getLink("http://toutcomptefait.ch") . " -> calcul -> logement<br>\n";
     $body .= getLink("http://hausinfo.ch", True);
     $body .= getLink("http://ubs.com", True);
     $body .= getLink("http://amiante-info.ch", True);
@@ -1535,22 +1535,22 @@ if($page->loginHelper->userIsAdmin()) {
         $body .= "<div>\n";
         $body .= "<ol>\n";
 
-        $body .= "<li><b>Pr&eacute;-&eacute;tude et avant-projet</b><br/>\n";
+        $body .= "<li><b>Pr&eacute;-&eacute;tude et avant-projet</b><br>\n";
         $body .= "Avant-projet avec plusieurs propositions d'esquises.\n";
         $body .= "Quand les choix sont faits, on peut avoir un devis estimatif.\n";
         $body .= "</li>\n";
 
-        $body .= "<li><b>Projet d&eacute;finitif</b><br/>\n";
+        $body .= "<li><b>Projet d&eacute;finitif</b><br>\n";
         $body .= "D&eacute;tails et plans d&eacute;finitifs, et plan financier.\n";
         $body .= "Prend du temps (pour faire co&iuml;ncider les plans avec le budget).\n";
         $body .= "</li>\n";
 
-        $body .= "<li><b>Proc&eacute;dure d'autorisation de construire</b><br/>\n";
+        $body .= "<li><b>Proc&eacute;dure d'autorisation de construire</b><br>\n";
         $body .= "L'architecte fournit aux autorit&eacute;s: les plans d&eacute;taill&eacute;s, les documents, les calculs.\n";
         $body .= "Pose des gabarits.\n";
         $body .= "</li>\n";
 
-        $body .= "<li><b>Mise $aa l'enqu&ecirc;te</b><br/>\n";
+        $body .= "<li><b>Mise $aa l'enqu&ecirc;te</b><br>\n";
         $body .= "Apr&egrave;s que les autorit&eacute;s aient accept&eacute;, le projet est mis $aa l'enqu&ecirc;te\n";
         $body .= "(feuille d'avis officiels et pilier public de la commune).\n";
         $body .= "Il y a ensuite un d&eacute;lai de 14-30 jours pour r&eacute;colter les oppositions.\n";
@@ -1563,7 +1563,7 @@ if($page->loginHelper->userIsAdmin()) {
 
         $body .= $page->bodyBuilder->lili("<b>D&eacute;but des travaux</b>");
 
-        $body .= "<li><b>Remise des cl&eacute;s et d&eacute;compte final</b><br/>\n";
+        $body .= "<li><b>Remise des cl&eacute;s et d&eacute;compte final</b><br>\n";
         $body .= "L'objet est remis au $proprio.\n";
         $body .= "Celui-ci doit faire un contr&ocirc;le d&eacute;taill&eacute; pour les d&eacute;fauts, probl&egrave;mes, oublis.\n";
         $body .= "Quand les travaux sont finis et toutes les factures re&ccedil;ues, on peut faire le d&eacute;compte final.\n";
@@ -1648,14 +1648,14 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= "<div>\n";
     $body .= "<ul>\n";
 
-    $body .= "<li><b>Protocole d'acccord/r&eacute;servation</b><br/>\n";
+    $body .= "<li><b>Protocole d'acccord/r&eacute;servation</b><br>\n";
     $body .= "Ce n'est ni un acte nontari&eacute;, ni un contrat l&eacute;gal.\n";
     $body .= "Convention &eacute;crite sign&eacute;e par les 2 parties, elle fixe les volont&eacute;s.\n";
     $body .= "Elle s'accompagne d'un premier versement modeste.\n";
     $body .= "Mais elle n'apporte aucune garantie pour les 2 parties.\n";
     $body .= "</li>\n";
 
-    $body .= "<li><b>Promesse d'achat/de vente</b><br/>\n";
+    $body .= "<li><b>Promesse d'achat/de vente</b><br>\n";
     $body .= "Tr&egrave;s courante.\n";
     $body .= "Tous les d&eacute;tails ne sont pas encore r&eacute;gl&eacute;s.\n";
     $body .= "On convient d'un contrat futur, mais la promesse n'implique pas de transfert de la propri&eacute;t&eacute;.\n";
@@ -1665,7 +1665,7 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= "Si une des parties se r&eacute;tracte, le juge peut l'obliger $aa tenir ses engagements.\n";
     $body .= "</li>\n";
 
-    $body .= "<li><b>Droit de pr&eacute;emption</b><br/>\n";
+    $body .= "<li><b>Droit de pr&eacute;emption</b><br>\n";
     $body .= "C'est le droit d'acheter en priorit&eacute; en cas de vente.\n";
     $body .= "<ul>\n";
 
@@ -1681,7 +1681,7 @@ if($page->loginHelper->userIsAdmin()) {
     $body .= "</ul>\n";
     $body .= "</li>\n";
 
-    $body .= "<li><b>Droit d'emption</b><br/>\n";
+    $body .= "<li><b>Droit d'emption</b><br>\n";
     $body .= "Il s'agit d'un achat dans des conditions et dans des d&eacute;lais fix&eacute;s (max 10 ans).\n";
     $body .= "S'il est inscrit au $RF, il assure que le vendeur ne vende pas l'objet $aa un tiers.\n";
     $body .= "C'est utile si la banque n'est pas encore pr&ecirc;te.\n";

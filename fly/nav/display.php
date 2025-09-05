@@ -6,7 +6,7 @@ $funcpath = "$rootPath/functions";
 require_once("common.php");
 
 
-$docVersion = "2024-11-22";
+$docVersion = "2025-07-13";
 
 $page = new PhPage($rootPath);
 $page->bobbyTable->init();
@@ -68,6 +68,7 @@ class Aircraft {
                 public $massUnit = "";  // Mass unit
                 private $massUnitInUse = "";  // mass unit of the stored value
                 public $maxMass = 0;  // Maximum mass
+                public $isArmlessAllowed = false;
 
                 public function __construct() {
                     global $kDefaultPrecision;
@@ -123,10 +124,10 @@ class Aircraft {
                     }
 
                     global $kArmless;
-                    if($this->arm == $kArmless && $this->mass > 0) {
+                    if(!$this->isArmlessAllowed && $this->arm == $kArmless && $this->mass > 0) {
                         // Arm not available BUT mass provided: error
                         global $page;
-                        $page->logger->fatal("Cannot set mass for armless: " . (string)$this);  // never reached
+                        $page->logger->fatal("Cannot set mass for armless: " . (string)$this);
                     }
 
                     return $this->rounding($this->mass * $this->arm);
@@ -224,6 +225,7 @@ class Aircraft {
                     $this->dryEmpty = new MassMomentObject();
 
                     $this->front = new MassMomentObject();
+                    $this->front->isArmlessAllowed = true;
 
                     $this->rears = array();
                     global $kRearStationsNum;
@@ -382,6 +384,21 @@ class Aircraft {
 
             $gcData = new GcData();
 //
+    // GC table entries
+    class GcTableCell {
+        public $value;
+        public $color;
+        public $rowspan;
+        public $tooHeavy = false;
+        public $small = false;
+
+        public function __construct($value=NULL, $color=NULL, $rowspan=NULL) {
+            $this->value = $value;
+            $this->color = $color;
+            $this->rowspan = $rowspan;
+        }
+    }
+//
     // Fuel requirements
     // Store
     // * tanks (total capacity, unusable, allOrNothing, quantity)
@@ -460,6 +477,12 @@ class Aircraft {
             public function getFuelMass($quantity) {
                 global $kFuelTypes;
                 global $kFuelUnits;
+
+                if($this->fuelUnit == "?" || $this->fuelType == "?") {
+                    // plane not defined
+                    return 0;
+                }
+
                 return round($quantity * $kFuelUnits[$this->fuelUnit] * $kFuelTypes[$this->fuelType], $this->precision);  // [kg]
             }
 
@@ -888,8 +911,9 @@ class Aircraft {
                 $attrQ = array("class" => "num");
 
                 if($this->overflow > 0) {
+                    global $kStrings;
                     $attrQ["style"] = "background-color: red;";
-                    $htmlRow = $page->butler->cell("OVERFLOW: {$this->overflow}", array("style" => "background-color: red;"));
+                    $htmlRow = $page->butler->cell("{$kStrings['overflow']}: {$this->overflow}", array("style" => "background-color: red;"));
                 }
 
                 $htmlRow .= $page->butler->cell($this->getRampFuel(), $attrQ);
@@ -907,15 +931,15 @@ class Aircraft {
              *     (string) LaTeX cells
              */
             public function latexRow($fuelEntry) {
-                global $page;
-
                 if(!$this->isValid()) {
                     return "&&";
                 }
 
                 $minutes = $this->getEntryMinutes($fuelEntry);
 
-                $latexRow = "\\multicolumn{2}{c}{\\DarkGray}\n";
+                $latexRow = "\\multicolumn{2}{c}{\\DarkGrayCell}\n";
+
+                global $page;
 
                 if($minutes > 0) {
                     $latexRow = " {$page->timeHelper->minutes2HoursInt($minutes)}&";
@@ -937,10 +961,11 @@ class Aircraft {
                     return "&&";
                 }
 
-                $latexRow = "\\multicolumn{2}{c}{\\DarkGray}\n";
+                $latexRow = "\\multicolumn{2}{c}{\\DarkGrayCell}\n";
 
                 if($this->overflow > 0) {
-                    $latexRow = "\\multicolumn{2}{c}{\\RedCell OVERFLOW: {$this->overflow}}\n";
+                    global $kStrings;
+                    $latexRow = "\\multicolumn{2}{c}{\\RedCell {$kStrings['overflow']}: {$this->overflow}}\n";
                 }
 
                 $latexRow .= "& {$this->getRampFuel()}\n";
@@ -979,12 +1004,13 @@ class Aircraft {
         $kStrings["latexUnitDeg"] = "$[^{\\textrm{o}}]$";
         $kStrings["htmlUnitDeg"] = "[&deg;]";
         $kStrings["Plus5"] = "+5";
+        $kStrings["Plus10"] = "+10";
         $kStrings["latexCopyright"] = "{\\footnotesize\\textcopyright}";
         $kStrings["htmlCopyright"] = "&copy;";
 
         // TOD
         $kStrings["TopOfDescent"] = "TOD";
-        $kStrings["TOD1"] = "120kts (2NM/min) 500 ft/min (children -12: 300)<br/>3deg makes descent rate = GS x5";
+        $kStrings["TOD1"] = "120kts (2NM/min) 500 ft/min (children -12: 300)<br>3deg makes descent rate = GS x5";
         $kStrings["TOD2"] = "1NM attitude change";
         $kStrings["TOD3"] = "2NM speed decrease";
         $kStrings["TOD4"] = "2NM approach check (if needed)";
@@ -1005,6 +1031,7 @@ class Aircraft {
         $kStrings["USG"] = "USG";
         $kStrings["ImpG"] = "Imp.G";
         $kStrings["Avgas"] = "Avgas";
+        $kStrings["overflow"] = "OVERFLOW";
 
         // TH with wind
         $kStrings["THwind"] = "TH with wind";
@@ -1033,15 +1060,15 @@ class Aircraft {
      * @SuppressWarnings(PHPMD.Superglobals)
      */
     function duplicateNav($isAdmin) {
-        global $page;
-        global $kTable;
-        global $kDefaultLuggageMass;
-
         if(!isset($_GET["dup"]) || !$isAdmin) {
             return;
         }
 
         $dupID = $_GET["dup"];
+
+        global $page;
+        global $kTable;
+        global $kDefaultLuggageMass;
 
         $navQuery = "INSERT INTO `{$page->bobbyTable->dbName}`.`$kTable` (";
         $navQuery .= "`name`, `plane`, `variation`,";
@@ -1086,622 +1113,1562 @@ class Aircraft {
 //
 
     // some functions
-        // sin degrees
-        function sind($alpha) {
-            return sin($alpha * pi() / 180.0);
-        }
-    //
-        // asin degrees
-        function asind($val) {
-            return 180.0 / pi() * asin($val);
-        }
-    //
-        // Compute EET
-        function ComputeEET($distance, $speed) {
-            return round($distance * 60.0 / $speed);
-        }
-    //
-        // heading visual
-        function headingText($heading, $wpNum) {
-            if($heading > 0) {
-                return sprintf("%03d", $heading);
+        // compute
+            // sin degrees
+            function sind($alpha) {
+                return sin($alpha * pi() / 180.0);
             }
-
-            global $kWaypoints;
-            if($kWaypoints->isStartLast($wpNum)) {
-                return "VAC";
+        //
+            // asin degrees
+            function asind($val) {
+                return 180.0 / pi() * asin($val);
             }
-
-            return "V";
-        }
-    //
-        // html2latex
-        function html2latex($string) {
-            $back = preg_replace("/&([aeiouy])(acute|grave|circ|uml);/", "$1", $string);
-            $back = preg_replace("/#/", "\\#", $back);
-            return $back;
-        }
-    //
-        // LaTeX head: usepackages
-        function LaTeXusePackages() {
-            $latexhead = "";
-            $latexhead .= "% Usepackages {{{\n";
-                $latexhead .= "% General {{{\n";
-                $latexhead .= "\\usepackage[T1]{fontenc}\n";
-                $latexhead .= "\\usepackage{lmodern}\n";
-                $latexhead .= "\\usepackage[english]{babel}\n";
-                $latexhead .= "% }}}\n";
-            //
-                $latexhead .= "% Math {{{\n";
-                $latexhead .= "\\usepackage{amsmath}\n";
-                $latexhead .= "%\\usepackage{amssymb}\n";
-                $latexhead .= "% }}}\n";
-            //
-                $latexhead .= "% Hyper refs {{{\n";
-                $latexhead .= "\\usepackage{hyperref}\n";
-                $latexhead .= "\\hypersetup{\n";
-                $latexhead .= "    colorlinks        = true,\n";
-                $latexhead .= "    bookmarks         = true,\n";
-                $latexhead .= "    bookmarksnumbered = false,\n";
-                $latexhead .= "    linkcolor         = black,\n";
-                $latexhead .= "    urlcolor          = blue,\n";
-                $latexhead .= "    citecolor         = blue,\n";
-                $latexhead .= "    filecolor         = blue,\n";
-                $latexhead .= "    hyperfigures      = true,\n";
-                $latexhead .= "    breaklinks        = false,\n";
-                $latexhead .= "    ps2pdf,\n";
-                $latexhead .= "    pdftitle          = {\\ThisTitle},\n";
-                $latexhead .= "    pdfsubject        = {\\ThisTitle},\n";
-                $latexhead .= "    pdfauthor         = {\\ThisAuthors}\n";
-                $latexhead .= "}\n";
-                $latexhead .= "% }}}\n";
-            //
-                $latexhead .= "% Tables and lists {{{\n";
-                $latexhead .= "\\usepackage{longtable}\n";
-                $latexhead .= "\\usepackage{multirow}\n";
-                $latexhead .= "\\usepackage{colortbl}\n";
-                $latexhead .= "\\usepackage{hhline}\n";
-                $latexhead .= "% }}}\n";
-            //
-                $latexhead .= "% Making stuff fancy (not fancyhdr package) {{{\n";
-                $latexhead .= "\\usepackage{enumitem}\n";
-                $latexhead .= "\\setlist{noitemsep}\n";
-                $latexhead .= "\\usepackage[landscape,a4paper]{geometry}\n";
-                $latexhead .= "% }}}\n";
-            $latexhead .= "% End of usepackages }}}\n";
-
-            return $latexhead;
-        }
-    //
-        // LaTeX head: 1st line
-        function LaTeXdefinition($docVersion) {
-            $latexhead = "";
-            $latexhead .= "%\n";
-            $latexhead .= "\\newcommand*{\\DocVersion}{ $docVersion}\n";
-                $latexhead .= "% Headers {{{\n";
-                $latexhead .= "\\documentclass[12pt,a4paper]{article}\n";
-                $latexhead .= "%\n";
-                    $latexhead .= "% Document variables {{{\n";
-                    $latexhead .= "\\newcommand*{\\Gael}{Ga\\\"el Induni}\n";
-                    $latexhead .= "\\newcommand*{\\ThisAuthors}{\\Gael}\n";
-                    $latexhead .= "\\newcommand*{\\ThisTitle}{Navigation plan}\n";
-                    $latexhead .= "\\newcommand*{\\ThisTitleSHORT}{\\ThisTitle}\n";
-                    $latexhead .= "% End of document variables }}}\n";
-
-                $latexhead .= LaTeXusePackages();
-
-                    $latexhead .= "% Document size {{{\n";
-                    $latexhead .= "\\setlength{\\topmargin}{-8mm}\n";
-                    $latexhead .= "\\setlength{\\textheight}{180mm}\n";
-                    $latexhead .= "\\setlength{\\hoffset}{-28mm}\n";
-                    $latexhead .= "\\setlength{\\textwidth}{280mm}\n";
-                    $latexhead .= "\\setlength{\\evensidemargin}{9mm}\n";
-                    $latexhead .= "\\setlength{\\parskip}{0.5ex}\n";
-                    $latexhead .= "% End of document size }}}\n";
-                //
-                    $latexhead .= "% Fancy and header and footer rules {{{\n";
-                    $latexhead .= "\\usepackage{fancyhdr}\n";
-                    $latexhead .= "%\\usepackage{lastpage}\n";
-                    $latexhead .= "%\\newcommand*{\\LastPage}{\\pageref{LastPage}}\n";
-                    $latexhead .= "% Defining document filename\n";
-                    $latexhead .= "\\newcommand*{\\GoodJob}{\\jobname.pdf}\n";
-                    $latexhead .= "% Fancy!\n";
-                    $latexhead .= "\\fancypagestyle{plain}{%\n";
-                    $latexhead .= "\\fancyhf{}\n";
-                    $latexhead .= "\\fancyhf[HR]{\\ThisAuthors}\n";
-                    $latexhead .= "\\fancyhf[HL]{NavPlan.pdf\\ v.~\\DocVersion}\n";
-                    $latexhead .= "%\\fancyhf[FRO,FLE]{\\thepage/\\LastPage}\n";
-                    $latexhead .= "% Rules at top and bottom\n";
-                    $latexhead .= "}\n";
-                    $latexhead .= "\\pagestyle{plain}\n";
-                    $latexhead .= "\\renewcommand{\\headrulewidth}{0.4pt}\n";
-                    $latexhead .= "%\\renewcommand{\\footrulewidth}{0.4pt}\n";
-                    $latexhead .= "% End of fancy }}}\n";
-                //
-                    $latexhead .= "% New commands {{{\n";
-                    //$latexhead .= "\\renewcommand{\\geq}{\\geqslant}\n";
-                    //$latexhead .= "\\renewcommand{\\leq}{\\leqslant}\n";
-                    $latexhead .= "\\newcommand*{\\oC}{\\ensuremath{^{\\circ}C}}\n";
-                    $latexhead .= "\\AtBeginDocument{\\renewcommand{\\labelitemi}{\\textbullet}}\n";
-                    $latexhead .= "\\newcommand*{\\DarkGray}{\\cellcolor[gray]{0.66}}\n";
-                    $latexhead .= "\\newcommand*{\\Gray}{\\cellcolor[gray]{0.8}}\n";
-                    $latexhead .= "\\newcommand*{\\RedCell}{\\cellcolor[rgb]{1,0,0}}\n";
-                    $latexhead .= "% End of new commands }}}\n";
-                $latexhead .= "% }}}\n";
-            $latexhead .= "%\n";
-            $latexhead .= "\\begin{document}\n";
-            $latexhead .= "%\n";
-
-            return $latexhead;
-        }
-    //
-        // LaTeX head: first table
-        function LaTeXheader1stTable($plane, $name, $variation=NULL) {
-            if ($variation === NULL) {
-                global $kDefaultVariation;
-                $variation = $kDefaultVariation;
+        //
+            // Compute EET
+            function ComputeEET($distance, $speed) {
+                return round($distance * 60.0 / $speed);
             }
+        //
+            // heading visual
+            function headingText($heading, $wpNum) {
+                if($heading > 0) {
+                    return sprintf("%03d", $heading);
+                }
 
-            $longID = preg_replace("/-/", "---", $plane->identification);
+                global $kWaypoints;
+                if($kWaypoints->isStartLast($wpNum) && $wpNum != $kWaypoints->alternate->start) {
+                    return "VAC";
+                }
 
-            $latexhead = "";
-            $latexhead .= "\\mbox{}\n";
-            $latexhead .= "\\vspace{-16mm}\n";
-            $latexhead .= "% Header {{{\n";
-            $latexhead .= "\\begin{longtable}{|c|c|c||c|}\n";
-                $latexhead .= "xxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxx\n";
-                $latexhead .= "& xxxxxxxxxxxxx\n";
-                $latexhead .= "& 0000000000\n";
-                $latexhead .= "&\\kill\n";
-            //
-                $latexhead .= "\\multirow{2}{*}{" . html2latex($name) . "}\n";
-                $latexhead .= "& {$plane->type}\n";
-                $latexhead .= "& TAS  [kts]\n";
-                $latexhead .= "& \\multirow{2}{*}{VAR: \$$variation^{\\textrm{o}} \\textrm{E}$}\n";
-                $latexhead .= "\\\\\\hhline{~--~}\n";
-            //
-                $latexhead .= "%\n";
-                $latexhead .= "&{$longID}\n";
-                $latexhead .= "&";
+                return "V";
+            }
+        //
+            /**
+             * Compute row of GC table.
+             *
+             * @SuppressWarnings(PHPMD.MissingImport)
+             */
+            function computeGcTableRow($gcDataField, $stringId, $extraString="") {
+                global $kArmless;
 
-                if($plane->speedPlanning > 0) {
-                    $latexhead .= $plane->speedPlanning;
+                if($gcDataField->getArm() == $kArmless) {
+                    return NULL;
+                }
 
-                    if($plane->speedClimb > 0) {
-                        $latexhead .= " ({$plane->speedClimb})";
+                global $kStrings;
+
+                $label = $kStrings[$stringId];
+                if($extraString != "") {
+                    $label .= " $extraString";
+                }
+
+                global $kNoArm;
+                if($gcDataField->getArm() == $kNoArm) {
+                    return array(new GcTableCell($label), new GcTableCell(), new GcTableCell(), new GcTableCell());
+                }
+
+                $mass = new GcTableCell($gcDataField->mass);
+                if($gcDataField->isMassTooMuch()) {
+                    $mass->tooHeavy = true;
+                }
+
+                global $kDefaultPrecision;
+                $arm = new GcTableCell($gcDataField->getArm());
+                $moment = new GcTableCell(round($gcDataField->getMoment(), $kDefaultPrecision));
+
+                return array(new GcTableCell($label), $mass, $arm, $moment);
+            }
+        //
+            /**
+             * Compute GC: takes gcData and outputs the data for the table.
+             *
+             * Returns:
+             *     array: each item is array(label, mass, arm, moment)
+             *     label can be a key in kStrings
+             *
+             * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+             * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+             * @SuppressWarnings(PHPMD.NPathComplexity)
+             * @SuppressWarnings(PHPMD.MissingImport)
+             */
+            function computeGC($gcData, $fuelReq) {
+                global $kStrings;
+
+                $rows = array();
+
+                    // empty
+                    $dryEmpty = $kStrings["DryEmpty"];
+                    if($gcData->dryEmptyTimestamp !== NULL && $gcData->dryEmptyTimestamp != "") {
+                        $dryEmpty .= " ({$gcData->dryEmptyTimestamp})";
                     }
-                }
 
-                $latexhead .= "\n";
-                $latexhead .= "\\\\\n";
-            $latexhead .= "\n\\end{longtable}\n";
-            $latexhead .= "% }}}\n";
+                    $rows[] = array(
+                        new GcTableCell($dryEmpty),
+                        new GcTableCell(($gcData->dryEmpty->mass > 0) ? $gcData->dryEmpty->mass : NULL),
+                        new GcTableCell(),
+                        new GcTableCell(($gcData->dryEmpty->getMoment() > 0) ? $gcData->dryEmpty->getMoment() : NULL)
+                    );
 
-            return $latexhead;
-        }
-    //
-        // LaTeX head: header of 2nd table
-        function LaTeXheader2ndTableHead() {
-            global $kStrings;
+                $rows[] = computeGcTableRow($gcData->front, "Front");
 
-            $latexhead = "";
-            $latexhead .= "\\vspace{-8.7mm}\n";
-
-            // Make rows a little larger from now on
-            $latexhead .= "\\renewcommand*{\\arraystretch}{1.7}\n";
-
-            $latexhead .= "% Nav plan {{{\n";
-            $latexhead .= "\\begin{longtable}{%\n";
-            $latexhead .= "    |c|l|%\n";
-            $latexhead .= "    >{\\columncolor[gray]{0.75}}c|c|c|c|c|%\n";
-            $latexhead .= "    |>{\\columncolor[gray]{0.88}}c|>{\\columncolor[gray]{0.88}}c|c|c|c|%\n";
-            $latexhead .= "    |c|c||l|%\n";
-            $latexhead .= "}\n";
-                $latexhead .= "% Template width {{{\n";
-                $latexhead .= "i\n";
-                $latexhead .= "& bla bla bla bla bla bla\n";
-                $latexhead .= "& 00000\n";
-                $latexhead .= "& 00000\n";
-                $latexhead .= "&\n";
-                $latexhead .= "& altitudeee\n";
-                $latexhead .= "&\n";
-                $latexhead .= "& 00000\n";
-                $latexhead .= "&\n";
-                $latexhead .= "& 00000\n";
-                $latexhead .= "& 00000\n";
-                $latexhead .= "&\n";
-                $latexhead .= "& 0000\n";
-                $latexhead .= "& 0000\n";
-                $latexhead .= "& bla bla bla bla bla bla bla\n";
-                $latexhead .= "\\kill\n";
-                $latexhead .= "% }}}\n";
-            $latexhead .= "% Head {{{\n";
-            $latexhead .= "\\hline\n";
-                $latexhead .= "\\multicolumn{2}{|c|}{\\multirow{2}{*}{{$kStrings["Waypoint"]}}} &\n";
-                $latexhead .= $kStrings["TrueCourse"] . " &\n";
-                $latexhead .= $kStrings["MagneticCourse"] . " &\n";
-                $latexhead .= $kStrings["Dist"] . " &\n";
-                $latexhead .= $kStrings["Altitude"] . " &\n";
-                $latexhead .= $kStrings["EstimatedElapsedTime"] . " &\n";
-                $latexhead .= "\\multicolumn{2}{c|}{\\cellcolor[gray]{0.88}{$kStrings["Wind"]}} &\n";
-                $latexhead .= $kStrings["MagneticHeading"] . " &\n";
-                $latexhead .= $kStrings["GroundSpeed"] . " &\n";
-                $latexhead .= $kStrings["EstimatedElapsedTime"] . " &\n";
-                $latexhead .= "\\multirow{2}{*}{{$kStrings["EstimatedTimeOver"]}} &\n";
-                $latexhead .= "\\multirow{2}{*}{{$kStrings["ActualTimeOver"]}} &\n";
-                $latexhead .= "\\multirow{2}{*}{{$kStrings["Notes"]}}\n";
-                $latexhead .= "\\\\\n";
-                $latexhead .= "\\hhline{~~~~~~~--~~~~~~}\n";
-            //
-                $latexhead .= "\\multicolumn{2}{|c|}{} &\n";
-                $latexhead .= $kStrings["latexUnitDeg"] . " &\n";
-                $latexhead .= $kStrings["latexUnitDeg"] . " &\n";
-                $latexhead .= $kStrings["unitNM"] . " &\n";
-                $latexhead .= $kStrings["unitFt"] . " &\n";
-                $latexhead .= $kStrings["unitMin"] . " &\n";
-                $latexhead .= $kStrings["latexUnitDeg"] . " &\n";
-                $latexhead .= $kStrings["unitKts"] . " &\n";
-                $latexhead .= $kStrings["latexUnitDeg"] . " &\n";
-                $latexhead .= $kStrings["unitKts"] . " &\n";
-                $latexhead .= $kStrings["unitMin"] . " &\n";
-                $latexhead .= "&\n";
-                $latexhead .= "&\n";
-                $latexhead .= "\\\\\n";
-                $latexhead .= "\\hline\n";
-            $latexhead .= "% }}}\n";
-            $latexhead .= "\\endhead\n";
-            $latexhead .= "\\hline\\endfoot\n";
-
-            return $latexhead;
-        }
-    //
-        // LaTeX head
-        function LaTeXheader($docVersion, $plane, $name="", $variation=NULL) {
-            $latexhead = LaTeXdefinition($docVersion);
-            $latexhead .= LaTeXheader1stTable($plane, $name, $variation);
-            $latexhead .= LaTeXheader2ndTableHead();
-            return $latexhead;
-        }
-    //
-        // LaTeX end of header
-        function LaTeXheaderEnd() {
-            $latexhead = "";
-            $latexhead .= "\\end{longtable}\n";
-            $latexhead .= "\\renewcommand*{\\arraystretch}{1.0}\n";
-            $latexhead .= "% }}}\n";
-            $latexhead .= "%\n";
-            return $latexhead;
-        }
-    //
-        // LaTeX 2nd page left column
-        function LaTeX2left() {
-            // beginning of second page
-            global $kStrings;
-
-            $contents = "";
-
-            $contents .= "\\clearpage\n";
-            $contents .= "\\fancyhf{}\n";
-            $contents .= "\\renewcommand{\\headrulewidth}{0pt}\n";
-            $contents .= "\\noindent\n";
-            $contents .= "\\begin{minipage}{0.49\\textwidth}\n";
-
-            $contents .= "{\\Large\n";
-            $contents .= "% {$kStrings["TopOfDescent"]} {{{\n";
-            $contents .= "\\textbf{{$kStrings["TopOfDescent"]}:}\n";
-            $contents .= "\\begin{itemize}\n";
-            $tod1 = preg_replace("/<br\/>/", "\\\\\\", $kStrings["TOD1"]);
-            $contents .= "    \\item {$tod1}\n";
-            $contents .= "    \\item {$kStrings["TOD2"]}\n";
-            $contents .= "    \\item {$kStrings["TOD3"]}\n";
-            $contents .= "    \\item ({$kStrings["TOD4"]})\n";
-            $contents .= "\\end{itemize}\n";
-            $contents .= "% }}}\n";
-            $contents .= "}  % Large\n";
-
-            return $contents;
-        }
-    //
-        // LaTeX 2nd page right column
-        function LaTeX2right() {
-            // change to 2nd column
-            //global $kStrings;
-
-            $contents = "\\vspace*{6mm}\n";
-            $contents .= "\\end{minipage}\n";
-
-            $contents .= "\\begin{minipage}{0.50\\textwidth}\n";
-            $contents .= "\\vspace{-7mm}\n";
-
-            // Disable this: not useful during flight and not enough space on paper
-            //$contents .= "% {$kStrings["THwind"]} {{{\n";
-            //$contents .= "{\n";
-            //$contents .= $kStrings["THwind"] . ":\n";
-            //$contents .= "\\begin{enumerate}\n";
-            //$contents .= "\\item $\\alpha_1 = (360 + \\textrm{TC} - \\textrm{WH}) \\% 360^{\\circ}$ and $\\textrm{sign} = 1$\n";
-            //$contents .= "\\item if $\\alpha_1 > 180: \\alpha_1 = (360 + \\textrm{WH} - \\textrm{TC}) \\% 360^{\\circ}$ and $\\textrm{sign} = -1$\n";
-            //$contents .= "\\item $\\alpha_2 = \\arcsin \\left( \\frac{\\textrm{WS}}{\\textrm{TS}} \\cdot \\sin \\alpha_1 \\right)$\n";
-            //$contents .= "\\item $\\alpha_3 = 180 - (\\alpha_1 + \\alpha_2)$\n";
-            //$contents .= "\\item $\\textrm{TH} = \\textrm{TC} + \\textrm{sign} \\cdot \\alpha_2$\n";
-            //$contents .= "\\item $\\textrm{GS} = \\frac{\\sin \\alpha_3}{\\sin \\alpha_1} \\cdot \\textrm{TS}$\n";
-            //$contents .= "\\end{enumerate}\n";
-            //$contents .= "}\n";
-
-
-            $contents .= "% }}}\n";
-            return $contents;
-        }
-    //
-        // LaTeX end
-        function LaTeXend() {
-            // end of LaTeX
-            global $kFuelTypes;
-            global $kFuelUnits;
-            global $kStrings;
-            global $usgAvgas2lbs;
-
-            $latexend = "";
-            $latexend .= "\\vspace{-2mm}\n";
-            $latexend .= "{\\small\n";
-            $latexend .= "$1\\ \\textrm{{$kStrings["USG"]}} = {$kFuelUnits["USG"]}\\ l$\n";
-            $latexend .= "\\hspace{17mm}\n";
-            $latexend .= "$1\\ l\\ \\textrm{{$kStrings["Avgas"]}} = {$kFuelTypes["AVGAS"]}\\ kg$\n";
-            $latexend .= "\\\\\n";
-            $latexend .= "$1\\ \\textrm{{$kStrings["ImpG"]}} = {$kFuelUnits["ImpG"]}\\ l$\n";
-            $latexend .= "\\hspace{17mm}\n";
-            $latexend .= "$1\\ \\textrm{{$kStrings["USG"]} {$kStrings["Avgas"]}} = $usgAvgas2lbs$ lbs\n";
-            $latexend .= "}  % small\n";
-            $latexend .= "% }}}\n";
-            $latexend .= "\\end{minipage}\n";
-            $latexend .= "\\end{document}\n";
-            return $latexend;
-        }
-    //
-        /**
-         * HTML header: first table
-         *
-         * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-         * @SuppressWarnings(PHPMD.NPathComplexity)
-         */
-        function htmlHeader1stTable($name, $plane, $variation, $gcData) {
-            global $kStrings;
-
-            $htmlHead = "";
-
-            $htmlHead .= "<div class=\"NavIntro\">\n";
-            $htmlHead .= "<div><b>Navigation:</b> $name</div>\n";
-
-            $planeID = "not chosen yet";
-            if($plane->sqlID > 0) {
-                $planeID = "{$plane->identification} ({$plane->type})";
-            }
-
-            $htmlHead .= "<div><b>Airplane:</b> $planeID</div>\n";
-
-            if($plane->sqlID > 0) {
-                $htmlHead .= "<div><b>Planning speed:</b> {$plane->speedPlanning}kts (climb: {$plane->speedClimb}kts)</div>\n";
-            }
-
-            $htmlHead .= "<div><b>Variation:</b> $variation&deg;E</div>\n";
-
-            // mass
-            global $kArmless;
-            $htmlHead .= "<div>\n";
-            $htmlHead .= "<b>Mass [kg]:</b>\n";
-            $htmlHead .= "<ul>\n";
-
-                // Front
-                $htmlHead .= "<li>{$kStrings["Front"]}: {$gcData->front->mass}";
-
-                if($gcData->front->isMassTooMuch()) {
-                    $htmlHead .= " {$kStrings['htmlTooHeavy']}";
-                }
-
-                $htmlHead .= "</li>\n";
-            //
-                // Rears
-                $htmlHead .= "<li>{$kStrings['Rear']}s: ";
-
+                // rears...
                 $rearsCount = count($gcData->rears);
                 for ($i = 0; $i < $rearsCount; ++$i) {
-                    if($gcData->rears[$i]->arm == $kArmless) {
-                        continue;
+                    $row = computeGcTableRow($gcData->rears[$i], "Rear", "#" . ($i + 1));
+                    if($row !== NULL) {
+                        $rows[] = $row;
                     }
-
-                    $htmlHead .= "#" . ($i + 1) . "={$gcData->rears[$i]->mass}";
-                    if($gcData->rears[$i]->isMassTooMuch()) {
-                        $htmlHead .= " {$kStrings['htmlTooHeavy']}";
-                    }
-                    $htmlHead .= " - ";
                 }
-                $htmlHead = substr($htmlHead, 0, -3);  // remove trailing separator
-                $htmlHead .= "</li>\n";
-            //
-                // Luggages
-                $htmlHead .= "<li>{$kStrings['Luggage']}s: ";
 
+                // luggages...
                 $luggagesCount = count($gcData->luggages);
                 for ($i = 0; $i < $luggagesCount; ++$i) {
-                    if($gcData->luggages[$i]->arm == $kArmless) {
+                    $row = computeGcTableRow($gcData->luggages[$i], "Luggage", "#" . ($i + 1));
+                    if($row !== NULL) {
+                        $rows[] = $row;
+                    }
+                }
+                // luggage total mass
+                if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
+                    $row = array(
+                        new GcTableCell("{$kStrings['Luggage']} total mass", "red"),
+                        new GcTableCell(
+                            "{$kStrings['TooHeavy']} {$gcData->luggageTotalMass->mass} > {$gcData->luggageTotalMass->maxMass}",
+                            "red"
+                        ),
+                        new GcTableCell(),
+                        new GcTableCell()
+                    );
+                    $rows[] = $row;
+                }
+
+                // unusable fuels...
+                $unusablesCount = count($gcData->fuelUnusables);
+                for ($i = 0; $i < $unusablesCount; ++$i) {
+                    $tank = $fuelReq->tanks[$i];
+
+                    $label = "#" . ($i + 1);
+                    if($tank->unusable > 0) {
+                        // If we do the template, we do not want to display this (empty) value
+                        $label .= "={$tank->unusable}{$tank->fuelUnit}";
+                    }
+
+                    $row = computeGcTableRow($gcData->fuelUnusables[$i], "UnusableFuel", $label);
+                    if($row !== NULL) {
+                        $rows[] = $row;
+                    }
+                }
+                    // set LaTeX hline
+                    $lastRow = array_pop($rows);
+                    if($lastRow !== NULL) {
+                        $lastRow[] = "hhline{====}";
+                    };
+                    $rows[] = $lastRow;
+                //
+                $gcMin = $gcData->gcBoundaries->min == 0 ? "?" : $gcData->gcBoundaries->min;
+                $gcMax = $gcData->gcBoundaries->max == 0 ? "?" : $gcData->gcBoundaries->max;
+
+                    // 0-fuel 3 rows: GCmin, values, MLdgW+GCmax
+                    $gcMinColor = ($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min) ? "red" : "gray";
+                    $gcMaxColor = ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max) ? "red" : "gray";
+                    $gcColor = (
+                        ($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min)
+                        || ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max)
+                    ) ? "red" : "gray";
+
+                    // color red 0-fuel mass if more than maxLdgW
+                    $massPrefix = "";
+                    $mldgwColor = "gray";
+                    if ($gcData->maxLdgW > 0 && $gcData->zeroFuel->mass > $gcData->maxLdgW) {
+                        $massPrefix = $kStrings["TooHeavy"] . " ";
+                        $mldgwColor = "red";
+                    }
+
+                        // minimums
+                        $gcMinCell = new GcTableCell("min=$gcMin", $gcMinColor);
+                        $gcMinCell->small = true;
+
+                        $rows[] = array(
+                            new GcTableCell("ZeroFuel", "gray", 3),
+                            new GcTableCell(NULL, $mldgwColor),
+                            $gcMinCell,
+                            new GcTableCell(
+                                ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ?  $gcData->zeroFuel->getMoment() : NULL,
+                                "gray",
+                                3
+                            ),
+                            "hhline{~---}"
+                        );
+                    //
+                        // values
+                        $mass = "";
+                        if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
+                            $mass = "{$massPrefix}{$gcData->zeroFuel->mass}";
+                        }
+
+                        $rows[] = array(
+                            new GcTableCell(),
+                            new GcTableCell($mass, $mldgwColor),
+                            new GcTableCell(
+                                ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ?  $gcData->zeroFuel->getArm() : NULL,
+                                $gcColor
+                            ),
+                            new GcTableCell(),
+                            "hhline{~---}"
+                        );
+                    //
+                        // maximums
+                        $mldgwCell = new GcTableCell();
+                        if($gcData->maxLdgW > 0) {
+                            // Special: color red 0-fuel mass if Take-off mass is more than maxLdgW
+                            $mldgwPrefix = "";
+                            $mldgwColor = "gray";
+                            if ($gcData->maxLdgW > 0 && $gcData->takeOff->mass > $gcData->maxLdgW) {
+                                $mldgwPrefix = $kStrings["TooHeavy"] . " ";
+                                $mldgwColor = "red";
+                            }
+                            $mldgwCell = new GcTableCell("{$mldgwPrefix}MLdgW={$gcData->maxLdgW}", $mldgwColor);
+                        }
+                        $mldgwCell->small = true;
+                        $gcMaxCell = new GcTableCell("max=$gcMax", $gcMaxColor);
+                        $gcMaxCell->small = true;
+
+                        $rows[] = array(
+                            new GcTableCell(),
+                            $mldgwCell,
+                            $gcMaxCell,
+                            new GcTableCell(),
+                            "hhline{====}"
+                        );
+                //
+                    // fuels...
+                    $quantitiesCount = count($gcData->fuelQuantities);
+                    for ($i = 0; $i < $quantitiesCount; ++$i) {
+                        $tank = $fuelReq->tanks[$i];
+
+                        $label = "#" . ($i + 1);
+                        if($tank->quantity > 0) {
+                            // If we do the template, we do not want to display this (empty) value
+                            $label .= "={$tank->quantity}{$tank->fuelUnit}";
+                        }
+
+                        $row = computeGcTableRow($gcData->fuelQuantities[$i], "Fuel", $label);
+                        if($row !== NULL) {
+                            $rows[] = $row;
+                        }
+                    }
+
+                    // set LaTeX hline
+                    $lastRow = array_pop($rows);
+                    if($lastRow !== NULL) {
+                        $lastRow[] = "hhline{====}";
+                    }
+                    $rows[] = $lastRow;
+                //
+                    // T-off
+                    $gcMinColor = ($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min) ? "red" : "gray";
+                    $gcMaxColor = ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max) ? "red" : "gray";
+                    $gcColor = (
+                        ($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min)
+                        || ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max)
+                    ) ? "red" : "gray";
+
+                    $massPrefix = "";
+                    $mtowColor = "gray";
+                    if ($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) {
+                        $massPrefix = $kStrings["TooHeavy"] . " ";
+                        $mtowColor = "red";
+                    }
+
+                        // minimums
+                        $gcMinCell = new GcTableCell("min=$gcMin", $gcMinColor);
+                        $gcMinCell->small = true;
+
+                        $rows[] = array(
+                            new GcTableCell("TakeOff", "gray", 3),
+                            new GcTableCell(NULL, $mtowColor),
+                            $gcMinCell,
+                            new GcTableCell(
+                                ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ?  $gcData->takeOff->getMoment() : NULL,
+                                "gray",
+                                3
+                            ),
+                            "hhline{~---}"
+                        );
+                    //
+                        // values
+                        $mass = "";
+                        if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
+                            $mass = "{$massPrefix}{$gcData->takeOff->mass}";
+                        }
+
+                        $rows[] = array(
+                            new GcTableCell(),
+                            new GcTableCell($mass, $mtowColor),
+                            new GcTableCell(
+                                ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ?  $gcData->takeOff->getArm() : NULL,
+                                $gcColor
+                            ),
+                            new GcTableCell(),
+                            "hhline{~---}"
+                        );
+                    //
+                        // maximums
+                        $mtowCell = new GcTableCell("MTOW=" . (($gcData->maxTOW > 0) ? $gcData->maxTOW : "?"), $mtowColor);
+                        $mtowCell->small = true;
+                        $gcMaxCell = new GcTableCell("max=$gcMax", $gcMaxColor);
+                        $gcMaxCell->small = true;
+
+                        $rows[] = array(
+                            new GcTableCell(),
+                            $mtowCell,
+                            $gcMaxCell,
+                            new GcTableCell()
+                        );
+
+                return $rows;
+            }
+        //
+            function decrementRowspan($rowspan) {
+                if($rowspan === NULL) {
+                    return NULL;
+                }
+
+                if($rowspan == 1) {
+                    return NULL;
+                }
+
+                if($rowspan < 0) {
+                    $rowspan = -$rowspan;
+                }
+
+                return $rowspan - 1;
+            }
+        //
+            /**
+             * Compute fuel tanks
+             *
+             * Returns:
+             *     table rows
+             *
+             *     | label | unusable | quantity | total |
+             */
+            function computeFuelTanks($gcData, $fuelReq) {
+                global $kArmless;
+
+                $rows = array();
+
+                $quantitiesCount = count($gcData->fuelQuantities);
+                for ($i = 0; $i < $quantitiesCount; ++$i) {
+                    if($gcData->fuelQuantities[$i]->getArm() == $kArmless) {
+                        continue;
+                    }
+                    $tank = $fuelReq->tanks[$i];
+
+                    $unusable = "";
+                    $quantity = "";
+                    $total = "";
+                    // If we do the template, we do not want to display empty values
+                    if($tank->unusable > 0 || $tank->quantity > 0) {
+                        $unusable = "{$tank->unusable} {$tank->fuelUnit}";
+                        $quantity = "{$tank->quantity} {$tank->fuelUnit}";
+
+                        $totalTank = $tank->unusable + $tank->quantity;
+                        $total = "$totalTank {$tank->fuelUnit}";
+
+                        if($tank->allOrNothing) {
+                            $total .= " ALL";
+                        }
+                    }
+
+                    $rows[] = array("Tank #" . ($i + 1), $unusable, $quantity, $total);
+                }
+
+                if($fuelReq->overflow > 0) {
+                    global $kStrings;
+                    $rows[] = array($kStrings["overflow"], "{$fuelReq->overflow} {$fuelReq->tanks[0]->fuelUnit}", "", "");
+                }
+
+                return $rows;
+            }
+    //
+    //
+        // HTML
+            /**
+             * HTML header: first table
+             *
+             * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+             * @SuppressWarnings(PHPMD.NPathComplexity)
+             */
+            function htmlIntroTable($name, $plane, $variation, $gcData) {
+                $htmlHead = "";
+
+                $htmlHead .= "<div class=\"NavIntro\">\n";
+                $htmlHead .= "<div><b>Navigation:</b> $name</div>\n";
+
+                $planeID = "not chosen yet";
+                if($plane->sqlID > 0) {
+                    $planeID = "{$plane->identification} ({$plane->type})";
+                }
+
+                $htmlHead .= "<div><b>Airplane:</b> $planeID</div>\n";
+
+                if($plane->sqlID > 0) {
+                    $htmlHead .= "<div><b>Planning speed:</b> {$plane->speedPlanning}kts (climb: {$plane->speedClimb}kts)</div>\n";
+                }
+
+                $htmlHead .= "<div><b>Variation:</b> $variation&deg;E</div>\n";
+
+                // mass
+                global $kArmless;
+                $htmlHead .= "<div class=\"Masses\">\n";
+                $htmlHead .= "<b>Mass [kg]:</b>\n";
+                $htmlHead .= "<ul>\n";
+
+                global $kStrings;
+
+                    // Front
+                    $htmlHead .= "<li>{$kStrings['Front']}: {$gcData->front->mass}";
+
+                    if($gcData->front->isMassTooMuch()) {
+                        $htmlHead .= " {$kStrings['htmlTooHeavy']}";
+                    }
+
+                    $htmlHead .= "</li>\n";
+                //
+                    // Rears
+                    $htmlHead .= "<li>{$kStrings['Rear']}s: ";
+
+                    $rearsCount = count($gcData->rears);
+                    for ($i = 0; $i < $rearsCount; ++$i) {
+                        if($gcData->rears[$i]->arm == $kArmless) {
+                            continue;
+                        }
+
+                        $htmlHead .= "#" . ($i + 1) . "={$gcData->rears[$i]->mass}";
+                        if($gcData->rears[$i]->isMassTooMuch()) {
+                            $htmlHead .= " {$kStrings['htmlTooHeavy']}";
+                        }
+                        $htmlHead .= " - ";
+                    }
+                    $htmlHead = substr($htmlHead, 0, -3);  // remove trailing separator
+                    $htmlHead .= "</li>\n";
+                //
+                    // Luggages
+                    $htmlHead .= "<li>{$kStrings['Luggage']}s: ";
+
+                    $luggagesCount = count($gcData->luggages);
+                    for ($i = 0; $i < $luggagesCount; ++$i) {
+                        if($gcData->luggages[$i]->arm == $kArmless) {
+                            continue;
+                        }
+
+                        $htmlHead .= "#" . ($i + 1) . "={$gcData->luggages[$i]->mass} kg";
+                        if($gcData->luggages[$i]->isMassTooMuch()) {
+                            $htmlHead .= " {$kStrings['htmlTooHeavy']}";
+                        }
+                        $htmlHead .= " - ";
+
+                    }
+                    $htmlHead = substr($htmlHead, 0, -3);  // remove trailing separator
+                    if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
+                        $htmlHead .= " <span style=\"background-color: red;\">Luggages mass {$gcData->luggageTotalMass->mass} {$kStrings['TooHeavy']}, exceeds {$gcData->luggageTotalMass->maxMass}</span>";
+                    }
+                    $htmlHead .= "</li>\n";
+
+                $htmlHead .= "</ul>\n";
+                $htmlHead .= "</div><!-- Masses -->\n";
+
+                $htmlHead .= "</div><!-- NavIntro -->\n";
+
+                return $htmlHead;
+            }
+        //
+            // HTML header: header of 2nd table
+            function htmlNavPlanTableHead($isAdmin) {
+                global $page;
+
+                $htmlHead = "";
+                $htmlHead .= "<div class=\"NavPlan\">\n";
+                $htmlHead .= $page->butler->tableOpen();
+
+                global $kStrings;
+
+                    // HTML table header
+                    $htmlHead .= $page->butler->rowOpen();
+                    if($isAdmin) {
+                        $htmlHead .= $page->butler->headerCell("", array("rowspan" => 2));
+                    }
+                    $htmlHead .= $page->butler->headerCell($kStrings["Waypoint"], array("rowspan" => 2));
+                    $htmlHead .= $page->butler->headerCell($kStrings["TrueCourse"], array("class" => "TC"));
+                    $htmlHead .= $page->butler->headerCell($kStrings["MagneticCourse"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["Dist"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["Altitude"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["EstimatedElapsedTime"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["Wind"], array("class" => "wind", "colspan" => 2));
+                    $htmlHead .= $page->butler->headerCell($kStrings["MagneticHeading"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["GroundSpeed"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["EstimatedElapsedTime"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["EstimatedTimeOver"], array("rowspan" => 2));
+                    $htmlHead .= $page->butler->headerCell($kStrings["ActualTimeOver"], array("rowspan" => 2));
+                    $htmlHead .= $page->butler->headerCell($kStrings["Notes"], array("rowspan" => 2));
+                    $htmlHead .= $page->butler->rowClose();
+                    $htmlHead .= $page->butler->rowOpen();
+                    $htmlHead .= $page->butler->headerCell($kStrings["htmlUnitDeg"], array("class" => "TC"));
+                    $htmlHead .= $page->butler->headerCell($kStrings["htmlUnitDeg"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["unitNM"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["unitFt"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["unitMin"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["htmlUnitDeg"], array("class" => "wind"));
+                    $htmlHead .= $page->butler->headerCell($kStrings["unitKts"], array("class" => "wind"));
+                    $htmlHead .= $page->butler->headerCell($kStrings["htmlUnitDeg"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["unitKts"]);
+                    $htmlHead .= $page->butler->headerCell($kStrings["unitMin"]);
+                    $htmlHead .= $page->butler->rowClose();
+
+                return $htmlHead;
+            }
+        //
+            function htmlNavPlanTableFoot($navid, $warning, $isAdmin) {
+                global $page;
+
+                $foot = "";
+
+                if($isAdmin) {
+                    // option to insert new WP
+                    $foot .= $page->butler->rowOpen();
+                    $foot .= $page->butler->cell($page->bodyBuilder->anchor("waypoint.php?nav=$navid", "new waypoint"), array("colspan" => 15, "class" => "newWP"));
+                    $foot .= $page->butler->rowClose();
+                }
+                $foot .= $page->butler->tableClose();
+                $foot .= $warning;
+                $foot .= "</div><!-- NavPlan -->\n";
+
+                return $foot;
+            }
+        //
+            // HTML 1st row
+            function htmlFirstRow($rowArgs) {
+                global $page;
+                global $kWaypoints;
+
+                $htmlRow = $page->butler->rowOpen(array("class" => "WP{$rowArgs->wpNum}", "id" => "WP{$rowArgs->wpNum}"));
+
+                if($rowArgs->isAdmin) {
+                    $htmlRow .= $page->butler->cellOpen(array("class" => "edit"));
+
+                    if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
+                        $htmlRow .= $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint} ({$rowArgs->wpNum})");
+                    }
+
+                    $htmlRow .= $page->butler->cellClose();
+                }
+
+                $destination = $rowArgs->destination;
+                if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
+                    $destination = $rowArgs->waypoint;
+                }
+
+                $htmlRow .= $page->butler->cell($destination, array("class" => "waypoint"));
+
+                $htmlRow .= $page->butler->cell("", array("colspan" => 11, "class" => "unavailable"));
+                $htmlRow .= $page->butler->cell();  // ATO
+
+                $htmlRow .= $page->butler->cellOpen(array("class" => "notes"));
+                if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
+                    $htmlRow .= $rowArgs->notes;
+                }
+                $htmlRow .= $page->butler->cellClose();
+
+                $htmlRow .= $page->butler->rowClose();
+                return $htmlRow;
+            }
+        //
+            // HTML row alternate banner
+            function htmlRowAlternateBanner($wpNum, $isAdmin) {
+                $colspan = $isAdmin ? 15 : 14;
+
+                global $page;
+                global $kStrings;
+
+                $htmlRow = $page->butler->rowOpen(array("class" => "WP{$wpNum}"));
+                $htmlRow .= $page->butler->cell($kStrings["Alternate"], array("class" => "nav-alternate-title", "colspan" => $colspan));
+                $htmlRow .= $page->butler->rowClose();
+                return $htmlRow;
+            }
+        //
+            /**
+             * HTML row
+             *
+             * @SuppressWarnings(PHPMD.ElseExpression)
+             */
+            function htmlRow($rowArgs) {
+                // Set data
+                global $kStrings;
+
+                $climbing = $rowArgs->climbing ? $kStrings["htmlCopyright"] : "";
+
+                // Prepare string
+
+                global $page;
+
+                $htmlRow = $page->butler->rowOpen(array("class" => "WP{$rowArgs->wpNum}", "id" => "WP{$rowArgs->wpNum}"));
+
+                if($rowArgs->isAdmin) {
+                    $htmlRow .= $page->butler->cell(
+                        $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint} ({$rowArgs->wpNum})"),
+                        array("class" => "edit")
+                    );
+                }
+
+                // WP
+                $htmlRow .= $page->butler->cell($rowArgs->waypoint, array("class" => "waypoint"));
+
+                // TC
+                $htmlRow .=$page->butler->cell($rowArgs->trueCourse, array("class" => "TC heading num"));
+
+                // MC
+                $htmlRow .= $page->butler->cell($rowArgs->magneticCourse, array("class" => "heading num"));
+
+                // distance
+                $htmlRow .= $page->butler->cell($rowArgs->distance, array("class" => "distance num"));
+
+                // altitude
+                $htmlRow .= $page->butler->cellOpen(array("class" => "altitude num"));
+                if($rowArgs->altitude > 0) {
+                    $htmlRow .= "{$rowArgs->altitude}";
+                }
+                $htmlRow .= $page->butler->cellClose();
+
+                // Theoric EET
+                $theoricEET = $rowArgs->theoricEET > 0 ? $rowArgs->theoricEET : "&nbsp;";
+                $htmlRow .= $page->butler->cell("{$climbing}{$theoricEET}{$rowArgs->plus5}", array("class" => "EET num"));
+
+                    // wind (if provided)
+                    $windHeading = "";
+                    $windSpeed = "";
+                    $magHeading = "";
+                    $groundSpeed = "";
+                    $realEET = "";
+
+                    if($rowArgs->hasWind) {
+                        $windHeading = $rowArgs->windTC;
+                        $windSpeed = $rowArgs->windSpeed;
+                        $magHeading = $rowArgs->magneticHeading;
+                        $groundSpeed = $rowArgs->groundSpeed;
+                        $realEET = "{$climbing}{$rowArgs->realEET}{$rowArgs->plus5}";
+                    }
+
+                    $htmlRow .= $page->butler->cell($windHeading, array("class" => "wind heading num"));
+                    $htmlRow .= $page->butler->cell($windSpeed, array("class" => "wind speed num"));
+
+                    $htmlRow .= $page->butler->cell($magHeading, array("class" => "heading num"));
+
+                    if($rowArgs->hasWind && $groundSpeed <= 0) {
+                        $htmlRow .= $page->butler->cell("Wind too strong", array("colspan" => 2, "style" => "background-color: red;"));
+                    } else {
+                        $htmlRow .= $page->butler->cell($groundSpeed, array("class" => "speed num"));
+                        $htmlRow .= $page->butler->cell($realEET, array("class" => "EET num"));
+                    }
+
+                // ETO + ATO
+                $htmlRow .= $page->butler->cell();
+                $htmlRow .= $page->butler->cell();
+
+                // notes
+                $htmlRow .= $page->butler->cell($rowArgs->notes, array("class" => "notes"));
+
+                $htmlRow .= $page->butler->rowClose();
+
+                return $htmlRow;
+            }
+        //
+            // HTML row summary
+            function htmlRowSummary($rowArgs) {
+                // Set data
+                global $kWaypoints;
+
+                $distance = $rowArgs->alternateDistance;
+                $theoricEeTime = $rowArgs->theoricAlternateTime;
+                $realEeTime = $rowArgs->realAlternateTime;
+                if($rowArgs->wpNum == $kWaypoints->wayOut->last) {
+                    $distance = $rowArgs->tripDistance;
+                    $theoricEeTime = $rowArgs->theoricTripTime;
+                    $realEeTime = $rowArgs->realTripTime;
+
+                } elseif($rowArgs->wpNum == $kWaypoints->wayBack->last) {
+                    $distance = ($rowArgs->tripDistance - $rowArgs->destinationDistance);
+                    $theoricEeTime = ($rowArgs->theoricTripTime - $rowArgs->theoricDestinationTime);
+                    $realEeTime = ($rowArgs->realTripTime - $rowArgs->realDestinationTime);
+                }
+                // Do not display if zero
+                if($theoricEeTime == 0) { $theoricEeTime = ""; }
+                if($realEeTime == 0) { $realEeTime = ""; }
+
+                // Prepare string
+                global $page;
+
+                $htmlRow = $page->butler->rowOpen(array("class" => "summary"));
+
+                if($rowArgs->isAdmin) { $htmlRow .= $page->butler->cell("", array("class" => "unavailable")); }
+
+                $htmlRow .= $page->butler->cell("", array("class" => "WP unavailable"));
+                $htmlRow .= $page->butler->cell("", array("class" => "TC unavailable"));
+                $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+
+                $htmlRow .= $page->butler->cell($distance, array("class" => "distance sum num"));
+
+                $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+
+                $htmlRow .= $page->butler->cell($theoricEeTime, array("class" => "EET sum num"));
+
+                $htmlRow .= $page->butler->cell("", array("colspan" => 2, "class" => "wind unavailable"));
+                $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+                $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+
+                $htmlRow .= $page->butler->cell($realEeTime, array("class" => "EET sum num"));
+
+                $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+                $htmlRow .= $page->butler->cell();
+                $htmlRow .= $page->butler->cell();
+                $htmlRow .= $page->butler->rowClose();
+
+                return $htmlRow;
+            }
+        //
+            // HTML row ANY
+            function htmlRowAny($rowArgs) {
+                global $kWaypoints;
+
+                $htmlRow = "";
+
+                if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
+                    // 1st row ever
+                    // 1st row inbound we do not need, it is written on previous line where we are
+                    $htmlRow .= htmlFirstRow($rowArgs);
+                }
+
+                if($rowArgs->wpNum == $kWaypoints->alternate->start || ($rowArgs->wpNum == $kWaypoints->alternate->last && $rowArgs->oldWP < $kWaypoints->alternate->limit)) {
+                    $htmlRow .= htmlRowAlternateBanner($rowArgs->wpNum, $rowArgs->isAdmin);
+                }
+
+                if($rowArgs->wpNum > $kWaypoints->wayOut->base) {
+                    $htmlRow .= htmlRow($rowArgs);
+                }
+
+                if($kWaypoints->isLast($rowArgs->wpNum)) {
+                    $htmlRow .= htmlRowSummary($rowArgs);
+                }
+
+                return $htmlRow;
+            }
+        //
+            function htmlReminders() {
+                global $kStrings;
+
+                $reminders = "<div class=\"NavReminders\">\n";
+                $reminders .= "<b>{$kStrings['TopOfDescent']}:</b>\n";
+                $reminders .= "<ul>\n";
+                $reminders .= "<li>{$kStrings['TOD1']}</li>\n";
+                $reminders .= "<li>{$kStrings['TOD2']}</li>\n";
+                $reminders .= "<li>{$kStrings['TOD3']}</li>\n";
+                $reminders .= "<li class=\"optional\">{$kStrings['TOD4']}</li>\n";
+                $reminders .= "</ul>\n";
+                $reminders .= "</div><!-- NavReminders -->\n";
+                return $reminders;
+            }
+        //
+            function htmlThWind() {
+                global $kStrings;
+
+                $thWind = "<div class=\"NavTHwind\">\n";
+                $thWind .= "<b>Compute {$kStrings['THwind']}:</b>\n";
+                $thWind .= "<ol>\n";
+                $thWind .= "<li>&alpha;1 = (360 + TC - WH) % 360 and sign=1<br>\n";
+                $thWind .= "if &alpha;1 &gt; 180: &alpha;1 = (360 + WH - TC) % 360 and sign=-1</li>\n";
+                $thWind .= "<li>&alpha;2 = arcsin(WS/TS sin(&alpha;1))</li>\n";
+                $thWind .= "<li>&alpha;3 = 180 - &alpha;1 - &alpha;2</li>\n";
+                $thWind .= "<li>TH = TC + sign &alpha;2</li>\n";
+                $thWind .= "<li>GS = sin(&alpha;3) / sin(&alpha;1) TS</li>\n";
+                $thWind .= "</ol>\n";
+                $thWind .= "</div><!-- NavTHwind -->\n";
+                return $thWind;
+            }
+        //
+            // HTML fuel
+            function htmlFuel($theoricFuel, $realFuel) {
+                global $page;
+                global $kStrings;
+
+                $htmlFuel = "<div class=\"fuel\">\n";
+
+                $htmlFuel .= $page->butler->tableOpen(array("class" => "no_border"));
+                    // head
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->headerCell("Fuel", array("rowspan" => 3));
+                    $htmlFuel .= $page->butler->headerCell(
+                        "{$kStrings['FuelConsumption']} "
+                        . ($theoricFuel->consumption > 0 ? "{$theoricFuel->consumption}" : "?")
+                        . " {$theoricFuel->unit}/h\n",
+                        array("colspan" => 4, "style" => "background-color: white;")
+                    );
+                    $htmlFuel .= $page->butler->rowClose();
+
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->headerCell($kStrings["NoWind"], array("colspan" => 2));
+                    $htmlFuel .= $page->butler->headerCell($kStrings["Wind"], array("colspan" => 2));
+                    $htmlFuel .= $page->butler->rowClose();
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->headerCell($kStrings["time"]);
+                    $htmlFuel .= $page->butler->headerCell("{$kStrings['fuel']} [{$theoricFuel->unit}]");
+                    $htmlFuel .= $page->butler->headerCell($kStrings["time"]);
+                    $htmlFuel .= $page->butler->headerCell("{$kStrings['fuel']} [{$theoricFuel->unit}]");
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // trip
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell("{$kStrings['Trip']}:");
+                    $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Trip);
+                    $htmlFuel .= $realFuel->htmlRow(FuelEntry::Trip);
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // alternate
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell("{$kStrings['Alternate']}:");
+                    $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Alternate);
+                    $htmlFuel .= $realFuel->htmlRow(FuelEntry::Alternate);
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // reserve
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell("{$kStrings['Reserve']}:");
+                    $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Reserve);
+                    $htmlFuel .= $realFuel->htmlRow(FuelEntry::Reserve);
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // unusable
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell("{$kStrings['Unusable']}:");
+                    $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Unusable);
+                    $htmlFuel .= $realFuel->htmlRow(FuelEntry::Unusable);
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // minimum
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell("{$kStrings['MinFuel']}:");
+                    $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Minimum);
+                    $htmlFuel .= $realFuel->htmlRow(FuelEntry::Minimum);
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // extra
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell($kStrings["ExtraPlus"] . ($theoricFuel->extraPercent * 100) . "%:");
+                    $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Extra);
+                    $htmlFuel .= $realFuel->htmlRow(FuelEntry::Extra);
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                    // ramp
+                    $htmlFuel .= $page->butler->rowOpen();
+                    $htmlFuel .= $page->butler->cell("{$kStrings['RampFuel']}:");
+                    $htmlFuel .= $theoricFuel->htmlRamp();
+                    $htmlFuel .= $realFuel->htmlRamp();
+                    $htmlFuel .= $page->butler->rowClose();
+                //
+                $htmlFuel .= $page->butler->tableClose();
+                $htmlFuel .= "</div>\n";
+
+                return $htmlFuel;
+            }
+        //
+            // HTML fuel tanks
+            function htmlFuelTanks($rows) {
+                global $kStrings;
+                global $page;
+
+                $htmlFuelTanks = "<div class=\"fueltanks\">\n";
+
+                $htmlFuelTanks .= $page->butler->tableOpen(array("class" => "no_border"));
+                    // head
+                    $htmlFuelTanks .= $page->butler->rowOpen();
+                    $htmlFuelTanks .= $page->butler->headerCell($kStrings["Fuel"]);
+                    $htmlFuelTanks .= $page->butler->headerCell("Unusable");
+                    $htmlFuelTanks .= $page->butler->headerCell("Usable");
+                    $htmlFuelTanks .= $page->butler->headerCell("Total");
+                    $htmlFuelTanks .= $page->butler->rowClose();
+
+                foreach($rows as $row) {
+                    if($row[0] == $kStrings["overflow"]) {
+                        $htmlFuelTanks .= $page->butler->rowOpen();
+                        $htmlFuelTanks .= $page->butler->cell("{$kStrings['overflow']}!!!", array("style" => "background-color: red;"));
+                        $htmlFuelTanks .= $page->butler->cell("{$row[1]}", array("style" => "background-color: red;", "colspan" => 3));
+                        $htmlFuelTanks .= $page->butler->rowClose();
                         continue;
                     }
 
-                    $htmlHead .= "#" . ($i + 1) . "={$gcData->luggages[$i]->mass} kg";
-                    if($gcData->luggages[$i]->isMassTooMuch()) {
-                        $htmlHead .= " {$kStrings['htmlTooHeavy']}";
+                    $htmlFuelTanks .= $page->butler->rowOpen();
+                    $htmlFuelTanks .= $page->butler->cell($row[0]);
+                    $htmlFuelTanks .= $page->butler->cell($row[1]);
+                    $htmlFuelTanks .= $page->butler->cell($row[2]);
+                    $htmlFuelTanks .= $page->butler->cell($row[3]);
+                    $htmlFuelTanks .= $page->butler->rowClose();
+                }
+
+                $htmlFuelTanks .= $page->butler->tableClose();
+                $htmlFuelTanks .= "</div><!-- fueltanks -->\n";
+
+                return $htmlFuelTanks;
+            }
+        //
+            function htmlGcParseArgs($item, $args) {
+                if($item->color == "red") {
+                    $args["style"] = "background-color: red;";
+                } elseif($item->color == "gray") {
+                    $args["style"] = "background-color: #999;";
+                }
+
+                if($item->rowspan !== NULL) {
+                    $args["rowspan"] = $item->rowspan;
+                }
+
+                return $args;
+            }
+        //
+            function htmlGcCell($text, $args, $rowspanCell, $rowspanRow) {
+                if($rowspanCell ==! NULL && $rowspanCell > 0) {
+                    // We had a cell spanning over the current one, do nothing
+                    return "";
+                }
+
+                if($rowspanCell === NULL && $rowspanRow !== NULL) {
+                    // only for cells WITHOUT rowspan when there is one in the row
+                    $borderStyle =" border-top: none; border-bottom: none;";
+                    if($rowspanRow < 0) {
+                        $borderStyle = " border-bottom: none;";
+                    } elseif($rowspanRow == 1) {
+                        $borderStyle = " border-top: none;";
                     }
-                    $htmlHead .= " - ";
 
+                    if(!array_key_exists("style", $args)) {
+                        $args["style"] = "";
+                    }
+
+                    $args["style"] .= $borderStyle;
                 }
-                $htmlHead = substr($htmlHead, 0, -3);  // remove trailing separator
-                if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
-                    $htmlHead .= " <span style=\"background-color: red;\">Luggages mass {$gcData->luggageTotalMass->mass} {$kStrings['TooHeavy']}, exceeds {$gcData->luggageTotalMass->maxMass}</span>";
+
+                global $page;
+                return $page->butler->cell($text, $args);
+            }
+        //
+            /**
+             * HTML GC
+             *
+             * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+             * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+             * @SuppressWarnings(PHPMD.NPathComplexity)
+             */
+            function htmlGC($gcTable, $massUnit, $armUnit, $momentUnit) {
+                global $page;
+                global $kStrings;
+
+                $htmlGC = "";
+                $htmlGC .= "<div class=\"GC\">\n";
+                $htmlGC .= $page->butler->tableOpen(array("class" => "no_border"));
+                    // head
+                    $htmlGC .= $page->butler->rowOpen();
+                    $htmlGC .= $page->butler->headerCell($kStrings["MassAndBalance"], array("rowspan" => 2));
+                    $htmlGC .= $page->butler->headerCell($kStrings["Mass"]);
+                    $htmlGC .= $page->butler->headerCell($kStrings["Arm"]);
+                    $htmlGC .= $page->butler->headerCell($kStrings["Moment"]);
+                    $htmlGC .= $page->butler->rowClose();
+                    $htmlGC .= $page->butler->rowOpen();
+                    $htmlGC .= $page->butler->headerCell("[$massUnit]");
+                    $htmlGC .= $page->butler->headerCell("[$armUnit]");
+                    $htmlGC .= $page->butler->headerCell("[$momentUnit]");
+                    $htmlGC .= $page->butler->rowClose();
+
+                $rowspan = array("label" => NULL, "moment" => NULL, "ROW" => NULL);
+                foreach($gcTable as $row) {
+                    if($row === NULL) {
+                        continue;
+                    }
+
+                    $label = $row[0];
+                    $mass = $row[1];
+                    $arm = $row[2];
+                    $moment = $row[3];
+
+                    $massText = $mass->value;
+                    if($mass->tooHeavy) {
+                        $massText .= " " . $kStrings["htmlTooHeavy"];
+                    }
+
+                        // args
+                        $labelArgs = array();
+                        $massArgs = array("class" => "mass num");
+                        $armArgs = array("class" => "arm num");
+                        $momentArgs = array("class" => "moment num");
+
+                        if($arm->value === NULL) {
+                            $armArgs = array("class" => "unavailable");
+                        }
+                        if($moment->value === NULL) {
+                            $momentArgs = array("class" => "unavailable");
+                        }
+
+                        $labelArgs = htmlGcParseArgs($label, $labelArgs);
+                        if(array_key_exists("rowspan", $labelArgs)) {
+                            $rowspan["label"] = -$labelArgs["rowspan"];
+                            $rowspan["ROW"] = $rowspan["label"];  // overall rowspan is never more than label
+                        }
+
+                        $massArgs = htmlGcParseArgs($mass, $massArgs);
+                        $armArgs = htmlGcParseArgs($arm, $armArgs);
+
+                        $momentArgs = htmlGcParseArgs($moment, $momentArgs);
+                        if(array_key_exists("rowspan", $momentArgs)) {
+                            $rowspan["moment"] = -$momentArgs["rowspan"];
+                        }
+                    //
+                        // display
+                        $htmlGC .= $page->butler->rowOpen();
+
+                        $htmlGC .= htmlGcCell($label->value, $labelArgs, $rowspan["label"], $rowspan["ROW"]);
+                        $htmlGC .= htmlGcCell($massText, $massArgs, NULL, $rowspan["ROW"]);
+                        $htmlGC .= htmlGcCell($arm->value, $armArgs, NULL, $rowspan["ROW"]);
+                        $htmlGC .= htmlGcCell($moment->value, $momentArgs, $rowspan["moment"], $rowspan["ROW"]);
+
+                        $htmlGC .= $page->butler->rowClose();
+                    //
+                        // rowspan
+                        $rowspan["label"] = decrementRowspan($rowspan["label"]);
+                        $rowspan["moment"] = decrementRowspan($rowspan["moment"]);
+                        $rowspan["ROW"] = decrementRowspan($rowspan["ROW"]);
                 }
-                $htmlHead .= "</li>\n";
 
-            $htmlHead .= "</ul>\n";
-            $htmlHead .= "</div>\n";
+                $htmlGC .= $page->butler->tableClose();
+                $htmlGC .= "</div><!-- GC -->\n";
 
-            $htmlHead .= "</div>\n";
+                return $htmlGC;
+            }
+        //
+            function htmlEnd() {
+                global $kStrings;
+                global $kFuelTypes;
+                global $kFuelUnits;
+                global $usgAvgas2lbs;
 
-            return $htmlHead;
-        }
+                $htmlEnd = "<div class=\"FuelWeight\">\n";
+                $htmlEnd .= "<div>1 {$kStrings['USG']} = {$kFuelUnits["USG"]} liters</div>\n";
+                $htmlEnd .= "<div>1 {$kStrings['ImpG']} = {$kFuelUnits["ImpG"]} liters</div>\n";
+                $htmlEnd .= "<div>1 l {$kStrings['Avgas']} = {$kFuelTypes["AVGAS"]} kg</div>\n";
+                $htmlEnd .= "<div>1 {$kStrings['USG']} {$kStrings['Avgas']} = $usgAvgas2lbs lbs</div>\n";
+                $htmlEnd .= "</div><!-- FuelWeight -->\n";
+                return $htmlEnd;
+
+            }
     //
-        // HTML header: header of 2nd table
-        function htmlHeader2ndTableHead($isAdmin) {
-            global $page;
-            global $kStrings;
+    //
+        // LaTeX
+            // html2latex
+            function html2latex($string) {
+                // translate html special characters
+                $back = preg_replace("/&([aeiouy])(acute|grave|circ|uml);/", "$1", $string);
+                $back = preg_replace("/&#[0-9]{3};/", "?", $back);
+                $back = preg_replace("/&quot;/", "'", $back);
+                $back = preg_replace("/&[a-z]+;/", "?", $back);
 
-            $htmlHead = "";
-            $htmlHead .= "<div>\n";
-            $htmlHead .= $page->butler->tableOpen();
+                // escape special LaTeX characters
+                $back = preg_replace("/([_#&%^$])/", "\\\\$1", $back);
 
-                // HTML table header
-                $htmlHead .= $page->butler->rowOpen();
-                if($isAdmin) {
-                    $htmlHead .= $page->butler->headerCell("", array("rowspan" => 2));
+                return $back;
+            }
+        //
+            // LaTeX head: usepackages
+            function latexUsePackages() {
+                $latexhead = "";
+                $latexhead .= "% Usepackages {{{\n";
+                    $latexhead .= "% General {{{\n";
+                    $latexhead .= "\\usepackage[T1]{fontenc}\n";
+                    $latexhead .= "\\usepackage{lmodern}\n";
+                    $latexhead .= "\\usepackage[english]{babel}\n";
+                    $latexhead .= "% }}}\n";
+                //
+                    $latexhead .= "% Math {{{\n";
+                    $latexhead .= "\\usepackage{amsmath}\n";
+                    $latexhead .= "%\\usepackage{amssymb}\n";
+                    $latexhead .= "% }}}\n";
+                //
+                    $latexhead .= "% Hyper refs {{{\n";
+                    $latexhead .= "\\usepackage{hyperref}\n";
+                    $latexhead .= "\\hypersetup{\n";
+                    $latexhead .= "    colorlinks        = true,\n";
+                    $latexhead .= "    bookmarks         = true,\n";
+                    $latexhead .= "    bookmarksnumbered = false,\n";
+                    $latexhead .= "    linkcolor         = black,\n";
+                    $latexhead .= "    urlcolor          = blue,\n";
+                    $latexhead .= "    citecolor         = blue,\n";
+                    $latexhead .= "    filecolor         = blue,\n";
+                    $latexhead .= "    hyperfigures      = true,\n";
+                    $latexhead .= "    breaklinks        = false,\n";
+                    $latexhead .= "    ps2pdf,\n";
+                    $latexhead .= "    pdftitle          = {\\ThisTitle},\n";
+                    $latexhead .= "    pdfsubject        = {\\ThisTitle},\n";
+                    $latexhead .= "    pdfauthor         = {\\ThisAuthors}\n";
+                    $latexhead .= "}\n";
+                    $latexhead .= "% }}}\n";
+                //
+                    $latexhead .= "% Tables and lists {{{\n";
+                    $latexhead .= "\\usepackage{longtable}\n";
+                    $latexhead .= "\\usepackage{multirow}\n";
+                    $latexhead .= "\\usepackage{colortbl}\n";
+                    $latexhead .= "\\usepackage{hhline}\n";
+                    $latexhead .= "% }}}\n";
+                //
+                    $latexhead .= "% Making stuff fancy (not fancyhdr package) {{{\n";
+                    $latexhead .= "\\usepackage{enumitem}\n";
+                    $latexhead .= "\\setlist{noitemsep}\n";
+                    $latexhead .= "\\usepackage[landscape,a4paper]{geometry}\n";
+                    $latexhead .= "% }}}\n";
+                $latexhead .= "% End of usepackages }}}\n";
+
+                return $latexhead;
+            }
+        //
+            // LaTeX head: 1st line
+            function latexDocumentBegin($navid=0) {
+                global $docVersion;
+
+                $latexhead = "%\n";
+                $latexhead .= "\\newcommand*{\\DocVersion}{ $docVersion}\n";
+                    $latexhead .= "% Headers {{{\n";
+                    $latexhead .= "\\documentclass[12pt,a4paper]{article}\n";
+                    $latexhead .= "%\n";
+                        $latexhead .= "% Document variables {{{\n";
+                        $latexhead .= "\\newcommand*{\\Gael}{Ga\\\"el Induni}\n";
+                        $latexhead .= "\\newcommand*{\\ThisAuthors}{\\Gael}\n";
+                        $latexhead .= "\\newcommand*{\\ThisTitle}{Navigation plan}\n";
+                        $latexhead .= "% End of document variables }}}\n";
+
+                    $latexhead .= latexUsePackages();
+
+                        $latexhead .= "% Document size {{{\n";
+                        $latexhead .= "\\setlength{\\topmargin}{-8mm}\n";
+                        $latexhead .= "\\setlength{\\textheight}{180mm}\n";
+                        $latexhead .= "\\setlength{\\hoffset}{-28mm}\n";
+                        $latexhead .= "\\setlength{\\textwidth}{280mm}\n";
+                        $latexhead .= "\\setlength{\\evensidemargin}{9mm}\n";
+                        $latexhead .= "\\setlength{\\parskip}{0.5ex}\n";
+                        $latexhead .= "% End of document size }}}\n";
+                    //
+                        $url = "https://xonnqopp.ch/fly/nav/";
+                        if($navid > 0) {
+                            $url .= "display.php?id=$navid";
+                        }
+
+                        $latexhead .= "% Fancy and header and footer rules {{{\n";
+                        $latexhead .= "\\usepackage{fancyhdr}\n";
+                        $latexhead .= "%\\usepackage{lastpage}\n";
+                        $latexhead .= "%\\newcommand*{\\LastPage}{\\pageref{LastPage}}\n";
+                        $latexhead .= "% Defining document filename\n";
+                        $latexhead .= "\\newcommand*{\\GoodJob}{\\jobname.pdf}\n";
+                        $latexhead .= "% Fancy!\n";
+                        $latexhead .= "\\fancypagestyle{plain}{%\n";
+                        $latexhead .= "\\fancyhf{}\n";
+                        $latexhead .= "\\fancyhf[HR]{\\ThisAuthors}\n";
+                        $latexhead .= "\\fancyhf[C]{\\texttt{{$url}}}\n";
+                        $latexhead .= "\\fancyhf[HL]{NavPlan.pdf\\ v.~\\DocVersion}\n";
+                        $latexhead .= "%\\fancyhf[FRO,FLE]{\\thepage/\\LastPage}\n";
+                        $latexhead .= "% Rules at top and bottom\n";
+                        $latexhead .= "}\n";
+                        $latexhead .= "\\pagestyle{plain}\n";
+                        $latexhead .= "\\renewcommand{\\headrulewidth}{0.4pt}\n";
+                        $latexhead .= "%\\renewcommand{\\footrulewidth}{0.4pt}\n";
+                        $latexhead .= "% End of fancy }}}\n";
+                    //
+                        $latexhead .= "% New commands {{{\n";
+                        //$latexhead .= "\\renewcommand{\\geq}{\\geqslant}\n";
+                        //$latexhead .= "\\renewcommand{\\leq}{\\leqslant}\n";
+                        $latexhead .= "\\newcommand*{\\oC}{\\ensuremath{^{\\circ}C}}\n";
+                        $latexhead .= "\\AtBeginDocument{\\renewcommand{\\labelitemi}{\\textbullet}}\n";
+                        $latexhead .= "\\newcommand*{\\DarkGrayCell}{\\cellcolor[gray]{0.66}}\n";
+                        $latexhead .= "\\newcommand*{\\GrayCell}{\\cellcolor[gray]{0.8}}\n";
+                        $latexhead .= "\\newcommand*{\\RedCell}{\\cellcolor[rgb]{1,0,0}}\n";
+                        $latexhead .= "% End of new commands }}}\n";
+                    $latexhead .= "% }}}\n";
+                $latexhead .= "%\n";
+                $latexhead .= "\\begin{document}\n";
+                $latexhead .= "%\n";
+                $latexhead .= "\\mbox{}\n";
+                $latexhead .= "\\vspace{-16mm}\n";
+
+                return $latexhead;
+            }
+        //
+            // LaTeX head: first table
+            function latexIntroTable($plane, $name="", $variation=NULL) {
+                if ($variation === NULL) {
+                    global $kDefaultVariation;
+                    $variation = $kDefaultVariation;
                 }
-                $htmlHead .= $page->butler->headerCell("{$kStrings["Waypoint"]}", array("rowspan" => 2));
-                $htmlHead .= $page->butler->headerCell("{$kStrings["TrueCourse"]}", array("class" => "TC"));
-                $htmlHead .= $page->butler->headerCell($kStrings["MagneticCourse"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["Dist"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["Altitude"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["EstimatedElapsedTime"]);
-                $htmlHead .= $page->butler->headerCell("{$kStrings["Wind"]}", array("class" => "wind", "colspan" => 2));
-                $htmlHead .= $page->butler->headerCell($kStrings["MagneticHeading"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["GroundSpeed"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["EstimatedElapsedTime"]);
-                $htmlHead .= $page->butler->headerCell("{$kStrings["EstimatedTimeOver"]}", array("rowspan" => 2));
-                $htmlHead .= $page->butler->headerCell("{$kStrings["ActualTimeOver"]}", array("rowspan" => 2));
-                $htmlHead .= $page->butler->headerCell("{$kStrings["Notes"]}", array("rowspan" => 2));
-                $htmlHead .= $page->butler->rowClose();
-                $htmlHead .= $page->butler->rowOpen();
-                $htmlHead .= $page->butler->headerCell("{$kStrings["htmlUnitDeg"]}", array("class" => "TC"));
-                $htmlHead .= $page->butler->headerCell($kStrings["htmlUnitDeg"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["unitNM"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["unitFt"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["unitMin"]);
-                $htmlHead .= $page->butler->headerCell("{$kStrings["htmlUnitDeg"]}", array("class" => "wind"));
-                $htmlHead .= $page->butler->headerCell("{$kStrings["unitKts"]}", array("class" => "wind"));
-                $htmlHead .= $page->butler->headerCell($kStrings["htmlUnitDeg"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["unitKts"]);
-                $htmlHead .= $page->butler->headerCell($kStrings["unitMin"]);
-                $htmlHead .= $page->butler->rowClose();
 
-            return $htmlHead;
-        }
-    //
-        // HTML header
-        function htmlHeader($name, $plane, $variation, $gcData, $isAdmin) {
-            $htmlHead = "";
-            $htmlHead .= htmlHeader1stTable($name, $plane, $variation, $gcData);
-            $htmlHead .= htmlHeader2ndTableHead($isAdmin);
-            return $htmlHead;
-        }
-    //
-        // HTML 1st row
-        function htmlFirstRow($rowArgs) {
-            global $page;
-            global $kWaypoints;
+                $longID = preg_replace("/-/", "---", $plane->identification);
 
-            $htmlRow = $page->butler->rowOpen(array("class" => "WP{$rowArgs->wpNum}", "id" => "WP{$rowArgs->wpNum}"));
+                $latexhead = "";
+                $latexhead .= "% Table intro {{{\n";
+                $latexhead .= "\\begin{longtable}{|c|c|c||c|}\n";
+                    $latexhead .= "xxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxx\n";
+                    $latexhead .= "& xxxxxxxxxxxxx\n";
+                    $latexhead .= "& 0000000000\n";
+                    $latexhead .= "&\\kill\n";
+                //
+                    $latexhead .= "\\multirow{2}{*}{\\large " . html2latex($name) . "}\n";
+                    $latexhead .= "& {$plane->type}\n";
+                    $latexhead .= "& TAS  [kts]\n";
+                    $latexhead .= "& \\multirow{2}{*}{VAR: \$$variation^{\\textrm{o}} \\textrm{E}$}\n";
+                    $latexhead .= "\\\\\\hhline{~--~}\n";
+                //
+                    $latexhead .= "%\n";
+                    $latexhead .= "&{$longID}\n";
+                    $latexhead .= "&";
 
-            if($rowArgs->isAdmin) {
-                $htmlRow .= $page->butler->cellOpen(array("class" => "edit"));
+                    if($plane->speedPlanning > 0) {
+                        $latexhead .= $plane->speedPlanning;
 
+                        if($plane->speedClimb > 0) {
+                            $latexhead .= " ({$plane->speedClimb})";
+                        }
+                    }
+
+                    $latexhead .= "\n";
+                    $latexhead .= "&\n";
+                    $latexhead .= "\\\\\n";
+                $latexhead .= "\n\\end{longtable}\n";
+                $latexhead .= "% }}} Table intro\n";
+
+                return $latexhead;
+            }
+        //
+            // LaTeX head: header of 2nd table
+            function latexNavPlanTableHead() {
+                global $kStrings;
+
+                $windGray = "[gray]{0.88}";
+
+                $latexhead = "";
+                $latexhead .= "\\vspace{-8.7mm}\n";
+
+                // Make rows a little larger from now on
+                $latexhead .= "\\renewcommand*{\\arraystretch}{1.5}\n";
+
+                $latexhead .= "% Nav plan {{{\n";
+                $latexhead .= "\\begin{longtable}{%\n";
+                $latexhead .= "    |l|%\n";
+                $latexhead .= "    >{\\columncolor[gray]{0.75}}c|c|c|c|c|%\n";
+                $latexhead .= "    |>{\\columncolor$windGray}c|>{\\columncolor$windGray}c|c|c|c|%\n";
+                $latexhead .= "    |c|c||l|%\n";
+                $latexhead .= "}\n";
+                    $latexhead .= "% Template width {{{\n";
+                    $latexhead .= "bla bla bla bla bla bla\n";
+                    $latexhead .= "& 000\n";
+                    $latexhead .= "& VAC\n";
+                    $latexhead .= "&\n";
+                    $latexhead .= "& altitudeee\n";
+                    $latexhead .= "&\n";
+                    $latexhead .= "& 00000\n";
+                    $latexhead .= "&\n";
+                    $latexhead .= "& VAC\n";
+                    $latexhead .= "& 00000\n";
+                    $latexhead .= "&\n";
+                    $latexhead .= "& 0000\n";
+                    $latexhead .= "& 0000\n";
+                    $latexhead .= "& bla bla bla bla bla bla bla\n";
+                    $latexhead .= "\\kill\n";
+                    $latexhead .= "% }}}\n";
+
+                $latexhead .= "% Nav plan Head {{{\n";
+                $latexhead .= "\\hline\n";
+
+                    //$latexhead .= "\\multirow{2}{*}{";
+                    $latexhead .= "\\textbf{{$kStrings['Waypoint']}}";
+                    //$latexhead .= "}";
+                    $latexhead .= "\n";
+
+                    $latexhead .= "& \\textbf{{$kStrings['TrueCourse']}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['MagneticCourse']}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['Dist']}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['Altitude']}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['EstimatedElapsedTime']}}\n";
+                    $latexhead .= "& \\multicolumn{2}{c|}{\\cellcolor$windGray \\textbf{{$kStrings['Wind']}}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['MagneticHeading']}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['GroundSpeed']}}\n";
+                    $latexhead .= "& \\textbf{{$kStrings['EstimatedElapsedTime']}}\n";
+                    $latexhead .= "& ";
+                    //$latexhead .= "\\multirow{2}{*}{";
+                    $latexhead .= "\\textbf{{$kStrings['EstimatedTimeOver']}}";
+                    //$latexhead .= "}\n";
+                    $latexhead .= "& ";
+                    //$latexhead .= "\\multirow{2}{*}{";
+                    $latexhead .= "\\textbf{{$kStrings['ActualTimeOver']}}";
+                    //$latexhead .= "}\n";
+                    $latexhead .= "& ";
+                    //$latexhead .= "\\multirow{2}{*}{";
+                    $latexhead .= "\\textbf{{$kStrings['Notes']}}";
+                    //$latexhead .= "}\n";
+
+                //$latexhead .= "\\\\\n";
+                //$latexhead .= "\\hhline{~~~~~~--~~~~~~}\n";
+
+                    /*
+                    $latexhead .= "\n";
+                    $latexhead .= "& {$kStrings['latexUnitDeg']}\n";
+                    $latexhead .= "& {$kStrings['latexUnitDeg']}\n";
+                    $latexhead .= "& {$kStrings['unitNM']}\n";
+                    $latexhead .= "& {$kStrings['unitFt']}\n";
+                    $latexhead .= "& {$kStrings['unitMin']}\n";
+                    $latexhead .= "& {$kStrings['latexUnitDeg']}\n";
+                    $latexhead .= "& {$kStrings['unitKts']}\n";
+                    $latexhead .= "& {$kStrings['latexUnitDeg']}\n";
+                    $latexhead .= "& {$kStrings['unitKts']}\n";
+                    $latexhead .= "& {$kStrings['unitMin']}\n";
+                    $latexhead .= "&&&\n";
+                     */
+
+                $latexhead .= "\\\\\n";
+                //$latexhead .= "\\hline\n";
+                $latexhead .= "\\hhline{==============}\n";
+
+                $latexhead .= "% }}} Nav plan Head\n";
+                $latexhead .= "\\endhead\n";
+                $latexhead .= "\\hline\\endfoot\n";
+
+                return $latexhead;
+            }
+        //
+            // LaTeX end of header
+            function latexNavPlanTableFoot() {
+                $latexhead = "";
+                $latexhead .= "\\end{longtable}\n";
+                $latexhead .= "\\renewcommand*{\\arraystretch}{1.0}\n";
+                $latexhead .= "% }}} Nav plan\n";
+                $latexhead .= "%\n";
+                return $latexhead;
+            }
+        //
+            function latex2ndPageOpen() {
+                $contents = "";
+                $contents .= "\\clearpage\n";
+                $contents .= "\\fancyhf{}\n";
+                $contents .= "\\renewcommand{\\headrulewidth}{0pt}\n";
+                $contents .= "\\noindent\n";
+                $contents .= "\\begin{minipage}{0.49\\textwidth}\n";
+                return $contents;
+            }
+        //
+            function latexReminders() {
+                global $kStrings;
+
+                $contents = "";
+
+                $contents .= "% {$kStrings['TopOfDescent']} {{{\n";
+                $contents .= "\\textbf{{$kStrings['TopOfDescent']}:}\n";
+                $contents .= "\\begin{itemize}\n";
+                $tod1 = preg_replace("/<br\>/", "\\\\\\", $kStrings["TOD1"]);
+                $contents .= "    \\item {$tod1}\n";
+                $contents .= "    \\item {$kStrings['TOD2']}\n";
+                $contents .= "    \\item {$kStrings['TOD3']}\n";
+                $contents .= "    \\item ({$kStrings['TOD4']})\n";
+                $contents .= "\\end{itemize}\n";
+                $contents .= "% }}} {$kStrings['TopOfDescent']}\n";
+
+                return $contents;
+            }
+        //
+            function latexThWind() {
+                global $kStrings;
+
+                $thWind = "% {$kStrings['THwind']} {{{\n";
+                $thWind .= "{\n";
+                $thWind .= $kStrings["THwind"] . ":\n";
+                $thWind .= "\\begin{enumerate}\n";
+                $thWind .= "\\item $\\alpha_1 = (360 + \\textrm{TC} - \\textrm{WH}) \\% 360^{\\circ}$ and $\\textrm{sign} = 1$\n";
+                $thWind .= "\\item if $\\alpha_1 > 180: \\alpha_1 = (360 + \\textrm{WH} - \\textrm{TC}) \\% 360^{\\circ}$ and $\\textrm{sign} = -1$\n";
+                $thWind .= "\\item $\\alpha_2 = \\arcsin \\left( \\frac{\\textrm{WS}}{\\textrm{TS}} \\cdot \\sin \\alpha_1 \\right)$\n";
+                $thWind .= "\\item $\\alpha_3 = 180 - (\\alpha_1 + \\alpha_2)$\n";
+                $thWind .= "\\item $\\textrm{TH} = \\textrm{TC} + \\textrm{sign} \\cdot \\alpha_2$\n";
+                $thWind .= "\\item $\\textrm{GS} = \\frac{\\sin \\alpha_3}{\\sin \\alpha_1} \\cdot \\textrm{TS}$\n";
+                $thWind .= "\\end{enumerate}\n";
+                $thWind .= "}\n";
+                $thWind .= "% }}} {$kStrings['THwind']}\n";
+                return $thWind;
+            }
+        //
+            // LaTeX 2nd page right column
+            function latex2ndPageChangeColumn() {
+                $contents = "\\vspace*{6mm}\n";
+                $contents .= "\\end{minipage}\n";
+
+                // change to 2nd column
+                $contents .= "\\begin{minipage}{0.50\\textwidth}\n";
+                $contents .= "\\vspace{-7mm}\n";
+
+                return $contents;
+            }
+        //
+            // LaTeX end
+            function latexEnd() {
+                // end of LaTeX
+                global $kStrings;
+                global $kFuelTypes;
+                global $kFuelUnits;
+                global $usgAvgas2lbs;
+
+                $latexend = "";
+                $latexend .= "\\vspace{-2mm}\n";
+                $latexend .= "{\\small\n";
+                $latexend .= "$1\\ \\textrm{{$kStrings['USG']}} = {$kFuelUnits["USG"]}\\ l$\n";
+                $latexend .= "\\hspace{17mm}\n";
+                $latexend .= "$1\\ l\\ \\textrm{{$kStrings['Avgas']}} = {$kFuelTypes["AVGAS"]}\\ kg$\n";
+                $latexend .= "\\\\\n";
+                $latexend .= "$1\\ \\textrm{{$kStrings['ImpG']}} = {$kFuelUnits["ImpG"]}\\ l$\n";
+                $latexend .= "\\hspace{17mm}\n";
+                $latexend .= "$1\\ \\textrm{{$kStrings['USG']} {$kStrings['Avgas']}} = $usgAvgas2lbs$ lbs\n";
+                $latexend .= "}  % small\n";
+                $latexend .= "% }}}\n";
+                $latexend .= "\\end{minipage}\n";
+                $latexend .= "\\end{document}\n";
+                return $latexend;
+            }
+        //
+            /**
+             * LaTeX notes
+             *
+             * Returns:
+             *     (string) translated HTML characters
+             */
+            function latexNotes($notes) {
+                return html2latex(htmlspecialchars_decode($notes, ENT_NOQUOTES));
+            }
+        //
+            /**
+             * LaTeX 1st row
+             *
+             * @SuppressWarnings(PHPMD.MissingImport)
+             */
+            function latexRowFirst($rowArgs) {
+                // Set data
+                if($rowArgs === NULL) {
+                    // Prepare default args
+                    $rowArgs = new stdClass();
+                    $rowArgs->wpNum = 0;
+                    $rowArgs->oldWP = -1;
+                    $rowArgs->waypoint = "";
+                    $rowArgs->destination = "";
+                    $rowArgs->notes = "";
+                    $rowArgs->trueCourse = "";
+                    $rowArgs->magneticCourse = "";
+                    $rowArgs->altitude = 0;
+                    $rowArgs->distance = 0;
+                    $rowArgs->climbing = false;
+                    $rowArgs->theoricEET = 0;
+                    $rowArgs->hasWind = false;
+                    $rowArgs->windTC = "";
+                    $rowArgs->windSpeed = 0;
+                    $rowArgs->magneticHeading = "";
+                    $rowArgs->groundSpeed = 0;
+                    $rowArgs->realEET = 0;
+                    $rowArgs->destinationDistance = 0;
+                    $rowArgs->tripDistance = 0;
+                    $rowArgs->alternateDistance = 0;
+                    $rowArgs->theoricDestinationTime = 0;
+                    $rowArgs->theoricTripTime = 0;
+                    $rowArgs->theoricAlternateTime = 0;
+                    $rowArgs->realTripTime = 0;
+                    $rowArgs->realDestinationTime = 0;
+                    $rowArgs->realAlternateTime = 0;
+                }
+
+                // Prepare string
+                $back = new stdClass();
+                $back->inc = 0;
+                $back->latexcontent = "";
+
+                global $kWaypoints;
+
+                if($rowArgs->wpNum == $kWaypoints->wayBack->start) {
+                    $back->inc = -1;
+                    $back->latexcontent .= "\\hhline{==============}\n";
+                }
+
+                $destination = $rowArgs->destination;
                 if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                    $htmlRow .= $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint} ({$rowArgs->wpNum})");
+                    $destination = $rowArgs->waypoint;
                 }
 
-                $htmlRow .= $page->butler->cellClose();
+                $back->latexcontent .= html2latex($destination) . " ";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\n";
+                $back->latexcontent .= "&\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\\DarkGrayCell\n";
+                $back->latexcontent .= "&\n";
+                $back->latexcontent .= "&";
+                if($rowArgs->wpNum == $kWaypoints->wayOut->base && $rowArgs->notes != "") {
+                    $back->latexcontent .= " " . latexNotes($rowArgs->notes) . " ";
+                }
+                $back->latexcontent .= "\\\\";
+
+                return $back;
             }
+        //
+            /**
+             * LaTeX row
+             *
+             * @SuppressWarnings(PHPMD.ElseExpression)
+             * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+             * @SuppressWarnings(PHPMD.NPathComplexity)
+             */
+            function latexRow($rowArgs) {
+                // Set data
+                global $kWaypoints;
+                global $kStrings;
 
-            $destination = $rowArgs->destination;
-            if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                $destination = $rowArgs->waypoint;
-            }
+                $climbing = $rowArgs->climbing ? $kStrings["latexCopyright"] : "";
 
-            $htmlRow .= $page->butler->cell($destination, array("class" => "waypoint"));
+                // Prepare string
+                $latexcontent = "";
 
-            $htmlRow .= $page->butler->cell("", array("colspan" => 11, "class" => "unavailable"));
-            $htmlRow .= $page->butler->cell();  // ATO
-
-            $htmlRow .= $page->butler->cellOpen(array("class" => "notes"));
-            if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                $htmlRow .= $rowArgs->notes;
-            }
-            $htmlRow .= $page->butler->cellClose();
-
-            $htmlRow .= $page->butler->rowClose();
-            return $htmlRow;
-        }
-    //
-        // HTML row alternate banner
-        function htmlRowAlternateBanner($wpNum, $isAdmin) {
-            global $page;
-            global $kStrings;
-
-            $colspan = 14;
-            if($isAdmin) {
-                $colspan += 1;
-            }
-
-            $htmlRow = $page->butler->rowOpen(array("class" => "WP{$wpNum}"));
-            $htmlRow .= $page->butler->cell("{$kStrings['Alternate']}", array("class" => "nav-alternate-title", "colspan" => $colspan));
-            $htmlRow .= $page->butler->rowClose();
-            return $htmlRow;
-        }
-    //
-        /**
-         * HTML row
-         *
-         * @SuppressWarnings(PHPMD.ElseExpression)
-         */
-        function htmlRow($rowArgs) {
-            // Set data
-            global $page;
-            global $kWaypoints;
-            global $kStrings;
-
-            $climbing = $rowArgs->climbing ? $kStrings["htmlCopyright"] : "";
-            $plus5 = $kWaypoints->isStartLast($rowArgs->wpNum) ? $kStrings["Plus5"] : "";
-
-            // Prepare string
-
-            $htmlRow = $page->butler->rowOpen(array("class" => "WP{$rowArgs->wpNum}", "id" => "WP{$rowArgs->wpNum}"));
-
-            if($rowArgs->isAdmin) {
-                $htmlRow .= $page->butler->cell(
-                    $page->bodyBuilder->anchor("waypoint.php?id={$rowArgs->id}", "edit", "edit {$rowArgs->waypoint} ({$rowArgs->wpNum})"),
-                    array("class" => "edit")
-                );
-            }
-
-            // WP
-            $htmlRow .= $page->butler->cell($rowArgs->waypoint, array("class" => "waypoint"));
-
-            // TC
-            $htmlRow .=$page->butler->cellOpen(array( "class" => "TC heading num"));
-            if($rowArgs->trueCourse > 0) {
-                $htmlRow .= sprintf("%03d", $rowArgs->trueCourse);
-            }
-            $htmlRow .= $page->butler->cellClose();
-
-            // MC
-            $htmlRow .= $page->butler->cell(headingText($rowArgs->magneticCourse, $rowArgs->wpNum), array("class" => "heading num"));
-
-            // distance
-            $htmlRow .= $page->butler->cell($rowArgs->distance, array("class" => "distance num"));
-
-            // altitude
-            $htmlRow .= $page->butler->cellOpen(array("class" => "altitude num"));
-            if($rowArgs->altitude > 0) {
-                $htmlRow .= "{$rowArgs->altitude}";
-            }
-            $htmlRow .= $page->butler->cellClose();
-
-            // Theoric EET
-            $htmlRow .= $page->butler->cell("{$climbing}{$rowArgs->theoricEET}{$plus5}", array("class" => "EET num"));
+                $newline = "\\hline\n";
+                if(
+                    $rowArgs->wpNum == $kWaypoints->alternate->start
+                    || (
+                        $rowArgs->wpNum == $kWaypoints->alternate->last
+                        && $rowArgs->oldWP < $kWaypoints->alternate->limit
+                    )
+                ) {
+                    $newline = "\\hhline{==============}\n";
+                }
+                $latexcontent .= $newline;
+                $latexcontent .= html2latex($rowArgs->waypoint);
+                $latexcontent .= " & {$rowArgs->trueCourse}";
+                $latexcontent .= " & {\\large {$rowArgs->magneticCourse}}";
+                $latexcontent .= " & {\\large {$rowArgs->distance}}";
+                $latexcontent .= " &";
+                if($rowArgs->altitude > 0) {
+                    $latexcontent .= " {\\large {$rowArgs->altitude}}";
+                }
+                $latexcontent .= " & {$climbing}";
+                $latexcontent .= " {\\large ";
+                if($rowArgs->theoricEET > 0) {
+                    $latexcontent .= "{$rowArgs->theoricEET}";
+                }
+                $latexcontent .= "{$rowArgs->plus5}}";
+                $latexcontent .= " &";
 
                 // wind (if provided)
                 $windHeading = "";
@@ -1711,1035 +2678,351 @@ class Aircraft {
                 $realEET = "";
 
                 if($rowArgs->hasWind) {
-                    $windHeading = sprintf("%03d", $rowArgs->windTC);
+                    $windHeading = $rowArgs->windTC;
                     $windSpeed = $rowArgs->windSpeed;
-                    $magHeading = headingText($rowArgs->magneticHeading, $rowArgs->wpNum);
+                    $magHeading = "{\\large {$rowArgs->magneticHeading}}";
                     $groundSpeed = $rowArgs->groundSpeed;
-                    $realEET = "{$climbing}{$rowArgs->realEET}{$plus5}";
+                    $realEET = "{$climbing} {\\large {$rowArgs->realEET}{$rowArgs->plus5}}";
                 }
 
-                $htmlRow .= $page->butler->cell($windHeading, array("class" => "wind heading num"));
-                $htmlRow .= $page->butler->cell($windSpeed, array("class" => "wind speed num"));
-
-                $htmlRow .= $page->butler->cell($magHeading, array("class" => "heading num"));
+                $latexcontent .= " {$windHeading}";
+                $latexcontent .= " & {$windSpeed}";
+                $latexcontent .= " & {$magHeading}";
 
                 if($rowArgs->hasWind && $groundSpeed <= 0) {
-                    $htmlRow .= $page->butler->cell("Wind too strong", array("colspan" => 2, "style" => "background-color: red;"));
+                    $latexcontent .= " & \\multicolumn{2}{c|}{\\RedCell Wind too strong}";
                 } else {
-                    $htmlRow .= $page->butler->cell($groundSpeed, array("class" => "speed num"));
-                    $htmlRow .= $page->butler->cell($realEET, array("class" => "EET num"));
+                    $latexcontent .= " & {$groundSpeed}";
+                    $latexcontent .= " & {$realEET}";
                 }
 
-            // ETO + ATO
-            $htmlRow .= $page->butler->cell();
-            $htmlRow .= $page->butler->cell();
+                // ETO + ATO
+                $latexcontent .= " &";
+                $latexcontent .= " &";
 
-            // notes
-            $htmlRow .= $page->butler->cell($rowArgs->notes, array("class" => "notes"));
+                $latexcontent .= " & " . latexNotes($rowArgs->notes);
+                $latexcontent .= "\\\\";
 
-            $htmlRow .= $page->butler->rowClose();
-
-            return $htmlRow;
-        }
-    //
-        // HTML row summary
-        function htmlRowSummary($rowArgs) {
-            // Set data
-            global $page;
-            global $kWaypoints;
-
-            $distance = $rowArgs->alternateDistance;
-            $theoricEeTime = $rowArgs->theoricAlternateTime;
-            $realEeTime = $rowArgs->realAlternateTime;
-            if($rowArgs->wpNum == $kWaypoints->wayOut->last) {
-                $distance = $rowArgs->tripDistance;
-                $theoricEeTime = $rowArgs->theoricTripTime;
-                $realEeTime = $rowArgs->realTripTime;
-
-            } elseif($rowArgs->wpNum == $kWaypoints->wayBack->last) {
-                $distance = ($rowArgs->tripDistance - $rowArgs->destinationDistance);
-                $theoricEeTime = ($rowArgs->theoricTripTime - $rowArgs->theoricDestinationTime);
-                $realEeTime = ($rowArgs->realTripTime - $rowArgs->realDestinationTime);
+                return $latexcontent;
             }
-            // Do not display if zero
-            if($theoricEeTime == 0) { $theoricEeTime = ""; }
-            if($realEeTime == 0) { $realEeTime = ""; }
+        //
+            // LaTeX row summary
+            function latexRowSummary($rowArgs) {
+                // Set data
+                global $kWaypoints;
 
-            // Prepare string
-            $htmlRow = $page->butler->rowOpen(array("class" => "summary"));
+                $distance = $rowArgs->alternateDistance;
+                $theoricEeTime = $rowArgs->theoricAlternateTime;
+                $realEeTime = $rowArgs->realAlternateTime;
+                if($rowArgs->wpNum == $kWaypoints->wayOut->last) {
+                    $distance = $rowArgs->tripDistance;
+                    $theoricEeTime = $rowArgs->theoricTripTime;
+                    $realEeTime = $rowArgs->realTripTime;
 
-            if($rowArgs->isAdmin) { $htmlRow .= $page->butler->cell("", array("class" => "unavailable")); }
+                } elseif($rowArgs->wpNum == $kWaypoints->wayBack->last) {
+                    $distance = ($rowArgs->tripDistance - $rowArgs->destinationDistance);
+                    $theoricEeTime = ($rowArgs->theoricTripTime - $rowArgs->theoricDestinationTime);
+                    $realEeTime = ($rowArgs->realTripTime - $rowArgs->realDestinationTime);
+                }
+                if($theoricEeTime == 0) {
+                    // Do not display if zero
+                    $theoricEeTime = "";
+                }
+                if($realEeTime == 0) {
+                    // Do not display if zero
+                    $realEeTime = "";
+                }
 
-            $htmlRow .= $page->butler->cell("", array("class" => "WP unavailable"));
-            $htmlRow .= $page->butler->cell("", array("class" => "TC unavailable"));
-            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+                // Prepare string
+                $latexcontent = "";
 
-            $htmlRow .= $page->butler->cell($distance, array("class" => "distance sum num"));
+                $latexcontent .= "\\hhline{---=-=----=---}\n";
+                $latexcontent .=   "\\DarkGrayCell ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& {$distance} ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& {$theoricEeTime} ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "& {$realEeTime} ";
+                $latexcontent .= "& \\DarkGrayCell ";
+                $latexcontent .= "&";
+                $latexcontent .= "&";
+                $latexcontent .= "\\\\";
 
-            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
+                if($rowArgs->wpNum == $kWaypoints->alternate->last) {
+                    $latexcontent .= "\\hline\n";
+                }
 
-            $htmlRow .= $page->butler->cell($theoricEeTime, array("class" => "EET sum num"));
-
-            $htmlRow .= $page->butler->cell("", array("colspan" => 2, "class" => "wind unavailable"));
-            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
-            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
-
-            $htmlRow .= $page->butler->cell($realEeTime, array("class" => "EET sum num"));
-
-            $htmlRow .= $page->butler->cell("", array("class" => "unavailable"));
-            $htmlRow .= $page->butler->cell();
-            $htmlRow .= $page->butler->cell();
-            $htmlRow .= $page->butler->rowClose();
-
-            return $htmlRow;
-        }
-    //
-        // HTML row ANY
-        function htmlRowAny($rowArgs) {
-            global $kWaypoints;
-
-            $htmlRow = "";
-
-            if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                // 1st row ever
-                // 1st row inbound we do not need, it is written on previous line where we are
-                $htmlRow .= htmlFirstRow($rowArgs);
+                return $latexcontent;
             }
+        //
+            /**
+             * LaTeX row ANY
+             *
+             * Returns:
+             *     object: inc, latexcontent
+             *
+             * @SuppressWarnings(PHPMD.MissingImport)
+             */
+            function latexRowAny($rowArgs) {
+                global $kWaypoints;
 
-            if($rowArgs->wpNum == $kWaypoints->alternate->start || ($rowArgs->wpNum == $kWaypoints->alternate->last && $rowArgs->oldWP < $kWaypoints->alternate->limit)) {
-                $htmlRow .= htmlRowAlternateBanner($rowArgs->wpNum, $rowArgs->isAdmin);
+                $back = new stdClass();
+                $back->inc = 1;
+                $back->latexcontent = "";
+
+                if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
+                    $firstRow = latexRowFirst($rowArgs);
+                    $back->latexcontent .= $firstRow->latexcontent;
+                    $back->inc += $firstRow->inc;
+                }
+
+                if($rowArgs->wpNum > $kWaypoints->wayOut->base) {
+                    $back->latexcontent .= latexRow($rowArgs);
+                }
+
+                if($kWaypoints->isLast($rowArgs->wpNum)) {
+                    $back->latexcontent .= latexRowSummary($rowArgs);
+                    $back->inc += 1;
+                }
+
+                return $back;
             }
-
-            if($rowArgs->wpNum > $kWaypoints->wayOut->base) {
-                $htmlRow .= htmlRow($rowArgs);
+        //
+            function latexNavPlanTableFill($wpNum, $rows, $maxRow) {
+                $latexcontent = "";
+                global $kWaypoints;
+                if($wpNum == $kWaypoints->wayOut->base) {
+                    $latexcontent .= "\\hline\n";
+                } elseif($wpNum == $kWaypoints->wayOut->last) {
+                    $latexcontent .= "\\hhline{-~~~~~~~~~~--~}\n";
+                }
+                while($rows < $maxRow - 1) {
+                    $rows++;
+                    $latexcontent .= "&&&&&&&&&&&&&\\\\\\hline\n";
+                }
+                return $latexcontent;
             }
+        //
+            // LaTeX fuel
+            function latexFuel($theoricFuel, $realFuel) {
+                global $kStrings;
 
-            if($kWaypoints->isLast($rowArgs->wpNum)) {
-                $htmlRow .= htmlRowSummary($rowArgs);
-            }
+                $notAvailable = "~~";
 
-            return $htmlRow;
-        }
-    //
-        /**
-         * LaTeX notes
-         *
-         * Returns:
-         *     (string) translated HTML characters
-         */
-        function LaTeXnotes($notes) {
-            return html2latex(htmlspecialchars_decode($notes, ENT_NOQUOTES));
-        }
-    //
-        /**
-         * LaTeX 1st row
-         *
-         * @SuppressWarnings(PHPMD.MissingImport)
-         */
-        function LaTeXfirstRow($rowArgs) {
-            // Set data
-            global $kWaypoints;
+                $consumption = $theoricFuel->consumption > 0 ? $theoricFuel->consumption : $notAvailable;
+                $unit = $theoricFuel->unit != "" ? $theoricFuel->unit : $notAvailable;
 
-            if($rowArgs === NULL) {
-                // Prepare default args
-                $rowArgs = new stdClass();
-                $rowArgs->wpNum = 0;
-                $rowArgs->oldWP = -1;
-                $rowArgs->waypoint = "";
-                $rowArgs->destination = "";
-                $rowArgs->notes = "";
-                $rowArgs->trueCourse = 0;
-                $rowArgs->magneticCourse = 0;
-                $rowArgs->altitude = 0;
-                $rowArgs->distance = 0;
-                $rowArgs->climbing = false;
-                $rowArgs->theoricEET = 0;
-                $rowArgs->hasWind = false;
-                $rowArgs->windTC = 0;
-                $rowArgs->windSpeed = 0;
-                $rowArgs->magneticHeading = 0;
-                $rowArgs->groundSpeed = 0;
-                $rowArgs->realEET = 0;
-                $rowArgs->destinationDistance = 0;
-                $rowArgs->tripDistance = 0;
-                $rowArgs->alternateDistance = 0;
-                $rowArgs->theoricDestinationTime = 0;
-                $rowArgs->theoricTripTime = 0;
-                $rowArgs->theoricAlternateTime = 0;
-                $rowArgs->realTripTime = 0;
-                $rowArgs->realDestinationTime = 0;
-                $rowArgs->realAlternateTime = 0;
-            }
-
-            // Prepare string
-            $back = new stdClass();
-            $back->inc = 0;
-            $back->latexcontent = "";
-
-            if($rowArgs->wpNum == $kWaypoints->wayBack->start) {
-                $back->inc = -1;
-                $back->latexcontent .= "\\hhline{===============}\n";
-            }
-
-            $destination = $rowArgs->destination;
-            if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                $destination = $rowArgs->waypoint;
-            }
-
-            $back->latexcontent .= "& " . html2latex($destination) . " ";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\n";
-            $back->latexcontent .= "&\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\\DarkGray\n";
-            $back->latexcontent .= "&\n";
-            $back->latexcontent .= "&";
-            if($rowArgs->wpNum == $kWaypoints->wayOut->base && $rowArgs->notes != "") {
-                $back->latexcontent .= " " . LaTeXnotes($rowArgs->notes) . " ";
-            }
-            $back->latexcontent .= "\\\\";
-
-            return $back;
-        }
-    //
-        /**
-         * LaTeX row
-         *
-         * @SuppressWarnings(PHPMD.ElseExpression)
-         * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-         * @SuppressWarnings(PHPMD.NPathComplexity)
-         */
-        function LaTeXrow($rowArgs) {
-            // Set data
-            global $kWaypoints;
-            global $kStrings;
-
-            $climbing = $rowArgs->climbing ? $kStrings["latexCopyright"] : "";
-            $plus5 = $kWaypoints->isStartLast($rowArgs->wpNum) ? $kStrings["Plus5"] : "";
-
-            // Prepare string
-            $latexcontent = "";
-
-            $newline = "\\hline\n";
-            if(
-                $rowArgs->wpNum == $kWaypoints->alternate->start
-                || (
-                    $rowArgs->wpNum == $kWaypoints->alternate->last
-                    && $rowArgs->oldWP < $kWaypoints->alternate->limit
-                )
-            ) {
-                $newline = "\\hhline{===============}\n";
-            }
-            $latexcontent .= $newline;
-            $latexcontent .= "& " . html2latex($rowArgs->waypoint);
-            $latexcontent .= " & ";
-            if($rowArgs->trueCourse > 0) {
-                $latexcontent .= sprintf("%03d", $rowArgs->trueCourse);
-            }
-            $latexcontent .= " & {\\large " . headingText($rowArgs->magneticCourse, $rowArgs->wpNum) . "}";
-            $latexcontent .= " & {\\large {$rowArgs->distance}}";
-            $latexcontent .= " &";
-            if($rowArgs->altitude > 0) {
-                $latexcontent .= " {\\large {$rowArgs->altitude}}";
-            }
-            $latexcontent .= " & {$climbing}";
-            $latexcontent .= " {\\large {$rowArgs->theoricEET}{$plus5}}";
-            $latexcontent .= " &";
-
-            // wind (if provided)
-            $windHeading = "";
-            $windSpeed = "";
-            $magHeading = "";
-            $groundSpeed = "";
-            $realEET = "";
-
-            if($rowArgs->hasWind) {
-                $windHeading = sprintf("%03d", $rowArgs->windTC);
-                $windSpeed = $rowArgs->windSpeed;
-                $magHeading = "{\\large " . headingText($rowArgs->magneticHeading, $rowArgs->wpNum) . "}";
-                $groundSpeed = $rowArgs->groundSpeed;
-                $realEET = "{$climbing} {\\large {$rowArgs->realEET}{$plus5}}";
-            }
-
-            $latexcontent .= " {$windHeading}";
-            $latexcontent .= " & {$windSpeed}";
-            $latexcontent .= " & {$magHeading}";
-
-            if($rowArgs->hasWind && $groundSpeed <= 0) {
-                $latexcontent .= " & \\multicolumn{2}{c|}{\\RedCell Wind too strong}";
-            } else {
-                $latexcontent .= " & {$groundSpeed}";
-                $latexcontent .= " & {$realEET}";
-            }
-
-            // ETO + ATO
-            $latexcontent .= " &";
-            $latexcontent .= " &";
-
-            $latexcontent .= " & " . LaTeXnotes($rowArgs->notes);
-            $latexcontent .= "\\\\";
-
-            return $latexcontent;
-        }
-    //
-        // LaTeX row summary
-        function LaTeXrowSummary($rowArgs) {
-            // Set data
-            global $kWaypoints;
-
-            $distance = $rowArgs->alternateDistance;
-            $theoricEeTime = $rowArgs->theoricAlternateTime;
-            $realEeTime = $rowArgs->realAlternateTime;
-            if($rowArgs->wpNum == $kWaypoints->wayOut->last) {
-                $distance = $rowArgs->tripDistance;
-                $theoricEeTime = $rowArgs->theoricTripTime;
-                $realEeTime = $rowArgs->realTripTime;
-
-            } elseif($rowArgs->wpNum == $kWaypoints->wayBack->last) {
-                $distance = ($rowArgs->tripDistance - $rowArgs->destinationDistance);
-                $theoricEeTime = ($rowArgs->theoricTripTime - $rowArgs->theoricDestinationTime);
-                $realEeTime = ($rowArgs->realTripTime - $rowArgs->realDestinationTime);
-            }
-            if($theoricEeTime == 0) {
-                // Do not display if zero
-                $theoricEeTime = "";
-            }
-            if($realEeTime == 0) {
-                // Do not display if zero
-                $realEeTime = "";
-            }
-
-            // Prepare string
-            $latexcontent = "";
-
-            $latexcontent .= "\\hhline{----=-=----=---}\n";
-            $latexcontent .= "\\DarkGray ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& {$distance} ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& {$theoricEeTime} ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "& {$realEeTime} ";
-            $latexcontent .= "& \\DarkGray ";
-            $latexcontent .= "&";
-            $latexcontent .= "&";
-            $latexcontent .= "\\\\";
-
-            if($rowArgs->wpNum == $kWaypoints->alternate->last) {
-                $latexcontent .= "\\hline\n";
-            }
-
-            return $latexcontent;
-        }
-    //
-        /**
-         * LaTeX row ANY
-         *
-         * Returns:
-         *     object: inc, latexcontent
-         *
-         * @SuppressWarnings(PHPMD.MissingImport)
-         */
-        function LaTeXrowAny($rowArgs) {
-            global $kWaypoints;
-
-            $back = new stdClass();
-            $back->inc = 1;
-            $back->latexcontent = "";
-
-            if($rowArgs->wpNum == $kWaypoints->wayOut->base) {
-                $firstRow = LaTeXfirstRow($rowArgs);
-                $back->latexcontent .= $firstRow->latexcontent;
-                $back->inc += $firstRow->inc;
-            }
-
-            if($rowArgs->wpNum > $kWaypoints->wayOut->base) {
-                $back->latexcontent .= LaTeXrow($rowArgs);
-            }
-
-            if($kWaypoints->isLast($rowArgs->wpNum)) {
-                $back->latexcontent .= LaTeXrowSummary($rowArgs);
-                $back->inc += 1;
-            }
-
-            return $back;
-        }
-    //
-        // LaTeX finish 1st page
-        function LaTeXfinish1($wpNum, $rows, $maxRow) {
-            $latexcontent = "";
-            global $kWaypoints;
-            if($wpNum == $kWaypoints->wayOut->base) {
-                $latexcontent .= "\\hline\n";
-            } elseif($wpNum == $kWaypoints->wayOut->last) {
-                $latexcontent .= "\\hhline{~-~~~~~~~~~~--~}\n";
-            }
-            while($rows < $maxRow - 1) {
-                $rows++;
-                $latexcontent .= "&&&&&&&&&&&&&&\\\\\\hline\n";
-            }
-            return $latexcontent;
-        }
-    //
-        // HTML fuel
-        function htmlFuel($theoricFuel, $realFuel) {
-            global $page;
-            global $kStrings;
-
-            $htmlFuel = "<div class=\"fuel\">\n";
-
-            $htmlFuel .= $page->butler->tableOpen(array("class" => "no_border"));
-                // head
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->headerCell("Fuel", array("rowspan" => 3));
-                $htmlFuel .= $page->butler->headerCell(
-                    "{$kStrings["FuelConsumption"]} "
-                    . ($theoricFuel->consumption > 0 ? "{$theoricFuel->consumption}" : "?")
-                    . " {$theoricFuel->unit}/h\n",
-                    array("colspan" => 4, "style" => "background-color: white;")
-                );
-                $htmlFuel .= $page->butler->rowClose();
-
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->headerCell("{$kStrings["NoWind"]}", array("colspan" => 2));
-                $htmlFuel .= $page->butler->headerCell("{$kStrings["Wind"]}", array("colspan" => 2));
-                $htmlFuel .= $page->butler->rowClose();
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->headerCell($kStrings["time"]);
-                $htmlFuel .= $page->butler->headerCell("{$kStrings["fuel"]} [{$theoricFuel->unit}]");
-                $htmlFuel .= $page->butler->headerCell($kStrings["time"]);
-                $htmlFuel .= $page->butler->headerCell("{$kStrings["fuel"]} [{$theoricFuel->unit}]");
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // trip
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["Trip"]}:");
-                $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Trip);
-                $htmlFuel .= $realFuel->htmlRow(FuelEntry::Trip);
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // alternate
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["Alternate"]}:");
-                $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Alternate);
-                $htmlFuel .= $realFuel->htmlRow(FuelEntry::Alternate);
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // reserve
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["Reserve"]}:");
-                $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Reserve);
-                $htmlFuel .= $realFuel->htmlRow(FuelEntry::Reserve);
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // unusable
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["Unusable"]}:");
-                $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Unusable);
-                $htmlFuel .= $realFuel->htmlRow(FuelEntry::Unusable);
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // minimum
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["MinFuel"]}:");
-                $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Minimum);
-                $htmlFuel .= $realFuel->htmlRow(FuelEntry::Minimum);
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // extra
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["ExtraPlus"]}" . ($theoricFuel->extraPercent * 100) . "%:");
-                $htmlFuel .= $theoricFuel->htmlRow(FuelEntry::Extra);
-                $htmlFuel .= $realFuel->htmlRow(FuelEntry::Extra);
-                $htmlFuel .= $page->butler->rowClose();
-            //
-                // ramp
-                $htmlFuel .= $page->butler->rowOpen();
-                $htmlFuel .= $page->butler->cell("{$kStrings["RampFuel"]}:");
-                $htmlFuel .= $theoricFuel->htmlRamp();
-                $htmlFuel .= $realFuel->htmlRamp();
-                $htmlFuel .= $page->butler->rowClose();
-            //
-            $htmlFuel .= $page->butler->tableClose();
-            $htmlFuel .= "</div>\n";
-
-            return $htmlFuel;
-        }
-    //
-        // LaTeX fuel
-        function LaTeXfuel($theoricFuel, $realFuel) {
-            global $kStrings;
-
-            $notAvailable = "~~";
-
-            $consumption = $theoricFuel->consumption > 0 ? $theoricFuel->consumption : $notAvailable;
-            $unit = $theoricFuel->unit != "" ? $theoricFuel->unit : $notAvailable;
-
-            $latexfuel = "";
-                // Fuel fold
-                $latexfuel .= "% {$kStrings["Fuel"]} {{{\n";
-                $latexfuel .= "\\begin{center}\n";
-                $latexfuel .= "\\Large\n";
-            //
-                // Begin table
-                $latexfuel .= "\\begin{tabular}{|l||r@{ :}c|r||r@{ :}c|r|}\n";
+                $latexfuel = "";
+                    // Fuel fold
+                    $latexfuel .= "% {$kStrings['Fuel']} {{{\n";
+                    $latexfuel .= "\\begin{center}\n";
+                //
+                    // Begin table
+                    $latexfuel .= "\\begin{tabular}{|l||r@{ :}c|r||r@{ :}c|r|}\n";
+                    $latexfuel .= "\\hline\n";
+                    $latexfuel .= "\\multicolumn{1}{|c|}{}\n";
+                    $latexfuel .= "& \\multicolumn{6}{c|}{\\textbf{{$kStrings['FuelConsumption']}} {$consumption} {$unit}/h}\n";
+                    $latexfuel .= "\\\\\\hhline{~------}\n";
+                    $latexfuel .= "\\multicolumn{1}{|c|}{\\textbf{Fuel}}\n";
+                    $latexfuel .= "& \\multicolumn{3}{c||}{{$kStrings['NoWind']}}\n";
+                    $latexfuel .= "& \\multicolumn{3}{c|}{{$kStrings['Wind']}}\n";
+                    $latexfuel .= "\\\\\\hhline{~------}\n";
+                    $latexfuel .= "\\multicolumn{1}{|c|}{}\n";
+                    $latexfuel .= "& \\multicolumn{2}{c|}{{$kStrings['time']}}\n";
+                    $latexfuel .= "& {$kStrings['fuel']} [{$theoricFuel->unit}]\n";
+                    $latexfuel .= "& \\multicolumn{2}{c|}{{$kStrings['time']}}\n";
+                    $latexfuel .= "& {$kStrings['fuel']} [{$theoricFuel->unit}]\n";
+                    $latexfuel .= "\\\\\\hline\n";
+                //
+                    // trip
+                    $latexfuel .= $kStrings["Trip"] . ":\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Trip);
+                    $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Trip);
+                    $latexfuel .= "\\\\\\hline\n";
+                //
+                    // alternate
+                    $latexfuel .= $kStrings["Alternate"] . ":\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Alternate);
+                    $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Alternate);
+                    $latexfuel .= "\\\\\\hline\n";
+                //
+                    // reserve
+                    $latexfuel .= $kStrings["Reserve"] . ":\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Reserve);
+                    $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Reserve);
+                    $latexfuel .= "\\\\\\hline\n";
+                //
+                    // unusable
+                    $latexfuel .= $kStrings["Unusable"] . ":\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Unusable);
+                    $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Unusable);
+                    $latexfuel .= "\\\\\\hline\n";
                 $latexfuel .= "\\hline\n";
-                $latexfuel .= "\\multicolumn{1}{|c|}{}\n";
-                $latexfuel .= "& \\multicolumn{6}{c|}{\\textbf{{$kStrings["FuelConsumption"]}} {$consumption} {$unit}/h}\n";
-                $latexfuel .= "\\\\\\hhline{~------}\n";
-                $latexfuel .= "\\multicolumn{1}{|c|}{\\textbf{Fuel}}\n";
-                $latexfuel .= "& \\multicolumn{3}{c||}{{$kStrings["NoWind"]}}\n";
-                $latexfuel .= "& \\multicolumn{3}{c|}{{$kStrings["Wind"]}}\n";
-                $latexfuel .= "\\\\\\hhline{~------}\n";
-                $latexfuel .= "\\multicolumn{1}{|c|}{}\n";
-                $latexfuel .= "& \\multicolumn{2}{c|}{{$kStrings["time"]}}\n";
-                $latexfuel .= "& {$kStrings["fuel"]} [{$theoricFuel->unit}]\n";
-                $latexfuel .= "& \\multicolumn{2}{c|}{{$kStrings["time"]}}\n";
-                $latexfuel .= "& {$kStrings["fuel"]} [{$theoricFuel->unit}]\n";
-                $latexfuel .= "\\\\\\hline\n";
-            //
-                // trip
-                $latexfuel .= $kStrings["Trip"] . ":\n";
-                $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Trip);
-                $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Trip);
-                $latexfuel .= "\\\\\\hline\n";
-            //
-                // alternate
-                $latexfuel .= $kStrings["Alternate"] . ":\n";
-                $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Alternate);
-                $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Alternate);
-                $latexfuel .= "\\\\\\hline\n";
-            //
-                // reserve
-                $latexfuel .= $kStrings["Reserve"] . ":\n";
-                $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Reserve);
-                $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Reserve);
-                $latexfuel .= "\\\\\\hline\n";
-            //
-                // unusable
-                $latexfuel .= $kStrings["Unusable"] . ":\n";
-                $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Unusable);
-                $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Unusable);
-                $latexfuel .= "\\\\\\hline\n";
-            $latexfuel .= "\\hline\n";
 
-                // minimum
-                $latexfuel .= $kStrings["MinFuel"] . ":\n";
-                $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Minimum);
-                $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Minimum);
-                $latexfuel .= "\\\\\\hline\n";
-            //
-                // extra
-                $latexfuel .= $kStrings["ExtraPlus"] . ($theoricFuel->extraPercent * 100) . "\\%:\n";
-                $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Extra);
-                $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Extra);
-                $latexfuel .= "\\\\\\hline\\hline\n";
-            //
-                // ramp fuel
-                $latexfuel .= $kStrings["RampFuel"] . ":\n";
-                $latexfuel .= "& " . $theoricFuel->latexRamp();
-                $latexfuel .= "& " . $realFuel->latexRamp();
-                $latexfuel .= "\\\\\\hline\n";
-            //
+                    // minimum
+                    $latexfuel .= $kStrings["MinFuel"] . ":\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Minimum);
+                    $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Minimum);
+                    $latexfuel .= "\\\\\\hline\n";
+                //
+                    // extra
+                    $latexfuel .= $kStrings["ExtraPlus"] . ($theoricFuel->extraPercent * 100) . "\\%:\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRow(FuelEntry::Extra);
+                    $latexfuel .= "& " . $realFuel->latexRow(FuelEntry::Extra);
+                    $latexfuel .= "\\\\\\hline\\hline\n";
+                //
+                    // ramp fuel
+                    $latexfuel .= $kStrings["RampFuel"] . ":\n";
+                    $latexfuel .= "& " . $theoricFuel->latexRamp();
+                    $latexfuel .= "& " . $realFuel->latexRamp();
+                    $latexfuel .= "\\\\\\hline\n";
+                //
+                    // End table
+                    $latexfuel .= "\\end{tabular}\n";
+                    $latexfuel .= "\\end{center}\n";
+                    $latexfuel .= "% }}}\n";
+                return $latexfuel;
+            }
+        //
+            // LaTeX fuel tanks
+            function latexFuelTanks($rows) {
+                global $kStrings;
+
+                $latexFuelTanks = "";
+                $latexFuelTanks .= "% Fuel tanks {{{\n";
+                $latexFuelTanks .= "\\begin{center}\n";
+                $latexFuelTanks .= "\\begin{tabular}{|l|r|r|r|}\n";
+                    // head
+                    $latexFuelTanks .= "\\hline\n";
+                    $latexFuelTanks .= "\\multicolumn{1}{|c|}{\\textbf{{$kStrings['Fuel']}}}";
+                    $latexFuelTanks .= " & \\multicolumn{1}{c|}{\\textbf{Unusable}}";
+                    $latexFuelTanks .= " & \\multicolumn{1}{c|}{\\textbf{Usable}}";
+                    $latexFuelTanks .= " & \\multicolumn{1}{c|}{\\textbf{Total}}";
+                    $latexFuelTanks .= "\\\\\\hline\n";
+                foreach($rows as $row) {
+                    if($row[0] == $kStrings["overflow"]) {
+                        $latexFuelTanks .= "\\RedCell " . html2latex($kStrings["overflow"] . "!!!");
+                        $latexFuelTanks .= " & \\multicolumn{3}{l|}{\\RedCell " . html2latex($row[1]) . "}\\\\\\hline\n";
+                        continue;
+                    }
+
+                    $latexFuelTanks .= html2latex($row[0]);
+                    $latexFuelTanks .= " & " . html2latex($row[1]);
+                    $latexFuelTanks .= " & " . html2latex($row[2]);
+                    $latexFuelTanks .= " & " . html2latex($row[3]);
+                    $latexFuelTanks .= "\\\\\\hline\n";
+                }
+
                 // End table
-                $latexfuel .= "\\end{tabular}\n";
-                $latexfuel .= "\\end{center}\n";
-                $latexfuel .= "% }}}\n";
-            return $latexfuel;
-        }
-    //
-        // HTML GC entry
-        function htmlGcEntry($gcDataField, $stringId, $extraString="") {
-            global $page;
-            global $kArmless;
-            global $kStrings;
+                $latexFuelTanks .= "\\end{tabular}\n";
+                $latexFuelTanks .= "\\end{center}\n";
+                $latexFuelTanks .= "% }}} Fuel tanks\n";
 
-            if($gcDataField->getArm() == $kArmless) {
-                return "";
+                return $latexFuelTanks;
             }
-
-            $htmlStr = $page->butler->rowOpen();
-
-            $htmlStr .= $page->butler->cell($kStrings[$stringId] . ($extraString == "" ? "" : " $extraString"));
-
-            $htmlStr .= $page->butler->cellOpen(array("class" => "mass num"));
-            $htmlStr .= $gcDataField->mass;
-            $htmlStr .= $gcDataField->isMassTooMuch() ? $kStrings["htmlTooHeavy"] : "";
-            $htmlStr .= $page->butler->cellClose();
-
-            $htmlStr .= $page->butler->cell($gcDataField->getArm(), array("class" => "arm num"));
-            $htmlStr .= $page->butler->cell($gcDataField->getMoment(), array("class" => "moment num"));
-
-            $htmlStr .= $page->butler->rowClose();
-
-            return $htmlStr;
-        }
-    //
-        /**
-         * HTML GC
-         *
-         * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-         * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-         * @SuppressWarnings(PHPMD.NPathComplexity)
-         */
-        function htmlGC($gcData, $finalFuel) {
-            global $page;
-            global $kStrings;
-            global $kFuelTypes;
-            global $kFuelUnits;
-            global $usgAvgas2lbs;
-
-            $redBG = "background-color: red;";
-
-            $htmlGC = "";
-
-            $htmlGC .= "<div class=\"GC\">\n";
-            $htmlGC .= $page->butler->tableOpen(array("class" => "no_border"));
-                // head
-                $htmlGC .= $page->butler->rowOpen();
-                $htmlGC .= $page->butler->headerCell($kStrings["MassAndBalance"], array("rowspan" => 2));
-                $htmlGC .= $page->butler->headerCell($kStrings["Mass"]);
-                $htmlGC .= $page->butler->headerCell($kStrings["Arm"]);
-                $htmlGC .= $page->butler->headerCell($kStrings["Moment"]);
-                $htmlGC .= $page->butler->rowClose();
-                $htmlGC .= $page->butler->rowOpen();
-                $htmlGC .= $page->butler->headerCell("[{$gcData->massUnit}]");
-                $htmlGC .= $page->butler->headerCell("[{$gcData->armUnit}]");
-                $htmlGC .= $page->butler->headerCell("[{$gcData->momentUnit}]");
-                $htmlGC .= $page->butler->rowClose();
-            //
-                // empty
-                $htmlGC .= $page->butler->rowOpen();
-
-                $dryEmpty = $kStrings["DryEmpty"];
-                if($gcData->dryEmptyTimestamp !== NULL && $gcData->dryEmptyTimestamp != "") {
-                    $dryEmpty .= " ({$gcData->dryEmptyTimestamp})";
-                }
-                $htmlGC .= $page->butler->cell($dryEmpty);
-
-                $htmlGC .= $page->butler->cell(($gcData->dryEmpty->mass > 0) ? $gcData->dryEmpty->mass : "", array("class" => "mass num"));
-                $htmlGC .= $page->butler->cell("", array("class" => "unavailable"));
-                $htmlGC .= $page->butler->cell(($gcData->dryEmpty->getMoment() > 0) ? $gcData->dryEmpty->getMoment() : "", array("class" => "moment num"));
-                $htmlGC .= $page->butler->rowClose();
-
-            $htmlGC .= htmlGcEntry($gcData->front, "Front");
-
-            // rears...
-            $rearsCount = count($gcData->rears);
-            for ($i = 0; $i < $rearsCount; ++$i) {
-                $htmlGC .= htmlGcEntry($gcData->rears[$i], "Rear", "#" . ($i + 1));
-            }
-
-            // luggages...
-            $luggagesCount = count($gcData->luggages);
-            for ($i = 0; $i < $luggagesCount; ++$i) {
-                $htmlGC .= htmlGcEntry($gcData->luggages[$i], "Luggage", "#" . ($i + 1));
-            }
-            // luggage total mass
-            if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
-                $htmlGC .= $page->butler->rowOpen();
-                $htmlGC .= $page->butler->cell("{$kStrings["Luggage"]} total mass");
-                $htmlGC .= $page->butler->cell(
-                    "{$kStrings['TooHeavy']} {$gcData->luggageTotalMass->mass} &gt; {$gcData->luggageTotalMass->maxMass}",
-                    array("colspan" => 3, "style" => $redBG)
-                );
-                $htmlGC .= $page->butler->rowClose();
-            }
-
-            // unusable fuels...
-            $unusablesCount = count($gcData->fuelUnusables);
-            for ($i = 0; $i < $unusablesCount; ++$i) {
-                $tank = $finalFuel->tanks[$i];
-                $htmlGC .= htmlGcEntry($gcData->fuelUnusables[$i], "UnusableFuel", "#" . ($i + 1) . "={$tank->unusable}{$tank->fuelUnit}");
-            }
-
-            $gcMin = $gcData->gcBoundaries->min == 0 ? "?" : $gcData->gcBoundaries->min;
-            $gcMax = $gcData->gcBoundaries->max == 0 ? "?" : $gcData->gcBoundaries->max;
-
-                // 0-fuel
-                $gcMinArgs = array("class" => "GCend GCmin num");
-                if($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min) {
-                    $gcMinArgs["style"] = $redBG;
+        //
+            /**
+             * LaTeX GC cell.
+             */
+            function latexGcCell($item, $rowspan=NULL) {
+                if($rowspan !== NULL && $rowspan > 0) {
+                    return "";
                 }
 
-                $gcMaxArgs = array("class" => "GCend GCmax num");
-                if($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max) {
-                    $gcMaxArgs["style"] = $redBG;
+                if($item->value === NULL) {
+                    return "\\DarkGrayCell";
                 }
 
-                $gcArgs = array("class" => "arm GCend GCmid num");
-                if(
-                    ($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min)
-                    || ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max)
-                ) {
-                    $gcArgs["style"] = $redBG;
+                $text = html2latex($item->value);
+                if($item->tooHeavy) {
+                    global $kStrings;
+                    $text .= " " . $kStrings["latexTooHeavy"];
                 }
 
-                // Special: color red 0-fuel mass if Take-off mass is more than maxLdgW
-                $massPrefix = "";
-                $mldgwArgs = array();
-                if($gcData->maxLdgW  > 0 && $gcData->takeOff->mass > $gcData->maxLdgW) {
-                    $massPrefix = $kStrings["TooHeavy"] . " ";
-                    $mldgwArgs["style"] = $redBG;
+                $prefix = "";
+                if($item->color == "red") {
+                    $prefix = "\\RedCell ";
+                } elseif($item->color == "gray") {
+                    //$prefix = "\\GrayCell ";
+                    // Not really working, just keep all cells white
+                }
+                $text = "$prefix$text";
+
+                if($item->rowspan !== NULL) {
+                    $text = "\\multirow{{$item->rowspan}}{*}{{$text}}";
                 }
 
-                    // minimums (+moment)
-                    $htmlGC .= $page->butler->rowOpen();
-                    $htmlGC .= $page->butler->cell($kStrings["ZeroFuel"], array("rowspan" => 3, "class" => "GCend GCtitle"));
-                    $mldgwArgs["class"] = "GCend GCmin num";
-                    $htmlGC .= $page->butler->cell("", $mldgwArgs);
-                    $htmlGC .= $page->butler->cell($gcMin, $gcMinArgs);
-                    $htmlGC .= $page->butler->cell(
-                        ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? $gcData->zeroFuel->getMoment() : "",
-                        array("rowspan" => 3, "class" => "moment num")
-                    );
-                    $htmlGC .= $page->butler->rowClose();
-                //
-                    // mass+arm
-                    $mass = "";
-                    if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
-                        $mass = "$massPrefix{$gcData->zeroFuel->mass}";
-                    }
-
-                    $htmlGC .= $page->butler->rowOpen();
-                    $mldgwArgs["class"] = "mass GCend GCmid num";
-                    $htmlGC .= $page->butler->cell($mass, $mldgwArgs);
-                    $htmlGC .= $page->butler->cell(
-                        ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? "&nbsp;&nbsp;{$gcData->zeroFuel->getArm()}" : "",
-                        $gcArgs
-                    );
-                    $htmlGC .= $page->butler->rowClose();
-                //
-                    // maximums
-                    $htmlGC .= $page->butler->rowOpen();
-                    $mldgwArgs["class"] = "GCend GCmax num";
-                    $htmlGC .= $page->butler->cell(($gcData->maxLdgW > 0) ? "MLDGW={$gcData->maxLdgW}" : "", $mldgwArgs);
-                    $htmlGC .= $page->butler->cell($gcMax, $gcMaxArgs);
-                    $htmlGC .= $page->butler->rowClose();
-
-            // fuels...
-            $quantitiesCount = count($gcData->fuelQuantities);
-            for ($i = 0; $i < $quantitiesCount; ++$i) {
-                $tank = $finalFuel->tanks[$i];
-
-                $label = "#" . ($i + 1);
-                $label .= "=<b>{$tank->quantity}</b>+{$tank->unusable}{$tank->fuelUnit}";
-
-                $htmlGC .= htmlGcEntry(
-                    $gcData->fuelQuantities[$i],
-                    "Fuel",
-                    $label
-                );
+                return $text;
             }
+        //
+            /**
+             * LaTeX GC
+             *
+             * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+             * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+             * @SuppressWarnings(PHPMD.NPathComplexity)
+             */
+            function latexGc($gcTable, $massUnit, $armUnit, $momentUnit) {
+                global $kStrings;
 
-                // Take-off
-                $gcMinArgs = array("class" => "GCend GCmin num");
-                if($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min) {
-                    $gcMinArgs["style"] = $redBG;
-                }
-
-                $gcMaxArgs = array("class" => "GCend GCmax num");
-                if($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max) {
-                    $gcMaxArgs["style"] = $redBG;
-                }
-
-                $gcArgs = array("class" => "arm GCend GCmid num");
-                if(
-                    ($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min)
-                    || ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max)
-                ) {
-                    $gcArgs["style"] = $redBG;
-                }
-
-                $massPrefix = "";
-                $mtowArgs = array();
-                if($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) {
-                    $massPrefix = $kStrings["TooHeavy"] . " ";
-                    $mtowArgs["style"] = $redBG;
-                }
-
-                    // minimums (+moment)
-                    $htmlGC .= $page->butler->rowOpen();
-                    $htmlGC .= $page->butler->cell("Take-off", array("rowspan" => 3, "class" => "GCend GCtitle"));
-                    $mtowArgs["class"] = "mass GCend GCmin num";
-                    $htmlGC .= $page->butler->cell("", $mtowArgs);
-                    $htmlGC .= $page->butler->cell($gcMin, $gcMinArgs);
-                    $htmlGC .= $page->butler->cell(
-                        ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? $gcData->takeOff->getMoment() : "",
-                        array("rowspan" => 3, "class" => "moment num")
-                    );
-                    $htmlGC .= $page->butler->rowClose();
-                //
-                    // mass+arm
-                    $mass = "";
-                    if ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
-                        $mass = "$massPrefix{$gcData->takeOff->mass}";
-                    }
-
-                    $htmlGC .= $page->butler->rowOpen();
-                    $mtowArgs["class"] = "mass GCend GCmid num";
-                    $htmlGC .= $page->butler->cell($mass, $mtowArgs);
-                    $htmlGC .= $page->butler->cell(
-                        ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? "&nbsp;&nbsp;{$gcData->takeOff->getArm()}" : "",
-                        $gcArgs
-                    );
-                    $htmlGC .= $page->butler->rowClose();
-                //
-                    // maximums
-                    $htmlGC .= $page->butler->rowOpen();
-                    $mtowArgs["class"] = "mass GCend GCmax num";
-                    $htmlGC .= $page->butler->cell(($gcData->maxTOW == 0) ? "?" : $gcData->maxTOW, $mtowArgs);
-                    $htmlGC .= $page->butler->cell($gcMax, $gcMaxArgs);
-                    $htmlGC .= $page->butler->rowClose();
-
-            $htmlGC .= $page->butler->tableClose();
-
-            $htmlGC .= "<div>1 {$kStrings["USG"]} = {$kFuelUnits["USG"]} liters</div>\n";
-            $htmlGC .= "<div>1 {$kStrings["ImpG"]} = {$kFuelUnits["ImpG"]} liters</div>\n";
-            $htmlGC .= "<div>1 l {$kStrings["Avgas"]} = {$kFuelTypes["AVGAS"]} kg</div>\n";
-            $htmlGC .= "<div>1 {$kStrings["USG"]} {$kStrings["Avgas"]} = $usgAvgas2lbs lbs</div>\n";
-            $htmlGC .= "</div><!-- GC -->\n";
-
-            return $htmlGC;
-        }
-    //
-        // LaTeX GC entry
-        function latexGcEntry($gcDataField, $stringId, $extraString="") {
-            global $kArmless;
-            global $kNoArm;
-            global $kDefaultPrecision;
-            global $kStrings;
-
-            if($gcDataField->getArm() == $kArmless) {
-                return "";
-            }
-
-            $latexStr = "";
-
-            $latexStr .= $kStrings[$stringId];
-            if($extraString != "") {
-                $latexStr .= " $extraString";
-            }
-
-            if($gcDataField->getArm() == $kNoArm) {
-                return html2latex($latexStr . "&&&\\\\\\hline\n");
-            }
-
-            $latexStr .= " & {$gcDataField->mass} ";
-            $latexStr .= $gcDataField->isMassTooMuch() ? $kStrings["latexTooHeavy"] : "";
-
-            $latexStr .= " & {$gcDataField->getArm()}";
-
-            $latexStr .= " & " . round($gcDataField->getMoment(), $kDefaultPrecision);
-
-            $latexStr .= "\\\\\\hline\n";
-            return html2latex($latexStr);
-        }
-    //
-        /**
-         * LaTeX GC
-         *
-         * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-         * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-         * @SuppressWarnings(PHPMD.NPathComplexity)
-         */
-        function LaTeXGC($gcData, $finalFuel) {
-            global $kStrings;
-
-            $redCell  = "\\RedCell";
-            $grayCell = "\\Gray";
-
-            $latexGC = "";
-
-                // GC fold
-                $latexGC .= "% {$kStrings["MassAndBalance"]} {{{\n";
-                $latexGC .= "{\\Large\n";
+                $latexGC = "";
+                $latexGC .= "% {$kStrings['MassAndBalance']} {{{\n";
                 $latexGC .= "\\begin{center}\n";
-            //
-                // Begin table
-                $latexGC .= "\\begin{tabular}{|l|r|r|r|}\n";
-                $latexGC .= "\\hline\n";
-                $latexGC .= "\\multirow{2}{*}{\\textbf{{$kStrings['MassAndBalance']}}}\n";
-                $latexGC .= "& \\multicolumn{1}{c|}{{$kStrings["Mass"]}}\n";
-                $latexGC .= "& \\multicolumn{1}{c|}{{$kStrings["Arm"]}}\n";
-                $latexGC .= "& \\multicolumn{1}{c|}{{$kStrings["Moment"]}}\n";
-                $latexGC .= "\\\\\n";
-                $latexGC .= "& \\multicolumn{1}{c|}{[{$gcData->massUnit}]}\n";
-                $latexGC .= "& \\multicolumn{1}{c|}{[{$gcData->armUnit}]}\n";
-                $latexGC .= "& \\multicolumn{1}{c|}{[{$gcData->momentUnit}]}\n";
-                $latexGC .= "\\\\\\hhline{-===}\n";
-            //
-                // empty
-                $dryEmpty = $kStrings["DryEmpty"];
-                if($gcData->dryEmptyTimestamp !== NULL && $gcData->dryEmptyTimestamp != "") {
-                    $dryEmpty .= " ({$gcData->dryEmptyTimestamp})";
-                }
-                $latexGC .= "$dryEmpty   &";
+                    // head
+                    $latexGC .= "\\begin{tabular}{|l|r|r|r|}\n";
+                    $latexGC .= "\\hline\n";
+                    $latexGC .= "\\multirow{2}{*}{\\textbf{{$kStrings['MassAndBalance']}}}\n";
+                    $latexGC .= "& \\multicolumn{1}{c|}{{$kStrings['Mass']}}\n";
+                    $latexGC .= "& \\multicolumn{1}{c|}{{$kStrings['Arm']}}\n";
+                    $latexGC .= "& \\multicolumn{1}{c|}{{$kStrings['Moment']}}\n";
+                    $latexGC .= "\\\\\n";
+                    $latexGC .= "& \\multicolumn{1}{c|}{[$massUnit]}\n";
+                    $latexGC .= "& \\multicolumn{1}{c|}{[$armUnit]}\n";
+                    $latexGC .= "& \\multicolumn{1}{c|}{[$momentUnit]}\n";
+                    $latexGC .= "\\\\\\hhline{-===}\n";
 
-                $latexGC .= ($gcData->dryEmpty->mass > 0) ? " {$gcData->dryEmpty->mass} " : "";
-                $latexGC .= "& \\DarkGray &";
-                $latexGC .= ($gcData->dryEmpty->getMoment() > 0) ? " {$gcData->dryEmpty->getMoment()}" : "";
-                $latexGC .= "\\\\\\hline\n";
-
-            $latexGC .= latexGcEntry($gcData->front, "Front");
-
-            // rears...
-            $rearsCount = count($gcData->rears);
-            for ($i = 0; $i < $rearsCount; ++$i) {
-                $latexGC .= latexGcEntry($gcData->rears[$i], "Rear", "#" . ($i + 1));
-            }
-
-            // luggages...
-            $luggagesCount = count($gcData->luggages);
-            for ($i = 0; $i < $luggagesCount; ++$i) {
-                $latexGC .= latexGcEntry($gcData->luggages[$i], "Luggage", "#" . ($i + 1));
-            }
-            // luggage total mass
-            if($gcData->luggageTotalMass->maxMass > 0 && $gcData->luggageTotalMass->mass > $gcData->luggageTotalMass->maxMass) {
-                $latexGC .= "{$kStrings["Luggage"]} total mass";
-                $latexGC .= "& \\multicolumn{3}{c|}{";
-                $latexGC .= "{$redCell} {$kStrings['TooHeavy']} {$gcData->luggageTotalMass->mass} > {$gcData->luggageTotalMass->maxMass}";
-                $latexGC .= "}\\\\\\hline\n";
-            }
-
-            // unusable fuels...
-            $unusablesCount = count($gcData->fuelUnusables);
-            for ($i = 0; $i < $unusablesCount; ++$i) {
-                $tank = $finalFuel->tanks[$i];
-
-                $label = "#" . ($i + 1);
-                if($tank->unusable > 0) {
-                    // If we do the template, we do not want to display this (empty) value
-                    $label .= "={$tank->unusable}{$tank->fuelUnit}";
-                }
-
-                $latexGC .= latexGcEntry($gcData->fuelUnusables[$i], "UnusableFuel", $label);
-            }
-            $latexGC .= "\\hline\n";
-
-            $gcMin = $gcData->gcBoundaries->min == 0 ? "?" : $gcData->gcBoundaries->min;
-            $gcMax = $gcData->gcBoundaries->max == 0 ? "?" : $gcData->gcBoundaries->max;
-
-                // 0-fuel
-                $gcMinStyle = ($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min) ? $redCell : $grayCell;
-                $gcMaxStyle = ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max) ? $redCell : $grayCell;
-                $gcStyle = (
-                    ($gcData->gcBoundaries->min > 0 && $gcData->zeroFuel->getArm() < $gcData->gcBoundaries->min)
-                    || ($gcData->gcBoundaries->max > 0 && $gcData->zeroFuel->getArm() > $gcData->gcBoundaries->max)
-                ) ? $redCell : $grayCell;
-
-                // Special: color red 0-fuel mass if Take-off mass is more than maxLdgW
-                $massPrefix = "";
-                $mldgwStyle = $grayCell;
-                if ($gcData->maxLdgW > 0 && $gcData->takeOff->mass > $gcData->maxLdgW) {
-                    $massPrefix = $kStrings["TooHeavy"] . " ";
-                    $mldgwStyle = $redCell;
-                }
-
-                    // minimums
-                    $latexGC .= "\\multirow{3}{*}{\\textbf{{$kStrings["ZeroFuel"]}}}\n";
-                    $latexGC .= "& $mldgwStyle\n";
-                    $latexGC .= "& $gcMinStyle {\\normalsize min=$gcMin}\n";
-                    $latexGC .= "&\\\\\n";
-                //
-                    // values
-                    $mass = "";
-                    if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
-                        $mass = "$massPrefix{$gcData->zeroFuel->mass}";
+                $rowspan = array("label" => NULL, "moment" => NULL);
+                foreach($gcTable as $row) {
+                    if($row === NULL) {
+                        continue;
                     }
 
-                    $latexGC .= "& $mldgwStyle $mass\n";
-                    $latexGC .= "& $gcStyle";
-                    $latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->zeroFuel->getArm()}" : "";
-                    $latexGC .= "\n";
-                    $latexGC .= "&";
-                    $latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->zeroFuel->getMoment()}" : "";
-                    $latexGC .= "\\\\\n";
-                //
-                    // maximums
-                    $latexGC .= "& $mldgwStyle" . (($gcData->maxLdgW > 0) ? " {\\normalsize MLDGW={$gcData->maxLdgW}}" : "") . "\n";
-                    $latexGC .= "& $gcMaxStyle {\\normalsize max=$gcMax}\n";
-                    $latexGC .= "&\\\\\n";
-                    $latexGC .= "\\hhline{====}\n";
+                    $label = $row[0];
+                    $mass = $row[1];
+                    $arm = $row[2];
+                    $moment = $row[3];
 
-            // fuels...
-            $quantitiesCount = count($gcData->fuelQuantities);
-            for ($i = 0; $i < $quantitiesCount; ++$i) {
-                $tank = $finalFuel->tanks[$i];
-
-                $label = "#" . ($i + 1);
-                if($tank->quantity > 0) {
-                    // If we do the template, we do not want to display this (empty) value
-                    $label .= "=\\textbf{{$tank->quantity}}+{$tank->unusable}{$tank->fuelUnit}";
-                }
-
-                $latexGC .= latexGcEntry(
-                    $gcData->fuelQuantities[$i],
-                    "Fuel",
-                    $label
-                );
-            }
-            $latexGC .= "\\hline\n";
-
-                // T-off
-                $gcMinStyle = ($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min) ? $redCell : $grayCell;
-                $gcMaxStyle = ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max) ? $redCell : $grayCell;
-                $gcStyle = (
-                    ($gcData->gcBoundaries->min > 0 && $gcData->takeOff->getArm() < $gcData->gcBoundaries->min)
-                    || ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max)
-                ) ? $redCell : $grayCell;
-
-                $massPrefix = "";
-                $mtowStyle = $grayCell;
-                if ($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) {
-                    $massPrefix = $kStrings["TooHeavy"] . " ";
-                    $mtowStyle = $redCell;
-                }
-
-                    // minimums
-                    $latexGC .= "\\multirow{3}{*}{\\textbf{{$kStrings["TakeOff"]}}}\n";
-                    $latexGC .= "& $mtowStyle\n";
-                    $latexGC .= "& $gcMinStyle {\\normalsize min=$gcMin}\n";
-                    $latexGC .= "&\\\\\n";
-                //
-                    // values
-                    $mass = "";
-                    if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
-                        $mass = "$massPrefix{$gcData->takeOff->mass}";
+                    $hline = "hline";
+                    if(count($row) > 4) {
+                        $hline = $row[4];
                     }
 
-                    $latexGC .= "& $mtowStyle $mass\n";
-                    $latexGC .= "& $gcStyle";
-                    $latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->takeOff->getArm()}" : "";
-                    $latexGC .= "\n";
-                    $latexGC .= "&";
-                    $latexGC .= ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ? " {$gcData->takeOff->getMoment()}" : "";
-                    $latexGC .= "\\\\\n";
-                //
-                    // maximums
-                    $latexGC .= "& $mtowStyle {\\normalsize max=" . (($gcData->maxTOW > 0) ? $gcData->maxTOW : "?") . "}\n";
-                    $latexGC .= "& $gcMaxStyle {\\normalsize max=$gcMax}\n";
-                    $latexGC .= "&\\\\\n";
-            //
+                    if($label->rowspan !== NULL) { $rowspan["label"] = -$label->rowspan; }
+                    if($moment->rowspan !== NULL) { $rowspan["moment"] = -$moment->rowspan; }
+
+                    $latexGC .= latexGcCell($label, $rowspan["label"]);
+                    $latexGC .= " & " . latexGcCell($mass);
+                    $latexGC .= " & " . latexGcCell($arm);
+                    $latexGC .= " & " . latexGcCell($moment, $rowspan["moment"]);
+
+                    $latexGC .= "\\\\";
+                    $latexGC .= "\\$hline\n";
+
+                        $rowspan["label"] = decrementRowspan($rowspan["label"]);
+                        $rowspan["moment"] = decrementRowspan($rowspan["moment"]);
+                }
+
                 // End table
-                $latexGC .= "\\hline\n";
                 $latexGC .= "\\end{tabular}\n";
                 $latexGC .= "\\end{center}\n";
-                $latexGC .= "}  % Large\n";
 
-            return $latexGC;
-        }
+                return $latexGC;
+            }
 //
 
 
@@ -2748,7 +3031,7 @@ class Aircraft {
     if($navid == 0) {
         $latexfile = fopen("$kTemplateFilename.tex", "w") or die("Cannot write file $kTemplateFilename.tex");
 
-        $row = LaTeXfirstRow(NULL);
+        $row = latexRowFirst(NULL);
         $noFuel = new FuelRequirements();
 
         // Set no-arm to stations we want (not all, only pick some of each)
@@ -2763,15 +3046,20 @@ class Aircraft {
         fwrite(
             $latexfile,
 
-            LaTeXheader($docVersion, $plane)
+            latexDocumentBegin()
+            . latexIntroTable($plane)
+            . latexNavPlanTableHead()
             . $row->latexcontent
-            . LaTeXfinish1(0, $row->inc, $maxRow)
-            . LaTeXheaderEnd()
-            . LaTeX2left()  // beginning of second page
-            . LaTeXfuel(new FuelRequirements(), new FuelRequirements())
-            . LaTeX2right()  // change to 2nd column
-            . LaTeXGC($gcData, $noFuel)
-            . LaTeXend()
+            . latexNavPlanTableFill(0, $row->inc, $maxRow)
+            . latexNavPlanTableFoot()
+            . latex2ndPageOpen()
+            . latexReminders()
+            . latexFuel(new FuelRequirements(), new FuelRequirements())
+            . latexFuelTanks(NULL, new FuelRequirements())
+            . latex2ndPageChangeColumn()  // change to 2nd column
+            //. latexTxWind()  // Disabled: not useful during flight and not enough space on paper
+            . latexGc($gcData, $noFuel)
+            . latexEnd()
         );
 
         fclose($latexfile);
@@ -2912,14 +3200,6 @@ if($plane->sqlID > 0) {
     $theoricFuel->propagateFuelData();
 }
 
-    // prepare LaTeX content
-    $latexhead = LaTeXheader($docVersion, $plane, $name, $variation);
-    $latexheadend = LaTeXheaderEnd();
-    $latex2_1 = LaTeX2left();  // beginning of second page
-    $latex2_2 = LaTeX2right();  // change to 2nd column
-    $latexend = LaTeXend();  // end of LaTeX
-//
-
     // init some vars
     $latexcontent = "";
 
@@ -2952,6 +3232,7 @@ if($plane->sqlID > 0) {
     $realEET = 0;
 
     $roundTrip = false;
+    $departurePlus5 = false;
 
     $warning = "";
 
@@ -2966,9 +3247,17 @@ while($wpObj = $wp->fetch_object()) {
         $oldWP = $wpNum;
         $wpNum = $wpObj->WPnum + 0;
 
-        if($wpNum == $kWaypoints->wayBack->start || $wpNum == $kWaypoints->wayBack->last) {
+        if(!$roundTrip && ($wpNum == $kWaypoints->wayBack->start || $wpNum == $kWaypoints->wayBack->last)) {
             // flag to know if round-trip
             $roundTrip = true;
+        }
+
+        $plus = 0;
+        if($kWaypoints->isStartLast($wpNum)) {
+            $plus = 5;
+            if($kWaypoints->isLast($wpNum) && !$departurePlus5) {
+                $plus = 10;
+            }
         }
 
         $waypoint = $wpObj->waypoint;
@@ -3025,6 +3314,7 @@ while($wpObj = $wp->fetch_object()) {
             }
         }
 
+        $theoricEET = 0;
         if($plane->speedPlanning > 0) {
             // time computation
             $speed = ($climbing && $plane->speedClimb > 0) ? $plane->speedClimb : $plane->speedPlanning;
@@ -3038,13 +3328,10 @@ while($wpObj = $wp->fetch_object()) {
                 $theoricAlternateTime += $theoricEET;
             }
 
-            if($kWaypoints->isStartLast($wpNum)) {
-                if($wpNum < $kWaypoints->alternate->limit) {
-                    $theoricTripTime += 5;
-
-                } else {
-                    $theoricAlternateTime += 5;
-                }
+            if($wpNum < $kWaypoints->alternate->limit) {
+                $theoricTripTime += $plus;
+            } else {
+                $theoricAlternateTime += $plus;
             }
 
             if($hasWind) {
@@ -3074,12 +3361,10 @@ while($wpObj = $wp->fetch_object()) {
                     $realAlternateTime += $realEET;
                 }
 
-                if($kWaypoints->isStartLast($wpNum)) {
-                    if($wpNum < $kWaypoints->alternate->limit) {
-                        $realTripTime += 5;
-                    } else {
-                        $realAlternateTime += 5;
-                    }
+                if($wpNum < $kWaypoints->alternate->limit) {
+                    $realTripTime += $plus;
+                } else {
+                    $realAlternateTime += $plus;
                 }
             }
         }
@@ -3092,41 +3377,55 @@ while($wpObj = $wp->fetch_object()) {
         }
     //
         // Prepare args
-        $rowArgs = new stdClass();
-        $rowArgs->id = $id;
-        $rowArgs->wpNum = $wpNum;
-        $rowArgs->oldWP = $oldWP;
-        $rowArgs->waypoint = $waypoint;
-        $rowArgs->destination = $destination;
-        $rowArgs->notes = $notes;
-        $rowArgs->trueCourse = $trueCourse;
-        $rowArgs->magneticCourse = $magneticCourse;
-        $rowArgs->altitude = $altitude;
-        $rowArgs->distance = $distance;
-        $rowArgs->climbing = $climbing;
-        $rowArgs->theoricEET = $theoricEET;
-        $rowArgs->hasWind = $hasWind;
-        $rowArgs->windTC = $windTC;
-        $rowArgs->windSpeed = $windSpeed;
-        $rowArgs->magneticHeading = $magneticHeading;
-        $rowArgs->groundSpeed = $groundSpeed;
-        $rowArgs->realEET = $realEET;
-        $rowArgs->destinationDistance = $destinationDistance;
-        $rowArgs->tripDistance = $tripDistance;
-        $rowArgs->alternateDistance = $alternateDistance;
-        $rowArgs->theoricDestinationTime = $theoricDestinationTime;
-        $rowArgs->theoricTripTime = $theoricTripTime;
-        $rowArgs->theoricAlternateTime = $theoricAlternateTime;
-        $rowArgs->realTripTime = $realTripTime;
-        $rowArgs->realDestinationTime = $realDestinationTime;
-        $rowArgs->realAlternateTime = $realAlternateTime;
-        $rowArgs->isAdmin = $isAdmin;
+            // init values
+            $rowArgs = new stdClass();
+            $rowArgs->id = $id;
+            $rowArgs->wpNum = $wpNum;
+            $rowArgs->oldWP = $oldWP;
+            $rowArgs->waypoint = $waypoint;
+            $rowArgs->destination = $destination;
+            $rowArgs->notes = $notes;
+            $rowArgs->trueCourse = $trueCourse > 0 ? sprintf("%03d", $trueCourse) : "";
+            $rowArgs->magneticCourse = headingText($magneticCourse, $wpNum);
+            $rowArgs->altitude = $altitude;
+            $rowArgs->distance = $distance;
+            $rowArgs->climbing = $climbing;
+            $rowArgs->theoricEET = $theoricEET;
+            $rowArgs->hasWind = $hasWind;
+            $rowArgs->windTC = sprintf("%03d", $windTC);
+            $rowArgs->windSpeed = $windSpeed;
+            $rowArgs->magneticHeading = headingText($magneticHeading, $wpNum);
+            $rowArgs->groundSpeed = $groundSpeed;
+            $rowArgs->realEET = $realEET;
+            $rowArgs->destinationDistance = $destinationDistance;
+            $rowArgs->tripDistance = $tripDistance;
+            $rowArgs->alternateDistance = $alternateDistance;
+            $rowArgs->theoricDestinationTime = $theoricDestinationTime;
+            $rowArgs->theoricTripTime = $theoricTripTime;
+            $rowArgs->theoricAlternateTime = $theoricAlternateTime;
+            $rowArgs->realTripTime = $realTripTime;
+            $rowArgs->realDestinationTime = $realDestinationTime;
+            $rowArgs->realAlternateTime = $realAlternateTime;
+            $rowArgs->isAdmin = $isAdmin;
+        //
+            // Compute more
+                // +5
+                $rowArgs->plus5 = "";
+                if($plus > 0) {
+                    $rowArgs->plus5 = $plus == 10 ? $kStrings["Plus10"] : $kStrings["Plus5"];
+                }
+
+                if($kWaypoints->isStart($wpNum)) {
+                    $departurePlus5 = true;
+                } elseif($kWaypoints->isLast($wpNum)) {
+                    $departurePlus5 = false;  // reset flag
+                }
 
     // display to page
     $htmlRows .= htmlRowAny($rowArgs);
 
     // LaTeX
-    $row = LaTeXrowAny($rowArgs);
+    $row = latexRowAny($rowArgs);
 
     $latexRows .= $row->latexcontent;
 
@@ -3159,68 +3458,45 @@ $page->butler->crossCheckEnable();
     $gcData->storeFuelMass($finalFuel);
 
 //
-    // GC MTOW (also takes care of mass conversion if required)
+    // Compute GC MTOW (also takes care of mass conversion if required)
     $gcData->computeZeroFuelData();
     $gcData->computeTakeOffData();
+
+    $gcTable = computeGC($gcData, $finalFuel);
+
+    $tanksTable = computeFuelTanks($gcData, $finalFuel);
 //
     // HTML
-    $body .= htmlHeader($name, $plane, $variation, $gcData, $isAdmin);
+    $body .= htmlIntroTable($name, $plane, $variation, $gcData);
+    $body .= htmlNavPlanTableHead($isAdmin);
     $body .= $htmlRows;
-
-    if($isAdmin) {
-        // option to insert new WP
-        $body .= $page->butler->rowOpen();
-        $body .= $page->butler->cell($page->bodyBuilder->anchor("waypoint.php?nav=$navid", "new waypoint"), array("colspan" => 15, "class" => "newWP"));
-        $body .= $page->butler->rowClose();
-    }
-    $body .= $page->butler->tableClose();
-    $body .= $warning;
-    $body .= "</div>\n";
-    //
-        // display more information
-        $body .= "<div class=\"NavReminders\">\n";
-        $body .= "<div>\n";
-        $body .= "<b>{$kStrings["TopOfDescent"]}:</b>\n";
-        $body .= "<ul>\n";
-        $body .= "<li>{$kStrings["TOD1"]}</li>\n";
-        $body .= "<li>{$kStrings["TOD2"]}</li>\n";
-        $body .= "<li>{$kStrings["TOD3"]}</li>\n";
-        $body .= "<li class=\"optional\">{$kStrings["TOD4"]}</li>\n";
-        $body .= "</ul>\n";
-        $body .= "</div>\n";
-        $body .= "</div><!-- NavReminders -->\n";
-
-        $body .= "<div class=\"NavTHwind\">\n";
-        $body .= "<b>Compute {$kStrings["THwind"]}:</b>\n";
-        $body .= "<ol>\n";
-        $body .= "<li>&alpha;1 = (360 + TC - WH) % 360 and sign=1<br />\n";
-        $body .= "if &alpha;1 &gt; 180: &alpha;1 = (360 + WH - TC) % 360 and sign=-1</li>\n";
-        $body .= "<li>&alpha;2 = arcsin(WS/TS sin(&alpha;1))</li>\n";
-        $body .= "<li>&alpha;3 = 180 - &alpha;1 - &alpha;2</li>\n";
-        $body .= "<li>TH = TC + sign &alpha;2</li>\n";
-        $body .= "<li>GS = sin(&alpha;3) / sin(&alpha;1) TS</li>\n";
-        $body .= "</ol>\n";
-        $body .= "</div><!-- NavTHwind -->\n";
-    //
+    $body .= htmlNavPlanTableFoot($navid, $warning, $isAdmin);
+    $body .= htmlReminders();
+    $body .= htmlThWind();
     $body .= htmlFuel($theoricFuel, $realFuel);
-    $body .= htmlGC($gcData, $finalFuel);
+    $body .= htmlFuelTanks($tanksTable);
+    $body .= htmlGC($gcTable, $gcData->massUnit, $gcData->armUnit, $gcData->momentUnit);
+    $body .= htmlEnd();
 //
     // LaTeX
     $latexcontent .= $latexRows;
         // finish latex content 1st page with empty rows
-        $latexcontent .= LaTeXfinish1($wpNum, $rows, $maxRow - (int)$roundTrip);  // round-trip uses more rows
-    $latexfuel = LaTeXfuel($theoricFuel, $realFuel);
-    $latexGC = LaTeXGC($gcData, $finalFuel);
+        $latexcontent .= latexNavPlanTableFill($wpNum, $rows, $maxRow - (int)$roundTrip);  // round-trip uses more rows
 
     // Write LaTeX file
-    $latexFull = $latexhead;
+    $latexFull = latexDocumentBegin($navid);
+    $latexFull .= latexIntroTable($plane, $name, $variation);
+    $latexFull .= latexNavPlanTableHead();
     $latexFull .= $latexcontent;
-    $latexFull .= $latexheadend;
-    $latexFull .= $latex2_1;
-    $latexFull .= $latexfuel;
-    $latexFull .= $latex2_2;
-    $latexFull .= $latexGC;
-    $latexFull .= $latexend;
+    $latexFull .= latexNavPlanTableFoot();
+    $latexFull .= latex2ndPageOpen();
+    $latexFull .= latexReminders();
+    $latexFull .= latexFuel($theoricFuel, $realFuel);
+    $latexFull .= latexFuelTanks($tanksTable);
+    $latexFull .= latex2ndPageChangeColumn();
+    //$latexFull .= latexTxWind()  // Disabled: not useful during flight and not enough space on paper
+    $latexFull .= latexGc($gcTable, $gcData->massUnit, $gcData->armUnit, $gcData->momentUnit);
+    $latexFull .= latexEnd();  // end of LaTeX
 
     $latexfile = fopen("$filename.tex", "w") or die(" Cannot write file $filename.tex");
     fwrite($latexfile, $latexFull);
@@ -3236,7 +3512,7 @@ $page->butler->crossCheckEnable();
         $bodyHeads .= $page->bodyBuilder->anchor("$filename.tex", $page->bodyBuilder->strLaTeX, "$name LaTeX");
         if($isAdmin) {
             $bodyHeads .= "-\n";
-            $bodyHeads .= "<input type=\"submit\" name=\"compile\" value=\"online\" style=\"background: none; border: none; padding: none; color: #aaf; cursor: pointer;\"/>\n";
+            $bodyHeads .= "<input type=\"submit\" name=\"compile\" value=\"online\" style=\"background: none; border: none; padding: 0; color: #aaf; cursor: pointer;\">\n";
         }
 
         if(file_exists("$filename.pdf")) {
@@ -3254,11 +3530,11 @@ $page->butler->crossCheckEnable();
         $bodyHeads .= "<div class=\"rhead\">\n";
         if($isAdmin) {
             $bodyHeads .= $page->bodyBuilder->anchor("insert.php?id=$navid", "edit", "edit $name");
-            $bodyHeads .= "<br />\n";
+            $bodyHeads .= "<br>\n";
             $bodyHeads .= $page->bodyBuilder->anchor("insert.php", "new");
-            $bodyHeads .= "<br />\n";
+            $bodyHeads .= "<br>\n";
             $bodyHeads .= $page->bodyBuilder->anchor("display.php?dup=$navid", "duplicate");
-            $bodyHeads .= "<br />\n";
+            $bodyHeads .= "<br>\n";
             $bodyHeads .= $page->bodyBuilder->anchor("delete.php?id=$navid", "delete all WP");
         }
         $bodyHeads .= "</div>\n";

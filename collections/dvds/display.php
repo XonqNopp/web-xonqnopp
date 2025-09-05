@@ -67,7 +67,7 @@ if($query->num_rows == 0) {
     $body .= "<div class=\"lhead\">\n";
     if($page->loginHelper->userIsAdmin()) {
         // Edit
-        $body .= $page->bodyBuilder->anchor("insert.php?id=$id", "edit") . "<br />\n";
+        $body .= $page->bodyBuilder->anchor("insert.php?id=$id", "edit") . "<br>\n";
 
         // Propose to borrow
         if($borrowed == 1) {
@@ -88,7 +88,7 @@ if($query->num_rows == 0) {
     // Search
     // Propose to add a new if authorized
     if($page->loginHelper->userIsAdmin()) {
-        $body .= "<br />\n";
+        $body .= "<br>\n";
         // Add
         $body .= $page->bodyBuilder->anchor("insert.php", "New DVD");
     }

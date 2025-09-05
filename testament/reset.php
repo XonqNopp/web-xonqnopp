@@ -69,18 +69,18 @@ $date = $page->timeHelper->str2date($due->duedate);
 $body .= "<div id=\"testament_date\">Due date: {$date->day}.{$date->month}.{$date->year}</div>\n";
 
 $body .= "<div id=\"testament_next\">Do you want to set it to:\n";
-$body .= "<input type=\"text\" maxlength=\"4\" size=\"3\" name=\"ownyear\" value=\"{$next->year}\" />\n";
-$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownmonth\" value=\"{$next->month}\" />\n";
-$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownday\" value=\"{$next->day}\" />\n";
+$body .= "<input type=\"text\" maxlength=\"4\" size=\"3\" name=\"ownyear\" value=\"{$next->year}\">\n";
+$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownmonth\" value=\"{$next->month}\">\n";
+$body .= "<input type=\"text\" maxlength=\"2\" size=\"1\" name=\"ownday\" value=\"{$next->day}\">\n";
 $body .= "</div>\n";
 
 $body .= "<div id=\"testament_password\">\n";
-$body .= "Enter password:&nbsp;<input type=\"password\" name=\"pawo\" />\n";
+$body .= "Enter password:&nbsp;<input type=\"password\" name=\"pawo\">\n";
 $body .= "</div>\n";
 
 $body .= "<div id=\"testament_button\">\n";
-$body .= "<input type=\"submit\" name=\"go\" value=\"YES\" />\n";
-$body .= "<input type=\"submit\" name=\"NOW\" value=\"EMERGENCY\" />\n";
+$body .= "<input type=\"submit\" name=\"go\" value=\"YES\">\n";
+$body .= "<input type=\"submit\" name=\"NOW\" value=\"EMERGENCY\">\n";
 $body .= "</div>\n";
 
 $body .= "</div>\n";

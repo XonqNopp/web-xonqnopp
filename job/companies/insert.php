@@ -183,6 +183,7 @@ $body .= $page->waitress->rowOpen();
 
 $fieldsEmbedder = new FieldEmbedder("Fields of work");
 $fieldsEmbedder->css = "csstab64_cell fields";
+$fieldsEmbedder->hasLabel = false;
 global $kFields;
 $body .= $theCheckboxInput->get(
     "fields",
@@ -197,6 +198,7 @@ $body .= $theCheckboxInput->get(
 
 $physicistEmbedder = new FieldEmbedder("What would a physicist do by them");
 $physicistEmbedder->css = "csstab64_cell physicist";
+$physicistEmbedder->hasLabel = false;
 global $kPhysicist;
 $body .= $theCheckboxInput->get(
     "physicist",

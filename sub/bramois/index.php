@@ -28,17 +28,10 @@ $page->htmlHelper->hotBooty();
     $body .= "<h2>Parking</h2>\n";
     $body .= "<p>On peut parquer sur la grande place devant le b&acirc;timent.\n";
     $body .= "Il y a 4 places marqu&eacute;es.\n";
-    $body .= "Les 2 extr&eacute;mit&eacute;s sont assign&eacute;es, les 2 du milieu sont partag&eacute;es entre les voisins, Jean-Pascal et Brigitte, et nous.\n";
-    $body .= "<p>Le reste de la place est partag&eacute;e avec les autres personnes utilisant le b&acirc;timent:</p>\n";
-    $body .= "<div><ul>\n";
-    $body .= "<li>Les visiteurs</li>\n";
-    $body .= "<li>EnerigQ au rez, y compris les clients</li>\n";
-    $body .= "<li>Les encaveurs au sous-sol</li>\n";
-    $body .= "<li>L'imprimerie dans l'annexe, y compris les clients</li>\n";
-    $body .= "<li>Ainsi que des amis des diff&eacute;rents propri&eacute;taires de temps &agrave; autre...</li>\n";
-    $body .= "</ul></div>\n";
-
-    $body .= "<p>Normalement, la place le long du quai est r&eacute;serv&eacute;e pour le bus de EnergiQ.\n";
+    $body .= "Pour le week-end, on peut utiliser la place la plus au fond qui est pour l'entreprise Energiq.\n";
+    $body .= "Si vous s&eacute;journez en dehors du week-end, nous devons trouver un arrangement pour avoir une place\n";
+    $body .= "disponible, sinon il y a le parking au bout de la rue de l'&eacute;cole.\n";
+    $body .= "Normalement, la place le long du quai est r&eacute;serv&eacute;e pour le bus de EnergiQ.\n";
     $body .= "Si besoin on peut aussi se parquer du c&ocirc;t&eacute; chemin de l'&eacute;cole, m&ecirc;me si la voiture d&eacute;passe des lignes.</p>\n";
 //
     // Cuisine
@@ -120,7 +113,7 @@ $page->htmlHelper->hotBooty();
     // Lessive
     $body .= "<h2>Lessive</h2>\n";
     $body .= "<p>Une machine &agrave; laver et un s&eacute;choir sont &agrave; disposition des habitants de l'immeuble.\n";
-    $body .= "Pour y acc&eacute;der, il faut prendre la porte du rez et aller &agrave; gauche, ces appareils sont juste derri&egrave;re la 2e porte.<p/>\n";
+    $body .= "Pour y acc&eacute;der, il faut prendre la porte du rez et aller &agrave; gauche, ces appareils sont juste derri&egrave;re la 2e porte.</p>\n";
 //
     // Transports publics
     $body .= "<h2>Transports publics</h2>\n";
@@ -235,6 +228,7 @@ function liachm($args, $description) {
         $body .= $page->bodyBuilder->liAnchor("https://www.pfyn-finges.ch/fr/", "Bois de Pfyn/Finges");
         $body .= liachm("resolution=2.62&E=2595916&N=1120647", "le long du Rh&ocirc;ne");
         $body .= liachm("resolution=1&E=2580504&N=1114586", "Saillon: t&ecirc;te des g&eacute;ants, passerelle &agrave; Farinet (pas &agrave; la m&ecirc;me altitude)");
+        $body .= $page->bodyBuilder->liAnchor("https://www.noble-contree.ch/fr/obabao-2457.html", "Obabao, jeux de l'oie g&eacute;ant, Venth&ocirc;ne");
         $body .= "</ul></div>\n";
     //
         $body .= "<h3>Int&eacute;rieur</h3>\n";
