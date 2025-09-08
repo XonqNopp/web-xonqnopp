@@ -453,8 +453,10 @@ $page->butler->crossCheckDisable();  // we will do tables in several variables
                                 $pax = (int)substr($notes, 3, 1);
                                 $freeSeats = $maxPax - $pax;
 
-                                if(in_array($identification, array("HB-KEX", "HB-KFQ")) && $freeSeats > 1) {
-                                    $freeSeats -= 1;
+                                if(in_array($identification, array("HB-KEX", "HB-KFQ"))) {
+                                    $freeSeats = max(0, $freeSeats - 1);
+                                } elseif(in_array($identification, array("HB-SDI"))) {
+                                    $freeSeats = max(0, $freeSeats - 2);
                                 }
 
                                 if($pax == 0) {
