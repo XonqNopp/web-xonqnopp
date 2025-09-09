@@ -2904,18 +2904,20 @@ class Aircraft {
                     $latexFuelTanks .= " & \\multicolumn{1}{c|}{\\textbf{Usable}}";
                     $latexFuelTanks .= " & \\multicolumn{1}{c|}{\\textbf{Total}}";
                     $latexFuelTanks .= "\\\\\\hline\n";
-                foreach($rows as $row) {
-                    if($row[0] == $kStrings["overflow"]) {
-                        $latexFuelTanks .= "\\RedCell " . html2latex($kStrings["overflow"] . "!!!");
-                        $latexFuelTanks .= " & \\multicolumn{3}{l|}{\\RedCell " . html2latex($row[1]) . "}\\\\\\hline\n";
-                        continue;
-                    }
+                if($rows !== NULL) {
+                    foreach($rows as $row) {
+                        if($row[0] == $kStrings["overflow"]) {
+                            $latexFuelTanks .= "\\RedCell " . html2latex($kStrings["overflow"] . "!!!");
+                            $latexFuelTanks .= " & \\multicolumn{3}{l|}{\\RedCell " . html2latex($row[1]) . "}\\\\\\hline\n";
+                            continue;
+                        }
 
-                    $latexFuelTanks .= html2latex($row[0]);
-                    $latexFuelTanks .= " & " . html2latex($row[1]);
-                    $latexFuelTanks .= " & " . html2latex($row[2]);
-                    $latexFuelTanks .= " & " . html2latex($row[3]);
-                    $latexFuelTanks .= "\\\\\\hline\n";
+                        $latexFuelTanks .= html2latex($row[0]);
+                        $latexFuelTanks .= " & " . html2latex($row[1]);
+                        $latexFuelTanks .= " & " . html2latex($row[2]);
+                        $latexFuelTanks .= " & " . html2latex($row[3]);
+                        $latexFuelTanks .= "\\\\\\hline\n";
+                    }
                 }
 
                 // End table
@@ -3043,6 +3045,8 @@ class Aircraft {
         $gcData->fuelQuantities[0]->arm = $kNoArm;
         $gcData->fuelQuantities[1]->arm = $kNoArm;
 
+        $gcTable = computeGC($gcData, $noFuel);
+
         fwrite(
             $latexfile,
 
@@ -3058,7 +3062,7 @@ class Aircraft {
             . latexFuelTanks(NULL, new FuelRequirements())
             . latex2ndPageChangeColumn()  // change to 2nd column
             //. latexTxWind()  // Disabled: not useful during flight and not enough space on paper
-            . latexGc($gcData, $noFuel)
+            . latexGc($gcTable, $gcData->massUnit, $gcData->armUnit, $gcData->momentUnit)  // TODO
             . latexEnd()
         );
 
