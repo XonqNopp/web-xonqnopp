@@ -16,3 +16,7 @@ div.index_testament {
     vertical-align: bottom;
     color: #f60;
 }
+
+div.testament {
+    font-size: 0.5em;
+}

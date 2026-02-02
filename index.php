@@ -107,12 +107,12 @@ $body .= $page->waitress->rowClose();
 $body .= $page->waitress->tableClose();
 
 
+$body .= "<div class=\"testament\"><!--T-->\n";
+$body .= $page->bodyBuilder->anchor("testament/index.php", "T");
 if($page->loginHelper->userIsAdmin()) {
-    $body .= "<div><!--T-->\n";
-    $body .= $page->bodyBuilder->anchor("testament/index.php", "T");
     $body .= $page->bodyBuilder->anchor("testament/reset.php", "R");
-    $body .= "</div><!--T-->\n";
 }
+$body .= "</div><!--T-->\n";
 
 
 echo $body;
