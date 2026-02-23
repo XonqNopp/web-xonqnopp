@@ -155,6 +155,11 @@ $page->htmlHelper->hotBooty();
                 }
                 $PlaneSQL->close();
 
+                if (count($PlaneList) == 2) {
+                    // Only one plane available, remove empty default
+                    unset($PlaneList[""]);
+                }
+
             $body .= $theSelectInput->get("plane", $PlaneList, $sqlData, "Plane");
         //
             // variation
