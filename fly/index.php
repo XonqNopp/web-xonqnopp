@@ -52,9 +52,9 @@ $body .= $page->waitress->rowOpen();
         $body .= $page->bodyBuilder->liAnchor("https://www.sust.admin.ch/fr/sese-page-daccueil", "SESE/SUST");
 
         $body .= "<li>\n";
-        $body .= $page->bodyBuilder->anchor("https://www.bazl.admin.ch/bazl/fr/home.html", "OFAC/BAZL");
+        $body .= $page->bodyBuilder->anchor("https://www.bazl.admin.ch/fr", "OFAC/BAZL");
         $body .= "&nbsp;-&nbsp;\n";
-        $body .= $page->bodyBuilder->anchor("https://www.bazl.admin.ch/bazl/fr/home/personal/flugausbildung/pilotes/formulaires.html", "Formulaires AESA, avions &agrave; moteur, 60.521 SEP TMG revaildation EASA");
+        $body .= $page->bodyBuilder->anchor("https://www.bazl.admin.ch/fr/formulaires-licences-pilotes", "Formulaires AESA, avions &agrave; moteur, 60.521 SEP TMG revaildation EASA");
         $body .= "</li>\n";
 
         $body .= $page->bodyBuilder->liAnchor("http://seaplanes.ch/", "seaplanes.ch");
