@@ -3,7 +3,6 @@ require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 //$page->logger->levelUp(6);
 $page->cssHelper->dirUpWing();
 

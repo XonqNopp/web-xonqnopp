@@ -9,8 +9,6 @@ $page = new PhPage($rootPath);
 require_once("$funcpath/form_fields.php");
 
 
-$page->bobbyTable->init();
-
 $page->htmlHelper->jsForm();
 
 //$page->htmlHelper->init();

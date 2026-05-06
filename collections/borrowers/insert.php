@@ -10,9 +10,6 @@ require_once("$funcpath/form_fields.php");
 global $theHiddenInput;
 global $theTextInput;
 
-
-$page->bobbyTable->init();
-
 $page->cssHelper->dirUpWing();
 $page->htmlHelper->jsForm();
 

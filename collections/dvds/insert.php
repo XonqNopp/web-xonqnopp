@@ -15,10 +15,7 @@ global $theTextarea;
 global $theNumberInput;
 
 
-$page->bobbyTable->init();
-
-
-    //// init values
+    // init values
     $id = 0;
     $title = "";
     $director = "";
@@ -32,7 +29,7 @@ $page->bobbyTable->init();
     $burnt = false;
     $format = "dvd";
     $category = "";
-//
+
 $is_it = array("yes" => 1, "no" => 0);
 $the_languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "zz" => "other");
 $cats = array("movie" => "Movie", "animation" => "Animation", "tvserie" => "TV Serie", "doc" => "Documentary", "humor" => "Humorist", "music" => "Musical", "memory" => "Memory");

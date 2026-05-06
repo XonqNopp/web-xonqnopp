@@ -5,7 +5,6 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
 //$page->htmlHelper->init();
-$page->bobbyTable->init();
 
 $page->cssHelper->dirUpWing();
 

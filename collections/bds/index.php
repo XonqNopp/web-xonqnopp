@@ -4,7 +4,6 @@ $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
-$page->bobbyTable->init();
 
 $GI = $page->loginHelper->userIsAdmin();
 

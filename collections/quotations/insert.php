@@ -15,7 +15,6 @@ global $theCheckboxInput;
 global $theTextarea;
 
 
-$page->bobbyTable->init();
 $page->cssHelper->dirUpWing();
 $page->htmlHelper->jsForm();
 

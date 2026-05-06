@@ -1,15 +1,14 @@
 <?php
 require_once("functions/page_helper.php");
 $page = new PhPage();
-//$page->logger->levelUp(6);
-$page->bobbyTable->init();
-
+$page->logger->levelUp(6);
+// TODO IWASHERE
 
     // Checking for testament
     require_once("testament/warning.php");
     testamentWarning($page);
     $testament = testamentDisplay($page);
-//
+
 $body = "";
 
 $body .= $page->logopedist->languages();

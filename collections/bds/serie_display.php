@@ -10,8 +10,6 @@ $page = new PhPage($rootPath);
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
 
-$page->bobbyTable->init();
-
 // Borrowed item came home (link from missing index)
 if(isset($_GET["back"])) {
     $backId = NULL;

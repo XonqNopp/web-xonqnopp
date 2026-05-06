@@ -5,9 +5,8 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
-$page->bobbyTable->init();
 $userIsAdmin = $page->loginHelper->userIsAdmin();
-//
+
 $page->htmlHelper->setTitle("Collections");
 $page->htmlHelper->hotBooty();
 

@@ -3,7 +3,6 @@ require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 
 $page->loginHelper->notAllowed();
 require_once("{$funcpath}_local/fetch_from_isbn.php");

@@ -14,7 +14,6 @@ global $theDateInput;
 
 
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
 $page->cssHelper->dirUpWing();

@@ -9,7 +9,6 @@ require_once("common.php");
 $docVersion = "2025-07-13";
 
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 
 // debug
 //$page->htmlHelper->init();

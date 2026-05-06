@@ -14,7 +14,6 @@ global $theNumberInput;
 
 $page = new PhPage($rootPath);
 $page->loginHelper->notAllowed();
-$page->bobbyTable->init();
 //$page->logger->levelUp(6);
 //$page->htmlHelper->init();
 

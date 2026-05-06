@@ -3,7 +3,6 @@ require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "??" => "other");
 
 

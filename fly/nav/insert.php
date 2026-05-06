@@ -5,7 +5,6 @@ $funcpath = "$rootPath/functions";
 require_once("common.php");
 $page = new PhPage($rootPath);
 $page->loginHelper->notAllowed();
-$page->bobbyTable->init();
 
 require_once("$funcpath/form_fields.php");
 global $theHiddenInput;
