@@ -9,6 +9,28 @@ $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" 
 $body = "";
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+h2 {
+    font-family: sans-serif;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 8mm;
+}
+
+
+div.book_info_lang {
+    font-size: 10pt;
+    text-align: right;
+}
+
+
+div.book_info_summary {
+    margin: 1cm;
+    text-align: justify;
+}
+"
+);
 
 $body .= $page->bodyBuilder->goHome("..");
 

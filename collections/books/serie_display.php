@@ -5,6 +5,28 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.csstab64_cell {
+    vertical-align: top;
+}
+
+
+table.book_serie_table {
+    margin-left: 2cm;
+}
+
+
+td.book_serie_table_number {
+    padding-left: 5px;
+}
+
+
+td.book_serie_table_title {
+    padding: 0 13px;
+}
+"
+);
 
 $body = $page->bodyBuilder->goHome("..");
 

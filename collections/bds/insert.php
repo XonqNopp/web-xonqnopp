@@ -18,6 +18,21 @@ $page->loginHelper->notAllowed();
 //$page->htmlHelper->init();
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.isbn,
+div.serie,
+div.tome,
+div.title,
+div.author,
+div.publisher,
+div.date,
+div.SubButt
+{
+    padding: 7pt 1cm;
+}
+"
+);
 $page->htmlHelper->jsForm();
 
 $logger = $theLogger;

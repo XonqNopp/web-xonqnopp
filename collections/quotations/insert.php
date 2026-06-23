@@ -16,6 +16,19 @@ global $theTextarea;
 
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+@media only screen and (min-width:64em) {
+
+    div.authorfirst,
+    div.authorlast {
+        display: inline-block;
+    }
+
+}  /** @media only screen and min-width:64em **/
+"
+);
+
 $page->htmlHelper->jsForm();
 
 $page_title = "Insert a new quote";

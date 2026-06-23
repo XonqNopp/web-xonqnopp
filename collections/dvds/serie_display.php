@@ -7,6 +7,18 @@ $page = new PhPage($rootPath);
 //$page->htmlHelper->init();
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+table.dvd_serie_table {
+    margin-left: 2cm;
+}
+
+
+td.dvd_serie_table_edit, td.dvd_serie_borrow {
+    font-size: 8pt;
+}
+"
+);
 
 $GI = $page->loginHelper->userIsAdmin();
 

@@ -23,9 +23,36 @@ if($from == 0 || $to == 0) {
     exit;
 }
 
-$step =   2;
+$step = 2;
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"div.sample_table {
+    width: 100%;
+    text-align: center;
+}
+
+
+div.sample_table table {
+    margin: auto;
+    border: solid 2px;
+    text-align: right;
+}
+
+
+div.sample_table tr,
+div.sample_table td {
+    border: solid 2px;
+    text-align: right;
+    padding: 5px;
+}
+
+
+div.sample_table th {
+    border: solid 2px;
+    text-align: center;
+}"
+);
 
 $body = $page->bodyBuilder->goHome("..");
 

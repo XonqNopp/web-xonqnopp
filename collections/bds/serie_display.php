@@ -20,6 +20,26 @@ if(isset($_GET["back"])) {
 }
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+table {
+    width: 100%;
+}
+
+
+td.bd_serie_edit {
+    font-size: 8pt;
+    text-align: center;
+}
+
+
+.ten {
+    width: 25px;
+    text-align: right;
+    padding: 0 5px;
+}
+"
+);
 
 
 /**

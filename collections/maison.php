@@ -8,6 +8,34 @@ $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
 // CSS paths
 //$page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+body {
+    text-align: justify;
+}
+
+
+li.plus, li.minus {
+    text-indent: 0.2em;
+}
+
+
+li.plus::marker, li.minus::marker {
+    font-weight: 900;
+    font-size: 125%;
+}
+
+
+li.plus::marker {
+    content: "+";
+}
+
+
+li.minus::marker {
+    content: "-";
+}
+"
+);
 
     // Shortcuts
     $aa = "&agrave;";

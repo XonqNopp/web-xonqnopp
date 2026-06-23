@@ -11,6 +11,19 @@ global $theHiddenInput;
 global $theTextInput;
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.name {
+    padding: 2mm 0mm;
+}
+
+
+div.SubButt {
+    padding: 2mm 7mm;
+}
+"
+);
+
 $page->htmlHelper->jsForm();
 
 // init vars

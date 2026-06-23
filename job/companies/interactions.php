@@ -66,6 +66,12 @@ $sum = $page->bobbyTable->getCount("comco");
 $page_title .= " ($sum)";
 
 $page->cssHelper->dirUpWing(2);
+$page->cssHelper->addRaw(
+"div.company_name {
+    font-weight: 700;
+}"
+);
+
 $page->logopedist->changeSessionLang("english");
 
 $body .= $page->bodyBuilder->goHome("../..");
