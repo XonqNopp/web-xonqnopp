@@ -3,7 +3,6 @@ require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 
 require_once("{$funcpath}/form_fields.php");
 global $theHiddenInput;
@@ -68,6 +67,18 @@ if(isset($_GET["new"])) {
 }
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.bd_serie_insert_main {
+    margin-left: 9mm;
+}
+
+
+div.bd_serie_insert_main div {
+    padding: 2mm;
+}
+"
+);
 $page->htmlHelper->jsForm();
 
 $body = $page->bodyBuilder->goHome("..");

@@ -17,6 +17,18 @@ $page->logopedist->changeSessionLang();
 
 // CSS paths
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+body {
+    text-align: justify;
+}
+
+
+table {
+    border: none;
+}
+"
+);
 
 
 $body = $page->bodyBuilder->goHome("..");

@@ -14,11 +14,25 @@ global $theNumberInput;
 
 $page = new PhPage($rootPath);
 $page->loginHelper->notAllowed();
-$page->bobbyTable->init();
 //$page->logger->levelUp(6);
 //$page->htmlHelper->init();
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.isbn,
+div.serie,
+div.tome,
+div.title,
+div.author,
+div.publisher,
+div.date,
+div.SubButt
+{
+    padding: 7pt 1cm;
+}
+"
+);
 $page->htmlHelper->jsForm();
 
 $logger = $theLogger;

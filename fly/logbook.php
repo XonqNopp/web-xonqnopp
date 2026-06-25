@@ -9,8 +9,6 @@ $page = new PhPage($rootPath);
 require_once("$funcpath/form_fields.php");
 
 
-$page->bobbyTable->init();
-
 $page->htmlHelper->jsForm();
 
 //$page->htmlHelper->init();
@@ -44,13 +42,13 @@ function displayThousands($value) {
     // setting default values
     $body = "";
     $deleted = "";
-    $adList = array("LSGE", "LSGS", "note");
+    $adList = array("LSGE", "note");
     $typeList = array();
     $idList = array();
-    $picList = array($page->miscInit->lastName, "Berger", "Berchtold");
+    $picList = array($page->miscInit->lastName, "Berger");
     $defaults = array();
-    $defaults["type"] = "";
-    $defaults["ID"] = "";
+    $defaults["type"] = "C182";
+    $defaults["ID"] = "HB-TDR";
     $defaults["AD"] = "";
 
     $formDate = "";
@@ -65,7 +63,7 @@ function displayThousands($value) {
     $sqlSpMep = 0;
     $sqlMp = 0;
     $formPic = $page->miscInit->lastName;
-    $formLandingsDay = 1;
+    $formLandingsDay = 3;
     $formLandingsNight = 0;
     $formOpsTimeNight = 0;
     $formOpsTimeIfr = 0;

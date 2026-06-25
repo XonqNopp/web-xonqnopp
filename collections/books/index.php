@@ -4,7 +4,6 @@ $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 require_once("{$funcpath}_local/borrowback.php");
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 
 // Borrowed item came home (link from missing index)
 if(isset($_GET["back"])) {

@@ -3,7 +3,6 @@ require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 
 $page->loginHelper->notAllowed();
 require_once("{$funcpath}_local/fetch_from_isbn.php");
@@ -31,6 +30,29 @@ global $theDateInput;
     $summary   = "";
 //
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.isbn,
+div.title,
+div.author,
+div.serie,
+div.number,
+div.publisher,
+div.date,
+div.summary,
+div.language,
+div.cat
+{
+    padding: 7pt 2cm;
+}
+
+
+div.SubButt {
+    padding: 7pt 2cm;
+    margin-bottom: 2cm;
+}
+"
+);
 $page->htmlHelper->jsForm();
 
 $body = "";

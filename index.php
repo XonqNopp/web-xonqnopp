@@ -1,15 +1,14 @@
 <?php
 require_once("functions/page_helper.php");
 $page = new PhPage();
-//$page->logger->levelUp(6);
-$page->bobbyTable->init();
-
+$page->logger->levelUp(6);
+// TODO IWASHERE
 
     // Checking for testament
     require_once("testament/warning.php");
     testamentWarning($page);
     $testament = testamentDisplay($page);
-//
+
 $body = "";
 
 $body .= $page->logopedist->languages();
@@ -59,16 +58,6 @@ $body .= $page->waitress->rowOpen();
     $body .= "<ul>\n";
 
     $body .= "<li>\n";
-    $body .= $page->bodyBuilder->anchor("fly/index.php", "Fly");
-    $body .= ": " . $page->bodyBuilder->anchor("fly/pax.php", "PAX");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/nav/index.php", "nav");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/pdf/", "pdf");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/lsge.php", "LSGE");
-    //$body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
-    $body .= "</li>\n";
-
-    $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("recettes/index.html", "Recettes");
     $body .= ": " . $page->bodyBuilder->anchor("recettes/cuisine/granola.html", "granola");
     $body .= "</li>\n";
@@ -81,6 +70,18 @@ $body .= $page->waitress->rowOpen();
     }
     $body .= "- " . $page->bodyBuilder->anchor("collections/quotations/index.php", "citations");
     $body .= "</li>\n";
+
+    $body .= "<li>\n";
+    $body .= $page->bodyBuilder->anchor("fly/index.php", "Fly");
+    $body .= ": " . $page->bodyBuilder->anchor("fly/pax.php", "PAX");
+    $body .= "- " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
+    $body .= "- " . $page->bodyBuilder->anchor("fly/nav/index.php", "nav");
+    $body .= "- " . $page->bodyBuilder->anchor("fly/pdf/", "pdf");
+    $body .= "- " . $page->bodyBuilder->anchor("fly/lsge.php", "LSGE");
+    //$body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
+    $body .= "</li>\n";
+
+    $body .= $page->bodyBuilder->liAnchor("humidity.php", "Temp&eacute;rature et humidit&eacute;");
 
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("job/index.php", "job");
@@ -107,12 +108,12 @@ $body .= $page->waitress->rowClose();
 $body .= $page->waitress->tableClose();
 
 
+$body .= "<div class=\"testament\"><!--T-->\n";
+$body .= $page->bodyBuilder->anchor("testament/index.php", "T");
 if($page->loginHelper->userIsAdmin()) {
-    $body .= "<div><!--T-->\n";
-    $body .= $page->bodyBuilder->anchor("testament/index.php", "T");
     $body .= $page->bodyBuilder->anchor("testament/reset.php", "R");
-    $body .= "</div><!--T-->\n";
 }
+$body .= "</div><!--T-->\n";
 
 
 echo $body;

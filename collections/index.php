@@ -5,9 +5,8 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
-$page->bobbyTable->init();
 $userIsAdmin = $page->loginHelper->userIsAdmin();
-//
+
 $page->htmlHelper->setTitle("Collections");
 $page->htmlHelper->hotBooty();
 
@@ -76,7 +75,11 @@ $body .= "<div>\n";
     //
         $body .= "<li>R&eacute;sum&eacute; (french-only):\n";
         $body .= "<ul>\n";
-            $body .= $page->bodyBuilder->liAnchor("education.php", "&eacute;ducation positive");
+            $body .= "<li>";
+            $body .= $page->bodyBuilder->anchor("education.php", "&eacute;ducation positive");
+            $body .= " et ";
+            $body .= $page->bodyBuilder->anchor("ecrans.php", "enfants et &eacute;crans");
+            $body .= "</li>";
 
             $body .= "<li>";
             $body .= $page->bodyBuilder->anchor("maison.php", "acheter une maison");

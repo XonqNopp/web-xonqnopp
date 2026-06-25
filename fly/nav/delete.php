@@ -11,8 +11,6 @@ global $theHiddenInput;
 
 $page->loginHelper->notAllowed();
 
-$page->bobbyTable->init();
-
 // debug
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);

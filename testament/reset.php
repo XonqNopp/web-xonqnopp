@@ -5,7 +5,6 @@ $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
 $page->loginHelper->notAllowed("../index.php");
-$page->bobbyTable->init();
 
 $today = $page->timeHelper->getNow();
 

@@ -4,7 +4,6 @@ $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 $page->loginHelper->notAllowed();
-$page->bobbyTable->init();
 
 require_once("common.php");
 

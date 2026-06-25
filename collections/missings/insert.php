@@ -4,7 +4,6 @@ $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 $page->loginHelper->notAllowed();
-$page->bobbyTable->init();
 
 require_once("$funcpath/form_fields.php");
 global $theHiddenInput;
@@ -34,6 +33,19 @@ if(isset($_POST["dbid"])) {
 }
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.date {
+    padding: 3mm 8mm;
+}
+
+
+div.borrower,
+div.SubButt {
+    padding: 3mm 0mm;
+}
+"
+);
 
 // Get info from URL
 $dbtable = $_GET["db"];

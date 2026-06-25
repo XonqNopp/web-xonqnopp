@@ -14,10 +14,26 @@ global $theDateInput;
 
 
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.FuelCons,
+div.FuelUnit,
+div.DryMass,
+div.DryMassUnit,
+div.DryMoment,
+div.DryMomentUnit,
+div.PowerManifold,
+div.PowerManifoldUnit,
+div.windTC,
+div.windSpeed {
+    display: inline-block;
+}
+"
+);
+
 $page->htmlHelper->jsForm();
 
 

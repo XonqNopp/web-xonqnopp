@@ -15,10 +15,7 @@ global $theTextarea;
 global $theNumberInput;
 
 
-$page->bobbyTable->init();
-
-
-    //// init values
+    // init values
     $id = 0;
     $title = "";
     $director = "";
@@ -32,7 +29,7 @@ $page->bobbyTable->init();
     $burnt = false;
     $format = "dvd";
     $category = "";
-//
+
 $is_it = array("yes" => 1, "no" => 0);
 $the_languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "zz" => "other");
 $cats = array("movie" => "Movie", "animation" => "Animation", "tvserie" => "TV Serie", "doc" => "Documentary", "humor" => "Humorist", "music" => "Musical", "memory" => "Memory");
@@ -85,6 +82,39 @@ if(isset($_POST["title"])) {
 }
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+div.title {
+    padding: 2mm 0mm;
+    display: inline-block;
+}
+
+
+div.director,
+div.actors,
+div.languages,
+div.subtitles,
+div.duration,
+div.serie,
+div.number,
+div.burnt,
+div.format,
+div.category,
+div.summary {
+    padding: 2mm 0mm;
+}
+
+
+@media only screen and (min-width:64em) {
+
+    div.main {
+        margin-left: 23mm;
+    }
+
+}  /** @media only screen and min-width:64em **/
+"
+);
+
 $page->htmlHelper->jsForm();
 
 

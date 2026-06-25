@@ -5,7 +5,6 @@ $funcpath = "$rootPath/functions";
 require_once("common.php");
 $page = new PhPage($rootPath);
 $page->loginHelper->notAllowed();
-$page->bobbyTable->init();
 
 require_once("$funcpath/form_fields.php");
 global $theHiddenInput;
@@ -154,6 +153,11 @@ $page->htmlHelper->hotBooty();
                     $PlaneList[$p->id] = "{$p->PlaneID} ({$p->PlaneType})";
                 }
                 $PlaneSQL->close();
+
+                if (count($PlaneList) == 2) {
+                    // Only one plane available, remove empty default
+                    unset($PlaneList[""]);
+                }
 
             $body .= $theSelectInput->get("plane", $PlaneList, $sqlData, "Plane");
         //

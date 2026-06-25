@@ -27,6 +27,20 @@ $body .= $page->logopedist->languages();
 $body .= "</div>\n";
 
 
+/*
+$page_title = "Aviation 1996-2026 RIP";
+$body .= $page->htmlHelper->setTitle($page_title);
+$page->htmlHelper->hotBooty();
+$body .= "<div>\n";
+$body .= "<p>Malheureusement je ne vole plus. Merci &agrave; tous mes passagers de m'avoir accompagn&eacute; dans des vols magnifiques.</p>\n";
+$body .= "<p>Unfortunately I don't fly anymore. Thanks to all my passengers for having accompanied me in wonderful flights.</p>\n";
+$body .= "</div>\n";
+echo $body;
+return;
+ */
+
+
+
 $page_title = "Welcome to XonqNopp Airlines!";
 
 if($page->logopedist->checkSessionLang("francais")) {

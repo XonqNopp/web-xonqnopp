@@ -10,8 +10,6 @@ $page = new PhPage($rootPath);
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
 
-$page->bobbyTable->init();
-
 // Borrowed item came home (link from missing index)
 if(isset($_GET["back"])) {
     $backId = NULL;
@@ -22,6 +20,26 @@ if(isset($_GET["back"])) {
 }
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+table {
+    width: 100%;
+}
+
+
+td.bd_serie_edit {
+    font-size: 8pt;
+    text-align: center;
+}
+
+
+.ten {
+    width: 25px;
+    text-align: right;
+    padding: 0 5px;
+}
+"
+);
 
 
 /**

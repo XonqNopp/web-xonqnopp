@@ -3,13 +3,34 @@ require_once("../../functions/page_helper.php");
 $rootPath = "../..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
-$page->bobbyTable->init();
 $languages = array("fr" => "French", "en" => "English", "it" => "Italian", "de" => "German", "??" => "other");
 
 
 $body = "";
 
 $page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+h2 {
+    font-family: sans-serif;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 8mm;
+}
+
+
+div.book_info_lang {
+    font-size: 10pt;
+    text-align: right;
+}
+
+
+div.book_info_summary {
+    margin: 1cm;
+    text-align: justify;
+}
+"
+);
 
 $body .= $page->bodyBuilder->goHome("..");
 
