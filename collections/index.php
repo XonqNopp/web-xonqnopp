@@ -7,11 +7,11 @@ $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
 $userIsAdmin = $page->loginHelper->userIsAdmin();
 
-$page->htmlHelper->setTitle("Collections");
+$body = $page->bodyBuilder->goHome(NULL, "..");
+
+$body .= $page->htmlHelper->setTitle("Collections");
 $page->htmlHelper->hotBooty();
 
-$body = $page->bodyBuilder->goHome(NULL, "..");
-$body .= "<h1>Collections</h1>\n";
 $body .= "<div>\n";
     $body .= "<ul>\n";
         // BD
