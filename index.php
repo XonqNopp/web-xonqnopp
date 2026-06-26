@@ -2,7 +2,6 @@
 require_once("functions/page_helper.php");
 $page = new PhPage();
 $page->logger->levelUp(6);
-// TODO IWASHERE
 
     // Checking for testament
     require_once("testament/warning.php");
@@ -72,6 +71,10 @@ $body .= $page->waitress->rowOpen();
     $body .= "</li>\n";
 
     $body .= "<li>\n";
+    $body .= $page->bodyBuilder->anchor("adults/index.php", "Contenus pour adultes");
+    $body .= "</li>\n";
+
+    $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("fly/index.php", "Fly");
     $body .= ": " . $page->bodyBuilder->anchor("fly/pax.php", "PAX");
     $body .= "- " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
@@ -88,7 +91,7 @@ $body .= $page->waitress->rowOpen();
     $body .= ": " . $page->bodyBuilder->anchor("job/companies/index.php", "companies");
     $body .= "</li>\n";
 
-    $body .= $page->bodyBuilder->liAnchor("sub/backup/exams/choose.php?which=m", "exams");
+    $body .= $page->bodyBuilder->liAnchor("sub/exams/choose.php?which=m", "exams");
 
     $body .= "</ul>\n";
     $body .= $page->waitress->cellClose();

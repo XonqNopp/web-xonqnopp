@@ -8,6 +8,42 @@ $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
 // CSS paths
 //$page->cssHelper->dirUpWing();
+$page->cssHelper->addRaw(
+"
+body {
+    text-align: justify;
+}
+
+
+td.fullLine {
+    text-align: center;
+    background-color: #999;
+}
+
+
+td.cineLeft {
+    text-align: right;
+}
+
+
+td.cineCenter {
+    text-align: center;
+    font-weight: 700;
+}
+
+
+td.cineRight {
+    text-align: left;
+}
+
+
+div.tablebottom th,
+div.tablebottom td {
+    border-bottom: solid 1px;
+    padding: 0.3em;
+}
+"
+);
 
 
 $page->bodyBuilder->titleAnchorCountEnable();

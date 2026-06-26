@@ -72,23 +72,6 @@ $body .= "<div>\n";
         $body .= "<li>\n";
         $body .= $page->bodyBuilder->anchor("elephants.php", $elephants);
         $body .= "</li>\n";
-    //
-        $body .= "<li>R&eacute;sum&eacute; (french-only):\n";
-        $body .= "<ul>\n";
-            $body .= "<li>";
-            $body .= $page->bodyBuilder->anchor("education.php", "&eacute;ducation positive");
-            $body .= " et ";
-            $body .= $page->bodyBuilder->anchor("ecrans.php", "enfants et &eacute;crans");
-            $body .= "</li>";
-
-            $body .= "<li>";
-            $body .= $page->bodyBuilder->anchor("maison.php", "acheter une maison");
-            $body .= " avec mon ";
-            $hypothequeUrl = "hypotheque.php" . ($userIsAdmin ? "?revenu=75000&cash=95000&lpp=120000" : "");  // 2020-11-01
-            $body .= $page->bodyBuilder->anchor($hypothequeUrl, "calculateur d'hypoth&egrave;que");
-            $body .= "</li>\n";
-        $body .= "</ul>\n";
-        $body .= "</li>\n";
     $body .= "</ul>\n";
 $body .= "</div>\n";
 
