@@ -61,7 +61,7 @@ $body .= "<div>\n";
         $quoteCount = $fetchCount->the_count;
         $getcount->close();
         $body .= "<li>\n";
-        $body .= "$quoteCount " . $page->bodyBuilder->anchor("quotations/index.php", "Citations (FR)");
+        $body .= "$quoteCount " . $page->bodyBuilder->anchor("quotations/index.php", "Citations");
         if($userIsAdmin) {
             $body .= " - " . $page->bodyBuilder->anchor("quotations/insert.php", "new", "Ajouter une citation");
         }
