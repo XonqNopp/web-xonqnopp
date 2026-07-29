@@ -4,6 +4,8 @@ $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 
+require_once("shared.php");
+
 // debug
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
@@ -19,10 +21,33 @@ $body = $page->bodyBuilder->goHome("..");
 $body .= $page->htmlHelper->setTitle("Apprendre &agrave; &ecirc;tre parent");  // before HotBooty
 $page->htmlHelper->hotBooty();
 
+
+$body .= instagramSources(
+    array(
+        "cynthiaarscott",
+        "dralexbeyondbehavior",
+        "etunjour_cavamieux",
+        "goldmindsapp",
+        "littlebunbao",
+        "nurturedfirst",
+        "pygmalionne.media",
+        "thecoolmama.club",
+        "thepositiveparenting",
+        "wethinkdeeply",
+        "yestess.familles",
+    )
+);
+
 $body .= "<p>Les enfants connaissent le nom de chaque partie du corps et le nom des parties intimes.\n";
 $body .= 'On ne dit pas "zizi" ou "n&eacute;n&eacute;" et compagnie.' . "\n";
-$body .= "On n'a pas honte de nommer les parties du corps.\n";
+$body .= "On en parle &agrave; la maison, on n'a pas honte de nommer les parties du corps.\n";
 $body .= "Utiliser d'autres termes cr&eacute;e un tabou.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Il n'y a pas non plus de tabou sur la d&eacute;couverte de son corps et des sensations.\n";
+$body .= "Ce n'est pas sale, mais c'est intime.\n";
+$body .= "On le fait seul dans sa chambre pour avoir son intimit&eacute;, pas par honte ou par culpabilit&eacute;.\n";
+$body .= "Pour les parents, on respecte leur &acirc;ge et on r&eacute;pond aux questions sans malaise.\n";
 $body .= "</p>\n";
 
 $body .= "<p>Les secrets sont interdits.\n";
@@ -32,9 +57,509 @@ $body .= "</p>\n";
 $body .= "<p>Un adulte/ado qui demande de l'aide a un enfant (hors vie quotidienne) alors qu'il y a d'autres grandes personnes autour,\n";
 $body .= "c'est souvent une technique d'approche des pr&eacute;dateurs.</p>\n";
 
-// Il faut en parler a la maison, pas en faire un tabou.
-// Toquer a la porte chambre/sdb
-// Consentement aussi pour calin/bisous
+$body .= "<p>On a des livres qui parlent de consentement.\n";
+$body .= "On les lit en famille ou chacun de son c&ocirc;t&eacute;, mais &ccedil;a permet d'ouvrir la discussion.\n";
+$body .= "On aime bien offrir ces livres aux copains pour les anniversaires.\n";
+$body .= "On trouve aussi ce genre de livres &agrave; la biblioth&egrave;que.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Toquer &agrave; la porte de la chambre ou de la salle de bain avant d'entrer, c'est respecter leur intimit&eacute;.\n";
+$body .= "Les enfants grandissent ainsi avec cette r&egrave;gle.\n";
+$body .= "Ils comprennent que le jour o&ugrave; elle n'est pas respect&eacute;e, il faut se m&eacute;fier.\n";
+$body .= "</p>\n";
+
+    // Consentement, toucher le corps
+    $body .= "<p>Le constentement, c'est de ne pas toucher le corps de l'autre sans avoir son accord.\n";
+    $body .= "Cela vaut aussi pour les bisous et les c&acirc;lins.\n";
+    $body .= "On n'a pas &agrave; se forcer si on en n'a pas envie.\n";
+
+    $body .= "En tant que parent aussi, je demande ou pr&eacute;viens mon enfant avant de le toucher pour des soins.\n";
+    $body .= "Une petite phrase simple qui leur apprend que leur corps leur appartient,\n";
+    $body .= "que les adultes, quels qu'ils soient, n'ont pas de droit &agrave; en disposer &agrave; leur guise.\n";
+
+    $body .= "Le consentement n'est pas que pour les adultes, les enfants entre eux doivent aussi le demander et le respecter.\n";
+
+    $body .= "Ce n'est pas parce qu'hier l'autre personne avait envie que c'est toujours le cas maintenant.\n";
+
+    $body .= "Il y a diff&eacute;rentes fa&ccedil;ons de se dire bonjour avec plus ou moins de contacts corporels,\n";
+    $body .= "chacun est libre de choisir &agrave; chaque occasion la mani&egrave;re qui lui convient le mieux.\n";
+
+    $body .= "</p>\n";
+
+$body .= "<p>R&egrave;gles de s&eacute;curit&eacute; de son corps:</p>\n";
+$body .= "<div><ul>\n";
+
+$body .= "<li>\n";
+$body .= "Les parties intimes restent couvertes.\n";
+$body .= "Personne ne peut te demander de les regarder ou de les toucher (dans les 2 sens).\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Si quelqu'un demande de garder un secret et de ne rien dire aux parents, on peut quand m&ecirc;me en parler avec eux.\n";
+$body .= "M&ecirc;me si on dit que quelque chose de grave va se passer, ou que c'est de la faute de l'enfant.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Si quelqu'un montre ou dit quelque chose qui fait peur, on peut en parler aux parents.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "</li>\n";
+
+$body .= "</ul></div>\n";
+
+$body .= "<p>Pour que les enfants n'ait pas a demander &agrave; des adultes de toucher leur corps,\n";
+$body .= "il est important qu'ils deviennent autonome pour se laver et pour les toilettes.\n";
+$body .= "Les enfants aprennent en imitant, on peut donc mimer sur nous les gestes &agrave; faire pour les accompagner.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Lorsque l'enfant nous raconte quelque chose de bizarre ou choquant,\n";
+$body .= "la premir&egrave;re chose &agrave; lui r&eacute;pondre est \"Je te crois.\"\n";
+$body .= "Il faut aussi souligner l'importance de venir nous en parler.\n";
+$body .= "\"Je suis fier que tu viennes me le dire.\n";
+$body .= "C'est exactement le genre de chose dont tu dois venir nous en parler.\n";
+$body .= "M&ecirc;me si ce n'est pas arriv&eacute; &agrave; toi, on a tous le devoir de se prot&eacute;ger les uns les autres.\"\n";
+$body .= "</p>\n";
+
+$body .= "<p>Il nous arrive &agrave; tous de ressentir qu'une situation ne se d&eacute;roule pas comme on s'y attendait.\n";
+$body .= "On &eacute;coute son instinct, mais on doit aussi apprendre aux enfants &agrave; &eacute;couter le leur.\n";
+$body .= "Par exemple si une personne se comporte bizarrement avec nous, on peut se sentir mal &agrave; l'aise:\n";
+$body .= "coeur qui bat vite, transpiration, peur, d&eacute;go&ucirc;t...\n";
+$body .= "Ce sont des signaux internes de danger.\n";
+$body .= "Si cela arrive, il faut fuire et aller en parler &agrave; une personne de confiance.\n";
+$body .= "</p>\n";
+
+$body .= "<p>On peut &eacute;tablir une liste des personnes de confiance avec les enfants.\n";
+$body .= "C'est important pour les parents d'&ecirc;tre s&ucirc;rs que les personnes sur cette liste respectent les r&egrave;gles &eacute;nonc&eacute;es ici.\n";
+$body .= "</po>\n";
+
+$body .= "<p>La violence n'a pas sa place avec les enfants.\n";
+$body .= "Si une personne la justifie avec \"qui aime bien ch&acirc;tie bien\", c'est une personne &agrave; &eacute;viter.\n";
+$body .= "C'est une relation toxique, la porte ouverte &agrave; toutes les agressions et aux viols.\n";
+$body .= "</po>\n";
+
+$body .= "<p>Les agresseurs ne sont pas ceux qu'on croit.\n";
+$body .= "Beaucoup d'agressions ont lieu par des proches.\n";
+$body .= "Il faut rester vigilant avec nos proches aussi; par parano et suspicieux, juste conscient et vigilant.\n";
+$body .= "Et ce ne sont pas non plus que des hommes, il y a aussi des femmes et d'autres enfants.\n";
+$body .= "Pour &eacute;viter de laisser &eacute;chapper une situation qui n'aurait pas d&ucirc; avoir lieu,\n";
+$body .= "on peut se raconter notre journ&eacute;e, les moments joyeux et les moments bizarres.\n";
+$body .= "Cela permet d'&ecirc;tre bien &agrave; l'&eacute;coute des enfants.\n";
+$body .= "</p>\n";
+
+$body .= "<p>L'adolescent devient curieux &agrave; propos de s'embrasser et des parties du corps.\n";
+$body .= "Il va alors jouer &agrave; des jeux comme Action/V&eacute;rit&eacute; pour l'aider &agrave; assouvir cette curiosit&agrave;.\n";
+$body .= "Il faut lui rappeler de rester prudent avec ces jeux, de ne pas jouer &agrave; des jeux qui pourraient\n";
+$body .= "l'EXPOSER, lui ou les autres.\n";  // TODO reveler, mettre a nu...
+$body .= "</p>\n";
+
+$body .= "<p>\n";
+$body .= "Il est difficile pour un enfant de faire la transition entre 2 activit&eacute;s,\n";
+$body .= "surtout si la prochaine n'est pas quelque chose que l'on fait pour le plaisir (comme les devoirs).\n";
+$body .= "Savoir g&eacute;rer une transition, cela signifie: arr&ecirc;ter, changer d'activit&eacute;, faire un effort.\n";
+$body .= "\n\n";
+$body .= "Un exemple:\n";
+$body .= "Un enfant de 3 ans va aller au lit.\n";
+$body .= "Le parent dit: c'est 2 histoires et ensuite au dodo.\n";
+$body .= "L'enfant acquiesce, mais apr&egrave;s les 2 histoires, il en demande encore une.\n";
+$body .= "Le parent doit alors r&eacute;agir correctement.\n";
+$body .= "Il est au contraire important de verbaliser les sentiments de l'enfant en disant:\n";
+$body .= "<b>Tu aimerais que &ccedil;a continue, je sais.</b>\n";
+$body .= "L'enfant entend et reconna&icirc;t alors que le parent ne se moque pas ou ne fait pas comme s'il pleurait pour rien.\n";
+$body .= "Mais le parent ne c&eacute;de pas, car l'enfant apprendrait que cela paye de n&eacute;gocier et s'&eacute;nerver.\n";
+$body .= "Il en retiendrait que \"pleurer longtemps = peut faire changer la r&egrave;gle\".\n";
+$body .= "Le parent peut encore dire:\n";
+$body .= "<b>Tu as le droit d'&ecirc;tre d&eacute;&ccedil;u. Ce soir c'&eacute;tait 2 histoires. Et maintenant c'est l'heure de dormir.</b>\n";
+$body .= "Et m&ecirc;me si l'enfant se mets en col&egrave;re, le parent reste calme, ne crie pas, ne menace pas avec \"si tu continues, demain il n'y aura pas d'histoires.\"\n";
+$body .= "En pr&ecirc;tant &agrave; l'enfant le calme qui lui manque, cela l'aide &agrave; comprendre que ses &eacute;motions ne font pas peur au parent.\n";
+$body .= "L'enfant voit que le parent ne change pas d'avis parce qu'il pleure, mais il comprend aussi que les limites ne disparaissent pas non plus.\n";
+$body .= "C'est un moment que l'enfant n'aime pas du tout,\n";
+$body .= "mais l'enfant voit que le parent est connect&eacute; &agrave; lui en permettant &agrave; ses diff&eacute;rents besoins de coexister.\n";
+$body .= "Bien que le parent ait racont&eacute; une super histoire et que les 2 ont pass&eacute; un bon moment,\n";
+$body .= "le parent a vu que l'enfant est fatigu&eacute;, et l'enjeu maintenant c'est:\n";
+$body .= "est-ce que le parent va rester connect&eacute; &agrave; l'enfant dans sa frustration?\n";
+$body .= "Le comportement d&eacute;crit ici aide l'enfant &agrave; comprendre que c'est le cas.\n";
+$body .= "Le parent peut ensuite dire:\n";
+$body .= "\"Je vais t'aider &agrave; traverser &ccedil;a.\n";
+$body .= "Tu voulais encore un moment avec moi et en m&ecirc;me temps on a dit 2 histoires.\n";
+$body .= "C'est difficile quand quelque chose qu'on aime se termine, surtout quand on est fatigu&eacute;.\"\n";
+$body .= "Cette solidit&eacute; sur laquelle l'enfant peut se reposer lui permet de sentir petit &agrave; petit la fatigue dont parle le parent,\n";
+$body .= "et il peut gentiment s'apaiser.\n";
+$body .= "Plus souvent le parent agira ainsi, plus rapidement l'enfant se calmera.\n";
+$body .= "Cet exemple nous aide &agrave; comprendre qu'on ne peut pas opposer lien/limites, douceur/cadre, &eacute;coute/autorit&eacute;,\n";
+$body .= "car un enfant a besoin des 2 en m&ecirc;me temps.\n";
+$body .= "C&eacute;der n'est pas forc&eacute;ment de l'&eacute;coute, maintenir une limite n'est pas forc&eacute;ment violent.\n";
+$body .= "Tout d&eacute;pend de comment la limite est pos&eacute;e,\n";
+$body .= "de la s&eacute;curit&eacute; &eacute;motionnelle autour,\n";
+$body .= "du regard port&eacute; sur l'enfant pendant qu'il d&eacute;borde.\n";
+$body .= "Un enfant a besoin de se reposer sur son parent pour int&eacute;grer les limites sainement.\n";
+$body .= "Pour que cela fonctionne, le parent a besoin de confiance et de calme, m&ecirc;me (surtout?) quand l'enfant ne l'est pas.\n";
+$body .= "Il faut que le parent puisse accueillir l'&eacute;motion sans en avoir peur, maintenir le cadre sans humilier, dire non sans casser le lien.\n";
+$body .= "Le probl&egrave;me c'est que, souvent, c'est pr&eacute;cis&eacute;ment &ccedil;a que beaucoup de parents n'ont jamais re&ccedil;u quand ils &eacute;taient enfants.\n";
+$body .= "Leurs parents n'ont pas su dire \"je comprends ce que tu ressens\" sans c&eacute;der, sans menacer, sans faire peur.\n";
+$body .= "Il est normal que cela soit difficile pour vous aujourd'hui car il faut l'apprendre.\n";
+$body .= "Elever un enfant autrement aujourd'hui oblige souvent &agrave; r&eacute;parer quelque chose en soi au passage.\n";
+$body .= "Mais chaque fois que vous r&eacute;ussirez &agrave; accueillir l'&eacute;motion et maintenir la lmite, vous toucherez au but des parents.\n";
+$body .= "\n\n";
+$body .= "Un exemple:\n";
+$body .= "Un enfant de 8 ans a des devoirs &agrave; faire mais il joue.\n";
+$body .= "Le parent demande &agrave; l'enfant: tu pr&eacute;f&egrave;res faire tes devoirs maintenant ou apr&egrave;s ton jeu?\n";
+$body .= "L'enfant r&eacute;pond: apr&egrave;s.\n";
+$body .= "Quand l'enfant a fini son jeu, au lieu de faire ses devoirs, il trouve une autre activit&eacute; plaisante &agrave; faire.\n";
+$body .= "Le parent lui dit alors:\n";
+$body .= "\"Je vois que tu as trouv&eacute; autre chose &agrave; faire. Nous avions dit les devoirs apr&egrave;s le jeu.\"\n";
+$body .= "Mais l'enfant ne veut pas les faire.\n";
+$body .= "Le parent le sait, mais il sait aussi ce que beaucoup de parents oublient:\n";
+$body .= "Quand l'enfant a choisi apr&egrave;s le jeu, il &eacute;tait sinc&egrave;pre et pensait vraiment\n";
+$body .= "faire ses devoirs apr&egrave;s son jeu.\n";
+$body .= "Le probl&egrave;me est que le moment o&ugrave; la d&eacute;cision a &eacute;t&eacute; prise et\n";
+$body .= "le moment o&ugrave; il faut l'appliquer sont 2 moments tr&egrave;s diff&eacute;rents.\n";
+$body .= "L'enfant a accept&eacute; le march&eacute; en imaginant la meilleure version de lui,\n";
+$body .= "mais pas la difficult&eacute; d'arr&ecirc;ter ce qu'il aime faire.\n";
+$body .= "<b>Maintenant, l'enfant a besoin du parent pour cadrer la transition sans perdre le lien.</b>\n";
+$body .= "L'enfant va chercher un &eacute;chapattoire: je lis juste une page, encore 5 minutes, steupl&eacute;&eacute;&eacute;&eacute;&eacute;...\n";
+$body .= "Il ne cherche pas &agrave; manipuler le parent, mais &eacute;viter quelque chose qui lui co&ucirc;te.\n";
+$body .= "Le parent peut faire la diff&eacute;rence.\n";
+$body .= "Il ne faut alors pas dire &agrave; l'enfant: \"Tu avais promis, on ne peut pas te faire confiance.\"\n";
+$body .= "Ce qu'il faut lui dire:\n";
+$body .= "<b>Tu n'aimes pas faire tes devoirs. C'est dur de se motiver &agrave; faire quelque chose qu'on aime pas.</b>\n";
+$body .= "Cela va aider l'enfant &agrave; se sentir compris.\n";
+$body .= "Son prbl&egrave;me, c'est la transition et le manque de motivation:\n";
+$body .= "Quitter quelque chose d'agr&eacute;able pour aller vers quelque chose qui demande plus d'efforts.\n";
+$body .= "<b>Cela est une comp&eacute;tence complexe.</b>\n";
+$body .= "Il ne s'agit pas d'un manque de volont&eacute;, de paresse ou d'un d&eacute;faut de caract&egrave;re.\n";
+$body .= "C'est une <b>comp&eacute;tence que les enfants apprennent progressivement</b>.\n";
+$body .= "Le parent peut alors dire: Tu pr&eacute;f&egrave;res commencer par la lecture ou par les maths?\n";
+$body .= "Ainsi, il garde la limite, les devoirs vont avoir lieu.\n";
+$body .= "Mais il redonne &agrave; l'enfant un peu de contr&ocirc;le sur la fa&ccedil;on de les faire.\n";
+$body .= "Pour l'enfant, cela change beaucoup.\n";
+$body .= "On peut aussi discuter de ce qu'on fera ensuite pour aider l'enfant &agrave; se motiver.\n";
+$body .= "Mais si l'enfant continue de s'opposer, le parent dira simplement:\n";
+$body .= "Je reste pr&egrave;s de toi le temps que tu d&eacute;cides comment t'y mettre.\n";
+$body .= "L'enfant n'a pas besoin que le parent rappelle ce qu'il faut faire,\n";
+$body .= "mais il a besoin que le parent lui apprenne comment le faire.\n";
+$body .= "Les devoirs ne sont pas seulement un apprentissage scolaire, ils apprennent aussi &agrave; sortir de la procrastination.\n";
+$body .= "La formule avec laquelle nous avons grandi \"arr&ecirc;te de discuter et fais-le\" n'est pas la bonne m&eacute;thode.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Les enfants construisent leur vocabulaire et leur vision du monde de tout ce qui sort de la bouche des parents.</p>\n";
+$body .= "Au lieu de se plaindre (j'ai mal aux jambes apr&egrave;s cette marche),\n";
+$body .= "on peut le formuler d'une mani&egrave;re positive (mon corps est tellement intelligent qu'il me dit que j'ai besoin de repos).\n";
+$body .= "</p>\n";
+
+$body .= "<p>Quand les enfants sont frustr&eacute;s et pensent qu'ils n'arriveront pas &agrave; faire quelque chose,\n";
+$body .= "le parent peut alors se mettre en mode super-joueur.\n";
+$body .= "On peut par exemple prendre dans la poche de la poussi&egrave;re magique d'&eacute;toile et\n";
+$body .= "la saupoudrer sur la t&ecirc;te de l'enfant en disant \"Voyons voir si &ccedil;a fonctionne...\"\n";
+$body .= "Si cela ne fonctionne toujours pas, on peut aussi appuyer sur le bouton \"Je peux le faire\" (nombril, nez...).\n";
+$body .= "</p>\n";
+
+$body .= "<p>Lorsqu'on est de mauvais poil, &eacute;nerv&eacute;, frustr&eacute;, on peut faire la danse de la lib&eacute;ration.\n";
+$body .= "On peut secouer chaque partie du corps, de la t&ecirc;te aux pieds.\n";
+$body .= "Les enfants voient alors notre choix de d&eacute;lib&eacute;r&eacute;ment investir son &eacute;nergie au lieu de rester grognon.\n";
+$body .= "Tous les membres de la famille peuvent rejoindre quelqu'un qui fait cette danse.\n";
+$body .= "</p>\n";
+
+$body .= "<p>On peut expliquer les &eacute;motions comme la m&eacute;t&eacute;o:\n";
+$body .= "&ecirc;tre heureux est comme un jour ensoleill&eacute;, &ecirc;tre triste comme un jour de pluie...\n";
+$body .= "Et comme la m&eacute;t&eacute;o, les &eacute;motions ne sont pas mauvaises et changent.\n";
+$body .= "On ressent nos &eacute;motions, on les laisse nous dire ce qu'on a besoin,\n";
+$body .= "et ensuite on peut les laisser s'en aller quand on en a fini.\n";
+$body .= "Il est important que les enfants sachent que leurs &eacute;motions sont normales et qu'ils n'ont pas besoin de les garder pour toujours.\n";
+$body .= "Ils peuvent se cr&eacute;er une vie incroyable avec leurs propres esprits.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Cela ne sert &agrave; rien de r&eacute;p&eacute;ter 10 fois quelque chose pour que l'enfant le fasse.\n";
+$body .= "Si l'envie se fait de r&eacute;p&eacute;ter, il faut s'arr&ecirc;ter, aller vers l'enfant et &ecirc;tre s&ucirc;r d'avoir son attention.\n";
+$body .= "Ensuite le parent lui donne UNE instruction claire.\n";
+$body .= "Les enfants r&eacute;agissent mieux &agrave; une clart&eacute; calme qu'&agrave; un bruit de fond.\n";
+$body .= "</p>\n";
+
+$body .= "<p>S'il n'y a de choix, il ne faut pas le formuler comme une question.\n";
+$body .= "En tant que parent qui essaie de bien &eacute;lever son enfant, il est tentant de demander (est-ce que tu veux mettre tes chaussures?)\n";
+$body .= "plut&ocirc;t que d'ordonner (mets tes chaussures stp).\n";
+$body .= "Le probl&egrave;me est qu'une instruction formul&eacute;e en question apprend &agrave; l'enfant que \"non\" est une option.\n";
+$body .= "Avoir des attentes claires permet de r&eacute;duire rapidement les conflits de puissance.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Dans la lign&eacute;e de l'&eacute;ducation positive, il n'est pas bon de toujours corriger les probl&egrave;mes,\n";
+$body .= "il vaut mieux souligner les choses positives.\n";
+$body .= "Les comportements qui obtiennent le plus d'attention sont ceux qui vont se d&eacute;velopper le plus.\n";
+$body .= "Quelques exemples:\n";
+$body .= "</p>\n";
+$body .= "<div><ul>\n";
+$body .= "<li>Tu es venu tout de suite quand je t'ai appel&eacute;.</li>\n";
+$body .= "<li>J'adore comme tu demandes calmement.</li>\n";
+$body .= "<li>Tu as attendu bien patiemment.</li>\n";
+$body .= "</ul></div>\n";
+
+$body .= "<p>Quand un enfant se comporte mal, il n'est pas tr&egrave;s utile de se concentrer sur le comportement.\n";
+$body .= "L'important pour le parent est de comprendre la fonction du comportement.\n";
+$body .= "Est-ce que l'enfant essaie d'attirer l'attention, d'obtenir quelque chose, d'&eacute;viter une t&acirc;che...\n";
+$body .= "Une fois que le parent comprend <b>pourquoi</b> l'enfant se comporte de la sorte,\n";
+$body .= "il peut comprendre quelles comp&eacute;tences manquent &agrave; l'enfant et les lui enseigner.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Cela ne sert &agrave; rien de faire des grandes th&eacute;ories et explications &agrave; l'enfant\n";
+$body .= "pendant qu'il est dans de fortes &eacute;motions.\n";
+$body .= "Le parent reste calme et neutre, et montre le comportement qu'il aimerait voir chez l'enfant.\n";
+$body .= "Il reviendra plus tard sur le comportement pour apprendre &agrave; l'enfant comment r&eacute;agir.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Lorsqu'un enfant fait une crise, il est parfois difficile pour le parent de garder son calme.\n";
+$body .= "Le parent aussi a ses propres &eacute;motions qu'il doit g&eacute;rer, et certaines doivent sortir.\n";
+$body .= "On peut le faire de diff&eacute;rentes fa&ccedil;ons:\n";
+$body .= "</p><div><ul>\n";
+$body .= "<li>souffler bruyamment</li>\n";
+$body .= "<li>secouer le corps</li>\n";
+$body .= "<li>chanter fort</li>\n";
+$body .= "<li>se forcer &agrave; rire</li>\n";
+$body .= "<li>sauter sur place</li>\n";
+$body .= "</ul></div><p>\n";
+$body .= "Ces gestes lib&egrave;rent la tension physique accumul&eacute;e, qui pourrait exploser sur l'enfant.\n";
+$body .= "Cela peut para&icirc;tre bizarre, mais c'est de la r&eacute;gulation &eacute;motionnelle.\n";
+$body .= "Quand on fait cela devant les enfants (en crise ou pas),\n";
+$body .= "ce qu-ils voient, c'est un parent qui g&egrave;re ses &eacute;motions en les traversant,\n";
+$body .= "plut&ocirc;t que de voir un parent qui essaye de contenir ses &eacute;motions,\n";
+$body .= "qui essaye de contr&ocirc;ler la situation,\n";
+$body .= "ou qui explose sur eux.\n";
+$body .= "Le point-cl&eacute; est d'&eacute;vacuer ses &eacute;motions <b>devant</b> ses enfants, pas <b>sur</b> les enfants.\n";
+$body .= "On montre ainsi &agrave; l'enfant que c'est normal que les &eacute;motions d&eacute;bordent, et qu'on peut les r&eacute;guler sans ab&icirc;mer le lien.'\n";
+$body .= "</p>\n";
+
+$body .= "<p>Cela ne sert &agrave; rien de r&eacute;p&eacute;ter 10 fois quelque chose.\n";
+$body .= "Pour l'enfant, cela n'est que du bruit de fond qu'il ignore.\n";
+$body .= "Il ne r&eacute;agit que lorsqu'on vient, alors que nous sommes d&eacute;j&agrave; &eacute;nerv&eacute;s.\n";
+$body .= "Au lieu de cela, il faut arr&ecirc;ter ce qu'on est en train de faire, aller aupr&egrave;s de l'enfant,\n";
+$body .= "avoir son attention, et donner UNE instruction pr&eacute;cise.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Il ne faut pas poser une question si ce n'est pas un choix.\n";
+$body .= "Au lieu de dire \"est-ce que tu peux mettre tes chaussures stp?\" on dit \"met tes chaussures, et on va dehors.\"\n";
+$body .= "Lorsqu'on donne une instruction sous la forme d'une question, on apprend &agrave; l'enfant que non est une option.\n";
+$body .= "Donner des instructions claires permet de rapidement diminuer les conflits de pouvoir.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Au lieu de r&eacute;p&eacute;ter \"fais attention\" toute la journ&eacute;e, il faut dire quoi faire plus pr&eacute;cis&eacute;ment.\n";
+$body .= "Exemples: marche lentement dans les escaliers, regarde avant de traverser la route...\n";
+$body .= "Les instructions sp&eacute;cifiques enseignent des comp&eacute;tences, contrairement &agrave; des avertissements vagues.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Il faut souligner les comportements ad&eacute;quats plut&ocirc;t que de corriger les mauvais comportements.\n";
+$body .= "L'enfant va reproduire le comportement qui lui apporte le plus d'attention.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Un point faible des enfants sont les transitions, ils ne peuvent pas les g&eacute;rer comme nous adultes.\n";
+$body .= "Il est important de les pr&eacute;parer mentalement avant que le moment de la transition n'arrive.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Les pleurnichages et autres comportement d&eacute;sagr&eacute;ables\n";
+$body .= "ne doivent pas &ecirc;tre trait&eacute; comme comportements probl&eacute;matiques par l'adulte,\n";
+$body .= "il faut que l'adulte voie la fonction au-del&agrave; du comportement.\n";
+$body .= "Est-ce que l'enfant essaie d'obtenir quelque chose ou de l'attention, d'&eacute;viter une corv&eacute;e, de r&eacute;pondre &agrave; un besoin sensoriel...\n";
+$body .= "Une fois que l'adulte a identif&eacute; le pourquoi, il peut apprendre &agrave; l'enfant la comp&eacute;tence qu'il lui manque.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Il est inutile de faire des grandes th&eacute;ories et de longues explications lorsqu'un enfant est en pleine crise.\n";
+$body .= "Il est plus efficace que l'adulte reste calme et montre le comportement qu'il attend.\n";
+$body .= "Plus tard, quand l'enfant est dans un bon &eacute;tat &eacute;motionnel,\n";
+$body .= "on peut reparler de la crise et apprendre &agrave; l'enfant les comp&eacute;tences pour l'aider &agrave; g&egrave;rer ces moments.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "Le fait que je te donne des conseils ne veut pas dire que je suis plus intelligent que toi.\n";
+$body .= "Ca veut seulement dire que j'ai fait plus de choses stupides que toi.\n";
+$body .= "La sagesse n'est pas d'avoir tout le temps raison, mais d'avoir tort suffisamment de fois pour &ecirc;tre capable de\n";
+$body .= "reconna&icirc;tre les situations avant qu'on ne se trompe.\n";  // wethinkdeeply
+
+
+
+
+$body .= "<p>Instinctivement, les parents ont tendance &agrave; rassurer les enfants en essayant de supprimer la peur avec des phrases du genre:</p>\n";
+$body .= "<div><ul>\n";
+$body .= "<li>Arr&ecirc;te de t'inqui&eacute;ter.</li>\n";
+$body .= "<li>Tout va bien.</li>\n";
+$body .= "<li>Ce n'est rien.</li>\n";
+$body .= "<li>N'y pense plus.</li>\n";
+$body .= "</ul></div>\n";
+$body .= "<p>\n";
+$body .= "Mais supprimer une &eacute;motion augmente souvent sa pression interne.\n";
+$body .= "La force &eacute;motionnelle n'est pas d'&eacute;liminer l'inqui&eacute;tude, mais apprendre qu'on peut la contenir sans la laisser nous contr&ocirc;ler.\n";
+
+$body .= "En Finlande, certains parents enseignent aux enfants une r&egrave;gle simple avant de dormir.\n";
+$body .= "Ils ne leur disent pas ce genre de phrases.\n";
+$body .= "Ils leur apprenent <b>quand</b> s'inqui&eacute;ter.\n";
+$body .= "Cela s'appelle le \"conteneur &agrave; inqui&eacute;tudes\",\n";
+$body .= "et il s'agit du <b>temps d'inqui&eacute;tude programm&eacute;</b>, un principe solide de la th&eacute;rapie cognitivo-comportementale.\n";
+$body .= "Dans nos cerveaux humains, l'anxi&eacute;t&eacute; fonctionne en boucle:\n";
+$body .= "une pens&eacute;e appara&icirc;t,\n";
+$body .= "elle d&eacute;clenche une &eacute;motion,\n";
+$body .= "le cerveau la traite comme urgente,\n";
+$body .= "la pens&eacute;e revient encore plus fort, surtout la nuit.\n";
+$body .= "Le moment du coucher est particuli&egrave;rement sensible:\n";
+$body .= "le corps ralentit, le silence s'installe, et les pens&eacute;es prennent toute la place.\n";
+$body .= "Le cerveau immature n'a pas encore appris &agrave; classer les pens&eacute;es, et tout semble important.\n";
+$body .= "Il se dit \"si je pense &agrave; cela, c'est que c'est urgent.\"\n";
+$body .= "Donc il relance la pens&eacute;e, la retourne et cherche une solution au milieu de la nuit, il active le syst&egrave;me d'alerte (cortisol).\n";
+$body .= "Mais la nuit, le cerveau rationnel est fatigu&eacute; et n'arrive rien &agrave; r&eacute;soudre.\n";
+
+$body .= "Pour aider l'enfant &agrave; apprendre &agrave; g&eacute;rer les pens&eacute;es au moment du coucher,\n";
+$body .= "on peut introduire dans la routine du soir le temps pour s'inqui&eacute;ter.\n";
+$body .= "Concr&egrave;tement, environ 30min avant le coucher, l'enfant prend un carnet.\n";
+$body .= "Pendant 10min, il &eacute;crit librement\n";
+$body .= "ce qui l'a stress&eacute;,\n";
+$body .= "ce qui lui a fait peur,\n";
+$body .= "ce qui lui semble inachev&eacute;,\n";
+$body .= "ce qui tourne dans sa t&ecirc;te.\n";
+$body .= "Sans filtre, sans classement, sans solution imm&eacute;diate, et les parents ne vont pas le lire en cachette.\n";
+$body .= "Apr&egrave;s le temps imparti, on ferme le carnet.\n";
+$body .= "Ce geste a une signification importante: les inqui&eacute;tudes restent dans le carnet jusqu'&agrave; demain.\n";
+$body .= "C'est un signal neurologique tr&egrave;s pr&eacute;cis:\n";
+$body .= "ce n'est pas ignor&eacute;,\n";
+$body .= "ce n'est pas urgent,\n";
+$body .= "ce sera trait&eacute; demain.\n";
+$body .= "On apprend au cerveau qu'il peut diff&eacute;rer.\n";
+
+$body .= "Il est important de ne pas prioriser dans le cahier du soir, car ce n'est pas un bon moment pour analyser.\n";
+$body .= "Si on commence &agrave; trier, organiser ou planifier, on active le cortex pr&eacute;frontal, on relance l'activation mentale et cela retarde l'endormissement.\n";
+$body .= "Le but du cahier n'est pas de r&eacute;soudre mais de d&eacute;charger.\n";
+$body .= "Et le lendemain matin, les probl&egrave;mes sont toujours l&agrave;.\n";
+$body .= "Mais en les relisant, on les voit diff&eacute;remment:\n";
+$body .= "certains semblent disproportionn&eacute;s,\n";
+$body .= "certains ont perdu leur urgence,\n";
+$body .= "certains se r&egrave;glent tout seuls.\n";
+$body .= "Le cerveau diurne (et repos&eacute;) est plus rationnel.\n";
+$body .= "Cette technique ne supprime pas l'anxi&eacute;t&eacute; mais enseigne au cerveau que toutes les pens&eacute;es ne sont pas des urgences.\n";
+
+$body .= "Avec le temps, il va se passer un ph&eacute;nom&egrave;ne int&eacute;ressant:\n";
+$body .= "beaucoup d'inqui&eacute;tudes &eacute;crites un soir ne semblent plus si importantes le lendemain.\n";
+$body .= "La distance r&eacute;duit l'intensit&eacute;: le cerveau apprend que la plupart des menaces anticip&eacute;es ne deviennent jamais r&eacute;elles.\n";
+
+$body .= "En th&eacute;rapie cognitivo-comportementale, cela s'appelle la planification des inqui&eacute;tudes (worry scheduling).\n";
+$body .= "Les recherches montrent que cela r&eacute;duit les ruminations et am&eacute;liore la qualit&eacute; du sommeil,\n";
+$body .= "aussi bien chez les adultes que chez les adolescents.\n";
+$body .= "Le principe est que le cerveau sait quand un moment pour traiter les inqui&eacute;tudes est pr&eacute;vu,\n";
+$body .= "il a moins besoin de relancer une inqui&eacute;tude en boucle au mauvais moment.\n";
+$body .= "On cr&eacute;e une fronti&egrave;re et elle brise le cycle nocturne.\n";
+$body .= "Le conteneur &agrave; inqui&eacute;tudes d&egrave;veloppe la r&eacute;gulation &eacute;motionnelle.\n";
+
+$body .= "Un enfant qui comprend qu'il peut poser ses inqui&eacute;tudes quelque part devient un adolescent qui ne se laisse pas envahir par elles.\n";
+$body .= "Il apprend\n";
+$body .= "que les pens&eacute;es ne sont pas des faits,\n";
+$body .= "que l'&eacute;motion peut &ecirc;tre observ&eacute;e,\n";
+$body .= "et que le sommeil n'est pas un champ de bataille.\n";
+$body .= "Ainsi il deviendra un adulte qui ne r&eacute;pondra pas &agrave; chaque pens&eacute;e comme si elle &eacute;tait une alarme incendie.\n";
+$body .= "Les enfants qui savent quand s'inqui&eacute;ter deviennent souvent des adultes qui savent quand s'arr&ecirc;ter.\n";
+$body .= "</p>\n";  // pygmalionne.media
+
+
+// ---------------------------------
+
+$body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
+$body .= "<div><ul>\n";
+
+$body .= "<li>\n";
+$body .= "Tu peux m'appeler n'importe quand pour me demander de venir te rechercher, m&ecirc;me au milieu de la nuit.\n";
+$body .= "Je ne te poserai pas de questions, tu m'en parleras quand tu seras pr&ecirc;t.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Il peut arriver que tu soies dans une situation inconfortable,\n";
+$body .= "ou que quelqu'un te demande de faire quelque chose que tu ne veux pas.\n";
+$body .= "Souviens-toi alors que tu as une voix et que tu peux l'utiliser.\n";
+$body .= "Tu as le droit de dire non. Toujours.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Les bons amis ne vont pas te forcer &agrave; faire des choses dangereuses, m&eacute;chantes ou qui impliquent les parties intimes.\n";
+$body .= "Ne fais jamais quelque chose comme &ccedil;a pour garder un ami ou te faire un nouvel ami.\n";
+$body .= "Tu as le droit de les contrarier.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Il y a tr&egrave;s peu de choses que tu pourras me dire qui pourrait me choquer.\n";
+$body .= "J'ai d&eacute;j&agrave; entendu beaucoup de choses dans ma vie.\n";
+$body .= "Donc m&ecirc;me si tu pense que c'est trop bizarre ou effrayant, tu peux quand m&ecirc;me me le dire.\n";
+$body .= "Je suis pr&ecirc;t &agrave; l'entendre.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Si quelqu'un te montre une video AI de quelqu'un que tu connais qui fait quelque chose de bizarre, dis-le-moi.\n";
+$body .= "Je pr&eacute;f&egrave;re &ecirc;tre au courant pour pouvoir te soutenir.\n";
+$body .= "</li>\n";
+
+$body .= "</ul></div>\n";
+
+
+// ------------------------------------
+
+$body .= "<p>Quelques questions qu'il vaut la peine de poser &agrave; ses enfants,\n";
+$body .= "dont leurs r&eacute;ponses pourraient nous surprendre:</p>\n";
+
+$body .= "<div><dl>\n";
+
+$body .= "<dt>Est-ce que tu te sens assez aim&eacute; de moi?</dt>\n";
+$body .= "<dd>\n";
+$body .= "On dit \"je t'aime\" chaque jour, mais l'amour n'a d'importance que s'il est ressenti.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Est-ce que tu aimes quand je te fais un c&acirc;lin ou un bisou?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Est-ce que tu en voudrais plus/moins? Chaque enfant est diff&eacute;rent, il vaut mieux demander que supposer.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quelle est la chose que tu pr&eacute;f&egrave;re faire quand on n'est que tous les 2?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Cela nous permet de savoir ce qui les remplit le plus de bonheur, et comment en faire plus.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quel est le meilleur cadeau que je t'ai fait?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Pas s&ucirc;r que ce soit un jouet, probablement plut&ocirc;t un moment ou un souvenir.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Est-ce que tu pr&eacute;f&egrave;res recevoir une surprise ou qu'on aille choisir ensemble?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Comment nous donnons notre amour est aussi important que ce que nous donnons.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quand je t'aide, est-ce que tu aimes comme je le fais, ou tu aimerais que je fasse quelque chose autrement?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Parfois, notre aide peut &ecirc;tre ressentie comme une pression.\n";
+$body .= "Cette question ouvre la porte de la confiance.\n";  // TODO
+$body .= "</dd>\n";
+
+$body .= "<dt>Quand tu es &eacute;nerv&eacute; ou effray&eacute;, qu'est-ce que tu voudrais que je fasse?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Les enfants savent ce qui les r&eacute;confortent.\n";
+$body .= "Il nous faut juste le leur demander...\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Est-ce que tu as parfois l'impression que je suis trop occup&eacute; pour TODO toi?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Si oui, qu'est-ce que je pourrais faire pour que tu sentes que je suis vraiment pr&eacute;sent?\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Si demain on annule tout juste pour &ecirc;tre les 2, qu'est-ce que tu voudrais faire?</dt>\n";
+$body .= "<dd>\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quand est-ce que tu te sens vraiment &eacute;cout&eacute; de ma part?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Derri&egrave;re cette question se cache en fait \"est-ce que je suis important pour toi?\"\n";
+$body .= "</dd>\n";
+
+$body .= "</dl></div>\n";
+
+
+
+
+
+
+// TODO signe de detresse
+// TODO Angie dans un bar???
+// TODO 2 categories: choses que les parents doivent etre conscients, choses que les parents doivent enseigner a leurs enfants
+//
+// Les bonnes decisions viennent de l'experience, et l'experience vient des mauvaises decisions.
 
 
 echo $body;
