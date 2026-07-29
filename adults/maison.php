@@ -9,7 +9,7 @@ $page = new PhPage($rootPath);
 // CSS paths
 //$page->cssHelper->dirUpWing();
 $page->cssHelper->addRaw(
-"
+'
 body {
     text-align: justify;
 }
@@ -34,7 +34,7 @@ li.plus::marker {
 li.minus::marker {
     content: "-";
 }
-"
+'
 );
 
     // Shortcuts

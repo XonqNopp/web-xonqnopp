@@ -36,25 +36,53 @@ $RH2 = NULL;
 $RH2_T1 = NULL;
 $HI2 = NULL;
 
-$b = 17.625;
-$c = 243.04;
-
-$c1 = 0.363445176;
-$c2 = 0.988622465;
-$c3 = 4.777114035;
-$c4 = -0.114037667;
-$c5 = -8.50208e-4;
-$c6 = -2.0716198e-2;
-$c7 = 6.87678e-4;
-$c8 = 2.74954e-4;
-$c9 = 0;
-
-function c2f($T) {
-    return $T * 9 / 5 + 32;
+function c2f($temperatureCelsius) {
+    return $temperatureCelsius * 9 / 5 + 32;
 }
 
-function f2c($Tf) {
-    return ($Tf - 32) * 5 / 9;
+function f2c($temperatureF) {
+    return ($temperatureF - 32) * 5 / 9;
+}
+
+function rhFromT1ToT2($rh1, $temp1, $temp2) {
+    $constB = 17.625;
+    $constC = 243.04;
+
+    $rh2 = round($rh1 * exp($constB * $constC * ($temp1 - $temp2) / ($constC + $temp1) / ($constC + $temp2)));
+
+    if($rh2 > 100) {
+        $rh2 = 100;
+    }
+
+    return $rh2;
+}
+
+function heatIndex($tempC, $relHum) {
+    $const1 = 0.363445176;
+    $const2 = 0.988622465;
+    $const3 = 4.777114035;
+    $const4 = -0.114037667;
+    $const5 = -8.50208e-4;
+    $const6 = -2.0716198e-2;
+    $const7 = 6.87678e-4;
+    $const8 = 2.74954e-4;
+    $const9 = 0;
+
+
+    $tempF = c2f($tempC);
+
+    $term1 = $const1;
+    $term2 = $const2 * $tempF;
+    $term3 = $const3 * $relHum;
+    $term4 = $const4 * $tempF * $relHum;
+    $term5 = $const5 * $tempF * $tempF;
+    $term6 = $const6 * $relHum * $relHum;
+    $term7 = $const7 * $tempF * $tempF * $relHum;
+    $term8 = $const8 * $tempF * $relHum * $relHum;
+    $term9 = $const9 * $tempF * $tempF * $relHum * $relHum;
+    $hiF = $term1 + $term2 + $term3 + $term4 + $term5 + $term6 + $term7 + $term8 + $term9;
+
+    return round(f2c($hiF), 1);
 }
 
 if(isset($_GET["T1"])) {  // assume all are set
@@ -63,20 +91,11 @@ if(isset($_GET["T1"])) {  // assume all are set
     $T2 = floatval($_GET["T2"]);
     $RH2 = floatval($_GET["RH2"]);
 
-    $RH1_T2 = round($RH1 * exp($b * $c * ($T1 - $T2) / ($c + $T1) / ($c + $T2)));
-    $RH2_T1 = round($RH2 * exp($b * $c * ($T2 - $T1) / ($c + $T2) / ($c + $T1)));
+    $RH1_T2 = rhFromT1ToT2($RH1, $T1, $T2);
+    $RH2_T1 = rhFromT1ToT2($RH2, $T2, $T1);
 
-    if($RH1_T2 > 100) { $RH1_T2 = 100; }
-    if($RH2_T1 > 100) { $RH2_T1 = 100; }
-
-    $Tf1 = c2f($T1);
-    $Tf2 = c2f($T2);
-
-    $HIf1 = $c1 + $c2 * $Tf1 + $c3 * $RH1 + $c4 * $Tf1 * $RH1 + $c5 * pow($Tf1, 2) + $c6 * pow($RH1, 2) + $c7 * pow($Tf1, 2) * $RH1 + $c8 * $Tf1 * pow($RH1, 2) + $c9 * pow($Tf1, 2) * pow($RH1, 2);
-    $HIf2 = $c1 + $c2 * $Tf2 + $c3 * $RH2 + $c4 * $Tf2 * $RH2 + $c5 * pow($Tf2, 2) + $c6 * pow($RH2, 2) + $c7 * pow($Tf2, 2) * $RH2 + $c8 * $Tf2 * pow($RH2, 2) + $c9 * pow($Tf2, 2) * pow($RH2, 2);
-
-    $HI1 = round(f2c($HIf1), 1);
-    $HI2 = round(f2c($HIf2), 1);
+    $HI1 = heatIndex($T1, $RH1);
+    $HI2 = heatIndex($T2, $RH2);
 }
 
 $temperatureAttr = new FieldAttributes(true);
@@ -96,33 +115,21 @@ $body .= $page->formHelper->tag("get");
 
 $body .= $page->butler->tableOpen();
     $body .= $page->butler->rowOpen();
-        $body .= $page->butler->cellOpen();
         $temperatureAttr->hasAutofocus = true;
-        $body .= $theNumberInput->get("T1", $T1, NULL, $temperatureAttr, $temperatureEmbedder);
+        $body .= $page->butler->cell($theNumberInput->get("T1", $T1, NULL, $temperatureAttr, $temperatureEmbedder));
         $temperatureAttr->hasAutofocus = false;
-        $body .= $page->butler->cellClose();
-    //
-        $body .= $page->butler->cellOpen();
-        $body .= $theNumberInput->get("RH1", $RH1, NULL, $humidityAttr, $humidityEmbedder);
-        $body .= $page->butler->cellClose();
-    //
-    $body .= $page->butler->cell("T=" . ($T2 !== NULL ? "$T2 &deg;C" : ""));
-    $body .= $page->butler->cell("RH=" . ($RH1_T2 !== NULL ? "$RH1_T2 %" : ""));
-    $body .= $page->butler->cell("HI=" . ($HI1 !== NULL ? "$HI1 &deg;C" : ""));
+    $body .= $page->butler->cell($theNumberInput->get("RH1", $RH1, NULL, $humidityAttr, $humidityEmbedder), array("style" => "border-right: 1px solid;"));
+    $body .= $page->butler->cell("T=$T2 &deg;C");
+    $body .= $page->butler->cell("RH=$RH1_T2 %", array("style" => "border-right: 1px solid;"));
+    $body .= $page->butler->cell("HI=$HI1 &deg;C");
     $body .= $page->butler->rowClose();
 //
     $body .= $page->butler->rowOpen();
-    $body .= $page->butler->cell("T=" . ($T1 !== NULL ? "$T1 &deg;C" : ""));
-    $body .= $page->butler->cell("RH=" . ($RH2_T1 !== NULL ? "$RH2_T1 %" : ""));
-        $body .= $page->butler->cellOpen();
-        $body .= $theNumberInput->get("T2", $T2, NULL, $temperatureAttr, $temperatureEmbedder);
-        $body .= $page->butler->cellClose();
-    //
-        $body .= $page->butler->cellOpen();
-        $body .= $theNumberInput->get("RH2", $RH2, NULL, $humidityAttr, $humidityEmbedder);
-        $body .= $page->butler->cellClose();
-    //
-    $body .= $page->butler->cell("HI=" . ($HI2 !== NULL ? "$HI2 &deg;C" : ""));
+    $body .= $page->butler->cell("T=$T1 &deg;C");
+    $body .= $page->butler->cell("RH=$RH2_T1 %", array("style" => "border-right: 1px solid;"));
+    $body .= $page->butler->cell($theNumberInput->get("T2", $T2, NULL, $temperatureAttr, $temperatureEmbedder));
+    $body .= $page->butler->cell($theNumberInput->get("RH2", $RH2, NULL, $humidityAttr, $humidityEmbedder), array("style" => "border-right: 1px solid;"));
+    $body .= $page->butler->cell("HI=$HI2 &deg;C");
     $body .= $page->butler->rowClose();
 $body .= $page->butler->tableClose();
 

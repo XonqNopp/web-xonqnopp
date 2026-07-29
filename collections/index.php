@@ -7,11 +7,11 @@ $page = new PhPage($rootPath);
 //$page->logger->levelUp(6);
 $userIsAdmin = $page->loginHelper->userIsAdmin();
 
-$page->htmlHelper->setTitle("Collections");
+$body = $page->bodyBuilder->goHome(NULL, "..");
+
+$body .= $page->htmlHelper->setTitle("Collections");
 $page->htmlHelper->hotBooty();
 
-$body = $page->bodyBuilder->goHome(NULL, "..");
-$body .= "<h1>Collections</h1>\n";
 $body .= "<div>\n";
     $body .= "<ul>\n";
         // BD
@@ -61,7 +61,7 @@ $body .= "<div>\n";
         $quoteCount = $fetchCount->the_count;
         $getcount->close();
         $body .= "<li>\n";
-        $body .= "$quoteCount " . $page->bodyBuilder->anchor("quotations/index.php", "Citations (FR)");
+        $body .= "$quoteCount " . $page->bodyBuilder->anchor("quotations/index.php", "Citations");
         if($userIsAdmin) {
             $body .= " - " . $page->bodyBuilder->anchor("quotations/insert.php", "new", "Ajouter une citation");
         }
@@ -71,23 +71,6 @@ $body .= "<div>\n";
         $elephants = "Les &eacute;l&eacute;phants";
         $body .= "<li>\n";
         $body .= $page->bodyBuilder->anchor("elephants.php", $elephants);
-        $body .= "</li>\n";
-    //
-        $body .= "<li>R&eacute;sum&eacute; (french-only):\n";
-        $body .= "<ul>\n";
-            $body .= "<li>";
-            $body .= $page->bodyBuilder->anchor("education.php", "&eacute;ducation positive");
-            $body .= " et ";
-            $body .= $page->bodyBuilder->anchor("ecrans.php", "enfants et &eacute;crans");
-            $body .= "</li>";
-
-            $body .= "<li>";
-            $body .= $page->bodyBuilder->anchor("maison.php", "acheter une maison");
-            $body .= " avec mon ";
-            $hypothequeUrl = "hypotheque.php" . ($userIsAdmin ? "?revenu=75000&cash=95000&lpp=120000" : "");  // 2020-11-01
-            $body .= $page->bodyBuilder->anchor($hypothequeUrl, "calculateur d'hypoth&egrave;que");
-            $body .= "</li>\n";
-        $body .= "</ul>\n";
         $body .= "</li>\n";
     $body .= "</ul>\n";
 $body .= "</div>\n";
