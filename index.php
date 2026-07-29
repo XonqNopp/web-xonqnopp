@@ -61,6 +61,10 @@ $body .= $page->waitress->rowOpen();
     $body .= ": " . $page->bodyBuilder->anchor("recettes/cuisine/granola.html", "granola");
     $body .= "</li>\n";
 
+    $body .= $page->bodyBuilder->liAnchor("humidity.php", "Temp&eacute;rature et humidit&eacute;");
+
+    $body .= $page->bodyBuilder->liAnchor("adults/index.php", "Contenus pour adultes");
+
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("collections/index.php", "Collections");
     $body .= ": " . $page->bodyBuilder->anchor("collections/bds/index.php", "BDs");
@@ -71,27 +75,21 @@ $body .= $page->waitress->rowOpen();
     $body .= "</li>\n";
 
     $body .= "<li>\n";
-    $body .= $page->bodyBuilder->anchor("adults/index.php", "Contenus pour adultes");
-    $body .= "</li>\n";
-
-    $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("fly/index.php", "Fly");
-    $body .= ": " . $page->bodyBuilder->anchor("fly/pax.php", "PAX");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/nav/index.php", "nav");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/pdf/", "pdf");
-    $body .= "- " . $page->bodyBuilder->anchor("fly/lsge.php", "LSGE");
+    $body .= ": " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
+    //$body .= "- " . $page->bodyBuilder->anchor("fly/pax.php", "PAX");
+    //$body .= "- " . $page->bodyBuilder->anchor("fly/nav/index.php", "nav");
+    //$body .= "- " . $page->bodyBuilder->anchor("fly/pdf/", "pdf");
+    //$body .= "- " . $page->bodyBuilder->anchor("fly/lsge.php", "LSGE");
     //$body .= "- " . $page->bodyBuilder->anchor("fly/lsgs.php", "LSGS");
     $body .= "</li>\n";
-
-    $body .= $page->bodyBuilder->liAnchor("humidity.php", "Temp&eacute;rature et humidit&eacute;");
 
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("job/index.php", "job");
     $body .= ": " . $page->bodyBuilder->anchor("job/companies/index.php", "companies");
     $body .= "</li>\n";
 
-    $body .= $page->bodyBuilder->liAnchor("sub/exams/choose.php?which=m", "exams");
+    $body .= $page->bodyBuilder->liAnchor("exams/choose.php?which=m", "exams");
 
     $body .= "</ul>\n";
     $body .= $page->waitress->cellClose();
@@ -100,10 +98,18 @@ $body .= $page->waitress->rowOpen();
     $body .= "Other websites:\n";
     $body .= "<ul>\n";
     $body .= $page->bodyBuilder->liAnchor("http://www.nidji.org/", "nidji.org");
-    $body .= $page->bodyBuilder->liAnchor("http://xkcd.org/", "XKCD");
-    $body .= $page->bodyBuilder->liAnchor("http://www.phdcomics.com/comics.php", "PhD comics");
     $body .= $page->bodyBuilder->liAnchor("http://esolangs.org/wiki/Main_Page/", "esolangs");
     $body .= $page->bodyBuilder->liAnchor("http://lar5.com/cube/", "lar5 cube");
+    $body .= $page->bodyBuilder->liAnchor("https://www.bedetheque.com/", "BDtheque");
+    $body .= "<li>Webcomics:\n";
+    $body .= $page->bodyBuilder->anchor("http://xkcd.org/", "XKCD");
+    $body .= "- " . $page->bodyBuilder->anchor("http://www.phdcomics.com/comics.php", "PhD comics");
+    $body .= "- " . $page->bodyBuilder->anchor("https://www.monkeyuser.com/", "Monkey user");
+    $body .= "</li>\n";
+    $body .= "<li>Webcomics NSFW:\n";
+    $body .= $page->bodyBuilder->anchor("http://explosm.net/comics/latest#comic", "Cyanide and Happiness");
+    $body .= "- " . $page->bodyBuilder->anchor("https://www.oglaf.com/", "Oglaf");
+    $body .= "</li>\n";
     $body .= "</ul>\n";
     $body .= $page->waitress->cellClose();
 
