@@ -1,0 +1,116 @@
+Horaire par classe
+	
+pour une semaine type
+Physique, 2009-2010, Master semestre 2
+Horaires	Salles			Matières	Enseignants
+LUNDI					
+08:15-12:00		T	OBL	Physique TP IVb
+Divers enseignants
+Salle(s) ou Labo(s) selon enseignant(s)	
+09:15-11:00	INM200	C	OPT	Neural networks and biological modeling	
+Gerstner Wulfram
+11:15-13:00	INM200	E	OPT	Neural networks and biological modeling	
+Gerstner Wulfram
+13:15-14:00	CE5	E	FAC	Séminaire de physique	
+Schneider Olivier
+14:15-18:00		T	OBL	Physique TP IVb
+Divers enseignants
+Salle(s) ou Labo(s) selon enseignant(s)	
+					
+MARDI					
+08:15-10:00	CE1105	C	OPT	Particle detection	
+Haefeli Guido
+08:15-10:00	PHH331	C	OPT	Optique quantique	
+Dupertuis Marc-André
+10:15-12:00	CE1105	E	OPT	Particle detection	
+Haefeli Guido
+10:15-12:00	PHH331	E	OPT	Optique quantique	
+Dupertuis Marc-André
+11:15-13:00	CE1104	C	OPT	Computer simulation of physical systems II	
+Pasquarello Alfredo
+11:15-13:00	CE5	C	OPT	Quantum physics IV	
+Rattazzi Riccardo
+13:15-15:00	CE1100	E	OPT	Quantum physics IV	
+Rattazzi Riccardo
+14:15-16:00	CE1104	E	OPT	Computer simulation of physical systems II	
+Pasquarello Alfredo
+14:15-16:00	Cub2	C	OPT	Diffraction Methods in Structural Biology	
+Schiltz Marc
+15:15-17:00	CE1101	C	OPT	Relativity and cosmology II	
+Chapochnikov Mikhail
+16:15-18:00	Cub2	E	OPT	Diffraction Methods in Structural Biology	
+Schiltz Marc
+17:15-19:00	CE1101	E	OPT	Relativity and cosmology II	
+Chapochnikov Mikhail
+					
+MERCREDI					
+08:15-10:00	CE1101	C	OPT	Semiconductor electronic and optoelectronic devices II	
+Grandjean Nicolas
+08:15-10:00	CO121	C	OPT	Astrophysics IV : Observational cosmology	
+Meylan Georges
+10:15-12:00	CE1101	E	OPT	Semiconductor electronic and optoelectronic devices II	
+Grandjean Nicolas
+10:15-12:00	CO121	E	OPT	Astrophysics IV : Observational cosmology	
+Meylan Georges
+13:15-15:00	CM1106	C	OPT	Solid State Physics IV	
+Ronnow Henrik
+15:15-17:00	CM1106	E	OPT	Solid State Physics IV	
+Ronnow Henrik
+16:15-19:00				SHS Module thématique I, II
+Voir horaire dans section SHS	
+					
+JEUDI					
+08:15-10:00	CE1103	C	OPT	Statistical physics IV	
+Savona Vincenzo
+09:15-11:00	CO011	C	OPT	Introduction à la physique des astroparticules	
+Neronov Andrii
+Ribordy Mathieu
+10:00-12:00	CE1103	E	OPT	Statistical physics IV	
+Savona Vincenzo
+11:15-13:00	CO011	E	OPT	Introduction à la physique des astroparticules	
+Neronov Andrii
+Ribordy Mathieu
+14:15-16:00	Cub626	C	OPT	Chapitres choisis de physique nucléaire et corpusculaire	
+Bay Aurélio
+Blanc Frédéric
+Tran Minh Tâm
+14:15-16:00	CE1104	C	OPT	Group theory and discrete symmetries in physics	
+Savona Vincenzo
+16:15-18:00	Cub626	E	OPT	Chapitres choisis de physique nucléaire et corpusculaire	
+Bay Aurélio
+Blanc Frédéric
+Tran Minh Tâm
+16:15-18:00	CE1104	E	OPT	Group theory and discrete symmetries in physics	
+Savona Vincenzo
+					
+VENDREDI					
+08:15-10:00	CE1105	C	OPT	Particules élémentaires II	
+Bay Aurélio
+08:15-10:00	CM1106	C	OPT	Experimental methods in physics II	
+Bonard Jean-Marc
+Cantoni Marco
+Ganière Jean-Daniel
+08:15-10:00	CE1101	C	OPT	Statistical physics of biomacromolecules	
+De Los Rios Paolo
+10:15-12:00	CE1105	E	OPT	Particules élémentaires II	
+Bay Aurélio
+10:15-12:00	CM010
+CM1106	E	OPT	Experimental methods in physics II	
+Bonard Jean-Marc
+Cantoni Marco
+Ganière Jean-Daniel
+10:15-12:00	CE1101	E	OPT	Statistical physics of biomacromolecules	
+De Los Rios Paolo
+13:15-15:00	Cub2	C	OPT	Relativistic quantum fields II	
+Rattazzi Riccardo
+13:15-15:00	CE2	C	OPT	Fundamentals of biomedical imaging	
+Gruetter Rolf
+13:15-15:00	CE1105	C	OPT	Plasma physics III	
+Lister Jonathan Bryan
+15:15-17:00	Cub2	E	OPT	Relativistic quantum fields II	
+Rattazzi Riccardo
+15:15-17:00	CE2	E	OPT	Fundamentals of biomedical imaging	
+Gruetter Rolf
+15:15-17:00	CE1105	E	OPT	Plasma physics III	
+Lister Jonathan Bryan
+					

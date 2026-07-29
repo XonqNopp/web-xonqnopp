@@ -1,0 +1,306 @@
+Horaire par classe
+	
+pour la semaine du 21.06.2010 au 11.07.2010
+Session d'examens d'été
+	
+Physicien, 2009-2010, Master semestre 2
+LUNDI 21.06.2010 de 08:00 à 18:00
+Matière	Optique quantique (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [12]
+Echange PH, 2009-2010, Semestre printemps [12]
+Echange SC, 2009-2010, Semestre printemps [2]
+Salle	CE1103
+Enseignant	
+Dupertuis Marc-André
+Expert / observateur	
+Remarques	
+Inscrits [26] 	Ardana Lamas Fernando; Bucheli Daniel; Döpp Andreas Stefan; Egger Daniel; Favre Damien; Färber Raphael; Kandiah Viveksanth John; Liberek Jean-Esteban; Müller Jonathan; Rios Rubiras Oriol; Rochdi Anas; Roy Ananda; Salathe Marco; Schmied Michael-Philippe; Stadlin Marietta; Tagantsev Nikolay; Thomas Milan; Vázquez García Ignacio; Zaganidis Alexis
+LUNDI 21.06.2010 de 14:00 à 18:00
+Matière	Relativity and cosmology II (Oral)
+Sections	
+Mathématiques, 2009-2010, Master semestre 2 [0]
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [17]
+Echange PH, 2009-2010, Semestre printemps [10]
+Salle	MAA112
+Enseignant	
+Chapochnikov Mikhail
+Expert / observateur	
+Remarques	
+Inscrits [27] 	Ardana Lamas Fernando; Bonzon Christopher; Cataldi Gianni; Correig Eudald; Degueldre Henri-Philippe; Döpp Andreas Stefan; Egger Jérôme; Favre Damien; Guex Timothée; Josset Laureline; Madonia Rossella; Muster Bastien; Müller Jonathan; Rérat François; Schaller Matthieu; Solliard Ludovic; Stadlin Marietta; Tagantsev Nikolay; Theler Romaine; Vincent Philippe; Vörös Denis; Zaganidis Alexis
+LUNDI 30.06.2010 de 08:15 à 12:00
+Matière	Plasma physics III (Oral)
+Sections	
+Mineurs, 2009-2010, Semestre printemps [0]
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [6]
+Salle	CE1104
+Enseignant	
+Lister Jonathan Bryan
+Expert / observateur	
+Remarques	
+Inscrits [6] 	Barmaz David; Berge Léonie; Induni Gaël; Kuenlin Aurélie; Lugrin David; Moix Frédéric
+MARDI 22.06.2010 de 08:15 à 15:00
+Matière	Statistical physics of biomacromolecules (Oral)
+Sections	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [5]
+Sciences et technologie du vivant - master, 2009-2010, Master semestre 2 [0]
+Bioingénierie et Biotechnologie - master, 2009-2010, Master semestre 2 [2]
+Echange PH, 2009-2010, Semestre printemps [6]
+Ingénieur-physicien, 2009-2010, Projet Master printemps [2]
+Salle	AAC008
+Enseignant	
+De Los Rios Paolo
+Expert / observateur	
+Remarques	
+Inscrits [15] 	Bircher Fabian; Debler Sarah; Duc Pierre-François; Gaignette Albin; Gual Ricart Bernat; Kandiah Viveksanth John; Kapeller Marie; Liberek Jean-Esteban; Refinetti Paulo; Scholtès Frédéric
+MARDI 22.06.2010 de 14:00 à 18:00
+Matière	Computer simulation of physical systems II (Oral)
+Sections	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [3]
+Science et ingénierie computationelles, 2009-2010, Master semestre 2 [0]
+Chimie et génie chimique (edoc), EDOC [1]
+Echange EL, 2009-2010, Semestre printemps [2]
+Salle	CHB330
+Enseignant	
+Pasquarello Alfredo
+Expert / observateur	
+Remarques	
+Inscrits [6] 	Forró Zalán; Gonthier Jérôme; Josset Laureline; Schaller Matthieu; Yurchak Roman
+MERCREDI 23.06.2010 de 16:15 à 19:15
+Matière	Neural networks and biological modeling (Ecrit)
+Sections	
+[0]
+Génie électrique et électronique , 2009-2010, Master semestre 2 [4]
+Informatique, 2009-2010, Master semestre 2 [0]
+Mathématiques, 2009-2010, Master semestre 2 [7]
+Mineurs, 2009-2010, Semestre printemps [0]
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [8]
+Science et ingénierie computationelles, 2009-2010, Master semestre 2 [0]
+Systèmes de communication - master EPFL, 2009-2010, Master semestre 4 + Systèmes de communication - master EPFL, 2009-2010, Master semestre 2 [2]
+Echange EL, 2009-2010, Semestre printemps [2]
+Echange PH, 2009-2010, Semestre printemps [8]
+Echange SV, 2009-2010, Semestre printemps [1]
+Hors cadre [2]
+Microtechnique, 2009-2010, Master semestre 2 [1]
+Sciences et technologie du vivant - master, 2009-2010, Master semestre 2 [2]
+Salle	
+Enseignant	
+Gerstner Wulfram
+Expert / observateur	
+Remarques	
+Inscrits [37] 	Afsar Sezin; Aymanns Christoph; Berger Steve; Bostan Emrah; Bungener Stéphane; Chen Peng; Delafontaine Julien; Dogan Zafer; Döpp Andreas Stefan; Egger Jérôme; Forró Zalán; Furrer Luca; Gaignette Albin; Gual Ricart Bernat; Helfer Jonas; Hesse Stephan; Huguenin-Virchaux Felix; Huguenin-Virchaux Nicolas; Joggi Camille; Kapeller Marie; Kardesler Onur; Kim Misun; Lengersdorff Nikolaus; Liberek Jean-Esteban; Lugrin David; Luisier Sabine; Matti Damien; Önen Zehra; Rouge Sylvain; Sandou Moussa; Seiler Hélène; Szombati Daniel; Tawfik Noha; Tourbier Sébastien; Wüthrich Manuel
+MERCREDI 23.06.2010 de 08:15 à 18:00
+Matière	Experimental methods in physics II (Oral)
+Sections	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [9]
+Science et génie des matériaux, 2009-2010, Master semestre 2 [4]
+Echange EL, 2009-2010, Semestre printemps [2]
+Echange PH, 2009-2010, Semestre printemps [6]
+Physique (edoc), EDOC [2]
+Salle	CO121
+Enseignants	
+Bonard Jean-Marc
+Cantoni Marco
+Ganière Jean-Daniel
+Expert / observateur	
+Remarques	
+Inscrits [23] 	Berge Léonie; Calzolaio Ciro; Duc Pierre-François; Durrer Philippe; Farmand Ashtiani Ebrahim; Induni Gaël; Jankowsky Felix; Kandiah Viveksanth John; Khoushabi Azadeh; Moix Frédéric; Raghavan Santosh; Sauerzopf Clemens; Ston Julien; Theler Romaine; Vázquez García Ignacio; Vörös Denis; Yurchak Roman; Zabihzadeh Saba
+JEUDI 24.06.2010 de 08:15 à 17:00
+Matière	Astrophysics IV : Observational cosmology (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [11]
+Echange PH, 2009-2010, Semestre printemps [10]
+Salle	CM010
+Enseignant	
+Meylan Georges
+Expert / observateur	
+Remarques	
+Inscrits [21] 	Cataldi Gianni; Correig Eudald; Döpp Andreas Stefan; Durrer Philippe; Gaignette Albin; Jankowsky Felix; Josset Laureline; Lengersdorff Nikolaus; Lugrin David; Madonia Rossella; Schaller Matthieu; Scholtès Frédéric; Theler Romaine; Vincent Philippe; Vörös Denis; Zaganidis Alexis
+VENDREDI 25.06.2010 de 08:15 à 17:00
+Matière	Particle detection (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [11]
+Echange PH, 2009-2010, Semestre printemps [6]
+Salle	CE1105
+Enseignant	
+Haefeli Guido
+Expert / observateur	
+Remarques	
+Inscrits [17] 	Barmaz David; Berge Léonie; Buffat Xavier; Döpp Andreas Stefan; Durrer Philippe; Grädel Nadine; Kandiah Viveksanth John; Kuenlin Aurélie; Lengersdorff Nikolaus; Moix Frédéric; Muster Bastien; Sauerzopf Clemens; Vincent Philippe; Vörös Denis
+VENDREDI 25.06.2010 de 14:00 à 18:00
+Matière	Relativity and cosmology II (Oral)
+Sections	
+Mathématiques, 2009-2010, Master semestre 2 [0]
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [17]
+Echange PH, 2009-2010, Semestre printemps [10]
+Salle	MAA112
+Enseignant	
+Chapochnikov Mikhail
+Expert / observateur	
+Remarques	
+Inscrits [27] 	Ardana Lamas Fernando; Bonzon Christopher; Cataldi Gianni; Correig Eudald; Degueldre Henri-Philippe; Döpp Andreas Stefan; Egger Jérôme; Favre Damien; Guex Timothée; Josset Laureline; Madonia Rossella; Muster Bastien; Müller Jonathan; Rérat François; Schaller Matthieu; Solliard Ludovic; Stadlin Marietta; Tagantsev Nikolay; Theler Romaine; Vincent Philippe; Vörös Denis; Zaganidis Alexis
+LUNDI 28.06.2010 de 08:15 à 17:00
+Matière	Chapitres choisis de physique nucléaire et corpusculaire (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [9]
+Echange PH, 2009-2010, Semestre printemps [4]
+Salle	
+Enseignants	
+Bay Aurélio
+Blanc Frédéric
+Tran Minh Tâm
+Expert / observateur	
+Remarques	ATTENTION: salle d'examen - salle BSP/Cubotron 626
+Inscrits [13] 	Berge Léonie; Bonzon Christopher; Buffat Xavier; Cataldi Gianni; Döpp Andreas Stefan; Kuenlin Aurélie; Madonia Rossella; Muster Bastien; Theler Romaine; Vincent Philippe; Vörös Denis
+LUNDI 28.06.2010 de 08:15 à 17:00
+Matière	Quantum physics IV (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [18]
+Chimie et génie chimique (edoc), EDOC [2]
+Echange PH, 2009-2010, Semestre printemps [8]
+Salle	CHB331
+Enseignant	
+Rattazzi Riccardo
+Expert / observateur	
+Remarques	
+Inscrits [28] 	Ardana Lamas Fernando; Bucheli Daniel; Debler Sarah; Degueldre Henri-Philippe; Döpp Andreas Stefan; Duc Pierre-François; Egger Daniel; Favre Damien; Färber Raphael; Forró Zalán; Josset Laureline; Lengersdorff Nikolaus; Liberek Jean-Esteban; Rérat François; Rochdi Anas; Salathe Marco; Schaller Matthieu; Seiler Hélène; Solliard Ludovic; Szombati Daniel; Tagantsev Nikolay; Wehrle Marius; Zaganidis Alexis
+MARDI 29.06.2010 de 14:00 à 18:00
+Matière	Diffraction Methods in Structural Biology (Oral)
+Sections	
+Bioingénierie et Biotechnologie - master, 2009-2010, Master semestre 2 [0]
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [6]
+Sciences et technologie du vivant - master, 2009-2010, Master semestre 2 [0]
+Biotechnologie et génie biologique, EDOC [1]
+Echange PH, 2009-2010, Semestre printemps [4]
+Physicien, 2009-2010, Projet Master printemps [2]
+Salle	CO016
+Enseignant	
+Schiltz Marc
+Expert / observateur	
+Remarques	
+Inscrits [13] 	Bungener Stéphane; Durrer Philippe; Gaignette Albin; Grädel Nadine; Kapeller Marie; Liberek Jean-Esteban; Pinto Vieira Joana Raquel; Sauerzopf Clemens; Sycheva Lada; Zabihzadeh Saba
+MARDI 29.06.2010 de 08:15 à 17:00
+Matière	Quantum physics IV (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [18]
+Chimie et génie chimique (edoc), EDOC [2]
+Echange PH, 2009-2010, Semestre printemps [8]
+Salle	CHB331
+Enseignant	
+Rattazzi Riccardo
+Expert / observateur	
+Remarques	
+Inscrits [28] 	Ardana Lamas Fernando; Bucheli Daniel; Debler Sarah; Degueldre Henri-Philippe; Döpp Andreas Stefan; Duc Pierre-François; Egger Daniel; Favre Damien; Färber Raphael; Forró Zalán; Josset Laureline; Lengersdorff Nikolaus; Liberek Jean-Esteban; Rérat François; Rochdi Anas; Salathe Marco; Schaller Matthieu; Seiler Hélène; Solliard Ludovic; Szombati Daniel; Tagantsev Nikolay; Wehrle Marius; Zaganidis Alexis
+JEUDI 01.07.2010 de 09:00 à 17:00
+Matière	Relativistic quantum fields II (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [11]
+Echange PH, 2009-2010, Semestre printemps [6]
+Salle	CE1104
+Enseignant	
+Rattazzi Riccardo
+Expert / observateur	
+Remarques	
+Inscrits [17] 	Ardana Lamas Fernando; Buffat Xavier; Cataldi Gianni; Correig Eudald; Degueldre Henri-Philippe; Döpp Andreas Stefan; Favre Damien; Färber Raphael; Liberek Jean-Esteban; Rérat François; Salathe Marco; Schaller Matthieu; Solliard Ludovic; Zaganidis Alexis
+JEUDI 01.07.2010 de 12:15 à 15:15
+Matière	Fundamentals of biomedical imaging (Ecrit)
+Sections	
+Bioingénierie et Biotechnologie - master, 2009-2010, Master semestre 2 [37]
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [9]
+Sciences et technologie du vivant - master, 2009-2010, Master semestre 2 [20]
+Auditeurs libres, 2009-2010, Semestre printemps [1]
+Echange GM, 2009-2010, Semestre printemps [1]
+Echange MT, 2009-2010, Semestre printemps [1]
+Echange PH, 2009-2010, Semestre printemps [5]
+Echange SC, 2009-2010, Semestre printemps [2]
+Echange SV, 2009-2010, Semestre printemps [1]
+Physique (edoc), EDOC [2]
+Salle	CESPO
+Enseignant	
+Gruetter Rolf
+Expert / observateur	
+Remarques	
+Inscrits [79] 	Amez-Droz Mark; Baer Caroline; Bardelli Martino; Bastiaansen Josefina Adriana Maria; Berger Steve; Bichsel Colette; Bieri Gregor; Bosson Romain; Brandenberg Nathalie; Briquez Priscilla; Bungener Stéphane; Calpe Blaise; Casanova Ruben; Dayer Blaise; Delincé Matthieu; De Muralt Adrien; Dixon Alexandre; Ducommun Serge; Durrer Philippe; Duvoisin Raphaël; Emery Jérémie; Fournier Heidi; Fournier Mathias; Frémont Olivier; Gacem Riad; Gaignette Albin; Georgieva Lada; Gobet Nicolas; Godbille Marc; Grainger Julianne; Grädel Nadine; Grisostolo Maria Elena; Gual Ricart Bernat; Guittet Mélanie; Joggi Camille; Juillard Frédéric; Kapeller Marie; Katsyuba Elena; Kauzlaric Annamaria; Kim Misun; Kodiyan Anu; Kohler Anne-Céline; Lengersdorff Nikolaus; Liberek Jean-Esteban; Lopez Kolkovsky Alfredo Liubomir; Lu Huanxiang; Lüthi Guillaume; Mackinnon Nicola; Martin Yebra Alba Pilar; Meier Fabienne; Mendoh Mangoua Valoise; Muller Georges; Nguyen Le Thanh Tu; Nguyen Vu Thanh-Hieu; Oikonomidi Iro; Perrudet Christian; Pélissier Fanny; Pluchinotta Matteo; Pradas Izquierdo Alberto; Prandi Matteo; Pregernig Gabriela; Refinetti Paulo; Roch Vincent; Rubi Dominique; Schmied Michael-Philippe; Scholtès Frédéric; Seiler Hélène; Signorell Coralie; Stepanova Viktoria; Utstumo Trygve; Verpoorte Amanda; Vokali Efthymia; Volorio Sarah; Weiss Andrea; Zabihzadeh Saba; Zaffalon Andrea
+VENDREDI 02.07.2010 de 09:00 à 17:00
+Matière	Relativistic quantum fields II (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [11]
+Echange PH, 2009-2010, Semestre printemps [6]
+Salle	CE1104
+Enseignant	
+Rattazzi Riccardo
+Expert / observateur	
+Remarques	
+Inscrits [17] 	Ardana Lamas Fernando; Buffat Xavier; Cataldi Gianni; Correig Eudald; Degueldre Henri-Philippe; Döpp Andreas Stefan; Favre Damien; Färber Raphael; Liberek Jean-Esteban; Rérat François; Salathe Marco; Schaller Matthieu; Solliard Ludovic; Zaganidis Alexis
+VENDREDI 02.07.2010 de 08:15 à 18:00
+Matière	Particules élémentaires II (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [12]
+Echange PH, 2009-2010, Semestre printemps [2]
+Salle	
+Enseignant	
+Bay Aurélio
+Expert / observateur	
+Remarques	ATTENTION: salle d'examen - salle BSP/Cubotron 626
+Inscrits [14] 	Berge Léonie; Bonzon Christopher; Buffat Xavier; Degueldre Henri-Philippe; Döpp Andreas Stefan; Favre Damien; Josset Laureline; Muster Bastien; Rérat François; Salathe Marco; Schaller Matthieu; Solliard Ludovic; Vincent Philippe
+MERCREDI 07.07.2010 de 08:15 à 18:00
+Matière	Group theory and discrete symmetries in physics (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [13]
+Echange EL, 2009-2010, Semestre printemps [2]
+Echange PH, 2009-2010, Semestre printemps [14]
+Physique (edoc), EDOC [2]
+Salle	CE1105
+Enseignant	
+Savona Vincenzo
+Expert / observateur	
+Remarques	
+Inscrits [31] 	Ardana Lamas Fernando; Bucheli Daniel; Correig Eudald; Debler Sarah; Duc Pierre-François; Favre Damien; Färber Raphael; Josset Laureline; Lengersdorff Nikolaus; Liberek Jean-Esteban; Müller Jonathan; Roy Ananda; Salathe Marco; Sauerzopf Clemens; Scholtès Frédéric; Seiler Hélène; Solliard Ludovic; Spina Massimo; Szombati Daniel; Tagantsev Nikolay; Yurchak Roman; Zabihzadeh Saba
+JEUDI 08.07.2010 de 08:15 à 15:00
+Matière	Semiconductor electronic and optoelectronic devices II (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [6]
+Echange PH, 2009-2010, Semestre printemps [8]
+Photonique, EDOC [2]
+Salle	CO123
+Enseignant	
+Grandjean Nicolas
+Expert / observateur	
+Remarques	
+Inscrits [16] 	Ardana Lamas Fernando; Bonzon Christopher; Gallinet Benjamin; Liberek Jean-Esteban; Müller Jonathan; Rochdi Anas; Roy Ananda; Stadlin Marietta; Szombati Daniel; Vázquez García Ignacio; Zabihzadeh Saba
+JEUDI 08.07.2010 de 08:15 à 18:00
+Matière	Introduction à la physique des astroparticules (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [16]
+Echange PH, 2009-2010, Semestre printemps [8]
+Salle	CE1103
+Enseignants	
+Neronov Andrii
+Ribordy Mathieu
+Expert / observateur	
+Remarques	
+Inscrits [24] 	Berge Léonie; Buffat Xavier; Cataldi Gianni; Degueldre Henri-Philippe; Döpp Andreas Stefan; Durrer Philippe; Favre Damien; Jankowsky Felix; Josset Laureline; Kuenlin Aurélie; Lengersdorff Nikolaus; Lugrin David; Madonia Rossella; Muster Bastien; Salathe Marco; Schaller Matthieu; Schmied Michael-Philippe; Theler Romaine; Vörös Denis; Zaganidis Alexis
+JEUDI 08.07.2010 de 08:00 à 15:00
+Matière	Solid State Physics IV (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [9]
+Ingénieur-physicien, 2009-2010, Projet Master printemps [2]
+Science et génie des matériaux (edoc), EDOC [2]
+Salle	CHB330
+Enseignants	
+Pfeiffer Franz
+Ronnow Henrik
+Expert / observateur	
+Remarques	
+Inscrits [13] 	Bircher Fabian; Bungener Stéphane; Duc Pierre-François; Forró Zalán; Kandiah Viveksanth John; Liberek Jean-Esteban; Moix Frédéric; Stadlin Marietta; Szombati Daniel; Wang Shuang; Zabihzadeh Saba
+VENDREDI 09.07.2010 de 08:15 à 15:00
+Matière	Statistical physics IV (Oral)
+Section	
+Physicien, 2009-2010, Master semestre 2 + Ingénieur-physicien, 2009-2010, Master semestre 2 [11]
+Physicien, 2009-2010, Projet Master printemps [2]
+Salle	CHB331
+Enseignant	
+Savona Vincenzo
+Expert / observateur	
+Remarques	
+Inscrits [13] 	Bucheli Daniel; Duc Pierre-François; Färber Raphael; Forró Zalán; Induni Gaël; Josset Laureline; Kandiah Viveksanth John; Liberek Jean-Esteban; Pinto Vieira Joana Raquel; Rérat François; Seiler Hélène; Stadlin Marietta
