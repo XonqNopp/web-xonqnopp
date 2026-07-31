@@ -26,6 +26,8 @@ $body .= "<div><ul>\n";
     $body .= "<li>Devenir femme:\n";
     $body .= "<div><ul>\n";
     // TODO regles insta
+    // osteofeminin
+    // nillan.naturopathie
     $body .= "</ul></div>\n";
 //
     $body .= "<li>Devenir jardinier:\n";
