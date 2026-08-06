@@ -87,6 +87,28 @@ $body .= "</p>\n";
 
     $body .= "</p>\n";
 
+$body .= "<p>R&egrave;gles de s&eacute;curit&eacute; de son corps:</p>\n";
+$body .= "<div><ul>\n";
+
+$body .= "<li>\n";
+$body .= "Les parties intimes restent couvertes.\n";
+$body .= "Personne ne peut te demander de les regarder ou de les toucher (dans les 2 sens).\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Si quelqu'un demande de garder un secret et de ne rien dire aux parents, on peut quand m&ecirc;me en parler avec eux.\n";
+$body .= "M&ecirc;me si on dit que quelque chose de grave va se passer, ou que c'est de la faute de l'enfant.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Si quelqu'un montre ou dit quelque chose qui fait peur, on peut en parler aux parents.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "</li>\n";
+
+$body .= "</ul></div>\n";
+
 $body .= "<p>Pour que les enfants n'ait pas a demander &agrave; des adultes de toucher leur corps,\n";
 $body .= "il est important qu'ils deviennent autonome pour se laver et pour les toilettes.\n";
 $body .= "Les enfants aprennent en imitant, on peut donc mimer sur nous les gestes &agrave; faire pour les accompagner.\n";
@@ -94,6 +116,10 @@ $body .= "</p>\n";
 
 $body .= "<p>Lorsque l'enfant nous raconte quelque chose de bizarre ou choquant,\n";
 $body .= "la premir&egrave;re chose &agrave; lui r&eacute;pondre est \"Je te crois.\"\n";
+$body .= "Il faut aussi souligner l'importance de venir nous en parler.\n";
+$body .= "\"Je suis fier que tu viennes me le dire.\n";
+$body .= "C'est exactement le genre de chose dont tu dois venir nous en parler.\n";
+$body .= "M&ecirc;me si ce n'est pas arriv&eacute; &agrave; toi, on a tous le devoir de se prot&eacute;ger les uns les autres.\"\n";
 $body .= "</p>\n";
 
 $body .= "<p>Il nous arrive &agrave; tous de ressentir qu'une situation ne se d&eacute;roule pas comme on s'y attendait.\n";
@@ -125,7 +151,7 @@ $body .= "</p>\n";
 $body .= "<p>L'adolescent devient curieux &agrave; propos de s'embrasser et des parties du corps.\n";
 $body .= "Il va alors jouer &agrave; des jeux comme Action/V&eacute;rit&eacute; pour l'aider &agrave; assouvir cette curiosit&agrave;.\n";
 $body .= "Il faut lui rappeler de rester prudent avec ces jeux, de ne pas jouer &agrave; des jeux qui pourraient\n";
-$body .= "l'EXPOSER, lui ou les autres.\n";  // TODO
+$body .= "l'EXPOSER, lui ou les autres.\n";  // TODO reveler, mettre a nu...
 $body .= "</p>\n";
 
 // ---------------------------------
@@ -163,16 +189,68 @@ $body .= "Si quelqu'un te montre une video AI de quelqu'un que tu connais qui fa
 $body .= "Je pr&eacute;f&egrave;re &ecirc;tre au courant pour pouvoir te soutenir.\n";
 $body .= "</li>\n";
 
-$body .= "<li>\n";
-$body .= "</li>\n";
-
-$body .= "<li>\n";
-$body .= "</li>\n";
-
-$body .= "<li>\n";
-$body .= "</li>\n";
-
 $body .= "</ul></div>\n";
+
+
+// ------------------------------------
+
+$body .= "<p>Quelques questions qu'il vaut la peine de poser &agrave; ses enfants,\n";
+$body .= "dont leurs r&eacute;ponses pourraient nous surprendre:</p>\n";
+
+$body .= "<div><dl>\n";
+
+$body .= "<dt>Est-ce que tu te sens assez aim&eacute; de moi?</dt>\n";
+$body .= "<dd>\n";
+$body .= "On dit \"je t'aime\" chaque jour, mais l'amour n'a d'importance que s'il est ressenti.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Est-ce que tu aimes quand je te fais un c&acirc;lin ou un bisou?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Est-ce que tu en voudrais plus/moins? Chaque enfant est diff&eacute;rent, il vaut mieux demander que supposer.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quelle est la chose que tu pr&eacute;f&egrave;re faire quand on n'est que tous les 2?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Cela nous permet de savoir ce qui les remplit le plus de bonheur, et comment en faire plus.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quel est le meilleur cadeau que je t'ai fait?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Pas s&ucirc;r que ce soit un jouet, probablement plut&ocirc;t un moment ou un souvenir.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Est-ce que tu pr&eacute;f&egrave;res recevoir une surprise ou qu'on aille choisir ensemble?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Comment nous donnons notre amour est aussi important que ce que nous donnons.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quand je t'aide, est-ce que tu aimes comme je le fais, ou tu aimerais que je fasse quelque chose autrement?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Parfois, notre aide peut &ecirc;tre ressentie comme une pression.\n";
+$body .= "Cette question ouvre la porte de la confiance.\n";  // TODO
+$body .= "</dd>\n";
+
+$body .= "<dt>Quand tu es &eacute;nerv&eacute; ou effray&eacute;, qu'est-ce que tu voudrais que je fasse?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Les enfants savent ce qui les r&eacute;confortent.\n";
+$body .= "Il nous faut juste le leur demander...\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Est-ce que tu as parfois l'impression que je suis trop occup&eacute; pour TODO toi?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Si oui, qu'est-ce que je pourrais faire pour que tu sentes que je suis vraiment pr&eacute;sent?\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Si demain on annule tout juste pour &ecirc;tre les 2, qu'est-ce que tu voudrais faire?</dt>\n";
+$body .= "<dd>\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Quand est-ce que tu te sens vraiment &eacute;cout&eacute; de ma part?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Derri&egrave;re cette question se cache en fait \"est-ce que je suis important pour toi?\"\n";
+$body .= "</dd>\n";
+
+$body .= "</dl></div>\n";
 
 
 
