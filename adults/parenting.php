@@ -122,12 +122,66 @@ $body .= "on peut se raconter notre journ&eacute;e, les moments joyeux et les mo
 $body .= "Cela permet d'&ecirc;tre bien &agrave; l'&eacute;coute des enfants.\n";
 $body .= "</p>\n";
 
+$body .= "<p>L'adolescent devient curieux &agrave; propos de s'embrasser et des parties du corps.\n";
+$body .= "Il va alors jouer &agrave; des jeux comme Action/V&eacute;rit&eacute; pour l'aider &agrave; assouvir cette curiosit&agrave;.\n";
+$body .= "Il faut lui rappeler de rester prudent avec ces jeux, de ne pas jouer &agrave; des jeux qui pourraient\n";
+$body .= "l'EXPOSER, lui ou les autres.\n";  // TODO
+$body .= "</p>\n";
+
+// ---------------------------------
+
+$body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
+$body .= "<div><ul>\n";
+
+$body .= "<li>\n";
+$body .= "Tu peux m'appeler n'importe quand pour me demander de venir te rechercher, m&ecirc;me au milieu de la nuit.\n";
+$body .= "Je ne te poserai pas de questions, tu m'en parleras quand tu seras pr&ecirc;t.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Il peut arriver que tu soies dans une situation inconfortable,\n";
+$body .= "ou que quelqu'un te demande de faire quelque chose que tu ne veux pas.\n";
+$body .= "Souviens-toi alors que tu as une voix et que tu peux l'utiliser.\n";
+$body .= "Tu as le droit de dire non. Toujours.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Les bons amis ne vont pas te forcer &agrave; faire des choses dangereuses, m&eacute;chantes ou qui impliquent les parties intimes.\n";
+$body .= "Ne fais jamais quelque chose comme &ccedil;a pour garder un ami ou te faire un nouvel ami.\n";
+$body .= "Tu as le droit de les contrarier.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Il y a tr&egrave;s peu de choses que tu pourras me dire qui pourrait me choquer.\n";
+$body .= "J'ai d&eacute;j&agrave; entendu beaucoup de choses dans ma vie.\n";
+$body .= "Donc m&ecirc;me si tu pense que c'est trop bizarre ou effrayant, tu peux quand m&ecirc;me me le dire.\n";
+$body .= "Je suis pr&ecirc;t &agrave; l'entendre.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "Si quelqu'un te montre une video AI de quelqu'un que tu connais qui fait quelque chose de bizarre, dis-le-moi.\n";
+$body .= "Je pr&eacute;f&egrave;re &ecirc;tre au courant pour pouvoir te soutenir.\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "</li>\n";
+
+$body .= "<li>\n";
+$body .= "</li>\n";
+
+$body .= "</ul></div>\n";
+
+
 
 
 
 
 // TODO signe de detresse
 // TODO Angie dans un bar???
+// TODO Je ne te dis pas comment etre parfait, je te partage mes erreurs. (cf. share insta)
 
 
 echo $body;
