@@ -197,6 +197,7 @@ $body .= "Je reste pr&egrave;s de toi le temps que tu d&eacute;cides comment t'y
 $body .= "L'enfant n'a pas besoin que le parent rappelle ce qu'il faut faire,\n";
 $body .= "mais il a besoin que le parent lui apprenne comment le faire.\n";
 $body .= "Les devoirs ne sont pas seulement un apprentissage scolaire, ils apprennent aussi &agrave; sortir de la procrastination.\n";
+$body .= "La formule avec laquelle nous avons grandi \"arr&ecirc;te de discuter et fais-le\" n'est pas la bonne m&eacute;thode.\n";
 $body .= "</p>\n";
 
 // ---------------------------------

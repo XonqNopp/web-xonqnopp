@@ -34,8 +34,10 @@ $body .= "<p>Garder en t&ecirc;te qu'un adulte apprend 10% avec des cours, 20% d
 //
     $body .= $page->bodyBuilder->titleAnchor("Devenir cuisiner");
     $body .= "<div><ul>\n";
+    $body .= $page->bodyBuilder->liAnchor("cooking.php", "Trucs pour la cuisine");
     // TODO poele inox
     // TODO recettes: section pas recettes?
+    $body .= $page->bodyBuilder->liAnchor("../recettes/index.html", "nos recettes");
     $body .= "</ul></div>\n";
 //
     $body .= $page->bodyBuilder->titleAnchor("Devenir propri&eacute;taire");
