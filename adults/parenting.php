@@ -200,6 +200,33 @@ $body .= "Les devoirs ne sont pas seulement un apprentissage scolaire, ils appre
 $body .= "La formule avec laquelle nous avons grandi \"arr&ecirc;te de discuter et fais-le\" n'est pas la bonne m&eacute;thode.\n";
 $body .= "</p>\n";
 
+$body .= "<p>Les enfants construisent leur vocabulaire et leur vision du monde de tout ce qui sort de la bouche des parents.</p>\n";
+$body .= "Au lieu de se plaindre (j'ai mal aux jambes apr&egrave;s cette marche),\n";
+$body .= "on peut le formuler d'une mani&egrave;re positive (mon corps est tellement intelligent qu'il me dit que j'ai besoin de repos).\n";
+$body .= "</p>\n";
+
+$body .= "<p>Quand les enfants sont frustr&eacute;s et pensent qu'ils n'arriveront pas &agrave; faire quelque chose,\n";
+$body .= "le parent peut alors se mettre en mode super-joueur.\n";
+$body .= "On peut par exemple prendre dans la poche de la poussi&egrave;re magique d'&eacute;toile et\n";
+$body .= "la saupoudrer sur la t&ecirc;te de l'enfant en disant \"Voyons voir si &ccedil;a fonctionne...\"\n";
+$body .= "Si cela ne fonctionne toujours pas, on peut aussi appuyer sur le bouton \"Je peux le faire\" (nombril, nez...).\n";
+$body .= "</p>\n";
+
+$body .= "<p>Lorsqu'on est de mauvais poil, on peut faire la danse de la lib&eacute;ration.\n";
+$body .= "On peut secouer chaque partie du corps, de la t&ecirc;te aux pieds.\n";
+$body .= "Les enfants voient alors notre choix de d&eacute;lib&eacute;r&eacute;ment investir son &eacute;nergie au lieu de rester grognon.\n";
+$body .= "Tous les membres de la famille peuvent rejoindre quelqu'un qui fait cette danse.\n";
+$body .= "</p>\n";
+
+$body .= "<p>On peut expliquer les &eacute;motions comme la m&eacute;t&eacute;o:\n";
+$body .= "&ecirc;tre heureux est comme un jour ensoleill&eacute;, &ecirc;tre triste comme un jour de pluie...\n";
+$body .= "Et comme la m&eacute;t&eacute;o, les &eacute;motions ne sont pas mauvaises et changent.\n";
+$body .= "On ressent nos &eacute;motions, on les laisse nous dire ce qu'on a besoin,\n";
+$body .= "et ensuite on peut les laisser s'en aller quand on en a fini.\n";
+$body .= "Il est important que les enfants sachent que leurs &eacute;motions sont normales et qu'ils n'ont pas besoin de les garder pour toujours.\n";
+$body .= "Ils peuvent se cr&eacute;er une vie incroyable avec leurs propres esprits.\n";
+$body .= "</p>\n";
+
 // ---------------------------------
 
 $body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
