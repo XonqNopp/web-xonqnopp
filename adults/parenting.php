@@ -154,6 +154,51 @@ $body .= "Il faut lui rappeler de rester prudent avec ces jeux, de ne pas jouer 
 $body .= "l'EXPOSER, lui ou les autres.\n";  // TODO reveler, mettre a nu...
 $body .= "</p>\n";
 
+$body .= "<p>\n";
+$body .= "Il est difficile pour un enfant de faire la transition entre 2 activit&eacute;s,\n";
+$body .= "surtout si la prochaine n'est pas quelque chose que l'on fait pour le plaisir (comme les devoirs).\n";
+$body .= "Savoir g&eacute;rer une transition, cela signifie: arr&ecirc;ter, changer d'activit&eacute;, faire un effort.\n";
+$body .= "\n";
+$body .= "\n";
+$body .= "Un exemple:\n";
+$body .= "Un enfant de 8 ans a des devoirs &agrave; faire mais il joue.\n";
+$body .= "Le parent demande &agrave; l'enfant: tu pr&eacute;f&egrave;res faire tes devoirs maintenant ou apr&egrave;s ton jeu?\n";
+$body .= "L'enfant r&eacute;pond: apr&egrave;s.\n";
+$body .= "Quand l'enfant a fini son jeu, au lieu de faire ses devoirs, il trouve une autre activit&eacute; plaisante &agrave; faire.\n";
+$body .= "Le parent lui dit alors: Je vois que tu as trouv&eacute; autre chose &agrave; faire. Nous avions dit les devoirs apr&egrave;s le jeu.\n";
+$body .= "Mais l'enfant ne veut pas les faire.\n";
+$body .= "Le parent le sait, mais il sait aussi ce que beaucoup de parents oublient:\n";
+$body .= "Quand l'enfant a choisi apr&egrave;s le jeu, il &eacute;tait sinc&egrave;pre et pensait vraiment\n";
+$body .= "faire ses devoirs apr&egrave;s son jeu.\n";
+$body .= "Le probl&egrave;me est que le moment o&ugrave; la d&eacute;cision a &eacute;t&eacute; prise et\n";
+$body .= "le moment o&ugrave; il faut l'appliquer sont 2 moments tr&egrave;s diff&eacute;rents.\n";
+$body .= "L'enfant a accept&eacute; le march&eacute; en imaginant la meilleure version de lui,\n";
+$body .= "mais pas la difficult&eacute; d'arr&ecirc;ter ce qu'il aime faire.\n";
+$body .= "<b>Maintenant, l'enfant a besoin du parent pour cadrer la transition sans perdre le lien.</b>\n";
+$body .= "L'enfant va chercher un &eacute;chapattoire: je lis juste une page, encore 5 minutes, steupl&eacute;&eacute;&eacute;&eacute;&eacute;...\n";
+$body .= "Il ne cherche pas &agrave; manipuler le parent, mais &eacute;viter quelque chose qui lui co&ucirc;te.\n";
+$body .= "Le parent peut faire la diff&eacute;rence.\n";
+$body .= "Il ne faut alors pas dire &agrave; l'enfant: Tu avais promis, on ne peut pas te faire confiance.\n";
+$body .= "Ce qu'il faut lui dire:\n";
+$body .= "Tu n'aimes pas faire tes devoirs. C'est dur de se motiver &agrave; faire quelque chose qu'on aime pas.\n";
+$body .= "Cela va aider l'enfant &agrave; se sentir compris.\n";
+$body .= "Son prbl&egrave;me, c'est la transition et le manque de motivation:\n";
+$body .= "Quitter quelque chose d'agr&eacute;able pour aller vers quelque chose qui demande plus d'efforts.\n";
+$body .= "<b>Cela est une comp&eacute;tence complexe.</b>\n";
+$body .= "Il ne s'agit pas d'un manque de volont&eacute;, de paresse ou d'un d&eacute;faut de caract&egrave;re.\n";
+$body .= "C'est une <b>comp&eacute;tence que les enfants apprennent progressivement</b>.\n";
+$body .= "Le parent peut alors dire: Tu pr&eacute;f&egrave;res commencer par la lecture ou par les maths?\n";
+$body .= "Ainsi, il garde la limite, les devoirs vont avoir lieu.\n";
+$body .= "Mais il redonne &agrave; l'enfant un peu de contr&ocirc;le sur la fa&ccedil;on de les faire.\n";
+$body .= "Pour l'enfant, cela change beaucoup.\n";
+$body .= "On peut aussi discuter de ce qu'on fera ensuite pour aider l'enfant &agrave; se motiver.\n";
+$body .= "Mais si l'enfant continue de s'opposer, le parent dira simplement:\n";
+$body .= "Je reste pr&egrave;s de toi le temps que tu d&eacute;cides comment t'y mettre.\n";
+$body .= "L'enfant n'a pas besoin que le parent rappelle ce qu'il faut faire,\n";
+$body .= "mais il a besoin que le parent lui apprenne comment le faire.\n";
+$body .= "Les devoirs ne sont pas seulement un apprentissage scolaire, ils apprennent aussi &agrave; sortir de la procrastination.\n";
+$body .= "</p>\n";
+
 // ---------------------------------
 
 $body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
@@ -259,7 +304,10 @@ $body .= "</dl></div>\n";
 
 // TODO signe de detresse
 // TODO Angie dans un bar???
-// TODO Je ne te dis pas comment etre parfait, je te partage mes erreurs. (cf. share insta)
+// TODO 2 categories: choses que les parents doivent etre conscients, choses que les parents doivent enseigner a leurs enfants
+// Le fait que je te donne des conseils ne veut pas dire que je suis plus intelligent que toi,
+// ca veut selement dire que j'ai fait plus de choses stupides que toi. (wethinkdeeply)
+// Les bonnes decisions viennent de l'experience, et l'experience vient des mauvaises decisions.
 
 
 echo $body;
