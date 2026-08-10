@@ -30,6 +30,7 @@ $body .= "<p>Garder en t&ecirc;te qu'un adulte apprend 10% avec des cours, 20% d
 //
     $body .= $page->bodyBuilder->titleAnchor("Devenir jardinier");
     $body .= "<div><ul>\n";
+    $body .= $page->bodyBuilder->liAnchor("gardening.php", "Trucs pour le jardin");
     $body .= "</ul></div>\n";
 //
     $body .= $page->bodyBuilder->titleAnchor("Devenir cuisiner");
