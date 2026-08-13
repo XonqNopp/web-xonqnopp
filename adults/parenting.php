@@ -227,6 +227,38 @@ $body .= "Il est important que les enfants sachent que leurs &eacute;motions son
 $body .= "Ils peuvent se cr&eacute;er une vie incroyable avec leurs propres esprits.\n";
 $body .= "</p>\n";
 
+$body .= "<p>Cela ne sert &agrave; rien de r&eacute;p&eacute;ter 10 fois quelque chose pour que l'enfant le fasse.\n";
+$body .= "Si l'envie se fait de r&eacute;p&eacute;ter, il faut s'arr&ecirc;ter, aller vers l'enfant et &ecirc;tre s&ucirc;r d'avoir son attention.\n";
+$body .= "Ensuite le parent lui donne UNE instruction claire.\n";
+$body .= "Les enfants r&eacute;agissent mieux &agrave; une clart&eacute; calme qu'&agrave; un bruit de fond.\n";
+$body .= "</p>\n";
+
+$body .= "<p>S'il n'y a de choix, il ne faut pas le formuler comme une question.\n";
+$body .= "En tant que parent qui essaie de bien &eacute;lever son enfant, il est tentant de demander (est-ce que tu veux mettre tes chaussures?)\n";
+$body .= "plut&ocirc;t que d'ordonner (mets tes chaussures stp).\n";
+$body .= "Le probl&egrave;me est qu'une instruction formul&eacute;e en question apprend &agrave; l'enfant que \"non\" est une option.\n";
+$body .= "Avoir des attentes claires permet de r&eacute;duire rapidement les conflits de puissance.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Dans la lign&eacute;e de l'&eacute;ducation positive, il n'est pas bon de toujours corriger les probl&egrave;mes,\n";
+$body .= "il vaut mieux souligner les choses positives.\n";
+$body .= "Les comportements qui obtiennent le plus d'attention sont ceux qui vont se d&eacute;velopper le plus.\n";
+$body .= "Quelques exemples:\n";
+$body .= "</p>\n";
+$body .= "<div><ul>\n";
+$body .= "<li>Tu es venu tout de suite quand je t'ai appel&eacute;.</li>\n";
+$body .= "<li>J'adore comme tu demandes calmement.</li>\n";
+$body .= "<li>Tu as attendu bien patiemment.</li>\n";
+$body .= "</ul></div>\n";
+
+$body .= "<p>Quand un enfant se comporte mal, il n'est pas tr&egrave;s utile de se concentrer sur le comportement.\n";
+// TODO IWASHERE 6
+$body .= "</p>\n";
+
+$body .= "<p>\n";
+// TODO 7
+$body .= "</p>\n";
+
 // ---------------------------------
 
 $body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
