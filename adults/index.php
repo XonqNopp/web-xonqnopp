@@ -23,9 +23,7 @@ $body .= "<p>Garder en t&ecirc;te qu'un adulte apprend 10% avec des cours, 20% d
 //
     $body .= $page->bodyBuilder->titleAnchor("Devenir femme");
     $body .= "<div><ul>\n";
-    // TODO regles insta
-    // osteofeminin
-    // nillan.naturopathie
+    $body .= $page->bodyBuilder->liAnchor("woman.php", "Trucs pour les femmes");
     $body .= "</ul></div>\n";
 //
     $body .= $page->bodyBuilder->titleAnchor("Devenir jardinier");

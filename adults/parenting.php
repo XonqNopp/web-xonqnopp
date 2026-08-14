@@ -252,11 +252,16 @@ $body .= "<li>Tu as attendu bien patiemment.</li>\n";
 $body .= "</ul></div>\n";
 
 $body .= "<p>Quand un enfant se comporte mal, il n'est pas tr&egrave;s utile de se concentrer sur le comportement.\n";
-// TODO IWASHERE 6
+$body .= "L'important pour le parent est de comprendre la fonction du comportement.\n";
+$body .= "Est-ce que l'enfant essaie d'attirer l'attention, d'obtenir quelque chose, d'&eacute;viter une t&acirc;che...\n";
+$body .= "Une fois que le parent comprend <b>pourquoi</b> l'enfant se comporte de la sorte,\n";
+$body .= "il peut comprendre quelles comp&eacute;tences manquent &agrave; l'enfant et les lui enseigner.\n";
 $body .= "</p>\n";
 
-$body .= "<p>\n";
-// TODO 7
+$body .= "<p>Cela ne sert &agrave; rien de faire des grandes th&eacute;ories et explications &agrave; l'enfant\n";
+$body .= "pendant qu'il est dans de fortes &eacute;motions.\n";
+$body .= "Le parent reste calme et neutre, et montre le comportement qu'il aimerait voir chez l'enfant.\n";
+$body .= "Il reviendra plus tard sur le comportement pour apprendre &agrave; l'enfant comment r&eacute;agir.\n";
 $body .= "</p>\n";
 
 // ---------------------------------
