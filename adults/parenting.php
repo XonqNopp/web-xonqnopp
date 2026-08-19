@@ -4,6 +4,8 @@ $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 
+require_once("shared.php");
+
 // debug
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
@@ -20,24 +22,19 @@ $body .= $page->htmlHelper->setTitle("Apprendre &agrave; &ecirc;tre parent");  /
 $page->htmlHelper->hotBooty();
 
 
-function liInstagram($username) {
-    global $page;
-    return $page->bodyBuilder->liAnchor("https://www.instagram.com/$username", "<tt>@$username</tt>");
-}
-
-
-$body .= "<p>Principales sources d'inspiration sur instagram:</p>\n";
-$body .= "<div><ul>\n";
-$body .= liInstagram("etunjour_cavamieux");
-$body .= liInstagram("thepositiveparenting");
-$body .= liInstagram("nurturedfirst");
-$body .= liInstagram("littlebunbao");
-$body .= liInstagram("cynthiaarscott");
-$body .= liInstagram("goldmindsapp");
-$body .= liInstagram("dralexbeyondbehavior");
-$body .= liInstagram("thecoolmama.club");
-$body .= liInstagram("yestess.familles");
-$body .= "</ul></div>\n";
+$body .= instagramSources(
+    array(
+        "etunjour_cavamieux",
+        "thepositiveparenting",
+        "nurturedfirst",
+        "littlebunbao",
+        "cynthiaarscott",
+        "goldmindsapp",
+        "dralexbeyondbehavior",
+        "thecoolmama.club",
+        "yestess.familles"
+    )
+);
 
 $body .= "<p>Les enfants connaissent le nom de chaque partie du corps et le nom des parties intimes.\n";
 $body .= 'On ne dit pas "zizi" ou "n&eacute;n&eacute;" et compagnie.' . "\n";

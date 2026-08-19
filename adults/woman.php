@@ -4,6 +4,8 @@ $rootPath = "..";
 $funcpath = "$rootPath/functions";
 $page = new PhPage($rootPath);
 
+require_once("shared.php");
+
 // debug
 //$page->htmlHelper->init();
 //$page->logger->levelUp(6);
@@ -20,20 +22,14 @@ $body .= $page->htmlHelper->setTitle("Trucs pour les femmes");  // before HotBoo
 $page->htmlHelper->hotBooty();
 
 
-function liInstagram($username) {
-    global $page;
-    return $page->bodyBuilder->liAnchor("https://www.instagram.com/$username", "<tt>@$username</tt>");
-}
+$body .= instagramSources(
+    array(
+        "osteofeminin",
+        "nillan.naturopathie"
+    )
+);
 
 
-$body .= "<p>Principales sources d'inspiration sur instagram:</p>\n";
-$body .= "<div><ul>\n";
-$body .= liInstagram("osteofeminin");
-$body .= liInstagram("nillan.naturopathie");
-$body .= "</ul></div>\n";
-
-
-// TODO regles insta
 
 $body .= "<divL><dl>\n";
 
@@ -79,6 +75,32 @@ $body .= "</dd>\n";
 
 $body .= "<dt>Remplacer le caf&eacute; par de la chicor&eacute;e.</dt>\n";
 $body .= "<dd>\n";
+$body .= "Meilleure digestion, moins de stress m&eacute;tabolique, meilleure &eacute;limination des oestrog&egrave;nes.\n";
+$body .= "Donc un cycle en meilleure forme.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Manger une carotte crue chaque jour.</dt>\n";
+$body .= "<dd>\n";
+$body .= "C'est particuli&egrave;rement important en phase lut&eacute;ale, entre l'ovulation et le d&eacute;but des r&egrave;gles.\n";
+$body .= "Les fibres vont pi&egrave;ger une partie des m&eacute;tabolites hormonaux et les &eacute;liminer dans les selles.\n";
+$body .= "Cela &eacute;vite ainsi au corps de les r&eacute;absorb&eacute; et d'avoir un exc&egrave;s d'oestrog&egrave;ne.\n";
+$body .= "La carotte va aussi l&eacute;g&egrave;rement dimninuer l'activit&eacute; de l'enzyme impliqu&eacute;e dans la r&eacute;activation des oestrog&egrave;nes.\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Faire 5min de pause plusieurs fois par jour.</dt>\n";
+$body .= "<dd>\n";
+$body .= "<ul>\n";
+$body .= "<li>Faire un mouvement de mobilit&eacute; des hanches: r&eacute;duit les tensions lombaires et pelviennes.</li>\n";
+$body .= "<li>Faire un &eacute;tirement du psoas: diminue les douleurs pendant les r&egrave;gles.</li>\n";
+$body .= "<li>Faire un exercice de respiration: le syst&egrave;me nerveux est davantage r&eacute;gul&eacute;, les hormones peuvent fonctionner normalement.</li>\n";
+$body .= "</ul>\n";
+$body .= "</dd>\n";
+
+$body .= "<dt>Mettre les jambes verticales contre le mur 15min chaque soir.</dt>\n";
+$body .= "<dd>\n";
+$body .= "Drainage lymphatique simple pour la maison.\n";
+$body .= "R&eacute;duit la r&eacute;tention d'eau, meilleure circulation lymphatique.\n";
+$body .= "Meilleure activation de la thyro&iuml;de.............................";
 $body .= "</dd>\n";
 
 // TODO IWASHERE
