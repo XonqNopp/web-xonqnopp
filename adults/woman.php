@@ -100,10 +100,19 @@ $body .= "<dt>Mettre les jambes verticales contre le mur 15min chaque soir.</dt>
 $body .= "<dd>\n";
 $body .= "Drainage lymphatique simple pour la maison.\n";
 $body .= "R&eacute;duit la r&eacute;tention d'eau, meilleure circulation lymphatique.\n";
-$body .= "Meilleure activation de la thyro&iuml;de.............................";
+$body .= "Meilleure activation de la thyro&iuml;de, donc une meilleure &eacute;nergie et un meilleur &eacute;quilibre hormonal.\n";
 $body .= "</dd>\n";
 
-// TODO IWASHERE
+$body .= "<dt>Faire vibrer sa gorge 2min chaque jour.</dt>\n";
+$body .= "<dd>\n";
+$body .= "Stimule en douceur le nerf vague.\n";
+$body .= "Cela va aider le syst&egrave;me nerveux &agrave; &ecirc;tre mieux r&eacute;gul&eacute; et le cortisol plus &eacute;quilibr&eacute;,\n";
+$body .= "ce qui aide &agrave; avoir une meilleure digestion et un cycle plus facile.\n";
+$body .= "On peut le faire de diff&eacute;rentes fa&ccedil;ons:\n";
+$body .= "se gargariser avec de l'eau,\n";
+$body .= "chanter Ommmmmmm,\n";
+$body .= "chantonner une note qui fait vibrer la gorge...\n";
+$body .= "</dd>\n";
 
 $body .= "</dl></div>\n";
 
