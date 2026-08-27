@@ -48,10 +48,7 @@ $body .= "<div><ul>\n";
     $body .= "<li>" . $page->bodyBuilder->anchor("pilot.php", "Devenir pilote");
     $body .= "</li>\n";
 //
-    $body .= "<li>" . $page->bodyBuilder->anchor("climging.php", "Devenir grimpeur");
-    $body .= "</li>\n";
-//
-    $body .= "<li>" . $page->bodyBuilder->anchor("wanderung.php", "Devenir randonneur");
+    $body .= "<li>" . $page->bodyBuilder->anchor("sport.php", "Devenir sportif");
     $body .= "</li>\n";
 //
     $body .= "<li>Devenir cheyenne\n:\n";

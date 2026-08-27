@@ -18,7 +18,7 @@ $body = "";
 
 $body = $page->bodyBuilder->goHome(NULL, "..");
 // Set title and hot booty
-$body .= $page->htmlHelper->setTitle("Trucs pour les femmes");  // before HotBooty
+$body .= $page->htmlHelper->setTitle("Devenir femme");  // before HotBooty
 $page->htmlHelper->hotBooty();
 
 

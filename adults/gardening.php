@@ -16,9 +16,13 @@ $body = "";
 
 $body = $page->bodyBuilder->goHome(NULL, "..");
 // Set title and hot booty
-$body .= $page->htmlHelper->setTitle("Trucs pour le jardin");  // before HotBooty
+$body .= $page->htmlHelper->setTitle("Devenir jardinier");  // before HotBooty
 $page->htmlHelper->hotBooty();
 
+
+// gilles_jardin_potager_bio
+// jardinbiobzh
+// gardening.tipss
 
 // TODO alphabetic
 

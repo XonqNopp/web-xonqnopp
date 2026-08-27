@@ -16,8 +16,11 @@ $body = "";
 
 $body = $page->bodyBuilder->goHome(NULL, "..");
 // Set title and hot booty
-$body .= $page->htmlHelper->setTitle("Trucs pour la cuisine");  // before HotBooty
+$body .= $page->htmlHelper->setTitle("Devenir cuisinier");  // before HotBooty
 $page->htmlHelper->hotBooty();
+
+// vicplusgreen
+// noxhrecettes
 
 
     $body .= $page->bodyBuilder->titleAnchor("Casserole et po&ecirc;le en inox");
