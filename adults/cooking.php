@@ -33,8 +33,9 @@ $page->htmlHelper->hotBooty();
     $body .= "</ul></div>\n";
 
     $body .= "<p>Il peut arriver qu'on a dans une casserole inox des taches qu'on n'arrive pas &agrave; enlever.\n";
-    $body .= "Un bon moyen de nettoyer l'inox est de saupoudrer une bonne dose de percarbonate de soude,\n";
-    $body .= "d'y mettre un peu d'eau bouillante et de laisser reposer 10 minutes.\n";
+    $body .= "Un bon moyen de nettoyer l'inox est de remplier d'eau bouillante,\n";
+    $body .= "et de saupoudrer une bonne dose de percarbonate de soude,\n";
+    $body .= "et de laisser reposer 10 minutes.\n";
     $body .= "</p>\n";
 
 
