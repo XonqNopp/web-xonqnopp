@@ -27,7 +27,6 @@ $body .= $page->logopedist->languages();
 $body .= "</div>\n";
 
 
-/*
 $page_title = "Aviation 1996-2026 RIP";
 $body .= $page->htmlHelper->setTitle($page_title);
 $page->htmlHelper->hotBooty();
@@ -37,7 +36,6 @@ $body .= "<p>Unfortunately I don't fly anymore. Thanks to all my passengers for 
 $body .= "</div>\n";
 echo $body;
 return;
- */
 
 
 
