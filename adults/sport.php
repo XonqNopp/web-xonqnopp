@@ -23,7 +23,8 @@ $body .= $page->bodyBuilder->titleAnchor("Escalade");
 
 $body .= $page->bodyBuilder->titleAnchor("Randonn&eacute;e");
 
-// Patte humide sur fourmilliere, morceaux de fruits pendant 5-10min, frotter sur soi
+// Patte humide sur fourmilliere, morceaux de fruits pendant 5min, secouer, frotter sur soi
+// jamalimo14
 
 
 echo $body;

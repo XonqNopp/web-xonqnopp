@@ -40,6 +40,8 @@ $page->htmlHelper->hotBooty();
 //
     $body .= $page->bodyBuilder->titleAnchor("Tomates");
     $body .= "<p>Quand les premi&egrave;res fleurs s'ouvrent, enlever tous les gourmands.</p>\n";
+    // chatouiller les plants pour aider la pollinisation.
+    // 2-3j avant planter, enlever les feuilles du bas. ET...TODO
 
 
 
