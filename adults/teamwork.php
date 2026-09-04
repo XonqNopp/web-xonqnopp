@@ -31,6 +31,13 @@ $body .= $page->bodyBuilder->lili("40% tone");
 $body .= $page->bodyBuilder->lili("50% body language");
 $body .= "</ul></div>\n";
 
+$body .= "<p>If someone is talking or preoccupied, you can hold out your hand and they will give you whatever they are holding.</p>\n";
+
+$body .= "<p>If you have trouble motivating yourself to do something like learn a new skill (language, instrument...),\n";
+$body .= "tell yourself \"OK I'll sit down and do this for just 5 minutes.\n";
+// TODO IWASHERE #2
+$body .= "</p>\n";
+
     $body .= $page->bodyBuilder->titleAnchor("Mastering change");
 
     $body .= "<p>Amygdalia (emotion, threat) too fast for pre-frontal cortex (reasoning) to react.</p>\n";

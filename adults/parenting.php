@@ -24,14 +24,14 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
-        "etunjour_cavamieux",
-        "thepositiveparenting",
-        "nurturedfirst",
-        "littlebunbao",
         "cynthiaarscott",
-        "goldmindsapp",
         "dralexbeyondbehavior",
+        "etunjour_cavamieux",
+        "goldmindsapp",
+        "littlebunbao",
+        "nurturedfirst",
         "thecoolmama.club",
+        "thepositiveparenting",
         "yestess.familles"
     )
 );
@@ -191,7 +191,13 @@ $body .= "Tout d&eacute;pend de comment la limite est pos&eacute;e,\n";
 $body .= "de la s&eacute;curit&eacute; &eacute;motionnelle autour,\n";
 $body .= "du regard port&eacute; sur l'enfant pendant qu'il d&eacute;borde.\n";
 $body .= "Un enfant a besoin de se reposer sur son parent pour int&eacute;grer les limites sainement.\n";
-// TODO IWASHERE pour ca la parent a besoin de confiance et de calme.
+$body .= "Pour que cela fonctionne, le parent a besoin de confiance et de calme, m&ecirc;me (surtout?) quand l'enfant ne l'est pas.\n";
+$body .= "Il faut que le parent puisse accueillir l'&eacute;motion sans en avoir peur, maintenir le cadre sans humilier, dire non sans casser le lien.\n";
+$body .= "Le probl&egrave;me c'est que, souvent, c'est pr&eacute;cis&eacute;ment &ccedil;a que beaucoup de parents n'ont jamais re&ccedil;u quand ils &eacute;taient enfants.\n";
+$body .= "Leurs parents n'ont pas su dire \"je comprends ce que tu ressens\" sans c&eacute;der, sans menacer, sans faire peur.\n";
+$body .= "Il est normal que cela soit difficile pour vous aujourd'hui car il faut l'apprendre.\n";
+$body .= "Elever un enfant autrement aujourd'hui oblige souvent &agrave; r&eacute;parer quelque chose en soi au passage.\n";
+$body .= "Mais chaque fois que vous r&eacute;ussirez &agrave; accueillir l'&eacute;motion et maintenir la lmite, vous toucherez au but des parents.\n";
 $body .= "\n\n";
 $body .= "Un exemple:\n";
 $body .= "Un enfant de 8 ans a des devoirs &agrave; faire mais il joue.\n";
@@ -246,7 +252,7 @@ $body .= "la saupoudrer sur la t&ecirc;te de l'enfant en disant \"Voyons voir si
 $body .= "Si cela ne fonctionne toujours pas, on peut aussi appuyer sur le bouton \"Je peux le faire\" (nombril, nez...).\n";
 $body .= "</p>\n";
 
-$body .= "<p>Lorsqu'on est de mauvais poil, on peut faire la danse de la lib&eacute;ration.\n";
+$body .= "<p>Lorsqu'on est de mauvais poil, &eacute;nerv&eacute;, frustr&eacute;, on peut faire la danse de la lib&eacute;ration.\n";
 $body .= "On peut secouer chaque partie du corps, de la t&ecirc;te aux pieds.\n";
 $body .= "Les enfants voient alors notre choix de d&eacute;lib&eacute;r&eacute;ment investir son &eacute;nergie au lieu de rester grognon.\n";
 $body .= "Tous les membres de la famille peuvent rejoindre quelqu'un qui fait cette danse.\n";
@@ -296,6 +302,27 @@ $body .= "<p>Cela ne sert &agrave; rien de faire des grandes th&eacute;ories et 
 $body .= "pendant qu'il est dans de fortes &eacute;motions.\n";
 $body .= "Le parent reste calme et neutre, et montre le comportement qu'il aimerait voir chez l'enfant.\n";
 $body .= "Il reviendra plus tard sur le comportement pour apprendre &agrave; l'enfant comment r&eacute;agir.\n";
+$body .= "</p>\n";
+
+$body .= "<p>Lorsqu'un enfant fait une crise, il est parfois difficile pour le parent de garder son calme.\n";
+$body .= "Le parent aussi a ses propres &eacute;motions qu'il doit g&eacute;rer, et certaines doivent sortir.\n";
+$body .= "On peut le faire de diff&eacute;rentes fa&ccedil;ons:\n";
+$body .= "</p><div><ul>\n";
+$body .= "<li>souffler bruyamment</li>\n";
+$body .= "<li>secouer le corps</li>\n";
+$body .= "<li>chanter fort</li>\n";
+$body .= "<li>se forcer &agrave; rire</li>\n";
+$body .= "<li>sauter sur place</li>\n";
+$body .= "</ul></div><p>\n";
+$body .= "Ces gestes lib&egrave;rent la tension physique accumul&eacute;e, qui pourrait exploser sur l'enfant.\n";
+$body .= "Cela peut para&icirc;tre bizarre, mais c'est de la r&eacute;gulation &eacute;motionnelle.\n";
+$body .= "Quand on fait cela devant les enfants (en crise ou pas),\n";
+$body .= "ce qu-ils voient, c'est un parent qui g&egrave;re ses &eacute;motions en les traversant,\n";
+$body .= "plut&ocirc;t que de voir un parent qui essaye de contenir ses &eacute;motions,\n";
+$body .= "qui essaye de contr&ocirc;ler la situation,\n";
+$body .= "ou qui explose sur eux.\n";
+$body .= "Le point-cl&eacute; est d'&eacute;vacuer ses &eacute;motions <b>devant</b> ses enfants, pas <b>sur</b> les enfants.\n";
+$body .= "On montre ainsi &agrave; l'enfant que c'est normal que les &eacute;motions d&eacute;bordent, et qu'on peut les r&eacute;guler sans ab&icirc;mer le lien.'\n";
 $body .= "</p>\n";
 
 // ---------------------------------

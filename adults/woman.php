@@ -24,8 +24,8 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
-        "osteofeminin",
-        "nillan.naturopathie"
+        "nillan.naturopathie",
+        "osteofeminin"
     )
 );
 

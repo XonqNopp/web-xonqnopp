@@ -17,7 +17,7 @@ $body .= "<p>Garder en t&ecirc;te qu'un adulte apprend 10% avec des cours, 20% d
 $body .= "<div><ul>\n";
     $body .= "<li>" . $page->bodyBuilder->anchor("parenting.php", "Devenir parent");
     $body .= ":\n";
-    $body .= $page->bodyBuilder->anchor("education.php", "Education positive") . "-\n";
+    $body .= $page->bodyBuilder->anchor("education.php", "Education positive");
     $body .= $page->bodyBuilder->anchor("ecrans.php", "Enfants et &eacute;crans");
     $body .= "</li>\n";
 //

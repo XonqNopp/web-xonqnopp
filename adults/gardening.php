@@ -20,9 +20,9 @@ $body .= $page->htmlHelper->setTitle("Devenir jardinier");  // before HotBooty
 $page->htmlHelper->hotBooty();
 
 
+// gardening.tipss
 // gilles_jardin_potager_bio
 // jardinbiobzh
-// gardening.tipss
 
 // TODO alphabetic
 
