@@ -16,7 +16,7 @@ $body = "";
 
 $body = $page->bodyBuilder->goHome("..");
 // Set title and hot booty
-$body .= $page->htmlHelper->setTitle("Team work");  // before HotBooty
+$body .= $page->htmlHelper->setTitle("Team work (work, couple...)");  // before HotBooty
 $page->htmlHelper->hotBooty();
 
 $body .= "<p>Fail fast = learn fast.</p>\n";
@@ -34,8 +34,26 @@ $body .= "</ul></div>\n";
 $body .= "<p>If someone is talking or preoccupied, you can hold out your hand and they will give you whatever they are holding.</p>\n";
 
 $body .= "<p>If you have trouble motivating yourself to do something like learn a new skill (language, instrument...),\n";
-$body .= "tell yourself \"OK I'll sit down and do this for just 5 minutes.\n";
-// TODO IWASHERE #2
+$body .= "tell yourself 'OK I'll sit down and do this for just 5 minutes.'\n";
+$body .= "Often you will end up doing much longer, but it will anyway be at least 5min.\n";
+$body .= "</p>\n";
+
+$body .= "<p>In an argument, speak softly.\n";
+$body .= "It forces active listening, which leads to thinking.\n";
+$body .= "When people are listening or thinking, they are not yelling, arguing or talking.\n";
+$body .= "</p>\n";
+
+$body .= "<p>If someone won't stop talking and let you a word in, drop something (keys, pen).\n";
+$body .= "Reach down to pick them up and start talking.\n";
+$body .= "It is a way to interrupt without the other person realizing it.\n";
+$body .= "</p>\n";
+
+$body .= "<p>When you meet someone, ask them open-ended questions about themselves.\n";
+$body .= "Don't wait for your turn to speak; listen and ask follow-up questions.\n";
+$body .= "The person will feel heard and appreciated by you.\n";
+$body .= "If they realize they are doing all the talking, they will apologize and ask a question about you.\n";
+$body .= "If your answer is short and pivots back into something they said,\n";
+$body .= "you have now formed a connection in their mind as a good listener who is interested in what they have to say.\n";
 $body .= "</p>\n";
 
     $body .= $page->bodyBuilder->titleAnchor("Mastering change");

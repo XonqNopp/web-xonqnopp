@@ -31,7 +31,7 @@ $body .= instagramSources(
 
 
 
-$body .= "<divL><dl>\n";
+$body .= "<div><dl>\n";
 
 $body .= "<dt>Prendre la lumi&egrave;re naturelle le plus vite possible apr&egrave;s le r&eacute;veil.</dt>\n";
 $body .= "<dd>\n";
