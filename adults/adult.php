@@ -48,10 +48,11 @@ $body .= "Le nez bouch&eacute; est caus&eacute; par des vaisseaux sanguins enfla
 $body .= "Le froid provoque une contraction des vaisseaux sanguins et lib&egrave;re le passage.\n";
 $body .= "</p>\n";  // information.bienetre
 
-$body .= "<p>Si tu es nerveux, \n";  // TODO IWASHERE
-$body .= "</p>\n";  // information.bienetre
+//$body .= "<p>Si tu es nerveux, pince ton nez, ferme ta bouche et essaie doucement d'expirer pendant 10s.\n";
+//$body .= "Cette technique stimule le nerf vague et coupe la r&eacute;ponse 'fight or flight'.\n";
+//$body .= "</p>\n";  // information.bienetre
 
-$body .= "<p>Si tu n'as pas d'&eacute;nergie,\n";
+$body .= "<p>Si tu n'as pas d'&eacute;nergie,\n";  // TODO IWASHERE
 $body .= "</p>\n";  // information.bienetre
 
 echo $body;
