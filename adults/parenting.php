@@ -325,6 +325,24 @@ $body .= "Le point-cl&eacute; est d'&eacute;vacuer ses &eacute;motions <b>devant
 $body .= "On montre ainsi &agrave; l'enfant que c'est normal que les &eacute;motions d&eacute;bordent, et qu'on peut les r&eacute;guler sans ab&icirc;mer le lien.'\n";
 $body .= "</p>\n";
 
+$body .= "<p>Cela ne sert &agrave; rien de r&eacute;p&eacute;ter 10 fois quelque chose.\n";
+$body .= "Pour l'enfant, cela n'est que du bruit de fond qu'il ignore.\n";
+$body .= "Il ne r&eacute;agit que lorsqu'on vient, alors que nous sommes d&eacute;j&agrave; &eacute;nerv&eacute;s.\n";
+$body .= "Au lieu de cela, il faut arr&ecirc;ter ce qu'on est en train de faire, aller aupr&egrave;s de l'enfant,\n";
+$body .= "avoir son attention, et donner UNE instruction pr&eacute;cise.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Il ne faut pas poser une question si ce n'est pas un choix.\n";
+$body .= "Au lieu de dire \"est-ce que tu peux mettre tes chaussures stp?\" on dit \"met tes chaussures, et on va dehors.\"\n";
+$body .= "Lorsqu'on donne une instruction sous la forme d'une question, on apprend &agrave; l'enfant que non est une option.\n";
+$body .= "Donner des instructions claires permet de rapidement diminuer les conflits de pouvoir.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Au lieu de r&eacute;p&eacute;ter \"fais attention\" toute la journ&eacute;e, il faut dire quoi faire plus pr&eacute;cis&eacute;ment.\n";
+// TODO IWASHERE
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+
 // ---------------------------------
 
 $body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";

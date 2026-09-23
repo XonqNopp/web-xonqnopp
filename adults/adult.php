@@ -52,7 +52,9 @@ $body .= "</p>\n";  // information.bienetre
 //$body .= "Cette technique stimule le nerf vague et coupe la r&eacute;ponse 'fight or flight'.\n";
 //$body .= "</p>\n";  // information.bienetre
 
-$body .= "<p>Si tu n'as pas d'&eacute;nergie,\n";  // TODO IWASHERE
+$body .= "<p>Si tu n'as pas d'&eacute;nergie, plonge ton visage dans une bassine d'eau froide pendant 30s.\n";
+$body .= "Le froid active le r&eacute;flexe mammalien de plong&eacute;e et stimule le nerf vague.\n";
+$body .= "Le flux sanguin se redirige vers le cerveau et le coeur, et le niveau d'alerte monte.\n";
 $body .= "</p>\n";  // information.bienetre
 
 echo $body;
