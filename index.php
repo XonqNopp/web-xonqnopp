@@ -106,10 +106,12 @@ $body .= $page->waitress->rowOpen();
     $body .= "- " . $page->bodyBuilder->anchor("http://www.phdcomics.com/comics.php", "PhD comics");
     $body .= "- " . $page->bodyBuilder->anchor("https://www.monkeyuser.com/", "Monkey user");
     $body .= "</li>\n";
-    $body .= "<li>Webcomics NSFW:\n";
-    $body .= $page->bodyBuilder->anchor("http://explosm.net/comics/latest#comic", "Cyanide and Happiness");
-    $body .= "- " . $page->bodyBuilder->anchor("https://www.oglaf.com/", "Oglaf");
-    $body .= "</li>\n";
+    if($page->loginHelper->userIsAdmin()) {
+        $body .= "<li>Webcomics NSFW:\n";
+        $body .= $page->bodyBuilder->anchor("http://explosm.net/comics/latest#comic", "Cyanide and Happiness");
+        $body .= "- " . $page->bodyBuilder->anchor("https://www.oglaf.com/", "Oglaf");
+        $body .= "</li>\n";
+    }
     $body .= "</ul>\n";
     $body .= $page->waitress->cellClose();
 
