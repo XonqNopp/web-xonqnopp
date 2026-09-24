@@ -339,7 +339,29 @@ $body .= "Donner des instructions claires permet de rapidement diminuer les conf
 $body .= "</p>\n";  // dralexbeyondbehavior
 
 $body .= "<p>Au lieu de r&eacute;p&eacute;ter \"fais attention\" toute la journ&eacute;e, il faut dire quoi faire plus pr&eacute;cis&eacute;ment.\n";
-// TODO IWASHERE
+$body .= "Exemples: marche lentement dans les escaliers, regarde avant de traverser la route...\n";
+$body .= "Les instructions sp&eacute;cifiques enseignent des comp&eacute;tences, contrairement &agrave; des avertissements vagues.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Il faut souligner les comportements ad&eacute;quats plut&ocirc;t que de corriger les mauvais comportements.\n";
+$body .= "L'enfant va reproduire le comportement qui lui apporte le plus d'attention.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Un point faible des enfants sont les transitions, ils ne peuvent pas les g&eacute;rer comme nous adultes.\n";
+$body .= "Il est important de les pr&eacute;parer mentalement avant que le moment de la transition n'arrive.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Les pleurnichages et autres comportement d&eacute;sagr&eacute;ables\n";
+$body .= "ne doivent pas &ecirc;tre trait&eacute; comme comportements probl&eacute;matiques par l'adulte,\n";
+$body .= "il faut que l'adulte voie la fonction au-del&agrave; du comportement.\n";
+$body .= "Est-ce que l'enfant essaie d'obtenir quelque chose ou de l'attention, d'&eacute;viter une corv&eacute;e, de r&eacute;pondre &agrave; un besoin sensoriel...\n";
+$body .= "Une fois que l'adulte a identif&eacute; le pourquoi, il peut apprendre &agrave; l'enfant la comp&eacute;tence qu'il lui manque.\n";
+$body .= "</p>\n";  // dralexbeyondbehavior
+
+$body .= "<p>Il est inutile de faire des grandes th&eacute;ories et de longues explications lorsqu'un enfant est en pleine crise.\n";
+$body .= "Il est plus efficace que l'adulte reste calme et montre le comportement qu'il attend.\n";
+$body .= "Plus tard, quand l'enfant est dans un bon &eacute;tat &eacute;motionnel,\n";
+$body .= "on peut reparler de la crise et apprendre &agrave; l'enfant les comp&eacute;tences pour l'aider &agrave; g&egrave;rer ces moments.\n";
 $body .= "</p>\n";  // dralexbeyondbehavior
 
 
