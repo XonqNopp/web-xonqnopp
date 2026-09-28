@@ -1276,10 +1276,10 @@ class Aircraft {
                     ) ? "red" : "gray";
 
                     // color red 0-fuel mass if more than maxLdgW
-                    $massPrefix = "";
+                    $mldgwPrefix = "";
                     $mldgwColor = "gray";
                     if ($gcData->maxLdgW > 0 && $gcData->zeroFuel->mass > $gcData->maxLdgW) {
-                        $massPrefix = $kStrings["TooHeavy"] . " ";
+                        $mldgwPrefix = $kStrings["TooHeavy"] . " ";
                         $mldgwColor = "red";
                     }
 
@@ -1302,7 +1302,7 @@ class Aircraft {
                         // values
                         $mass = "";
                         if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
-                            $mass = "{$massPrefix}{$gcData->zeroFuel->mass}";
+                            $mass = "{$mldgwPrefix}{$gcData->zeroFuel->mass}";
                         }
 
                         $rows[] = array(
@@ -1372,10 +1372,16 @@ class Aircraft {
                         || ($gcData->gcBoundaries->max > 0 && $gcData->takeOff->getArm() > $gcData->gcBoundaries->max)
                     ) ? "red" : "gray";
 
-                    $massPrefix = "";
+                    $mldgwPrefix = "";
+                    $mldgwColor = "gray";
+                    if ($gcData->maxLdgW > 0 && $gcData->zeroFuel->mass > $gcData->maxLdgW) {
+                        $mldgwPrefix = $kStrings["TooHeavy"] . " ";
+                        $mldgwColor = "red";
+                    }
+                    $mtowPrefix = "";
                     $mtowColor = "gray";
                     if ($gcData->maxTOW > 0 && $gcData->takeOff->mass > $gcData->maxTOW) {
-                        $massPrefix = $kStrings["TooHeavy"] . " ";
+                        $mtowPrefix = $kStrings["TooHeavy"] . " ";
                         $mtowColor = "red";
                     }
 
@@ -1383,9 +1389,22 @@ class Aircraft {
                         $gcMinCell = new GcTableCell("min=$gcMin", $gcMinColor);
                         $gcMinCell->small = true;
 
+                        $mldgwCell = new GcTableCell();
+                        if($gcData->maxLdgW > 0) {
+                            // Special: color red 0-fuel mass if Take-off mass is more than maxLdgW
+                            $mldgwPrefix = "";
+                            $mldgwColor = "gray";
+                            if ($gcData->maxLdgW > 0 && $gcData->takeOff->mass > $gcData->maxLdgW) {
+                                $mldgwPrefix = $kStrings["TooHeavy"] . " ";
+                                $mldgwColor = "red";
+                            }
+                            $mldgwCell = new GcTableCell("{$mldgwPrefix}MLdgW={$gcData->maxLdgW}", $mldgwColor);
+                        }
+                        $mldgwCell->small = true;
+
                         $rows[] = array(
                             new GcTableCell("TakeOff", "gray", 3),
-                            new GcTableCell(NULL, $mtowColor),
+                            $mldgwCell,
                             $gcMinCell,
                             new GcTableCell(
                                 ($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) ?  $gcData->takeOff->getMoment() : NULL,
@@ -1398,7 +1417,7 @@ class Aircraft {
                         // values
                         $mass = "";
                         if($gcData->dryEmpty->mass > 0 && $gcData->front->mass > 0) {
-                            $mass = "{$massPrefix}{$gcData->takeOff->mass}";
+                            $mass = "{$mtowPrefix}{$gcData->takeOff->mass}";
                         }
 
                         $rows[] = array(
