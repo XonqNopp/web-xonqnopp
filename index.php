@@ -74,6 +74,13 @@ $body .= $page->waitress->rowOpen();
     $body .= "- " . $page->bodyBuilder->anchor("collections/quotations/index.php", "citations");
     $body .= "</li>\n";
 
+    $body .= "</ul>\n";
+    $body .= $page->waitress->cellClose();
+//
+    $body .= $page->waitress->cellOpen();
+    $body .= "Inactive pages:\n";
+    $body .= "<ul>\n";
+
     $body .= "<li>\n";
     $body .= $page->bodyBuilder->anchor("fly/index.php", "Fly");
     $body .= ": " . $page->bodyBuilder->anchor("fly/logbook.php", "logbook");
