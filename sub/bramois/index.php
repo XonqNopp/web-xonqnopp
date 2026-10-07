@@ -207,7 +207,7 @@ function liachm($args, $description) {
         $body .= "<li>";
         $body .= $page->bodyBuilder->anchor(chm("resolution=1.37&E=2597414&N=1119247"), "Sentier p&eacute;destre dans les gorges de la Borgne, bons marcheurs.");
         $body .= "Alternance entre en bas le long de la Borgne et en haut des falaises.\n";
-        $body .= "Pour les plus motiv&eacute;s, on peut monter jusqu'&agrav;e Euseigne et redescendre en car postal.</li>\n";
+        $body .= "Pour les plus motiv&eacute;s, on peut monter jusqu'&agrave; Euseigne et redescendre en car postal.</li>\n";
 
         $body .= $page->bodyBuilder->liAnchor("https://www.camptocamp.org/waypoints/116027/fr/bramois", "Grimpe dans les gorges de la Borgne", true);
 
