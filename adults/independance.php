@@ -26,6 +26,7 @@ $body .= instagramSources(
     array(
         "bee.greener",
         "gege_en_vadrouille",
+        "littlebunbao",
     )
 );
 
@@ -58,6 +59,26 @@ $body .= instagramSources(
     $body .= "Attention toutefois &agrave; ne le faire que si on peut ouvrir les fen&ecirc;tres pour que l'air chaud s'&eacute;vacue, sinon on va juste humidifier l'air ambiant et le rendre plus chaud.\n";
     $body .= "</p>\n";  // gege_en_vadrouille
 
+    $body .= "<p>Pour se rafra&icric;chir quand il fait chaud, on peut refroidir ses extr&eacute;mit&eacute;s.\n";
+    $body .= "Par exemple, on peut tremper les pieds dans l'eau ou enrouler les jambes dans un linge humide.\n";
+    $body .= "Cela peut aussi aider &agrave; s'endormir.\n";
+    $body .= "</p>\n";  // gege_en_vadrouille
+
+    $body .= "<p>Au lieu de passer beaucoup de temps &agrave; tout ranger, on peut aussi optimiser les trajets.\n";
+    $body .= "Par exemple, lorsqu'on doit aller dans une autre pi&egrave;ce, on prend avec un objet qui doit justement s'y ranger.\n";
+    $body .= "</p>\n";  // littlebunbao
+
+    $body .= "<p>Lorsqu'on vit dans un m&eacute;nage avec d'autres personnes, il y a un bon truc contre la flemme.\n";
+    $body .= "On a souvent pas envie de faire une t&acirc;che et on se dit qu'on la fera plus tard...\n";
+    $body .= "Si au lieu de penser comme &ccedil;a, on se dit que si on ne le fait pas, &ccedil;a sera &agrave; une autre personne de le faire,\n";
+    $body .= "le cerveau y voit une injustice il aura plus envie de r&eacute;parer l'injustice que d'&eacute;viter de faire la t&acirc;che.\n";
+    $body .= "</p>\n";  // littlebunbao
+
+    $body .= "<p>Si une t&acirc;che fait moins de 5min, il est beaucoup plus efficace de la faire imm&eacute;diatement plut&ocirc;t que\n";
+    $body .= "de la mettre sur une to-do list.\n";
+    $body .= "Cela aide aussi le cerveau &agrave; se lib&eacute;rer et avoir l'impression que les choses avancent.\n";
+    $body .= "</p>\n";  // littlebunbao
+    // TODO IWASHERE 8
 //
     $body .= $page->bodyBuilder->titleAnchor("M&eacute;nage");
 

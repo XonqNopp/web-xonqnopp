@@ -451,6 +451,10 @@ $body .= "Ainsi il deviendra un adulte qui ne r&eacute;pondra pas &agrave; chaqu
 $body .= "Les enfants qui savent quand s'inqui&eacute;ter deviennent souvent des adultes qui savent quand s'arr&ecirc;ter.\n";
 $body .= "</p>\n";  // pygmalionne.media
 
+$body .= "<p>Un bon truc pour faire un raangement rapide de toute la maison est de mettre une musique rythm&eacute;e assez fort (mission impossible, fort boyard...)\n";
+$body .= "et tout le monde range le plus possible pendant la musique.\n";
+$body .= "</p>\n";  // littlebunbao
+
 
 // ---------------------------------
 

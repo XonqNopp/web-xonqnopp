@@ -24,7 +24,8 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
-        "information.bienetre"
+        "gege_en_vadrouille",
+        "information.bienetre",
     )
 );
 
@@ -56,6 +57,11 @@ $body .= "<p>Si tu n'as pas d'&eacute;nergie, plonge ton visage dans une bassine
 $body .= "Le froid active le r&eacute;flexe mammalien de plong&eacute;e et stimule le nerf vague.\n";
 $body .= "Le flux sanguin se redirige vers le cerveau et le coeur, et le niveau d'alerte monte.\n";
 $body .= "</p>\n";  // information.bienetre
+
+$body .= "<p>Un bon rythme de journ&eacute;e consiste &agrave; travailler t&ocirc;t le matin,\n";
+$body .= "se reposer pendant les heures chaudes, et travailler en fin d'apr&egrave;s-midi.\n";
+$body .= "Cela est d'autant plus important en p&eacute;riode de canicule.\n";
+$body .= "</p>\n";  // gege_en_vadrouille
 
 echo $body;
 ?>
