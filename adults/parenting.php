@@ -455,6 +455,20 @@ $body .= "<p>Un bon truc pour faire un raangement rapide de toute la maison est 
 $body .= "et tout le monde range le plus possible pendant la musique.\n";
 $body .= "</p>\n";  // littlebunbao
 
+$body .= "<p>Un panier ou une caisse &agrave; bazar dans certaines pi&egrave;ces peut &ecirc;tre utile.\n";
+$body .= "Tout ce qui n'est pas &agrave; a place va dedans.\n";
+$body .= "Quand il est plein ou qu'on a besoin de prendre quelque chose dedans, on le vide et on trie si on a encore besoin ou pas.\n";
+$body .= "</p>\n";  // littlebunbao
+
+$body .= "<p>Une autre technique pour motiver &agrave; ranger et de le faire avec un timer:\n";
+$body .= "15 ou 30 minutes de rangements puis retour &agrave; nos activit&eacute;s.\n";
+$body .= "</p>\n";  // littlebunbao
+
+$body .= "<p>Pour ajouter de la motivation aux t&acirc;ches ennuyantes, on peut introduire une carte &agrave; perforer pour obtenir une r&eacute;comnpense.\n";
+$body .= "Apr&egrave;s X fois (10, 30...) on peut faire une activit&eacute; en famille (piscine, acrobranche, cin&eacute;ma...).\n";
+// TODO IWASHERE 14
+$body .= "</p>\n";  // littlebunbao
+
 
 // ---------------------------------
 

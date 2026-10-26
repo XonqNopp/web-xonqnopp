@@ -78,7 +78,16 @@ $body .= instagramSources(
     $body .= "de la mettre sur une to-do list.\n";
     $body .= "Cela aide aussi le cerveau &agrave; se lib&eacute;rer et avoir l'impression que les choses avancent.\n";
     $body .= "</p>\n";  // littlebunbao
-    // TODO IWASHERE 8
+
+    $body .= "<p>Pour les t&acirc;ches ennuyeuses pour une personne TDAH, on peut le faire en m&ecirc;me temps qu'autre chose.\n";
+    $body .= "Par exemple, on peut faire le m&eacute;nage en &eacute;coutant un podcast, une s&eacute;rie, un audiobook ou en t&eacute;l&eacute;phonant.\n";
+    $body .= "Pour les personnes plut&ocirc;t monot&acirc;ches, on peut aussi juste mettre de la musique pour passer un meilleur moment.\n";
+    $body .= "</p>\n";  // littlebunbao
+
+    $body .= "<p>Si faire le rangement/m&eacute;nage de toute l'habitation en une seule fois est trop d&eacute;courageant,\n";
+    $body .= "on peut changer de m&eacute;thode et faire une pi&egrave;ce &agrave; fond.\n";
+    $body .= "Chaque personne s'occupe d'une zone, et on fait un roulement selon les jours/semaines.\n";
+    $body .= "</p>\n";  // littlebunbao
 //
     $body .= $page->bodyBuilder->titleAnchor("M&eacute;nage");
 
