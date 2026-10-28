@@ -466,7 +466,12 @@ $body .= "</p>\n";  // littlebunbao
 
 $body .= "<p>Pour ajouter de la motivation aux t&acirc;ches ennuyantes, on peut introduire une carte &agrave; perforer pour obtenir une r&eacute;comnpense.\n";
 $body .= "Apr&egrave;s X fois (10, 30...) on peut faire une activit&eacute; en famille (piscine, acrobranche, cin&eacute;ma...).\n";
-// TODO IWASHERE 14
+$body .= "</p>\n";  // littlebunbao
+
+$body .= "<p>Quand on veut mettre en place un syst&egrave;me ou des nouvelles r&egrave;gles,\n";
+$body .= "c'est important de faire une r&eacute;union pour en discuter avec toute la famille,\n";
+$body .= "et ensuite de le mettre par &eacute;crit et qu'il soit visible &agrave; tout le monde.\n";
+$body .= "Il ne faut pas oiublier que le succ&egrave;s du foyer repose sur un travail d'&eacute;quipe.\n";
 $body .= "</p>\n";  // littlebunbao
 
 

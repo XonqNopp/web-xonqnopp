@@ -45,7 +45,8 @@ $body .= instagramSources(
     $body .= "Un bon moyen de nettoyer l'inox est de remplier d'eau bouillante,\n";
     $body .= "et de saupoudrer une bonne dose de percarbonate de soude,\n";
     $body .= "et de laisser reposer 10 minutes.\n";
-    $body .= "</p>\n";
+    $body .= "On peut ensuite la laver et les taches devraient partir plus facilement (mais peut-&ecirc;tre pas &agrave; 100%).\n";
+    $body .= "</p>\n";  // vicplusgreen
 
 
 echo $body;

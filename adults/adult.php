@@ -26,6 +26,7 @@ $body .= instagramSources(
     array(
         "gege_en_vadrouille",
         "information.bienetre",
+        "intimit_eve",
     )
 );
 
@@ -62,6 +63,11 @@ $body .= "<p>Un bon rythme de journ&eacute;e consiste &agrave; travailler t&ocir
 $body .= "se reposer pendant les heures chaudes, et travailler en fin d'apr&egrave;s-midi.\n";
 $body .= "Cela est d'autant plus important en p&eacute;riode de canicule.\n";
 $body .= "</p>\n";  // gege_en_vadrouille
+
+$body .= "<p>Passer un gla&ccedil;on sur la peau et imm&eacute;diatement souffler de l'air chaud au m&ecirc;me endroit fait un choc thermique qui sature le syst&egrave;me nerveux.\n";
+$body .= "Le cerveau bug instantan&eacute;ment, arr&ecirc;te de cogiter et se reconnecte au corps &agrave; 100%.\n";
+$body .= "Cette technique peut aussi s'utiliser au lit &agrave; deux pour l&acirc;cher prise.\n";
+$body .= "</p>\n";  // intimit_eve
 
 echo $body;
 ?>
