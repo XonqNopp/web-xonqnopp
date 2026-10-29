@@ -24,6 +24,7 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
+        "corehealthway",
         "gege_en_vadrouille",
         "information.bienetre",
         "intimit_eve",
@@ -68,6 +69,18 @@ $body .= "<p>Passer un gla&ccedil;on sur la peau et imm&eacute;diatement souffle
 $body .= "Le cerveau bug instantan&eacute;ment, arr&ecirc;te de cogiter et se reconnecte au corps &agrave; 100%.\n";
 $body .= "Cette technique peut aussi s'utiliser au lit &agrave; deux pour l&acirc;cher prise.\n";
 $body .= "</p>\n";  // intimit_eve
+
+$body .= "<p>Tirer la langue 40s aide &agrave; diminuer les tensions dans la nuque.\n";
+$body .= "La langue est connect&eacute;e &agrave; l'os hyo&iuml;de o&ugrave; sont ancr&eacute;es les principaux muscles responsables des tensions dans la nuque.\n";
+$body .= "Tirer la langue le plus loin possible cr&eacute;e une distraction m&eacute;canique\n";
+$body .= "qui force les muscles &agrave; s'allonger et d&eacute;compresser le canal du nerf vague.\n";
+$body .= "La dur&eacute;e est importante: moins de 30s, les muscles se remettent dans la m&ecirc;me tension qu'avant.\n";
+$body .= "A partir de 40s, les muscles se recalibrent &agrave; la tension (plus basse).\n";
+$body .= "Il est important d'&ecirc;tre dans une position o&ugrave; on peut d&eacute;tendre ses &eacute;paules pour faire &ccedil;a.\n";
+$body .= "On ouvre grand la bouche et tire la langue le plus loin possible tout en respirant par le nez.\n";
+$body .= "Id&eacute;aelement on le fait 3 fois de suite avec des pauses de 60s entre deux.\n";
+$body .= "Le matin est mieux car on est avant les tensions du jour, mais on peut aussi le faire le soir avant d'aller au lit.\n";
+$body .= "</p>\n";  // corehealthway
 
 echo $body;
 ?>
