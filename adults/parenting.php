@@ -28,6 +28,7 @@ $body .= instagramSources(
         "dralexbeyondbehavior",
         "etunjour_cavamieux",
         "goldmindsapp",
+        "katy_g_blog",
         "littlebunbao",
         "nurturedfirst",
         "pygmalionne.media",
@@ -473,6 +474,31 @@ $body .= "c'est important de faire une r&eacute;union pour en discuter avec tout
 $body .= "et ensuite de le mettre par &eacute;crit et qu'il soit visible &agrave; tout le monde.\n";
 $body .= "Il ne faut pas oiublier que le succ&egrave;s du foyer repose sur un travail d'&eacute;quipe.\n";
 $body .= "</p>\n";  // littlebunbao
+
+$body .= "<p>Plut&ocirc;t que de demander \"comment tu te sens?\",\n";
+$body .= "nous devrions demander \"o&ugrave; est-ce que tu sens la col&egrave;re? Dans tes mains? Ton estomac? Ton coeur?\"\n";
+$body .= "Avec le temps, l'enfant apprendra &agrave; nommer son &eacute;tat physique avant de perdre le contr&ocirc;le.\n";
+$body .= "</p>\n";  // katy_g_blog
+
+$body .= "<p>Il faut entra&icirc;ner l'enfant &agrave; dire non &agrave; un adulte de mani&egrave;re respectueuse.\n";
+$body .= "La phrase est simple: je ne veux pas, je vais le dire &agrave; mes parents.\n";
+$body .= "Mais il est important de la dire, de le pratiquer pour que le jour o&ugrave; l'enfant en a vraiment besoin, il puisse la dire automatiquement.\n";
+$body .= "</p>\n";  // katy_g_blog
+
+$body .= "<p>Il faut dire &agrave; l'enfant la liste des choses qu'il peut nous dire explicitement:\n";
+$body .= "Si tu as cass&eacute; quelque chose, tu peux me le dire.\n";
+$body .= "Si tu m'as menti, tu peux me le dire.\n";
+$body .= "Si tu as fait quelque chose que tu as peur de me dire, tu peux me le dire.\n";
+$body .= "Il n'y a rien que tu puisses me dire qui changera mon amour pour toi.\n";
+$body .= "</p>\n";  // katy_g_blog
+
+$body .= "<p>On peut nommer les chose que l'on fait diff&eacute;remment des autres familles:\n";
+$body .= "dans notre famille, on fait X, d'autres familles font Y, c'est leur choix, notre choix est diff&eacute;rent.\n";
+$body .= "Que ce soit &agrave; propos des &eacute;crans, de la nourriture, de l'heure du coucher, de comment on se parle...\n";
+$body .= "Cela aide l'enfant &agrave; comprendre que sa famille a une identit&eacute;,\n";
+$body .= "et &agrave; ne pas c&eacute;der &agrave; la pression de ses pairs sans raison.\n";
+$body .= "</p>\n";  // katy_g_blog
+// TODO IWASHERE 5
 
 
 // ---------------------------------
