@@ -29,8 +29,18 @@ $body .= instagramSources(
         "gardening.tipss",
         "gilles_jardin_potager_bio",
         "jardinbiobzh",
+        "jardinland.astuces",
     )
 );
+
+
+$body .= "<p>Il ne faut pas remplir un bac de terre!\n";
+$body .= "C'est cher en terre et lourd &agrave; porter.\n";
+$body .= "On commence par remplir la moiti&eacute; avec des grosses branches.\n";
+$body .= "Ensuite on met une couche de petites branches, une couche de feuilles vertes (comme des orties).\n";
+$body .= "On met ensuite du compost et de la terre.\n";
+$body .= "On peut encore m&eacute;langer des granul&eacute;s d'argile dans la terre pour aider &agrave; conserver l'humidit&eacute;.\n";
+$body .= "</p>\n";  // jardinland.astuces
 
 
 // TODO alphabetic

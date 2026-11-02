@@ -498,7 +498,22 @@ $body .= "Que ce soit &agrave; propos des &eacute;crans, de la nourriture, de l'
 $body .= "Cela aide l'enfant &agrave; comprendre que sa famille a une identit&eacute;,\n";
 $body .= "et &agrave; ne pas c&eacute;der &agrave; la pression de ses pairs sans raison.\n";
 $body .= "</p>\n";  // katy_g_blog
-// TODO IWASHERE 5
+
+$body .= "<p>Il faut apprendre &agrave; l'enfant comment nous dire qu'il n'est pas d'accord en restant dans le respect.\n";
+$body .= "Il peut dire qu'on est injuste, qu'il n'est pas d'accord, que les r&egrave;gles sont diff&eacute;rentes de celles de ses amis.\n";
+$body .= "Mais il ne peut pas le crier, il ne peut pas regarder en l'air.\n";
+$body .= "</p>\n";  // katy_g_blog
+
+$body .= "<p>Il faut dire &agrave; l'enfant ce qu'on fait si quelqu'un ne le traite pas correctement.\n";
+$body .= "Si un adulte ou un enfant te traite d'une mani&egrave;re inacceptable, c'est toi que je croirais en premier.\n";
+$body .= "Je vais g&eacute;rer la situation, je ne vais pas te laisser te d&eacute;brouiller.\n";
+$body .= "</p>\n";  // katy_g_blog
+
+$body .= "<p>Au lieu de faire des commentaires g&eacute;n&eacute;riques comme \"tu es intelligent\" ou \"tu es incroyable\",\n";
+$body .= "on peut lui expliquer clairement sa personnalit&eacute;.\n";
+$body .= "Par exemple: tu as remarqu&eacute; quand ton ami avait de la peine et tu lui as propos&eacute; ton aide;\n";
+$body .= "c'est le genre de personne que tu es en train de devenir.\n";
+$body .= "</p>\n";  // katy_g_blog
 
 
 // ---------------------------------
