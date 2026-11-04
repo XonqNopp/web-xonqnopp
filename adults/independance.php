@@ -25,6 +25,7 @@ $page->htmlHelper->hotBooty();
 $body .= instagramSources(
     array(
         "bee.greener",
+        "exactlyhowthingswork",
         "gege_en_vadrouille",
         "littlebunbao",
     )
@@ -88,6 +89,14 @@ $body .= instagramSources(
     $body .= "on peut changer de m&eacute;thode et faire une pi&egrave;ce &agrave; fond.\n";
     $body .= "Chaque personne s'occupe d'une zone, et on fait un roulement selon les jours/semaines.\n";
     $body .= "</p>\n";  // littlebunbao
+//
+    $body .= $page->bodyBuilder->titleAnchor("Lessive");
+    $body .= "<p>Quand un chewing-gum est coll&eacute; sur un habit, on peut le d&eacute;coller facilement en le refroidissant rapidement avec un gla&ccedil;on.</p>\n";  // exactlyhowthingswork
+
+    $body .= "<p>Les habits blancs ont tendance &agrave; jaunir avec le temps.\n";
+    $body .= "Pour leur redonner de la blancheur, on peut les baigner dans un m&eacute;lange de lessive, dentifrice et sel avec de l'eau chaude pendant 5min.\n";
+    $body .= "On peut aussi utiliser du dentifrice pour nettoyer des chaussures sales.\n";
+    $body .= "</p>\n";  // exactlyhothingswork
 //
     $body .= $page->bodyBuilder->titleAnchor("M&eacute;nage");
 

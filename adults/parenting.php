@@ -30,6 +30,7 @@ $body .= instagramSources(
         "goldmindsapp",
         "katy_g_blog",
         "littlebunbao",
+        "maeva_maman_imparfaite",
         "nurturedfirst",
         "pygmalionne.media",
         "thecoolmama.club",
@@ -38,6 +39,18 @@ $body .= instagramSources(
         "yestess.familles",
     )
 );
+
+
+
+
+
+
+// TODO signe de detresse
+// TODO Angie dans un bar???
+// TODO 2 categories: choses que les parents doivent etre conscients, choses que les parents doivent enseigner a leurs enfants
+//
+// Les bonnes decisions viennent de l'experience, et l'experience vient des mauvaises decisions.
+
 
 $body .= "<p>Les enfants connaissent le nom de chaque partie du corps et le nom des parties intimes.\n";
 $body .= 'On ne dit pas "zizi" ou "n&eacute;n&eacute;" et compagnie.' . "\n";
@@ -516,6 +529,27 @@ $body .= "c'est le genre de personne que tu es en train de devenir.\n";
 $body .= "</p>\n";  // katy_g_blog
 
 
+$body .= "<p>Un exercice &agrave; faire avec l'enfant pour lui faire comprendre l'importrance des paroles avec une feuille de papier.\n";
+$body .= "<i>Imagine que cette feuille c'est mon coeur.</i>\n";
+$body .= "<i>Dis-moi des mots pas gentils.</i>\n";
+$body .= "On chiffone un peu la feuille pour chaque mot.\n";
+$body .= "On le fait continuer jusqu'&agrave; ce que la feuille soit en boule.\n";
+$body .= "<i>Tu voix, c'est ce que &ccedil;a fait &agrave; mon coeur. On le voit pas, mais c'est ce que &ccedil;a fait au coeur.</i>\n";
+$body .= "<i>Qu'est-ce qu'on peut dire &agrave; quelqu'un quand on lui a fait mal ou mal au coeur?</i>\n";
+// TODO IWASHERE 50
+$body .= "</p>\n";  // maeva_maman_imparfaite
+
+
+
+
+
+
+
+
+
+
+
+
 // ---------------------------------
 
 $body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
@@ -613,18 +647,6 @@ $body .= "Derri&egrave;re cette question se cache en fait \"est-ce que je suis i
 $body .= "</dd>\n";
 
 $body .= "</dl></div>\n";
-
-
-
-
-
-
-// TODO signe de detresse
-// TODO Angie dans un bar???
-// TODO 2 categories: choses que les parents doivent etre conscients, choses que les parents doivent enseigner a leurs enfants
-//
-// Les bonnes decisions viennent de l'experience, et l'experience vient des mauvaises decisions.
-
 
 echo $body;
 ?>

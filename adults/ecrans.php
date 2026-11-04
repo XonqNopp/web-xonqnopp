@@ -324,6 +324,7 @@ $body .= $page->bodyBuilder->titleAnchorCountEnable();
     $body .= $page->bodyBuilder->liAnchor("http://websters.swiss", "La famille Websters (OFCOM)");
     $body .= $page->bodyBuilder->liAnchor("http://instagram.com/ecop.francois", "@ecop.francois");
     $body .= $page->bodyBuilder->liAnchor("https://www.qwantjunior.com/", "Qwant Junior (moteur de recherche pour enfants)");
+    $body .= $page->bodyBuilder->liAnchor("https://www.digiharmo.ch/fr");
     $body .= "</ul></div>\n";
 
 

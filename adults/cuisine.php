@@ -23,13 +23,17 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
-        "vicplusgreen",
+        "exactlyhowthingswork",
         "noxhrecettes",
+        "vicplusgreen",
     )
 );
 
 
-    $body .= $page->bodyBuilder->titleAnchor("Casserole et po&ecirc;le en inox");
+$body .= "<p>On peut enlever les taches sur une planche en bois avec du savon et du bicarbonate de soude.</p>\n";  // exactlyhowthingswork
+
+
+    $body .= $page->bodyBuilder->titleAnchor("Casserole (et po&ecirc;le) en inox");
 
     $body .= "<p>Pour que les aliments n'adh&egrave;rent pas &agrave; la casserole, il est important de la chauffer.\n";
     $body .= "Pour savoir si elle a la temp&eacute;rature ad&eacute;quate, on peut faire le test des gouttes d'eau avec l'effet Leidenfrost.\n";
