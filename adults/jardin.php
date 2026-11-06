@@ -42,11 +42,16 @@ $body .= "On met ensuite du compost et de la terre.\n";
 $body .= "On peut encore m&eacute;langer des granul&eacute;s d'argile dans la terre pour aider &agrave; conserver l'humidit&eacute;.\n";
 $body .= "</p>\n";  // jardinland.astuces
 
+$body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un engrais puissant qui retient l'humidit&eacute;.</p>\n";  // jardinland.astuces
+
 
 // TODO alphabetic
 
     $body .= $page->bodyBuilder->titleAnchor("Aubergines");
     $body .= "<p>Quand la premi&egrave;re fleur principale fleurit, couper toutes les branches annexes au-dessous.</p>\n";
+
+    $body .= "<p>Pour booster les aubergines, on peut r&eacute;partir des coquilles d'oeufs concass&eacute;es tout autour du plant.\n";
+    $body .= "</p>\n";  // jardinland.astuces
 //
     $body .= $page->bodyBuilder->titleAnchor("Concombres");
     $body .= "<p>Pour les plants &agrave; 6 feuilles, enlever les petits ftruits, les branches annexes et les minis fleurs.</p>\n";
@@ -74,6 +79,9 @@ $body .= "</p>\n";  // jardinland.astuces
     $body .= "Cela va permettre au plant de faire des racines profondes pour aller chercher l'eau.\n";
     $body .= "Ensuite on irigue r&eacute;guli&egrave;rement, par exemple une oya avec 1 litre par plant par semaine suffit.\n";
     $body .= "</p>\n";  // jardinbiobzh
+
+    $body .= "<p>Contre la maladie du cul noir, on peut r&eacute;partir des coquilles d'oeufs concass&eacute;es tout autour du plant.\n";
+    $body .= "</p>\n";  // jardinland.astuces
 
 
 

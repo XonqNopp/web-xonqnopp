@@ -28,6 +28,7 @@ $body .= instagramSources(
         "dralexbeyondbehavior",
         "etunjour_cavamieux",
         "goldmindsapp",
+        "heyitskayzie",
         "katy_g_blog",
         "littlebunbao",
         "maeva_maman_imparfaite",
@@ -536,8 +537,32 @@ $body .= "On chiffone un peu la feuille pour chaque mot.\n";
 $body .= "On le fait continuer jusqu'&agrave; ce que la feuille soit en boule.\n";
 $body .= "<i>Tu voix, c'est ce que &ccedil;a fait &agrave; mon coeur. On le voit pas, mais c'est ce que &ccedil;a fait au coeur.</i>\n";
 $body .= "<i>Qu'est-ce qu'on peut dire &agrave; quelqu'un quand on lui a fait mal ou mal au coeur?</i>\n";
-// TODO IWASHERE 50
+$body .= "A chaque mot gentil, on d&eacute;plie un peu la feuille.\n";
+$body .= "<i>Tu vois, ma feuille elle commence &agrave; aller un peu mieux.\n";
+$body .= "Et il y a plein d'autres mots gentils qu'on peut dire, qu'est-ce que tu peux dire de gentil?</i>\n";
+$body .= "On continue jusqu'&agrave; ce que la feuille soit compl&egrave;tement d&eacute;pli&eacute;e.\n";
+$body .= "<i>Regarde ma feuille comment elle est. Est-ce qu'elle est comme au d&eacute;but?\n";
+$body .= "Non, parce que les mots m&eacute;chants, les gestes m&eacute;chants, &ccedil;a laisse des cicatrices dans le coeur.\n";
+$body .= "On peut essayer tout ce qu'on veut, on n'arrivera jamais &agrave; les faire dispara&icirc;tre.\n";
+$body .= "Et c'est aussi valable pour ce que tu te dis &agrave; toi-m&ecirc;me.\n";
+$body .= "Quand tu fais quelque chose qui va pas, que tu rates quelque chose, si tu te dis \"oh je suis nul\", ca va faire une marque dans ton coeur.</i>\n";
+$body .= "On chiffone un peu la feuille.\n";
+$body .= "<i>Mais si tu te dis \"je vais finir par y arriver\", \"j'ai confiance en moi\", \"je peux le faire\",</i> (on d&eacute;plie la feuille),\n";
+$body .= "ton coeur il va mieux.\n";
+$body .= "C'est pour &ccedil;a qu'il faut faire tr&egrave;s attention au mots que tu choisis, que ce soit ceuxs que tu dis aux autres, mais aussi ceux que tu te dis &agrave; toi.</i>\n";
 $body .= "</p>\n";  // maeva_maman_imparfaite
+
+$body .= "<p>Quand on va quelque part (une f&ecirc;te, au restaurant, une r&eacute;union de famille),\n";
+$body .= "on peut donner au enfants une mission secr&egrave;te.\n";
+$body .= "Par exemple: ta mission secr&egrave;te ce soir est de faire rire grand-maman.\n";
+$body .= "Cela change sa perspective car &agrave; pr&eacute;sent il y va avec une mission que nous seuls savons.\n";
+$body .= "</p>\n";  // heyitskayzie
+
+$body .= "<p>Au lieu de toujours leur dire \"je suis fier de toi\" et autres commentaires positifis,\n";
+$body .= "on peut faire en sorte qu'il nous entende quand on raconte ses exploits &agrave; un autre adulte.\n";
+$body .= "</p>\n";  // heyitskayzie
+
+// TODO IWASHERE kayzie 4
 
 
 
