@@ -558,11 +558,41 @@ $body .= "Par exemple: ta mission secr&egrave;te ce soir est de faire rire grand
 $body .= "Cela change sa perspective car &agrave; pr&eacute;sent il y va avec une mission que nous seuls savons.\n";
 $body .= "</p>\n";  // heyitskayzie
 
-$body .= "<p>Au lieu de toujours leur dire \"je suis fier de toi\" et autres commentaires positifis,\n";
+$body .= "<p>Au lieu de toujours lui dire \"je suis fier de toi\" et autres commentaires positifis,\n";
 $body .= "on peut faire en sorte qu'il nous entende quand on raconte ses exploits &agrave; un autre adulte.\n";
 $body .= "</p>\n";  // heyitskayzie
 
-// TODO IWASHERE kayzie 4
+$body .= "<p>On peut lui demander de nous apprendre quelque chose.\n";
+$body .= "Par exemple: je ne sais plus comment on dessine un chat, tu peux me l'apprendre?\n";
+$body .= "Les enfants passent beaucoup de temps &agrave; &ecirc;tre &eacute;l&egrave;ve,\n";
+$body .= "ils sont alors contents d'&ecirc;tre dans le r&ocirc;le de l'expert.\n";
+$body .= "</p>\n";  // heyitskayzie
+
+$body .= "<p>On peut faire des pr&eacute;dictions le matin, comme:\n";
+$body .= "Dis-moi une chose rigolote que tu penses qui va arriver aujourd'hui?\n";
+$body .= "Le soir avant d'aller au lit, on regarde si cela s'est produit.\n";
+$BODY .= "Ce n'est pas grand chose, mais cela lui apprend &agrave; passer la journ&eacute;e &agrave; chercher quelque chose &agrave; se souvenir.\n";
+$body .= "</p>\n";  // heyitskayzie
+
+$body .= "<p>On peut facilement le faire rire en pr&eacute;tendant ne plus savoir comment faire une t&acirc;che facile:\n";
+$body .= "se brosser les cheveux avec une brosse &agrave; dents,\n";
+$body .= "mettre la veste de l'enfant sur soi...\n";
+$body .= "</p>\n";  // heyitskayzie
+
+$body .= "<p>La musique peut aussi transformer un moment ordinaire en un souvenir.\n";
+$body .= "On peut lui laisser choisir la mnusique pour ranger la chambre, pour faire les cr&ecirc;pes...\n";
+$body .= "</p>\n";  // heyitskayzie
+
+$body .= "<p>On peut leur poser des questions pr&eacute;cises sur leur futur:\n";
+$body .= "comment sera ta chambre,\n";
+$body .= "qu'est-ce qu'on mangera quand je viendrai te rendre visite...\n";
+$body .= "Les r&eacute;ponses peuvent &ecirc;tre dr&ocirc;les et nous donne un petit aper&ccedil;u de sa personnalit&eacute; actuelle.\n";
+$body .= "</p>\n";  // heyitskayzie
+
+$body .= "<p>Les enfants adorent entendre des histoires sur eux.\n";
+$body .= "On peut leur raconter nos souvenirs d'eux, comme la naissance, premier jour d'&eacute;cole, plus grosse b&eacute;t&icirc;se &agrave; 2 ans...\n";
+$body .= "</p>\n";  // heyitskayzie
+
 
 
 

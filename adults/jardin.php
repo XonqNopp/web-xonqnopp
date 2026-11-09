@@ -26,6 +26,7 @@ $body .= instagramSources(
     array(
         "alex.777terieur",
         "bee.greener",
+        "chadoyofficial",
         "gardening.tipss",
         "gilles_jardin_potager_bio",
         "jardinbiobzh",
@@ -45,7 +46,6 @@ $body .= "</p>\n";  // jardinland.astuces
 $body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un engrais puissant qui retient l'humidit&eacute;.</p>\n";  // jardinland.astuces
 
 
-// TODO alphabetic
 
     $body .= $page->bodyBuilder->titleAnchor("Aubergines");
     $body .= "<p>Quand la premi&egrave;re fleur principale fleurit, couper toutes les branches annexes au-dessous.</p>\n";
@@ -61,6 +61,31 @@ $body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un
 //
     $body .= $page->bodyBuilder->titleAnchor("Haricots");
     $body .= "<p>Quand le plant a fait 5 feuilles, pincer le sommet pour &eacute;viter que la plante fasse des branches au lieu des fruits.</p>\n";
+//
+    $body .= $page->bodyBuilder->titleAnchor("Oignons");
+    $body .= "<p>Les oignons se conservent le mieux dans un endroit sombre &agrave; temp&eacute;rature ambiante.\n";
+    $body .= "Le froid change leur amidon en sucre, il faut &eacute;viter des les stocker au frais.\n";
+    $body .= "Mais il ne faut pas les mettre avec les pommes de terre car il produise un gaz qui fait germer ces derni&egrave;res.\n";
+    $body .= "</p>\n";  // chadoyofficial
+
+    $body .= "<p>Pour ne pas trop pleurer en les coupant, on peut les mettre 15min au frigo.";
+    $body .= "</p>\n";  // chadoyofficial
+
+    $body .= "<p>Carameliser des oignons est un processus plus lent que vous ne le pensez.\n";
+    $body .= "10 minutes ne suffisent pas, il en faut presque 45, cela d&eacute;veloppe toutes les saveurs.\n";
+    $body .= "</p>\n";  // chadoyofficial
+
+    $body .= "<p>Si un oignon devient mou, il est encore bon pour &ecirc;tre utilis&eacute; cuit.\n";
+    $body .= "On peut le conserver encore en le hachant et en le mettant au cong&eacute;lateur.\n";
+    $body .= "</p>\n";  // chadoyofficial
+
+    $body .= "<p>La peau des oignons se gardent pour les plats mijot&eacute;s (rago&ucirc;t).\n";
+    $body .= "Elles vont leur donner une belle couleur.\n";
+    $body .= "</p>\n";  // chadoyofficial
+
+    $body .= "<p>On peut conserver un demi-oignon sur une assiette au frigo,\n";
+    $body .= "il tient 4 jours et l'odeur ne va pas se r&eacute;pandre dans tout le frigo.\n";
+    $body .= "</p>\n";  // chadoyofficial
 //
     $body .= $page->bodyBuilder->titleAnchor("Poivrons");
     $body .= "<p>Quand il y a le premier bouquet de fleurs, enlever toutes les branches au-dessous.</p>\n";
