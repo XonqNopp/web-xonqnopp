@@ -34,6 +34,7 @@ $body .= instagramSources(
         "maeva_maman_imparfaite",
         "nurturedfirst",
         "pygmalionne.media",
+        "republicchild",
         "thecoolmama.club",
         "thepositiveparenting",
         "wethinkdeeply",
@@ -646,7 +647,9 @@ $body .= "</ul></div>\n";
 // ------------------------------------
 
 $body .= "<p>Quelques questions qu'il vaut la peine de poser &agrave; ses enfants,\n";
-$body .= "dont leurs r&eacute;ponses pourraient nous surprendre:</p>\n";
+$body .= "dont leurs r&eacute;ponses pourraient nous surprendre.\n";
+$body .= "On peut les poser plusieurs fois, espac&eacute;es de quelques mois pour voir l'&eacute;volution des r&eacute;ponses.\n";
+$body .= "</p>\n";
 
 $body .= "<div><dl>\n";
 
@@ -700,6 +703,53 @@ $body .= "<dt>Quand est-ce que tu te sens vraiment &eacute;cout&eacute; de ma pa
 $body .= "<dd>\n";
 $body .= "Derri&egrave;re cette question se cache en fait \"est-ce que je suis important pour toi?\"\n";
 $body .= "</dd>\n";
+
+$body .= "<dt>Quelle est la r&egrave;gle &agrave; la maison que tu changerais si tu le pouvais?</dt>\n";
+$body .= "<dd>Ne pas demander laquelle il n'aime pas (provocation).\n";
+$body .= "Mauvaise r&eacute;ponse: d&eacute;fendre la r&egrave;gle.\n";
+$body .= "Bonne r&eacute;ponse: int&eacute;ressant, tu la remplacerais par quoi? Ensuite on se tait.\n";
+$body .= "Sa r&eacute;ponse nous r&eacute;v&egrave;le quelles r&egrave;gles lui semblent arbitraire.\n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt>Y a-t-il un moment o&ugrave; tu voulais me dire que tu &eacute;tais f&acirc;ch&eacute; mais que tu ne l'as pas fait?</dt>\n";
+$body .= "<dd>Ne pas demander: pourquoi tu ne me l'as pas dit (bl&acirc;me).\n";
+$body .= "Mauvaise r&eacute;ponse: se mettre sur la d&eacute;fensive.\n";
+$body .= "Bonne r&eacute;ponse: je suis content que tu puisse me le dire maintenant. Et on &eacute;coute.\n";
+$body .= "S'il n'arrive pas &agrave; citer un moment, c'est aussi une information.\n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt>Qu'est-ce que je fais que tu adores? Qu'est-ce que je fais qui t'agace?</dt>\n";
+$body .= "<dd>Important d'associer les 2 car ne demander que la n&eacute;gative ressemblerait &agrave; un pi&egrave;ge.\n";
+$body .= "Mauvaise r&eacute;ponse: prendre l'agacement &agrave; la rigolade.\n";
+$body .= "Bonne r&eacute;ponse: laisser m&ucirc;rir l'information au moins jusqu'au lendemain avant de r&eacute;pondre.\n";
+$body .= "Parfois, il peut revenir de lui-m&ecirc;me sur cette conversation inachev&eacute;e, cela devient une vraie conversation.\n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt>Y a-t-il quelque chose que tu ne me diras jamais parce que tu penses que je m'&eacute;nerverais?</dt>\n";
+$body .= "<dd>Cela r&eacute;v&egrave;le o&ugrave; se trouve son autocensure.\n";
+$body .= "Mauvaise r&eacute;ponse: promettre de ne pas s'&eacute;nerver et ensuite s'&eacute;nerver.\n";
+$body .= "Bonne r&eacute;ponse: merci de me l'avoir dit.\n";
+$body .= "G&egrave;re ta r&eacute;action plus tard, seul ou avec ton partenaire.\n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt>As-tu l'impression que je te vois vraiment pour qui tu es, ou surtout ce que tu fais de bien?</dt>\n";
+$body .= "<dd>\n";
+$body .= "Mauvaise r&eacute;ponse: rassurer (mais bien s&ucirc;r que je te vois).\n";
+$body .= "Bonne r&eacute;ponse: dis-m'en plus, &ccedil;a ressemblerait &agrave; quoi, &ecirc;tre vu?\n";
+$body .= "Sa r&eacute;ponse est ta mission pour le mois &agrave; venir.\n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt></dt>\n";
+$body .= "<dd>\n";
+$body .= "Mauvaise r&eacute;ponse: \n";
+$body .= "Bonne r&eacute;ponse: \n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt></dt>\n";
+$body .= "<dd>\n";
+$body .= "Mauvaise r&eacute;ponse: \n";
+$body .= "Bonne r&eacute;ponse: \n";
+$body .= "</dd>\n";  // republicchild
 
 $body .= "</dl></div>\n";
 
