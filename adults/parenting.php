@@ -24,6 +24,7 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
+        "___maison.aurora___",
         "cynthiaarscott",
         "dralexbeyondbehavior",
         "etunjour_cavamieux",
@@ -608,6 +609,45 @@ $body .= "</p>\n";  // heyitskayzie
 
 // ---------------------------------
 
+$body .= "<p>Quelques codes qu'on peut &eacute;tablir avec ses enfants:</p>\n";
+$body .= "<div><dl>\n";
+
+$body .= "<dt>Trouve-moi une excuse pour que je puisse partir d'ici rapidement sans dire que je le veux.</dt>\n";
+$body .= "<dd>Ca peut &ecirc;tre un mot ou un simple emoji, ou \"j'ai oubli&eacute; mon chargeur.\"\n";
+$body .= "On peut par exemple aller chercher l'enfant en le grondant qu'il n'avait pas le droit de sortir...\n";
+$body .= "</dd>\n";  // ___maison.aurora___
+
+$body .= "<dt>J'ai besoin de toi.</dt>\n";
+$body .= "<dd>Un petit geste discret en public (par exemple presser la main 3 fois) pour dire qu'il est mal &agrave; l'aise\n";
+$body .= "sans devoir l'expliquer devant tout le monde.\n";
+$body .= "</dd>\n";  // ___maison.aurora___
+
+$body .= "<dt>Le mot de passe de la famille.</dt>\n";
+$body .= "<dd>Ca peut arriver que quelqu'un dise &agrave; l'enfant \"tes parents m'ont envoy&eacute; te chercher\" (l&eacute;gitimement ou pas).\n";
+$body .= "Pour &eacute;viter les situations dangereuses, la personne doit conna&icirc;tre le mot secret de la famille.\n";
+$body .= "</dd>\n";  // ___maison.aurora___
+
+// TODO IWASHERE pause
+$body .= "<dt></dt>\n";
+$body .= "<dd>\n";
+$body .= "</dd>\n";  // ___maison.aurora___
+
+$body .= "<dt></dt>\n";
+$body .= "<dd>\n";
+$body .= "</dd>\n";  // ___maison.aurora___
+
+$body .= "<dt></dt>\n";
+$body .= "<dd>\n";
+$body .= "</dd>\n";  // ___maison.aurora___
+
+$body .= "<dt></dt>\n";
+$body .= "<dd>\n";
+$body .= "</dd>\n";  // 
+
+$body .= "</dl></div>\n";
+
+// ---------------------------------
+
 $body .= "<p>Quelques r&egrave;gles qu'on peut &eacute;tablir avec ses enfants:</p>\n";
 $body .= "<div><ul>\n";
 
@@ -704,13 +744,6 @@ $body .= "<dd>\n";
 $body .= "Derri&egrave;re cette question se cache en fait \"est-ce que je suis important pour toi?\"\n";
 $body .= "</dd>\n";
 
-$body .= "<dt>Quelle est la r&egrave;gle &agrave; la maison que tu changerais si tu le pouvais?</dt>\n";
-$body .= "<dd>Ne pas demander laquelle il n'aime pas (provocation).\n";
-$body .= "Mauvaise r&eacute;ponse: d&eacute;fendre la r&egrave;gle.\n";
-$body .= "Bonne r&eacute;ponse: int&eacute;ressant, tu la remplacerais par quoi? Ensuite on se tait.\n";
-$body .= "Sa r&eacute;ponse nous r&eacute;v&egrave;le quelles r&egrave;gles lui semblent arbitraire.\n";
-$body .= "</dd>\n";  // republicchild
-
 $body .= "<dt>Y a-t-il un moment o&ugrave; tu voulais me dire que tu &eacute;tais f&acirc;ch&eacute; mais que tu ne l'as pas fait?</dt>\n";
 $body .= "<dd>Ne pas demander: pourquoi tu ne me l'as pas dit (bl&acirc;me).\n";
 $body .= "Mauvaise r&eacute;ponse: se mettre sur la d&eacute;fensive.\n";
@@ -739,16 +772,26 @@ $body .= "Bonne r&eacute;ponse: dis-m'en plus, &ccedil;a ressemblerait &agrave; 
 $body .= "Sa r&eacute;ponse est ta mission pour le mois &agrave; venir.\n";
 $body .= "</dd>\n";  // republicchild
 
-$body .= "<dt></dt>\n";
-$body .= "<dd>\n";
-$body .= "Mauvaise r&eacute;ponse: \n";
-$body .= "Bonne r&eacute;ponse: \n";
+$body .= "<dt>A qui parles-tu quand tu n'as pas envie de me parler?</dt>\n";
+$body .= "<dd>Si la r&eacute;ponse est un pr&eacute;nom, ce n'est pas un &eacute;chec;\n";
+$body .= "c'est son syst&egrave;me d'attachement qui trouve un soutien de secours.\n";
+$body .= "Mauvaise r&eacute;ponse: se sentir bless&eacute;\n";
+$body .= "Bonne r&eacute;ponse: je suis content que tu l'aies; qu'est-ce qui rend les choses plus faciles avec cette personne?\n";
+$body .= "Sa r&eacute;ponse te dit ce que tu dois changer chez toi.\n";
 $body .= "</dd>\n";  // republicchild
 
-$body .= "<dt></dt>\n";
-$body .= "<dd>\n";
-$body .= "Mauvaise r&eacute;ponse: \n";
-$body .= "Bonne r&eacute;ponse: \n";
+$body .= "<dt>Quelle est la r&egrave;gle &agrave; la maison que tu changerais si tu le pouvais?</dt>\n";
+$body .= "<dd>Ne pas demander laquelle il n'aime pas (provocation).\n";
+$body .= "Mauvaise r&eacute;ponse: d&eacute;fendre la r&egrave;gle.\n";
+$body .= "Bonne r&eacute;ponse: int&eacute;ressant, tu la remplacerais par quoi? Ensuite on se tait.\n";
+$body .= "Sa r&eacute;ponse nous r&eacute;v&egrave;le quelles r&egrave;gles lui semblent arbitraire.\n";
+$body .= "</dd>\n";  // republicchild
+
+$body .= "<dt>Si tu pouvais ajouter une r&egrave;gle &agrave; notre famille, &ccedil;a serait quoi?</dt>\n";
+$body .= "<dd>Ne pas demander: qu'est-ce qu'on devrait changer. Cela invite au r&ecirc;ve.\n";
+$body .= "Mauvaise r&eacute;ponse: l'appliquer imm&eacute;diatement.\n";
+$body .= "Bonne r&eacute;ponse: donne-moi une semaine pour y refl&eacute;chir.\n";
+$body .= "Refl&eacute;chis-y vraiment et reviens vers lui pour lui dire ce que tu as d&eacute;cid&eacute; et pourquoi.\n";
 $body .= "</dd>\n";  // republicchild
 
 $body .= "</dl></div>\n";
