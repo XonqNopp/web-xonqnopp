@@ -27,6 +27,7 @@ $body .= instagramSources(
         "alex.777terieur",
         "bee.greener",
         "chadoyofficial",
+        "creative_explained",
         "gardening.tipss",
         "gilles_jardin_potager_bio",
         "jardinbiobzh",
@@ -47,22 +48,29 @@ $body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un
 
 
 
-    $body .= $page->bodyBuilder->titleAnchor("Aubergines");
+    $body .= $page->bodyBuilder->titleAnchor("Aubergine");
     $body .= "<p>Quand la premi&egrave;re fleur principale fleurit, couper toutes les branches annexes au-dessous.</p>\n";
 
     $body .= "<p>Pour booster les aubergines, on peut r&eacute;partir des coquilles d'oeufs concass&eacute;es tout autour du plant.\n";
     $body .= "</p>\n";  // jardinland.astuces
 //
-    $body .= $page->bodyBuilder->titleAnchor("Concombres");
+    $body .= $page->bodyBuilder->titleAnchor("Citron");
+        $body .= $page->bodyBuilder->titleAnchor("Peau de citron", 3);
+        $body .= "<p>Apr&egrave;s avoir press&eacute; un citron...</p>\n";
+        $body .= "<p>...on peut mettre la peau dans le lave-vaisselle pour aider &agrave; enlever les odeurs et donner de la brillance.</p>\n";
+        $body .= "<p>...on peut couper la peau en morceaux et mettre au frigo pour enlever les mauvaises odeurs.</p>\n";  // creative_explained
+        // TODO IWASHERE petit pot 31_42
+//
+    $body .= $page->bodyBuilder->titleAnchor("Concombre");
     $body .= "<p>Pour les plants &agrave; 6 feuilles, enlever les petits ftruits, les branches annexes et les minis fleurs.</p>\n";
 //
-    $body .= $page->bodyBuilder->titleAnchor("Fraises");
+    $body .= $page->bodyBuilder->titleAnchor("Fraise");
     $body .= "<p>Les queues des fraises se mangent et sont pleines d'antioxydants puissants qui aident &agrave; lutter contre le stress et l'inflammation.</p>\n";  // bee.greener
 //
-    $body .= $page->bodyBuilder->titleAnchor("Haricots");
+    $body .= $page->bodyBuilder->titleAnchor("Haricot");
     $body .= "<p>Quand le plant a fait 5 feuilles, pincer le sommet pour &eacute;viter que la plante fasse des branches au lieu des fruits.</p>\n";
 //
-    $body .= $page->bodyBuilder->titleAnchor("Oignons");
+    $body .= $page->bodyBuilder->titleAnchor("Oignon");
     $body .= "<p>Les oignons se conservent le mieux dans un endroit sombre &agrave; temp&eacute;rature ambiante.\n";
     $body .= "Le froid change leur amidon en sucre, il faut &eacute;viter des les stocker au frais.\n";
     $body .= "Mais il ne faut pas les mettre avec les pommes de terre car il produise un gaz qui fait germer ces derni&egrave;res.\n";
@@ -87,10 +95,10 @@ $body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un
     $body .= "il tient 4 jours et l'odeur ne va pas se r&eacute;pandre dans tout le frigo.\n";
     $body .= "</p>\n";  // chadoyofficial
 //
-    $body .= $page->bodyBuilder->titleAnchor("Poivrons");
+    $body .= $page->bodyBuilder->titleAnchor("Poivron");
     $body .= "<p>Quand il y a le premier bouquet de fleurs, enlever toutes les branches au-dessous.</p>\n";
 //
-    $body .= $page->bodyBuilder->titleAnchor("Tomates");
+    $body .= $page->bodyBuilder->titleAnchor("Tomate");
     $body .= "<p>Quand les premi&egrave;res fleurs s'ouvrent, enlever tous les gourmands.</p>\n";
     $body .= "<p>Chatouiller les plants pour aider la pollinisation.</p>\n";  // gilles_jardin_potager_bio
 

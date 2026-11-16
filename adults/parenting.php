@@ -627,17 +627,22 @@ $body .= "<dd>Ca peut arriver que quelqu'un dise &agrave; l'enfant \"tes parents
 $body .= "Pour &eacute;viter les situations dangereuses, la personne doit conna&icirc;tre le mot secret de la famille.\n";
 $body .= "</dd>\n";  // ___maison.aurora___
 
-// TODO IWASHERE pause
-$body .= "<dt></dt>\n";
-$body .= "<dd>\n";
+$body .= "<dt>Pause.</dt>\n";
+$body .= "<dd>Un mot que n'importe qui dans la famille peut utiliser lorsqu'une dispute devient trop intense.\n";
+$body .= "On arr&ecirc;te tous de parler quelques minutes et on reprend quand tout le monde est plus calme.\n";
 $body .= "</dd>\n";  // ___maison.aurora___
 
-$body .= "<dt></dt>\n";
-$body .= "<dd>\n";
+$body .= "<dt>J'ai quelque chose de difficile &agrave; dire.</dt>\n";
+$body .= "<dd>Une phrase comme\n";
+$body .= "\"est-ce qu'on peut aller faire un tour?\"\n";
+$body .= "qui signifie\n";
+$body .= "\"j'ai besoin de te parler mais j'ai peur de ta r&eacute;action.\"\n";
+$body .= "Il est important pour le parent d'&eacute;couter vraiment, et d'&eacute;viter de r&eacute;agir imm&eacute;diatement.\n";
 $body .= "</dd>\n";  // ___maison.aurora___
 
-$body .= "<dt></dt>\n";
-$body .= "<dd>\n";
+$body .= "<dt>Je t'aime.</dt>\n";
+$body .= "<dd>Un petit signe secret (clin d'oeil, tape sur l'&eacute;paule,signe de la main)\n";
+$body .= "pour pouvoir se dire \"je t'aime, je suis l&agrave;\" sans prononcer de mots et qui fonctionne aussi de loin.\n";
 $body .= "</dd>\n";  // ___maison.aurora___
 
 $body .= "<dt></dt>\n";

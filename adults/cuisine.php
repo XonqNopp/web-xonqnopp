@@ -23,6 +23,7 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
+        "creative_explained",
         "exactlyhowthingswork",
         "noxhrecettes",
         "vicplusgreen",
@@ -31,6 +32,7 @@ $body .= instagramSources(
 
 
 $body .= "<p>On peut enlever les taches sur une planche en bois avec du savon et du bicarbonate de soude.</p>\n";  // exactlyhowthingswork
+$body .= "<p>On peut enlever les taches sur une planche en bois avec du sel et on frotte avec un demi-citron.</p>\n";  // createive_explained
 
 
     $body .= $page->bodyBuilder->titleAnchor("Casserole (et po&ecirc;le) en inox");
