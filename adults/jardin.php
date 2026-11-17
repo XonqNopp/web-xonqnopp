@@ -46,6 +46,13 @@ $body .= "</p>\n";  // jardinland.astuces
 
 $body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un engrais puissant qui retient l'humidit&eacute;.</p>\n";  // jardinland.astuces
 
+$body .= "<p>On peut saupoudrer de la cannelle sur la terre pour: stimuler la croissance des racines, emp&ecirc;cher les moisissure et autres champignons (antifongique), &eacute;loigner les moucherons.</p>\n";  // creative_explained
+$body .= "<p>On peut sprayer un m&eacute;lange d'eau et de cannelle en poudre sur les plantes pour les soigner.</p>\n";  // creative_explained
+$body .= "<p>Quand on veut faire germer des graines, on peut saupoudrer un peu de cannelle pour stimuler la croissance.</p>\n";  // creative_explained
+
+$body .= "<p>Recette insecticide: un oignon hach&eacute;, 2 gousses d'ail hach&eacute;es, 1cc poivre de cayenne dans un litre d'eau\n";
+$body .= "Laisser reposer au frigo 12h, filtrer et mettre dans un vaporisateur.</p>\n";  // creative_explained
+
 
 
     $body .= $page->bodyBuilder->titleAnchor("Aubergine");
@@ -59,7 +66,8 @@ $body .= "<p>Broyer des coquilles d'oeufs avec du charbon de bois cr&eacute;e un
         $body .= "<p>Apr&egrave;s avoir press&eacute; un citron...</p>\n";
         $body .= "<p>...on peut mettre la peau dans le lave-vaisselle pour aider &agrave; enlever les odeurs et donner de la brillance.</p>\n";
         $body .= "<p>...on peut couper la peau en morceaux et mettre au frigo pour enlever les mauvaises odeurs.</p>\n";  // creative_explained
-        // TODO IWASHERE petit pot 31_42
+        $body .= "<p>...on peut les remplir de terreaux et les utiliser comme pot bio-d&eacute;gradables.</p>\n";  // creative_explained
+        $body .= "<p>...on peut couper la peau en morceaux et l'emballer dans un tissu fin, puis la poser dans la maison vers les ouvertures pour repousser les insectes.</p>\n";  // creative_explained
 //
     $body .= $page->bodyBuilder->titleAnchor("Concombre");
     $body .= "<p>Pour les plants &agrave; 6 feuilles, enlever les petits ftruits, les branches annexes et les minis fleurs.</p>\n";

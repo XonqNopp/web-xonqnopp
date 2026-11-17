@@ -33,6 +33,7 @@ $body .= instagramSources(
 
 $body .= "<p>On peut enlever les taches sur une planche en bois avec du savon et du bicarbonate de soude.</p>\n";  // exactlyhowthingswork
 $body .= "<p>On peut enlever les taches sur une planche en bois avec du sel et on frotte avec un demi-citron.</p>\n";  // createive_explained
+$body .= "<p>On peut nettoyer une r&acirc;pe &agrave; fromages en r&acirc;pant un demi-citron pres&eacute;.</p>\n";  // creative_explained
 
 
     $body .= $page->bodyBuilder->titleAnchor("Casserole (et po&ecirc;le) en inox");

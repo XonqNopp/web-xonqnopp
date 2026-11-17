@@ -25,6 +25,7 @@ $page->htmlHelper->hotBooty();
 $body .= instagramSources(
     array(
         "bee.greener",
+        "ceative_explained",
         "exactlyhowthingswork",
         "gege_en_vadrouille",
         "littlebunbao",
@@ -97,6 +98,9 @@ $body .= instagramSources(
     $body .= "Pour leur redonner de la blancheur, on peut les baigner dans un m&eacute;lange de lessive, dentifrice et sel avec de l'eau chaude pendant 5min.\n";
     $body .= "On peut aussi utiliser du dentifrice pour nettoyer des chaussures sales.\n";
     $body .= "</p>\n";  // exactlyhothingswork
+
+    $body .= "<p>Pour enlever les mauvaises odeurs des habits, on peut mettre un jus de citron avec le produit lessive.\n";
+    $body .= "Cela va aussi aider &agrave; faire partir certaines taches.</p>\n";  // creative_explained
 //
     $body .= $page->bodyBuilder->titleAnchor("M&eacute;nage");
 
