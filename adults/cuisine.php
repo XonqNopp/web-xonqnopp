@@ -35,6 +35,10 @@ $body .= "<p>On peut enlever les taches sur une planche en bois avec du savon et
 $body .= "<p>On peut enlever les taches sur une planche en bois avec du sel et on frotte avec un demi-citron.</p>\n";  // createive_explained
 $body .= "<p>On peut nettoyer une r&acirc;pe &agrave; fromages en r&acirc;pant un demi-citron pres&eacute;.</p>\n";  // creative_explained
 
+$body .= "<p>Pour nettoyer une machine &agrave; paninis, quand on a fini on d&eacute;branche,\n";
+$body .= "on met un peu de vinaigre ou de jus de citron, on place un chiffon humide et on ferme 1 minute,\n";
+$body .= "puis avec un autre chiffon on peut tout nettoyer.</p>\n";  // creative_explained
+
 
     $body .= $page->bodyBuilder->titleAnchor("Casserole (et po&ecirc;le) en inox");
 
@@ -54,6 +58,17 @@ $body .= "<p>On peut nettoyer une r&acirc;pe &agrave; fromages en r&acirc;pant u
     $body .= "et de laisser reposer 10 minutes.\n";
     $body .= "On peut ensuite la laver et les taches devraient partir plus facilement (mais peut-&ecirc;tre pas &agrave; 100%).\n";
     $body .= "</p>\n";  // vicplusgreen
+//
+    $body .= $page->bodyBuilder->titleAnchor("Conservation");
+    $body .= "<p>Dans un endroit frais et sec: ail, oignon.</p>\n";  // creative_explained
+    $body .= "<p>Dans un endroit frais et sec et sombre: pommes de terre.</p>\n";  // creative_explained
+    $body .= "<p>Humidifier et emballer et mettre au frigo: salade.</p>\n";  // creative_explained
+    $body .= "<p>Le pied dans l'eau avec un sac sur la t&ecirc;te et au frigo: poireau, asperge.</p>\n";  // creative_explained
+    $body .= "<p>Dans un sac perm&eacute;able au frais: concombre.</p>\n";  // creative_explained
+    $body .= "<p>Dans un coin de la cuisine: tomate.</p>\n";  // creative_explained
+    $body .= "<p>A l'&eacute;cart des autres fruits: pomme, poire, kiwi.</p>\n";  // creative_explained
+    $body .= "<p>Dans un chiffon humide, dans un sac, au frigo: herbes.</p>\n";  // creative_explained
+    $body .= "<p>Emballer le sommet dans du plastique: banane.</p>\n";  // creative_explained
 
 
 echo $body;

@@ -101,8 +101,11 @@ $body .= instagramSources(
 
     $body .= "<p>Pour enlever les mauvaises odeurs des habits, on peut mettre un jus de citron avec le produit lessive.\n";
     $body .= "Cela va aussi aider &agrave; faire partir certaines taches.</p>\n";  // creative_explained
+
+    $body .= "<p>Pour redonner de la blancheur au linge, on peut ajouter du percarbonate de soude avec la lessive.</p>\n";
 //
     $body .= $page->bodyBuilder->titleAnchor("M&eacute;nage");
+    $body .= "<p>Pour enlever des taches sur un tapis, on met un peu de mousse &agrave; raser, on frotte et on essuie.</p>\n";  // creative_exaplained
 
 
 echo $body;
