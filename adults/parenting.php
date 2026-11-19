@@ -596,7 +596,25 @@ $body .= "<p>Les enfants adorent entendre des histoires sur eux.\n";
 $body .= "On peut leur raconter nos souvenirs d'eux, comme la naissance, premier jour d'&eacute;cole, plus grosse b&eacute;t&icirc;se &agrave; 2 ans...\n";
 $body .= "</p>\n";  // heyitskayzie
 
-// TODO IWASHERE legami
+$body .= "<div><p>Si un enfant vous dit qu'il a donn&eacute; un gros truc ou souvent des petits trucs, il faut lui demander pourquoi.\n";
+$body .= "On peut par exemple sortir le cahier du d&eacute;tective, lui poser ces questions et noter ses r&eacute;ponses:</p>\n";
+$body .= "<ul>";
+$body .= "<li>1. Est-ce qu'avant de lui faire ce cadeau, Paul jouait avec toi? Non...</li>\n";
+$body .= "<li>2. Si demain tu n'as plus rien a lui donner, est-ce que tu penses qu'il va continuer avec toi? Je sais pas...</li>\n";
+$body .= "<li>3. Si on parle de ton super copain Alfred, tu lui as donn&eacute; quoi pour qu'il soit ton ami? Rien.</li>\n";
+$body .= "<li>Et il joue avec toi? Tout le temps.</li>\n";
+$body .= "<li>Donc si tu n'as pas besoin de lui faire de cadeaux, c'est ton ami pourquoi? Parce qu'il m'aime bien.</li>\n";
+$body .= "<li>C'est ton ami parce qu'il t'aime pour qui tu es.</li>\n";
+$body .= "<li>Le cahier demande, si on revient &agrave; Paul, du coup Paul il t'aime bien pour qui tu es, ou pour tes cadeaux? Pour mes cadeaux.</li>\n";
+$body .= "<li>4. Moi pour que je t'aime, tu dois me donner quoi tous les jours? Rien.</li>\n";
+$body .= "<li>Eh oui, et je t'aime. Est-ce que je t'aime toujours? Oui tu m'aimes tout le temps.</li>\n";
+$body .= "<li>Je t'aime tout le temps, tu le sais. Donc mon amour, il d&eacute;pend de quoi? De qui tu es ou de ce que tu me donnes? De qui je suis.</li>\n";
+$body .= "<li>Est-ce que l'amiti&eacute; c'est pareil? Est-ce que &ccedil;a d&eacute;pend de qui on est ou de ce qu'on donne? De qui on est.</li>\n";
+$body .= "<li>5. Du coup c'est quoi un vrai ami? C'est quelqu'un qui est l&agrave; sans qu'on lui donne des choses.</li>\n";
+$body .= "<li>Du coup la prochaine fois que quelqu'un veut &ecirc;tre ton ami, il a besoin de quoi? De rien, juste de moi.</li>\n";
+$body .= "<li>Alors qu'est-ce qu'on fait avec Paul? J'arr&ecirc;te de lui faire des cadeaux et je vois s'il est encore mon ami.</li>\n";
+$body .= "</ul>";
+$body .= "</div>\n";  // elodiedasilva
 
 
 
