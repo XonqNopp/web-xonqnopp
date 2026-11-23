@@ -25,6 +25,7 @@ $body .= instagramSources(
     array(
         "oriannedrd",
         "Sam.secrets",
+        "yourpainsolution",
     )
 );
 
@@ -64,6 +65,18 @@ $body .= $page->bodyBuilder->titleAnchor("Se maintenir en forme");
         $body .= "<p>Pour r&eacute;ussir des tractions, il faut activer le grand dorsal.\n";
         // TODO
         $body .= "</p>\n";  // oriannedrd
+    //
+        $body .= $page->bodyBuilder->titleAnchor("S'accroupir (squat)", 3);
+        $body .= "<p>Le probl&egrave;me d'aujourd'hui est que nous passons trop de temps assis.\n";
+        $body .= "Tout le monde devrait &ecirc;tre capable de tenir la position accroupie avec les pieds &agrave; plat et les fesses au ras du sol.\n";
+        $body .= "Pour r&eacute;cup&eacute;rer cela, on peut s'&eacute;chauffer en faisant\n";
+        $body .= "10 flexion de la colonne,\n";
+        $body .= "10 extensions de la colonne,\n";
+        $body .= "10 ouvertures de la poitrine,\n";
+        $body .= "10 J curl Pulls,\n";
+        $body .= "10 bounces.\n";
+        // TODO keep or not???
+        $body .= "</p>\n";  // yourpainsolution
 
 $body .= $page->bodyBuilder->titleAnchor("Escalade");
 
