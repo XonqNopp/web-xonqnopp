@@ -24,6 +24,7 @@ $page->htmlHelper->hotBooty();
 
 $body .= instagramSources(
     array(
+        "kristinleighwellness",
         "nillan.naturopathie",
         "osteofeminin",
         "tracysgift_by_robin",
@@ -42,14 +43,14 @@ $body .= "&eacute;qujilibrer le cortisol (hormone du stress), et favoriser la co
 $body .= "Cela va contribuer &agrave; &eacute;quilibrer le ratio oestrog&egrave;ne/progest&eacute;rone pour un cycle plus facile.\n";
 $body .= "</dd>\n";
 
-$body .= "<dt>Prendre un petit d&eacute;jeuner sal&eacute;, gras et protein&eacute;.</dt>\n";
+$body .= "<dt>Prendre un petit d&eacute;jeuner sal&eacute;, gras et prot&eacute;in&eacute;.</dt>\n";
 $body .= "<dd>\n";
 $body .= "<dl>\n";
 $body .= "<dt>Sal&eacute;</dt>\n";
 $body .= "<dd>Soutient le cortisol, &eacute;vite les chutes de tensions.</dd>\n";
 $body .= "<dt>Gras</dt>\n";
 $body .= "<dd>Mati&egrave;re premi&egrave;re des hormones.</dd>\n";
-$body .= "<dt>Protein&eacute;</dt>\n";
+$body .= "<dt>Prot&eacute;in&eacute;</dt>\n";
 $body .= "<dd>Resource utilis&eacute;e dans la fabrication des hormones, donne une &eacute;nergie durable.</dd>\n";
 $body .= "</dl>\n";
 $body .= "Tout cela aide &agrave; diminuer les inflammations et\n";
@@ -59,6 +60,20 @@ $body .= "pour fabriquer des hormones de qualit&eacute;,\n";
 $body .= "pour avoir une digestion plus stable et\n";
 $body .= "pour avoir un cycle plus &eacute;quilibr&eacute;.\n";
 $body .= "</dd>\n";
+
+$body .= "<dt>Prendre un petit d&eacute;jeuner prot&eacute;in&eacute;.</dt>\n";
+$body .= "<dd>\n";
+$body .= "<ul>\n";
+$body .= "<li>Plus on mange de prot&eacute;ines le matin, plus le taux de sucre dans le sang sera stable.</li>\n";
+$body .= "<li>Plus le taux de sucre dans le sang est stable, plus le cortisol est calme.</li>\n";
+$body .= "<li>Plus le cortisol est calme, plus le corps peut fabriquer de prog&eacute;st&eacute;rone.</li>\n";
+$body .= "<li>Plus le corps a de prog&eacute;st&eacute;rone, meilleur est notre sommeil.</li>\n";
+$body .= "<li>Plus on dort mieux, plus notre cerveau fonctionne bien et plus notre humeur est stable.</li>\n";
+$body .= "<li>Plus notre cerveau fonctionne bien, plus on se sent soi-m&ecirc;me.</li>\n";
+$body .= "<li>Plus on se sent soi-m&ecirc;me, plus c'est facile de manger des prot&eacute;ines le matin.</li>\n";
+$body .= "</ul>\n";
+$body .= "En r&eacute;solvant le premier domino, il sera beaucoup plus facile de r&eacute;soudre tous les autres.\n";
+$body .= "</dd>\n";  // kristinleighwellness
 
 $body .= "<dt>Marche 30min chaque jour.</dt>\n";
 $body .= "<dd>\n";

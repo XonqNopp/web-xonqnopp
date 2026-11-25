@@ -32,6 +32,7 @@ $body .= instagramSources(
         "goldmindsapp",
         "heyitskayzie",
         "katy_g_blog",
+        "laurenmagersofficial",
         "littlebunbao",
         "maeva_maman_imparfaite",
         "nurturedfirst",
@@ -706,6 +707,37 @@ $body .= "<li>\n";
 $body .= "Si quelqu'un te montre une video AI de quelqu'un que tu connais qui fait quelque chose de bizarre, dis-le-moi.\n";
 $body .= "Je pr&eacute;f&egrave;re &ecirc;tre au courant pour pouvoir te soutenir.\n";
 $body .= "</li>\n";
+
+$body .= "<li>L'adultre ne parle pas au nom de l'enfant s'il peut parler lui-m&ecirc;me.\n";
+$body .= "Si quelqu'un lui pose une question, l'adulte laisse l'enfant parler.\n";
+$body .= "Si quelqu'un pose une question &agrave; l'adulte que l'enfant pourrait r&eacute;pondre, l'adulte demande &agrave; l'enfant de r&eacute;pondre.\n";
+$body .= "A chaque fois qu'il parle en son nom, l'enfant augmente son estime de soi.\n";  // TODO self-belief???
+$body .= "</li>\n";  // laurenmagersofficial
+
+$body .= "<li>\"Je suis timide\" n'est pas une excuse pour ne pas r&eacute;pondre.\n";
+$body .= "Si on n'est pas s&ucirc;r d'arriver &agrave; r&eacute;pondre ou si on a peur de parler,\n";
+$body .= "on peut dire \"j'apprends &agrave; avoir confiance\" mais ensuite on parle.\n";
+$body .= "</li>\n";  // laurenmagersofficial
+
+$body .= "<li>Pas de distractions quand quelqu'un nous parle.\n";
+$body .= "On range les &eacute;crans et les livres, on garde le contact visuel.\n";
+$body .= "On est pleinement pr&eacute;sent pour que l'autre se sente exister.\n";
+$body .= "</li>\n";  // laurenmagersofficial
+
+$body .= "<li>On n'attend pas que les autres nous mettent &agrave; l'aise.\n";
+$body .= "On se pr&eacuter;sente, on pose des questions.\n";
+$body .= "La confiance augmente chaque fois qu'on peut cr&eacute;er une connection soi-m&ecirc;me.\n";
+$body .= "</li>\n";  // laurenmagersofficial
+
+$body .= "<li>Chaque personne compte.\n";
+$body .= "Quelle que soit la personne en face (directeur, enseignant, serveur, entra&icirc;neur, &eacute;tranger, inconnu),";
+$body .= "on la traite avec la m&ecirc;me sympathie, le m&ecirc;me contact visuel, le m&ecirc;me respect.\n";
+$body .= "</li>\n";  // laurenmagersofficial
+
+$body .= "<li>On ne quitte pas une conversation sans y ajouter de la valeur.\n";
+$body .= "On pose des questions, on &eacute;coute, on encourage, on remercie.\n";
+$body .= "Cela va faire que l'interlocuteur se sente mieux gr&acirc;ce &agrave; ta pr&eacute;sence.\n";
+$body .= "</li>\n";  // laurenmagersofficial
 
 $body .= "</ul></div>\n";
 
