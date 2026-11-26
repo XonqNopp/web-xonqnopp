@@ -619,6 +619,35 @@ $body .= "</div>\n";  // elodiedasilva
 
 
 
+$body .= "<p>Avec un(e) adolescent(e), il est important de parler des nudes.\n";
+$body .= "Cela peut para&icirc;tre dr&ocirc;le d'en faire, un challenge de les envoyer aux copains...\n";
+$body .= "Mais il ne faut jamais oublier qu'une fois qu'une image part, on perd tout contr&ocirc;le dessus.\n";
+$body .= "Publier une image sur internet signifie qu'elle sera disponible pour toujours.\n";
+
+$body .= "Mais il faut aussi discuter avec l'ado de pourquoi certains le font.\n";
+$body .= "Cela vient souvent d'un pari ou d'un challenge avec des copains, qui disent que l'autre n'ose pas.\n";
+$body .= "Nous (parents des ann&eacute;es 2020) avons aussi jou&eacute; &agrave; action/v&eacute;rit&eacute; quand on &eacute;tait enfant,\n";
+$body .= "mais on n'avait pas de t&eacute;l&eacute;phone.\n";
+$body .= "Cela ne nous a pas emp&ecirc;ch&eacute; de faire des choses auxquelles on a repens&eacute; pendant plusieurs ann&eacute;es...\n";
+
+$body .= "Il peut aussi arriver qu'une personne demande un nude pour des raisons sexuelles.\n";
+$body .= "Ils peuvent dire que l'autre l'excite ou qu'elle est tellement belle.\n";
+$body .= "Cela fait toujours du bien d'entendre des compliments sur soi, cela peut nous faire nous sentir si bien qu'on a envie d'envoyer un nude.\n";
+$body .= "Cependant, il faut garder en t&ecirc;te les points suivants:\n";
+$body .= "</p><div><ul>\n";
+
+$body .= "<li>Ce n'est pas flatteur qu'une personne demande des nudes, c'est offensant.\n";
+$body .= "Une personne qui tient vraiment &agrave; toi ne va jamais te demander cela.\n";
+$body .= "Envoyer un nude n'est jamais dans ton int&eacute;r&ecirc;t.\n";
+$body .= "Une fois publi&eacute;e, le contr&ocirc;le sur la photo est perdu &agrave; jamais.\n";
+$body .= "Si la personne &agrave; qui on l'envoie change un jour son estime sur toi, elle peut utiliser cette photo contre toi.</li>\n";
+
+// TODO IWASHERE 2
+
+$body .= "</ul></div><p>\n";
+
+$body .= "</p>\n";  // nurturedfirst
+
 
 
 
