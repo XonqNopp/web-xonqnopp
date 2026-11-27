@@ -642,10 +642,34 @@ $body .= "Envoyer un nude n'est jamais dans ton int&eacute;r&ecirc;t.\n";
 $body .= "Une fois publi&eacute;e, le contr&ocirc;le sur la photo est perdu &agrave; jamais.\n";
 $body .= "Si la personne &agrave; qui on l'envoie change un jour son estime sur toi, elle peut utiliser cette photo contre toi.</li>\n";
 
-// TODO IWASHERE 2
+$body .= "<li>Si quelqu'un t'envoie un message pour te demander une photo inapprori&eacute;e de toi,\n";
+$body .= "tu fais une capture d'&eacute;cran et tu arr&ecirc;tes de lui r&eacute;pondre.\n";
+$body .= "Tu trouves un adulte et tu lui montres ce qu'il s'est pass&eacute;.\n";
+$body .= "Ce n'est pas quelque chose que des ados peuvent r&eacute;soudre seul.\n";
+$body .= "Venir me dire la v&eacute;rit&eacute; ne te causera pas de probl&egrave;mes.</li>\n";
+
+$body .= "<li>Avoir une photo d'un enfant/ado nu est ill&eacute;gal.\n";
+$body .= "C'est vraiment s&eacute;rieux, ce n'est pas une blague.\n";
+$body .= "Ce n'est pas dr&ocirc;le, et cela peut avoir un impact &agrave; tr&egrave;s long terme pour\n";
+$body .= "la personne prise en photo, et pour la personne qui poss&egrave;de la photo.</li>\n";
+
+$body .= "<li>Du moment que la photo est prise par quelqu'un d'autre ou que tu envoies une photo &agrave; quelqu'un,\n";
+$body .= "tu perds tout contr&ocirc;le sur la photo et ce qui se passera ensuite.\n";
+$body .= "Elle peut &ecirc;tre partag&eacute;e n'importe o&ugrave;,\n";
+$body .= "elle peut &ecirc;tre utilis&eacute;e pour g&eacute;n&eacute;rer une photo/video IA,\n";
+$body .= "elle peut &ecirc;tre partag&eacute;e &agrave; d'autres de tes copains...\n";
+$body .= "Il n'y a rien de dr&ocirc;le avec les nudes, c'est quelque chose qui va hanter la personne toute sa vie.</li>\n";
+
+$body .= "<li>Tu peux toujours venir vers moi.\n";
+$body .= "Si tu es chez un copain et que tu ne te sens pas &agrave; l'aise, je peux venir te chercher n'importe quand.\n";
+$body .= "Si on est dans un autre endroit et que quelque chose se passe, tu peux juste venir me dire que tu veux me parler seul et je prendrai le temps de t'&eacute;couter.\n";
+$body .= "N'importe quand, jour et nuit, tu peux compter sur moi.</li>\n";
 
 $body .= "</ul></div><p>\n";
-
+$body .= "Il faut aussi rappeler &agrave; l'ado que ce n'est pas son r&ocirc;le de g&eacute;rer le comportement tous les autres.\n";
+$body .= "Il faut se toujours &ecirc;tre attentif envers les soir&eacute;es pyjama ou nuits chez les copains.\n";
+$body .= "L'adolescence est un passage difficile, il faut supporter l'enfant du mieux que l'on peut.\n";
+$body .= "L'ado a besoin d'un cadre clair, strict et aimant de la part de leurs parents sur le sujet des nudes et des images pornographiques.\n";
 $body .= "</p>\n";  // nurturedfirst
 
 
